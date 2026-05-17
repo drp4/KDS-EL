@@ -1,4 +1,4 @@
-1. 新加数据集：SRBCT，BASEHOCK
+1. 新加数据集：SRBCT，BASEHOCK 
 2. NON-EC 对比方法缺失。 EMSWOA 专门有一节对比 SVM-RFE、MSVM-RFE 等 filter/embedded 方法。
 	方法的结果数字可以直接从 EMSWOA 或 MEL 原文引用，只需要在表格里注明数据来源。加这一节大约 2-3 小时工作量，但会让论文显得更完整。
 3. 收敛曲线展示的是 fitness 而不是 accuracy。 EMSWOA 的 Fig 7 展示的是 accuracy 随迭代变化，更直观。
