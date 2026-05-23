@@ -6,7 +6,7 @@
 
 \documentclass[a4paper,fleqn]{cas-dc}
 
-\usepackage[authoryear]{natbib}
+\usepackage[numbers,sort&compress]{natbib}
 \usepackage[noend]{algpseudocode}
 \usepackage{algorithmicx,algorithm}
 \usepackage{bm}
@@ -237,22 +237,23 @@
 
 	\par{
 	Feature selection methods can be broadly categorised into filter,
-	wrapper, and embedded approaches~\citep{guyon2003introduction}.
+	wrapper, and embedded approaches~\citep{guyon2003introduction,kohavi1997wrappers,yang2020feature,li2017feature}.
 	Wrapper methods evaluate candidate feature subsets by training and
-	testing a classifier, making them more accurate but computationally
+	testing a classifier (e.g., SVM~\citep{cortes1995support} or Random Forest~\citep{breiman2001random}), making them more accurate but computationally
 	more expensive than filter methods.
-	Evolutionary computation (EC) techniques have been widely adopted
+	Evolutionary computation (EC) techniques, such as PSO, Grey Wolf
+	Optimizer~\citep{mirjalili2014grey}, and Differential Evolution, have been widely adopted
 	as wrapper-based FS solvers due to their ability to navigate the
 	$2^d$ combinatorial search space without requiring gradient
-	information.
-	Binary PSO (BPSO)~\citep{kennedy1997discrete} was among the first
+	information~\citep{xue2012particle,rostami2022review,liu2023high,abd2020survey,agrawal2021feature}.
+	Binary PSO (BPSO)~\citep{kennedy1997discrete,kennedy1995particle,shi1998modified} was among the first
 	to adapt PSO for discrete optimisation, encoding feature subsets as
 	binary vectors and using sigmoid transfer functions for position
 	updates.
 	Subsequent variants have improved upon BPSO in various directions.
 	Adaptive inertia weight strategies have been proposed to balance
 	exploration and exploitation across the search
-	trajectory~\citep{zhang2015adaptive}.
+	trajectory~\citep{zhang2015adaptive,wang2020improving,chen2020feature,zhang2019information}.
 	FWPSO~\citep{huang2020enhanced} introduces a feature-weight-based
 	initialisation mechanism that accelerates convergence by biasing
 	the initial population toward promising regions.
@@ -315,7 +316,7 @@
 	individuals with random solutions to restore
 	diversity~\citep{ursem2002diversity}.
 	Crowding and sharing techniques, originally proposed for
-	multi-objective optimisation~\citep{deb2002fast}, have been adapted
+	multi-objective optimisation~\citep{deb2002fast,zhang2020multiobjective,song2021variable}, have been adapted
 	to maintain diversity in FS populations.
 	However, these approaches treat diversity as a secondary concern---a
 	means to avoid stagnation rather than a formal optimisation target.
@@ -405,7 +406,7 @@
 	\end{equation}
 	where $\mathcal{E}(\mathbf{s})$ is the classification error rate
 	estimated via $K$-fold cross-validation using a $k$-nearest
-	neighbour (KNN) classifier, $|\mathbf{s}|_1$ is the number of
+	neighbour (KNN) classifier~\citep{cover1967nearest}, $|\mathbf{s}|_1$ is the number of
 	selected features, and $\alpha \in [0,1]$ controls the trade-off
 	between accuracy and compactness.
 	In this work, we set $\alpha = 0.9$, $K = 5$, and $k_{\mathrm{nn}} = 3$.
@@ -728,16 +729,17 @@
 	\label{sec:experiments:datasets}
 
 	\par{
-	Nine high-dimensional bioinformatics datasets are used in this
+	Nine high-dimensional bioinformatics datasets (some of which exhibit
+	class imbalance~\citep{chawla2002smote}) are used in this
 	study, spanning a wide range of sample sizes ($n \in [60, 2500]$),
 	feature dimensions ($d \in [2000, 26877]$), and class counts
 	($C \in \{2, 9\}$).
 	Table~\ref{tab:datasets} summarises the characteristics of each
 	dataset.
 	These datasets cover diverse bioinformatics applications including
-	cancer classification (Colon, DLBCL, Leukaemia, ALL4), tissue
-	identification (Adenoma, ALL-AML, Lymphoma), and disease diagnosis
-	(CNS, Stroke), providing a comprehensive evaluation benchmark.
+	cancer classification (Colon~\citep{alon1999broad}, DLBCL~\citep{shipp2002diffuse}, Leukaemia~\citep{golub1999molecular}, ALL4~\citep{yeoh2002classification}), tissue
+	identification (Adenoma~\citep{notterman2001microarray}, ALL-AML~\citep{golub1999molecular}, Lymphoma~\citep{alizadeh2000distinct}), and disease diagnosis
+	(CNS~\citep{pomeroy2002prediction}, Stroke), providing a comprehensive evaluation benchmark.
 	}
 
 	\begin{table}[t]
@@ -842,8 +844,8 @@
 	reproducibility.
 	Performance is measured by classification accuracy (mean $\pm$
 	standard deviation), number of selected features, and runtime.
-	Statistical significance is assessed using the Friedman test for
-	global comparison and the Wilcoxon signed-rank test for pairwise
+	Statistical significance is assessed using the Friedman test~\citep{friedman1937use,demsar2006statistical} for
+	global comparison and the Wilcoxon signed-rank test~\citep{wilcoxon1945individual} for pairwise
 	comparison, with a significance level of $\alpha = 0.05$.
 	}
 
@@ -1441,7 +1443,7 @@ Stroke & \textbf{87.87$\pm$1.80} & 1,105$^\dagger$ & 83.31$\pm$3.95 & 7,625 & 84
 
 
 	%% Loading bibliography
-	\bibliographystyle{model5-names}
+	\bibliographystyle{elsarticle-num}
 	\bibliography{references}
 
 \end{sloppypar}

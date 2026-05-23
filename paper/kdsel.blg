@@ -1,50 +1,48 @@
 This is BibTeX, Version 0.99e
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: kdsel.aux
-Reallocating 'name_of_file' (item size: 1) to 13 items.
-The style file: model5-names.bst
+Reallocating 'name_of_file' (item size: 1) to 15 items.
+The style file: elsarticle-num.bst
 Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
-Reallocating 'wiz_functions' (item size: 4) to 6000 items.
-Reallocating 'singl_function' (item size: 4) to 100 items.
-You've used 20 entries,
-            3390 wiz_defined-function locations,
-            807 strings with 8714 characters,
-and the built_in function-call counts, 13372 in all, are:
-= -- 1077
-> -- 464
-< -- 19
-+ -- 376
-- -- 132
-* -- 1339
-:= -- 1797
-add.period$ -- 74
-call.type$ -- 20
-change.case$ -- 149
-chr.to.int$ -- 20
-cite$ -- 20
-duplicate$ -- 1042
-empty$ -- 993
-format.name$ -- 206
-if$ -- 2547
-int.to.chr$ -- 1
-int.to.str$ -- 1
-missing$ -- 175
-newline$ -- 124
-num.names$ -- 80
-pop$ -- 420
+You've used 50 entries,
+            2952 wiz_defined-function locations,
+            992 strings with 14512 characters,
+and the built_in function-call counts, 15925 in all, are:
+= -- 1562
+> -- 554
+< -- 7
++ -- 218
+- -- 168
+* -- 1177
+:= -- 2208
+add.period$ -- 56
+call.type$ -- 50
+change.case$ -- 53
+chr.to.int$ -- 0
+cite$ -- 50
+duplicate$ -- 458
+empty$ -- 1710
+format.name$ -- 211
+if$ -- 4042
+int.to.chr$ -- 0
+int.to.str$ -- 50
+missing$ -- 50
+newline$ -- 164
+num.names$ -- 50
+pop$ -- 254
 preamble$ -- 1
-purify$ -- 114
+purify$ -- 0
 quote$ -- 0
-skip$ -- 390
+skip$ -- 1008
 stack$ -- 0
-substring$ -- 539
-swap$ -- 676
-text.length$ -- 3
+substring$ -- 1091
+swap$ -- 106
+text.length$ -- 7
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 180
+type$ -- 0
 warning$ -- 0
-while$ -- 85
-width$ -- 0
-write$ -- 308
+while$ -- 140
+width$ -- 52
+write$ -- 428

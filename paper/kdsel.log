@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.5.23)  23 MAY 2026 16:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  23 MAY 2026 19:53
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -6,11 +6,11 @@ entering extended mode
 **e:/多目标优化/KDS-EL/paper/kdsel.tex
 (e:/多目标优化/KDS-EL/paper/kdsel.tex
 LaTeX2e <2025-11-01>
-L3 programming layer <2025-12-24>
+L3 programming layer <2026-03-20>
 (cas-dc.cls
 Document Class: cas-dc 2020/03/14, 2.1: Formatting class for CAS double column articles
 \c@blind=\count275
-\@bls=\dimen148
+\@bls=\dimen150
 (E:\MiKTeX\tex/latex/base\article.cls
 Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
 (E:\MiKTeX\tex/latex/base\fleqn.clo
@@ -35,7 +35,7 @@ File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 \c@table=\count283
 \abovecaptionskip=\skip50
 \belowcaptionskip=\skip51
-\bibindent=\dimen149
+\bibindent=\dimen151
 ) (E:\MiKTeX\tex/latex/graphics\graphicx.sty
 Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
  (E:\MiKTeX\tex/latex/graphics\keyval.sty
@@ -52,8 +52,8 @@ Package graphics Info: Driver file: pdftex.def on input line 106.
  (E:\MiKTeX\tex/latex/graphics-def\pdftex.def
 File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen150
-\Gin@req@width=\dimen151
+\Gin@req@height=\dimen152
+\Gin@req@width=\dimen153
 ) (E:\MiKTeX\tex/latex/amsmath\amsmath.sty
 Package: amsmath 2025/07/09 v2.17z AMS math features
 \@mathmargin=\skip52
@@ -64,10 +64,10 @@ Package: amstext 2024/11/17 v2.01 AMS text
  (E:\MiKTeX\tex/latex/amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks18
-\ex@=\dimen152
+\ex@=\dimen154
 )) (E:\MiKTeX\tex/latex/amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen153
+\pmbraise@=\dimen155
 ) (E:\MiKTeX\tex/latex/amsmath\amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
@@ -88,7 +88,7 @@ LaTeX Info: Redefining \big on input line 721.
 LaTeX Info: Redefining \Big on input line 722.
 LaTeX Info: Redefining \bigg on input line 723.
 LaTeX Info: Redefining \Bigg on input line 724.
-\big@size=\dimen154
+\big@size=\dimen156
 LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
 \macc@depth=\count289
@@ -106,12 +106,12 @@ LaTeX Info: Redefining \Relbar on input line 970.
 \column@=\count294
 \maxfields@=\count295
 \andhelp@=\toks20
-\eqnshift@=\dimen155
-\alignsep@=\dimen156
-\tagshift@=\dimen157
-\tagwidth@=\dimen158
-\totwidth@=\dimen159
-\lineht@=\dimen160
+\eqnshift@=\dimen157
+\alignsep@=\dimen158
+\tagshift@=\dimen159
+\tagwidth@=\dimen160
+\totwidth@=\dimen161
+\lineht@=\dimen162
 \@envbody=\toks21
 \multlinegap=\skip53
 \multlinetaggap=\skip54
@@ -128,9 +128,9 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 ) (E:\MiKTeX\tex/latex/amsfonts\amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
 ) (E:\MiKTeX\tex/latex/l3kernel\expl3.sty
-Package: expl3 2025-12-24 L3 programming layer (loader) 
+Package: expl3 2026-03-20 L3 programming layer (loader) 
  (E:\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
-File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count296
 )) (E:\MiKTeX\tex/latex/l3packages/xparse\xparse.sty
 Package: xparse 2025-10-09 L3 Experimental document command parser
@@ -139,39 +139,39 @@ Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count297
 ) (E:\MiKTeX\tex/latex/preprint\balance.sty
 Package: balance 1999/02/23 4.3 (PWD)
-\oldvsize=\dimen161
+\oldvsize=\dimen163
 ) (E:\MiKTeX\tex/latex/booktabs\booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
-\heavyrulewidth=\dimen162
-\lightrulewidth=\dimen163
-\cmidrulewidth=\dimen164
-\belowrulesep=\dimen165
-\belowbottomsep=\dimen166
-\aboverulesep=\dimen167
-\abovetopsep=\dimen168
-\cmidrulesep=\dimen169
-\cmidrulekern=\dimen170
-\defaultaddspace=\dimen171
+\heavyrulewidth=\dimen164
+\lightrulewidth=\dimen165
+\cmidrulewidth=\dimen166
+\belowrulesep=\dimen167
+\belowbottomsep=\dimen168
+\aboverulesep=\dimen169
+\abovetopsep=\dimen170
+\cmidrulesep=\dimen171
+\cmidrulekern=\dimen172
+\defaultaddspace=\dimen173
 \@cmidla=\count298
 \@cmidlb=\count299
-\@aboverulesep=\dimen172
-\@belowrulesep=\dimen173
+\@aboverulesep=\dimen174
+\@belowrulesep=\dimen175
 \@thisruleclass=\count300
 \@lastruleclass=\count301
-\@thisrulewidth=\dimen174
+\@thisrulewidth=\dimen176
 ) (E:\MiKTeX\tex/latex/makecell\makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
  (E:\MiKTeX\tex/latex/tools\array.sty
 Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
-\col@sep=\dimen175
+\col@sep=\dimen177
 \ar@mcellbox=\box55
-\extrarowheight=\dimen176
+\extrarowheight=\dimen178
 \NC@list=\toks23
 \extratabsurround=\skip55
 \backup@length=\skip56
 \ar@cellbox=\box56
 )
-\rotheadsize=\dimen177
+\rotheadsize=\dimen179
 \c@nlinenum=\count302
 \TeXr@lab=\toks24
 ) (E:\MiKTeX\tex/latex/multirow\multirow.sty
@@ -179,7 +179,7 @@ Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
 \multirow@colwidth=\skip57
 \multirow@cntb=\count303
 \multirow@dima=\skip58
-\bigstrutjot=\dimen178
+\bigstrutjot=\dimen180
 ) (E:\MiKTeX\tex/latex/colortbl\colortbl.sty
 Package: colortbl 2024/10/29 v1.0k Color table columns (DPC)
  (E:\MiKTeX\tex/latex/graphics\color.sty
@@ -208,7 +208,7 @@ Package: xstring 2023/08/22 v1.86 String manipulations (CT)
 ) (E:\MiKTeX\tex/latex/footmisc\footmisc.sty
 Package: footmisc 2025/05/09 v7.0b a miscellany of footnote facilities
 \FN@temptoken=\toks26
-\footnotemargin=\dimen179
+\footnotemargin=\dimen181
 Package footmisc Info: Declaring symbol style bringhurst on input line 549.
 Package footmisc Info: Declaring symbol style chicago on input line 557.
 Package footmisc Info: Declaring symbol style wiley on input line 566.
@@ -237,7 +237,7 @@ File: svgnam.def 2024/09/29 v3.02 Predefined colors according to SVG 1.1 (UK)
 ) (E:\MiKTeX\tex/latex/graphics\dvipsnam.def
 File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
 ) (E:\MiKTeX\tex/latex/hyperref\hyperref.sty
-Package: hyperref 2025-07-12 v7.01o Hypertext links for LaTeX
+Package: hyperref 2026-04-24 v7.01q Hypertext links for LaTeX
  (E:\MiKTeX\tex/generic/iftex\iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
 ) (E:\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
@@ -259,7 +259,7 @@ Package pdftexcmds Info: \pdfdraftmode found.
 )) (E:\MiKTeX\tex/latex/hycolor\hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
 ) (E:\MiKTeX\tex/latex/hyperref\nameref.sty
-Package: nameref 2025-06-21 v2.57 Cross-referencing by name of section
+Package: nameref 2026-01-29 v2.58 Cross-referencing by name of section
  (E:\MiKTeX\tex/latex/refcount\refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (E:\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
@@ -271,11 +271,11 @@ Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ) (E:\MiKTeX\tex/generic/stringenc\stringenc.sty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
 )
-\@linkdim=\dimen180
+\@linkdim=\dimen182
 \Hy@linkcounter=\count310
 \Hy@pagecounter=\count311
  (E:\MiKTeX\tex/latex/hyperref\pd1enc.def
-File: pd1enc.def 2025-07-12 v7.01o Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2026-04-24 v7.01q Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 ) (E:\MiKTeX\tex/generic/intcalc\intcalc.sty
@@ -283,47 +283,47 @@ Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
 \Hy@SavedSpaceFactor=\count312
  (E:\MiKTeX\tex/latex/hyperref\puenc.def
-File: puenc.def 2025-07-12 v7.01o Hyperref: PDF Unicode definition (HO)
+File: puenc.def 2026-04-24 v7.01q Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 4066.
-Package hyperref Info: Hyper figures OFF on input line 4195.
-Package hyperref Info: Link nesting OFF on input line 4200.
-Package hyperref Info: Hyper index ON on input line 4203.
-Package hyperref Info: Plain pages OFF on input line 4210.
-Package hyperref Info: Backreferencing OFF on input line 4215.
+Package hyperref Info: Option `colorlinks' set `true' on input line 4070.
+Package hyperref Info: Hyper figures OFF on input line 4199.
+Package hyperref Info: Link nesting OFF on input line 4204.
+Package hyperref Info: Hyper index ON on input line 4207.
+Package hyperref Info: Plain pages OFF on input line 4214.
+Package hyperref Info: Backreferencing OFF on input line 4219.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4462.
+Package hyperref Info: Bookmarks ON on input line 4466.
 \c@Hy@tempcnt=\count313
  (E:\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 4801.
-\XeTeXLinkMargin=\dimen181
+LaTeX Info: Redefining \url on input line 4805.
+\XeTeXLinkMargin=\dimen183
  (E:\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
  (E:\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 ))
 \Fld@menulength=\count314
-\Field@Width=\dimen182
-\Fld@charsize=\dimen183
-Package hyperref Info: Hyper figures OFF on input line 6078.
-Package hyperref Info: Link nesting OFF on input line 6083.
-Package hyperref Info: Hyper index ON on input line 6086.
-Package hyperref Info: backreferencing OFF on input line 6093.
-Package hyperref Info: Link coloring ON on input line 6096.
-Package hyperref Info: Link coloring with OCG OFF on input line 6103.
-Package hyperref Info: PDF/A mode OFF on input line 6108.
+\Field@Width=\dimen184
+\Fld@charsize=\dimen185
+Package hyperref Info: Hyper figures OFF on input line 6091.
+Package hyperref Info: Link nesting OFF on input line 6096.
+Package hyperref Info: Hyper index ON on input line 6099.
+Package hyperref Info: backreferencing OFF on input line 6106.
+Package hyperref Info: Link coloring ON on input line 6109.
+Package hyperref Info: Link coloring with OCG OFF on input line 6116.
+Package hyperref Info: PDF/A mode OFF on input line 6121.
 \Hy@abspage=\count315
 \c@Item=\count316
 \c@Hfootnote=\count317
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
  (E:\MiKTeX\tex/latex/hyperref\hpdftex.def
-File: hpdftex.def 2025-07-12 v7.01o Hyperref driver for pdfTeX
+File: hpdftex.def 2026-04-24 v7.01q Hyperref driver for pdfTeX
 \Fld@listcount=\count318
 \c@bookmark@seq@number=\count319
  (E:\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
@@ -335,8 +335,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip60
 ) (cas-common.sty
-\l_stm_title_before_dim=\dimen184
-\l_stm_title_after_dim=\dimen185
+\l_stm_title_before_dim=\dimen186
+\l_stm_title_after_dim=\dimen187
 \g_ead_int=\count320
 \g_uad_int=\count321
 \@eadauthor=\toks27
@@ -346,15 +346,15 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 \g_stm_au_int=\count325
 \g_stm_aau_int=\count326
 \l_autype_int=\count327
-\l_stm_augroup_before_dim=\dimen186
-\l_stm_augroup_after_dim=\dimen187
-\l_stm_augroup_lskip_tl=\dimen188
-\l_stm_augroup_rskip_tl=\dimen189
+\l_stm_augroup_before_dim=\dimen188
+\l_stm_augroup_after_dim=\dimen189
+\l_stm_augroup_lskip_tl=\dimen190
+\l_stm_augroup_rskip_tl=\dimen191
 \g_stm_aff_int=\count328
-\l_stm_aff_before_dim=\dimen190
-\l_stm_aff_after_dim=\dimen191
-\l_stm_aff_lskip_dim=\dimen192
-\l_stm_aff_rskip_dim=\dimen193
+\l_stm_aff_before_dim=\dimen192
+\l_stm_aff_after_dim=\dimen193
+\l_stm_aff_lskip_dim=\dimen194
+\l_stm_aff_rskip_dim=\dimen195
 \g_stm_augr_int=\count329
 \g_stm_aaugr_int=\count330
  (E:\MiKTeX\tex/latex/moreverb\moreverb.sty
@@ -382,39 +382,39 @@ Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
 \c@aff=\count340
 \g_stm_notes_box=\box61
 \g_stm_front_box=\box62
-\paraindent=\dimen194
-\subparaindent=\dimen195
-\FullWidth=\dimen196
-\l_tbl_width_dim=\dimen197
+\paraindent=\dimen196
+\subparaindent=\dimen197
+\FullWidth=\dimen198
+\l_tbl_width_dim=\dimen199
 \l_tbl_abovecap_skip=\skip61
 \l_tbl_belowcap_skip=\skip62
 \l_tbl_abovetbl_skip=\skip63
 \l_tbl_belowtbl_skip=\skip64
-\l_fig_width_dim=\dimen198
+\l_fig_width_dim=\dimen256
 \l_fig_abovecap_skip=\skip65
 \l_fig_belowcap_skip=\skip66
 \l_fig_abovefig_skip=\skip67
 \l_fig_belowfig_skip=\skip68
  (E:\MiKTeX\tex/latex/wrapfig\wrapfig.sty
-\wrapoverhang=\dimen199
-\WF@size=\dimen256
+\wrapoverhang=\dimen257
+\WF@size=\dimen258
 \c@WF@wrappedlines=\count341
 \WF@box=\box63
 \WF@everypar=\toks30
 Package: wrapfig 2003/01/31  v 3.6
 )
-\l_wrap_figwidth_dim=\dimen257
-\l_wrap_fighspace_dim=\dimen258
-\l_wrap_figvspace_dim=\dimen259
-\l_wrap_fighcorr_dim=\dimen260
-\l_wrap_figvcorr_dim=\dimen261
-\l_above_bio_dim=\dimen262
+\l_wrap_figwidth_dim=\dimen259
+\l_wrap_fighspace_dim=\dimen260
+\l_wrap_figvspace_dim=\dimen261
+\l_wrap_fighcorr_dim=\dimen262
+\l_wrap_figvcorr_dim=\dimen263
+\l_above_bio_dim=\dimen264
 \l_wrap_figlcorr_int=\count342
 \l_wrap_figlines_int=\count343
 \l_bio_text_box=\box64
 \c@ca_biography_ctr=\count344
 \l_ca_temp_inta=\count345
-\leftMargin=\dimen263
+\leftMargin=\dimen265
 \@enLab=\toks31
 \@sep=\skip69
 \@@sep=\skip70
@@ -544,14 +544,14 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@cnth=\count348
 \Gm@cntv=\count349
 \c@Gm@tempcnt=\count350
-\Gm@bindingoffset=\dimen264
-\Gm@wd@mp=\dimen265
-\Gm@odd@mp=\dimen266
-\Gm@even@mp=\dimen267
-\Gm@layoutwidth=\dimen268
-\Gm@layoutheight=\dimen269
-\Gm@layouthoffset=\dimen270
-\Gm@layoutvoffset=\dimen271
+\Gm@bindingoffset=\dimen266
+\Gm@wd@mp=\dimen267
+\Gm@odd@mp=\dimen268
+\Gm@even@mp=\dimen269
+\Gm@layoutwidth=\dimen270
+\Gm@layoutheight=\dimen271
+\Gm@layouthoffset=\dimen272
+\Gm@layoutvoffset=\dimen273
 \Gm@dimlist=\toks34
  (E:\MiKTeX\tex/latex/geometry\geometry.cfg))) (E:\MiKTeX\tex/latex/natbib\natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
@@ -651,13 +651,13 @@ LaTeX Font Info:    ... okay on input line 25.
  (E:\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count362
-\scratchdimen=\dimen272
+\scratchdimen=\dimen274
 \scratchbox=\box67
 \nofMPsegments=\count363
 \nofMParguments=\count364
 \everyMPshowfont=\toks44
 \MPscratchCnt=\count365
-\MPscratchDim=\dimen273
+\MPscratchDim=\dimen275
 \MPnumerator=\count366
 \makeMPintoPDFobject=\count367
 \everyMPtoPDFconversion=\toks45
@@ -779,11 +779,6 @@ LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
 Package hyperref Warning: Ignoring empty anchor on input line 114.
 
 
-Underfull \hbox (badness 1616) in paragraph at lines 124--143
-\T1/stix/m/n/10 ([][]Saeys et al.[][], [][]2007[][]; [][]Dash & Liu[][], [][]1997[][]). Among FS
- []
-
-
 Underfull \hbox (badness 4144) in paragraph at lines 170--189
 \T1/stix/m/n/10 op-er-ates si-mul-ta-ne-ously in two com-ple-men-tary search
  []
@@ -801,18 +796,18 @@ Underfull \hbox (badness 10000) in paragraph at lines 206--211
  []
 
 
-Underfull \hbox (badness 1024) in paragraph at lines 239--276
-\T1/stix/m/n/10 have been widely adopted as wrapper-based FS solvers
+Underfull \hbox (badness 1259) in paragraph at lines 239--277
+\T1/stix/m/n/10 Wrap-per meth-ods eval-u-ate can-di-date fea-ture sub-sets by
  []
 
 [2]
-<../figures_new/fig1_framework.png, id=125, 501.7947pt x 277.5168pt>
+<../figures_new/fig1_framework.png, id=112, 501.7947pt x 277.5168pt>
 File: ../figures_new/fig1_framework.png Graphic file (type png)
 <use ../figures_new/fig1_framework.png>
-Package pdftex.def Info: ../figures_new/fig1_framework.png  used on input line 379.
+Package pdftex.def Info: ../figures_new/fig1_framework.png  used on input line 380.
 (pdftex.def)             Requested size: 420.33556pt x 232.46886pt.
 
-Overfull \hbox (2.40804pt too wide) detected at line 471
+Overfull \hbox (2.40804pt too wide) detected at line 472
   $[]\LS1/stix/m/n/10 .\LS1/stix/b/n/10 s\LS1/stix/m/n/10 / = [] [] []\LS1/stix/m/it/10 ;$  
  []
 
@@ -820,15 +815,15 @@ Overfull \hbox (2.40804pt too wide) detected at line 471
 pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.485 	\begin{equation}
-                       ]
-<../figures_new/fig2_drs_mechanism.png, id=158, 504.9264pt x 218.9781pt>
+l.492 	\end{equation}
+                     ]
+<../figures_new/fig2_drs_mechanism.png, id=144, 504.9264pt x 218.9781pt>
 File: ../figures_new/fig2_drs_mechanism.png Graphic file (type png)
 <use ../figures_new/fig2_drs_mechanism.png>
-Package pdftex.def Info: ../figures_new/fig2_drs_mechanism.png  used on input line 535.
+Package pdftex.def Info: ../figures_new/fig2_drs_mechanism.png  used on input line 536.
 (pdftex.def)             Requested size: 420.33556pt x 182.2964pt.
 
-Overfull \hbox (14.83167pt too wide) detected at line 594
+Overfull \hbox (14.83167pt too wide) detected at line 595
  $\LS1/stix/m/it/10 p[] \LS1/stix/m/n/10 � []$  
  []
 
@@ -836,16 +831,16 @@ Overfull \hbox (14.83167pt too wide) detected at line 594
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.594 	\end{equation}
+l.595 	\end{equation}
                       <../figures_new/fig1_framework.png>]
-<../figures_new/fig3_ker_mechanism.png, id=172, 505.1673pt x 218.9781pt>
+<../figures_new/fig3_ker_mechanism.png, id=158, 505.1673pt x 218.9781pt>
 File: ../figures_new/fig3_ker_mechanism.png Graphic file (type png)
 <use ../figures_new/fig3_ker_mechanism.png>
-Package pdftex.def Info: ../figures_new/fig3_ker_mechanism.png  used on input line 623.
+Package pdftex.def Info: ../figures_new/fig3_ker_mechanism.png  used on input line 624.
 (pdftex.def)             Requested size: 420.33556pt x 182.20619pt.
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 652.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 653.
 
-Underfull \hbox (badness 10000) in paragraph at lines 682--683
+Underfull \hbox (badness 10000) in paragraph at lines 683--684
 [] \T1/stix/b/n/10 KER: \T1/stix/m/n/10 Elite per-tur-ba-tion for top-$\LS1/stix/m/it/10 k[]$ \T1/stix/m/n/10 par-ti-cles
  []
 
@@ -853,59 +848,69 @@ Underfull \hbox (badness 10000) in paragraph at lines 682--683
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.701 	\begin{equation}
-                        <../figures_new/fig2_drs_mechanism.png>] [6
+l.702 	\begin{equation}
+                        <../figures_new/fig2_drs_mechanism.png>]
+Underfull \hbox (badness 1430) in paragraph at lines 778--780
+[]\T1/stix/b/n/10 SaWDE \T1/stix/m/n/10 [[]]: Self-adaptive weighted dif-fer-en-tial
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 780--782
+[]\T1/stix/b/n/10 FWPSO \T1/stix/m/n/10 [[]]: Feature-weight-based PSO with
+ []
+
+[6
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.807 
+l.809 
       
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.807 
+l.809 
        <../figures_new/fig3_ker_mechanism.png>]
-Underfull \hbox (badness 3250) in paragraph at lines 839--849
+Underfull \hbox (badness 3250) in paragraph at lines 841--851
 []\T1/stix/m/n/10 Each al-go-rithm is eval-u-ated us-ing strat-i-fied 5-fold
  []
 
 
-Underfull \hbox (badness 1077) in paragraph at lines 839--849
+Underfull \hbox (badness 1077) in paragraph at lines 841--851
 \T1/stix/m/n/10 dom_state=42) re-peated over 10 in-de-pen-dent runs with
  []
 
 
-Overfull \hbox (36.84938pt too wide) in paragraph at lines 872--892
+Overfull \hbox (36.84938pt too wide) in paragraph at lines 874--894
  [][] 
  []
 
 <../figures_new/fig4_accuracy.png, id=230, 500.1084pt x 398.2077pt>
 File: ../figures_new/fig4_accuracy.png Graphic file (type png)
 <use ../figures_new/fig4_accuracy.png>
-Package pdftex.def Info: ../figures_new/fig4_accuracy.png  used on input line 981.
+Package pdftex.def Info: ../figures_new/fig4_accuracy.png  used on input line 983.
 (pdftex.def)             Requested size: 469.78192pt x 374.06616pt.
 
-Underfull \hbox (badness 1231) in paragraph at lines 1010--1017
+Underfull \hbox (badness 1231) in paragraph at lines 1012--1019
 []\T1/stix/b/n/10 Comparison with MEL base-line. \T1/stix/m/n/10 Rel-a-tive to the
  []
 
 
-Underfull \hbox (badness 1874) in paragraph at lines 1010--1017
+Underfull \hbox (badness 1874) in paragraph at lines 1012--1019
 \T1/stix/m/n/10 MEL base frame-work, KDS-EL im-proves ac-cu-racy on
  []
 
 
-Underfull \hbox (badness 4060) in paragraph at lines 1086--1096
+Underfull \hbox (badness 4060) in paragraph at lines 1088--1098
 []\T1/stix/m/n/10 Positive syn-ergy is ob-served on 7 of 9 datasets:
  []
 
 
-Underfull \hbox (badness 3179) in paragraph at lines 1086--1096
+Underfull \hbox (badness 3179) in paragraph at lines 1088--1098
 \T1/stix/m/n/10 ALL-AML (+1.43pp), DL-BCL (+1.06pp), Lym-phoma
  []
 
 
-Underfull \hbox (badness 1389) in paragraph at lines 1086--1096
+Underfull \hbox (badness 1389) in paragraph at lines 1088--1098
 \T1/stix/m/n/10 cases (CNS: $\LS1/stix/m/n/10 *$\T1/stix/m/n/10 1.34pp, Leukaemia: $\LS1/stix/m/n/10 *$\T1/stix/m/n/10 1.20pp) oc-cur on
  []
 
@@ -913,112 +918,112 @@ Underfull \hbox (badness 1389) in paragraph at lines 1086--1096
 pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1097 	\subsection
+l.1099 	\subsection
                    {Stability Analysis}]
-<../figures_new/fig7_boxplot.png, id=250, 500.1084pt x 384.4764pt>
+<../figures_new/fig7_boxplot.png, id=253, 500.1084pt x 384.4764pt>
 File: ../figures_new/fig7_boxplot.png Graphic file (type png)
 <use ../figures_new/fig7_boxplot.png>
-Package pdftex.def Info: ../figures_new/fig7_boxplot.png  used on input line 1114.
+Package pdftex.def Info: ../figures_new/fig7_boxplot.png  used on input line 1116.
 (pdftex.def)             Requested size: 469.78192pt x 361.16733pt.
  [8
 pdfTeX warning (ext4): destination with the same identifier (name{table.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1139 
+l.1141 
        
 pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1139 
+l.1141 
        
 pdfTeX warning (ext4): destination with the same identifier (name{table.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1139 
+l.1141 
        ] [9
 pdfTeX warning (ext4): destination with the same identifier (name{table.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1139 
+l.1141 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1139 
+l.1141 
         <../figures_new/fig4_accuracy.png>]
-<../figures_new/fig8_convergence.png, id=265, 500.1084pt x 322.806pt>
+<../figures_new/fig8_convergence.png, id=268, 500.1084pt x 322.806pt>
 File: ../figures_new/fig8_convergence.png Graphic file (type png)
 <use ../figures_new/fig8_convergence.png>
-Package pdftex.def Info: ../figures_new/fig8_convergence.png  used on input line 1142.
+Package pdftex.def Info: ../figures_new/fig8_convergence.png  used on input line 1144.
 (pdftex.def)             Requested size: 469.78192pt x 303.23572pt.
-<../figures_new/fig9_nhd_curves.png, id=268, 499.8675pt x 322.806pt>
+<../figures_new/fig9_nhd_curves.png, id=271, 499.8675pt x 322.806pt>
 File: ../figures_new/fig9_nhd_curves.png Graphic file (type png)
 <use ../figures_new/fig9_nhd_curves.png>
-Package pdftex.def Info: ../figures_new/fig9_nhd_curves.png  used on input line 1165.
+Package pdftex.def Info: ../figures_new/fig9_nhd_curves.png  used on input line 1167.
 (pdftex.def)             Requested size: 469.78192pt x 303.38841pt.
-<../figures_new/fig5_features.png, id=271, 500.1084pt x 398.2077pt>
+<../figures_new/fig5_features.png, id=274, 500.1084pt x 398.2077pt>
 File: ../figures_new/fig5_features.png Graphic file (type png)
 <use ../figures_new/fig5_features.png>
-Package pdftex.def Info: ../figures_new/fig5_features.png  used on input line 1189.
+Package pdftex.def Info: ../figures_new/fig5_features.png  used on input line 1191.
 (pdftex.def)             Requested size: 469.78192pt x 374.06616pt.
-<../figures_new/fig6_ablation.png, id=273, 504.4446pt x 211.0284pt>
+<../figures_new/fig6_ablation.png, id=276, 504.4446pt x 211.0284pt>
 File: ../figures_new/fig6_ablation.png Graphic file (type png)
 <use ../figures_new/fig6_ablation.png>
-Package pdftex.def Info: ../figures_new/fig6_ablation.png  used on input line 1210.
+Package pdftex.def Info: ../figures_new/fig6_ablation.png  used on input line 1212.
 (pdftex.def)             Requested size: 469.78192pt x 196.52808pt.
  [10
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1229 
+l.1231 
         <../figures_new/fig7_boxplot.png>] [11
 pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1229 
+l.1231 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1229 
+l.1231 
         <../figures_new/fig8_convergence.png> <../figures_new/fig9_nhd_curves.png>]
-<../figures_new/fig10_wilcoxon.png, id=293, 391.7034pt x 165.2574pt>
+<../figures_new/fig10_wilcoxon.png, id=296, 391.7034pt x 165.2574pt>
 File: ../figures_new/fig10_wilcoxon.png Graphic file (type png)
 <use ../figures_new/fig10_wilcoxon.png>
-Package pdftex.def Info: ../figures_new/fig10_wilcoxon.png  used on input line 1232.
+Package pdftex.def Info: ../figures_new/fig10_wilcoxon.png  used on input line 1234.
 (pdftex.def)             Requested size: 346.1547pt x 146.04474pt.
-<../figures_new/fig11_runtime.png, id=295, 504.4446pt x 202.8378pt>
+<../figures_new/fig11_runtime.png, id=298, 504.4446pt x 202.8378pt>
 File: ../figures_new/fig11_runtime.png Graphic file (type png)
 <use ../figures_new/fig11_runtime.png>
-Package pdftex.def Info: ../figures_new/fig11_runtime.png  used on input line 1264.
+Package pdftex.def Info: ../figures_new/fig11_runtime.png  used on input line 1266.
 (pdftex.def)             Requested size: 469.78192pt x 188.90027pt.
-<../figures_new/fig12_bubble.png, id=297, 368.8179pt x 312.2064pt>
+<../figures_new/fig12_bubble.png, id=300, 368.8179pt x 312.2064pt>
 File: ../figures_new/fig12_bubble.png Graphic file (type png)
 <use ../figures_new/fig12_bubble.png>
-Package pdftex.def Info: ../figures_new/fig12_bubble.png  used on input line 1287.
+Package pdftex.def Info: ../figures_new/fig12_bubble.png  used on input line 1289.
 (pdftex.def)             Requested size: 395.60861pt x 334.88647pt.
  [12
 pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1319 
+l.1321 
         <../figures_new/fig5_features.png>]
-Underfull \hbox (badness 1028) in paragraph at lines 1335--1346
+Underfull \hbox (badness 1028) in paragraph at lines 1337--1348
 \T1/stix/m/n/10 strates strong per-for-mance on the Stroke dataset ($\LS1/stix/m/it/10 d \LS1/stix/m/n/10 =
  []
 
 
-Underfull \hbox (badness 4582) in paragraph at lines 1335--1346
+Underfull \hbox (badness 4582) in paragraph at lines 1337--1348
 \LS1/stix/m/n/10 26[]877$\T1/stix/m/n/10 ), achiev-ing 87.87% ac-cu-racy with only 1,105
  []
 
 
-Underfull \hbox (badness 4242) in paragraph at lines 1369--1385
+Underfull \hbox (badness 4242) in paragraph at lines 1371--1387
 []\T1/stix/m/n/10 This pa-per presents KDS-EL, a knowledge-guided
  []
 
 
-Underfull \hbox (badness 5607) in paragraph at lines 1369--1385
+Underfull \hbox (badness 5607) in paragraph at lines 1371--1387
 \T1/stix/m/n/10 dual-space evo-lu-tion-ary learn-ing frame-work for high-
  []
 
@@ -1026,51 +1031,57 @@ Underfull \hbox (badness 5607) in paragraph at lines 1369--1385
 pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1385 
+l.1387 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.10}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1385 
+l.1387 
         <../figures_new/fig6_ablation.png> <../figures_new/fig10_wilcoxon.png>] [14
 pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1385 
+l.1387 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.12}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1385 
+l.1387 
         <../figures_new/fig11_runtime.png> <../figures_new/fig12_bubble.png>]
-Underfull \hbox (badness 2753) in paragraph at lines 1435--1437
+Underfull \hbox (badness 2753) in paragraph at lines 1437--1439
 []\T1/stix/m/n/10 This work was jointly sup-ported by the fol-low-ing
  []
 
-(kdsel.bbl) [15] (kdsel.aux)
+(kdsel.bbl [15]
+Underfull \hbox (badness 2088) in paragraph at lines 189--192
+[]\T1/stix/m/n/8 Y. Zheng, et al., Self-adaptive multi-task par-ti-cle swarm op-ti-
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 209--213
+[]\T1/stix/m/n/8 M. A. Shipp, K. N. Ross, P. Tamayo, A. P. Weng, J. L. Ku-
+ []
+
+) [16] (kdsel.aux)
  ***********
 LaTeX2e <2025-11-01>
-L3 programming layer <2025-12-24>
+L3 programming layer <2026-03-20>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `kdsel.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 17901 strings out of 467870
- 264398 string characters out of 5435190
- 725345 words of memory out of 5000000
- 46349 multiletter control sequences out of 15000+600000
+ 18046 strings out of 467690
+ 268861 string characters out of 5431801
+ 729935 words of memory out of 5000000
+ 46643 multiletter control sequences out of 15000+600000
  750771 words of font info for 202 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,15n,98p,574b,712s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,15n,98p,574b,890s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi450\ecss0800.pk> <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsi0900.pk> <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx0900.pk> <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecss0900.pk><E:/MiKTeX/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><E:/MiKTeX/fonts/type1/public/stix/STIXGeneral-Bold.pfb><E:/MiKTeX/fonts/type1/public/stix/STIXGeneral-BoldItalic.pfb><E:/MiKTeX/fonts/type1/public/stix/STIXGeneral-Italic.pfb><E:/MiKTeX/fonts/type1/public/stix/STIXGeneral-Regular.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathbb.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathcal.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathex.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathfrak.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathit.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathrm-bold.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathrm.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathscr.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathsf.pfb><E:/MiKTeX/fonts/type1/public/stix/stix-mathtt.pfb>
-Output written on kdsel.pdf (16 pages, 3176113 bytes).
+Output written on kdsel.pdf (17 pages, 3180167 bytes).
 PDF statistics:
- 584 PDF objects out of 1000 (max. 8388607)
- 120 named destinations out of 1000 (max. 500000)
+ 607 PDF objects out of 1000 (max. 8388607)
+ 151 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 
