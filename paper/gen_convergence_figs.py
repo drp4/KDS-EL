@@ -24,13 +24,13 @@ DS_LABELS = ["Adenoma","ALL-AML","ALL3","ALL4","CNS",
 SHOW_DS   = ["Adenoma","ALL_AML","DLBCL","Lymphoma","CNS","Stroke"]
 SHOW_LBLS = [DS_LABELS[DATASETS.index(d)] for d in SHOW_DS]
 
-# Methods for convergence (all 9)
-CONV_V = ["BPSO","SaWDE","FWPSO","MEL",
-          "MEL_NHD","MEL_KGEF_noNHD","PSO_CSM","IGPSO","MEL_KGEF"]
+# Methods for convergence (all 9, proposed first)
+CONV_V = ["MEL_KGEF","MEL_NHD","MEL_KGEF_noNHD","MEL",
+          "FWPSO","PSO_CSM","IGPSO","SaWDE","BPSO"]
 # Key methods for 3×3 all-dataset version
-KEY_V  = ["FWPSO","MEL","PSO_CSM","IGPSO","MEL_KGEF"]
+KEY_V  = ["MEL_KGEF","FWPSO","MEL","PSO_CSM","IGPSO"]
 # NHD variants
-NHD_V  = ["MEL_NHD","MEL_KGEF"]
+NHD_V  = ["MEL_KGEF","MEL_NHD"]
 
 V_LABELS = {
     "BPSO":"BPSO","SaWDE":"SaWDE","FWPSO":"FWPSO","MEL":"MEL",

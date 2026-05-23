@@ -7,49 +7,44 @@ Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: references.bib
 Reallocating 'wiz_functions' (item size: 4) to 6000 items.
 Reallocating 'singl_function' (item size: 4) to 100 items.
-Warning--can't use both volume and number fields in deb2002fast
-Warning--empty journal in kennedy1997discrete
-Warning--empty journal in morrison2002measurement
-Warning--empty journal in ursem2002diversity
 You've used 20 entries,
             3390 wiz_defined-function locations,
             807 strings with 8714 characters,
-and the built_in function-call counts, 13402 in all, are:
-= -- 1086
+and the built_in function-call counts, 13372 in all, are:
+= -- 1077
 > -- 464
-< -- 21
+< -- 19
 + -- 376
 - -- 132
-* -- 1328
-:= -- 1796
-add.period$ -- 75
+* -- 1339
+:= -- 1797
+add.period$ -- 74
 call.type$ -- 20
-change.case$ -- 145
+change.case$ -- 149
 chr.to.int$ -- 20
-cite$ -- 24
-duplicate$ -- 1046
-empty$ -- 980
+cite$ -- 20
+duplicate$ -- 1042
+empty$ -- 993
 format.name$ -- 206
-if$ -- 2555
+if$ -- 2547
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 174
-newline$ -- 125
+missing$ -- 175
+newline$ -- 124
 num.names$ -- 80
-pop$ -- 431
+pop$ -- 420
 preamble$ -- 1
 purify$ -- 114
 quote$ -- 0
-skip$ -- 399
+skip$ -- 390
 stack$ -- 0
-substring$ -- 546
-swap$ -- 674
-text.length$ -- 5
+substring$ -- 539
+swap$ -- 676
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 180
-warning$ -- 4
-while$ -- 86
+warning$ -- 0
+while$ -- 85
 width$ -- 0
-write$ -- 307
-(There were 4 warnings)
+write$ -- 308

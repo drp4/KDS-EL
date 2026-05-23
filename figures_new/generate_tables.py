@@ -6,8 +6,8 @@ df = df[df["Dataset"] != "ALL3"].copy()
 
 DATASETS = ["Adenoma","ALL_AML","ALL4","CNS","Colon","DLBCL","Leukaemia","Lymphoma","Stroke"]
 DS_LABELS = ["Adenoma","ALL-AML","ALL4","CNS","Colon","DLBCL","Leukaemia","Lymphoma","Stroke"]
-ALL_V  = ["BPSO","SaWDE","FWPSO","MEL","MEL_NHD","MEL_KGEF_noNHD","MEL_KGEF","PSO_CSM","IGPSO"]
-ABL_V  = ["MEL","MEL_NHD","MEL_KGEF_noNHD","MEL_KGEF"]
+ALL_V  = ["MEL_KGEF","MEL_NHD","MEL_KGEF_noNHD","MEL","FWPSO","PSO_CSM","IGPSO","SaWDE","BPSO"]
+ABL_V  = ["MEL_KGEF","MEL_NHD","MEL_KGEF_noNHD","MEL"]
 
 V_LABELS = {
     "BPSO":"BPSO","SaWDE":"SaWDE","FWPSO":"FWPSO","MEL":"MEL",
@@ -152,8 +152,8 @@ emit()
 # ════════════════════════════════════════════════════════════
 # Table 6 — Wilcoxon p-values
 # ════════════════════════════════════════════════════════════
-COMP_V  = ["BPSO","SaWDE","FWPSO","MEL","MEL_NHD","MEL_KGEF_noNHD","PSO_CSM","IGPSO"]
-COMP_LB = ["BPSO","SaWDE","FWPSO","MEL","KDS-EL/DRS","KDS-EL/KER","PSO-CSM","IGPSO"]
+COMP_V  = ["MEL","MEL_NHD","MEL_KGEF_noNHD","FWPSO","PSO_CSM","IGPSO","SaWDE","BPSO"]
+COMP_LB = ["MEL","KDS-EL/DRS","KDS-EL/KER","FWPSO","PSO-CSM","IGPSO","SaWDE","BPSO"]
 emit(r"% ─────────────────────────────────────────────────────────────")
 emit(r"% Table 6: Wilcoxon Signed-Rank Test p-values")
 emit(r"% Bold = p > 0.05 (not significant); underline = 0.01 < p ≤ 0.05")
@@ -205,10 +205,10 @@ emit(r"\label{tab:ablation}")
 emit(r"\setlength{\tabcolsep}{4pt}")
 # 4 variants × 2 metrics = 8 columns + dataset
 abl_header_top = (r"\textbf{Dataset} & "
-    r"\multicolumn{2}{c}{\textbf{MEL}} & "
+    r"\multicolumn{2}{c}{\textbf{KDS-EL}} & "
     r"\multicolumn{2}{c}{\textbf{KDS-EL/DRS}} & "
     r"\multicolumn{2}{c}{\textbf{KDS-EL/KER}} & "
-    r"\multicolumn{2}{c}{\textbf{KDS-EL}} \\")
+    r"\multicolumn{2}{c}{\textbf{MEL}} \\")
 abl_header_sub = (r" & Acc. & Feat. "
     r"& Acc. & Feat. "
     r"& Acc. & Feat. "
@@ -234,17 +234,31 @@ for ds, dslbl in zip(DATASETS, DS_LABELS):
         cells += [a_cell, f_cell]
     emit(dslbl + " & " + " & ".join(cells) + r" \\")
 emit(r"\midrule")
-# Synergy row
-emit(r"\multicolumn{9}{l}{\textit{Synergy} ($\Delta_\text{Full} - \Delta_\text{DRS} - \Delta_\text{KER}$):} \\")
+# Average row
+avg_acc  = [np.mean([g(v,ds).mean()*100         for ds in DATASETS]) for v in ABL_V]
+avg_feat = [np.mean([g(v,ds,"Num_Features").mean() for ds in DATASETS]) for v in ABL_V]
+best_acc_avg  = np.argmax(avg_acc)
+best_feat_avg = np.argmin(avg_feat)
+avg_cells = []
+for i,(a,f) in enumerate(zip(avg_acc,avg_feat)):
+    a_cell = f"{a:.2f}"
+    f_cell = f"{int(round(f)):,}"
+    if i==best_acc_avg:  a_cell = r"\textbf{"+a_cell+r"}"
+    if i==best_feat_avg: f_cell = f_cell+r"$^\dagger$"
+    avg_cells += [a_cell, f_cell]
+emit(r"\textbf{Average} & " + " & ".join(avg_cells) + r" \\")
+emit(r"\midrule")
+# Synergy row — clean full-width
 syn_cells = []
 for ds in DATASETS:
     mel=g("MEL",ds).mean(); drs=g("MEL_NHD",ds).mean()
     ker=g("MEL_KGEF_noNHD",ds).mean(); full=g("MEL_KGEF",ds).mean()
     syn=(full-mel)-(drs-mel)-(ker-mel)
     sym=r"$+$" if syn>0 else r"$-$"
-    syn_cells.append(f"{sym}{abs(syn)*100:.3f}")
-emit(r" & \multicolumn{8}{l}{" + "~~".join(
-    f"\\textit{{{dslbl}}}: {sc}" for dslbl,sc in zip(DS_LABELS,syn_cells)) + r"} \\")
+    syn_cells.append(f"{sym}{abs(syn)*100:.2f}")
+emit(r"\multicolumn{9}{l}{\textit{Synergy} ($\Delta_\text{Full}-\Delta_\text{DRS}-\Delta_\text{KER}$): "
+     + ", ".join(f"{dslbl} {sc}" for dslbl,sc in zip(DS_LABELS,syn_cells))
+     + r"} \\")
 emit(r"\bottomrule")
 emit(r"\end{tabular}")
 emit(r"\end{table*}")

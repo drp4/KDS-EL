@@ -16,9 +16,9 @@ df = df[df["Dataset"] != "ALL3"].copy()
 
 DATASETS = ["Adenoma","ALL_AML","ALL4","CNS","Colon","DLBCL","Leukaemia","Lymphoma","Stroke"]
 DS_LABELS = ["Adenoma","ALL-AML","ALL4","CNS","Colon","DLBCL","Leukaemia","Lymphoma","Stroke"]
-ALL_V  = ["BPSO","SaWDE","FWPSO","MEL","MEL_NHD","MEL_KGEF_noNHD","MEL_KGEF","PSO_CSM","IGPSO"]
-ABL_V  = ["MEL","MEL_NHD","MEL_KGEF_noNHD","MEL_KGEF"]
-ABL_LB = ["MEL\n(Baseline)","KDS-EL/DRS","KDS-EL/KER","KDS-EL\n(Proposed)"]
+ALL_V  = ["MEL_KGEF","MEL_NHD","MEL_KGEF_noNHD","MEL","FWPSO","PSO_CSM","IGPSO","SaWDE","BPSO"]
+ABL_V  = ["MEL_KGEF","MEL_NHD","MEL_KGEF_noNHD","MEL"]
+ABL_LB = ["KDS-EL\n(Proposed)","KDS-EL/DRS","KDS-EL/KER","MEL\n(Baseline)"]
 
 V_LABELS = {
     "BPSO":"BPSO","SaWDE":"SaWDE","FWPSO":"FWPSO","MEL":"MEL",
@@ -69,7 +69,7 @@ def save(fig, name):
     for ext in (".pdf",".png"):
         fig.savefig(os.path.join(OUT, name+ext))
     plt.close(fig)
-    print(f"  ✓ {name}")
+    print(f"  [OK] {name}")
 
 
 # ══════════════════════════════════════════════════════════
@@ -185,8 +185,8 @@ save(fig, "fig6_ablation")
 # Fig 7 — Boxplots 3×3
 # ══════════════════════════════════════════════════════════
 print("Fig 7: Boxplots...")
-BOX_V  = ["FWPSO","PSO_CSM","IGPSO","MEL_KGEF"]
-BOX_LB = ["FWPSO","PSO-CSM","IGPSO","KDS-EL\n(Proposed)"]
+BOX_V  = ["MEL_KGEF","FWPSO","PSO_CSM","IGPSO"]
+BOX_LB = ["KDS-EL\n(Proposed)","FWPSO","PSO-CSM","IGPSO"]
 fig, axes = plt.subplots(3,3, figsize=(7.16,5.5))
 axes = axes.ravel()
 for ax, ds, dslbl in zip(axes, DATASETS, DS_LABELS):
@@ -203,14 +203,14 @@ for ax, ds, dslbl in zip(axes, DATASETS, DS_LABELS):
     kgef = g("MEL_KGEF",ds)
     allv = np.concatenate(data)
     ymax=allv.max(); rng=allv.max()-allv.min()
-    for ci,v in enumerate(BOX_V[:-1]):
+    for ci,v in enumerate(BOX_V[1:]):
         try:
             _,p=stats.wilcoxon(kgef,g(v,ds))
             if p<0.05:
                 y=ymax+rng*0.04*(ci+1)
                 sym="***" if p<0.001 else "**" if p<0.01 else "*"
-                ax.plot([ci+1,ci+1,4,4],[y,y+rng*0.015,y+rng*0.015,y],lw=0.7,c="k")
-                ax.text((ci+1+4)/2, y+rng*0.015, sym,
+                ax.plot([ci+2,ci+2,1,1],[y,y+rng*0.015,y+rng*0.015,y],lw=0.7,c="k")
+                ax.text((ci+2+1)/2, y+rng*0.015, sym,
                         ha="center",va="bottom",fontsize=5.5)
         except: pass
     ax.set_title(dslbl, fontsize=8, pad=2)
@@ -229,8 +229,8 @@ save(fig, "fig7_boxplot")
 # Fig 10 — Wilcoxon heatmap
 # ══════════════════════════════════════════════════════════
 print("Fig 10: Wilcoxon heatmap...")
-COMP_V  = ["BPSO","SaWDE","FWPSO","MEL","MEL_NHD","MEL_KGEF_noNHD","PSO_CSM","IGPSO"]
-COMP_LB = ["BPSO","SaWDE","FWPSO","MEL","KDS-EL/DRS","KDS-EL/KER","PSO-CSM","IGPSO"]
+COMP_V  = ["MEL","MEL_NHD","MEL_KGEF_noNHD","FWPSO","PSO_CSM","IGPSO","SaWDE","BPSO"]
+COMP_LB = ["MEL","KDS-EL/DRS","KDS-EL/KER","FWPSO","PSO-CSM","IGPSO","SaWDE","BPSO"]
 pmat = np.zeros((len(DATASETS),len(COMP_V)))
 dmat = np.zeros_like(pmat)
 for i,ds in enumerate(DATASETS):
@@ -276,7 +276,7 @@ save(fig, "fig10_wilcoxon")
 # Fig 11 — Runtime split panel
 # ══════════════════════════════════════════════════════════
 print("Fig 11: Runtime...")
-RT_V  = ["BPSO","SaWDE","FWPSO","MEL","PSO_CSM","IGPSO","MEL_KGEF"]
+RT_V  = ["MEL_KGEF","FWPSO","MEL","PSO_CSM","IGPSO","SaWDE","BPSO"]
 RT_LB = [V_LABELS[v] for v in RT_V]
 EXCL  = [ds for ds in DATASETS if ds!="Stroke"]
 EXCL_LB = [DS_LABELS[DATASETS.index(d)] for d in EXCL]
@@ -301,7 +301,7 @@ bars=ax.bar(x2,ms,0.58,color=[COLORS[v] for v in RT_V],edgecolor="k",linewidth=0
 for bar,v in zip(bars,RT_V):
     if HATCHES[v]: bar.set_hatch(HATCHES[v])
 ki=RT_V.index("MEL_KGEF")
-ax.annotate(f"{ms[ki]:.0f}s",xy=(ki,ms[ki]),xytext=(ki+0.35,ms[ki]+25),
+ax.annotate(f"{ms[ki]:.0f}s",xy=(ki,ms[ki]),xytext=(ki+0.5,ms[ki]+30),
             arrowprops=dict(arrowstyle="->",lw=0.7),fontsize=6.5,color="#b71c1c")
 ax.set_xticks(x2); ax.set_xticklabels(RT_LB,rotation=38,ha="right",fontsize=7)
 ax.set_ylabel("Avg. Runtime (s)",fontsize=8)
@@ -330,9 +330,9 @@ tmin=min(stats_v[v]["time"] for v in ALL_V)
 tmax=max(stats_v[v]["time"] for v in ALL_V)
 def bsz(t): return 80+680*((t-tmin)/(tmax-tmin))**0.65
 LCFG = {
-    "BPSO":(2.0,0.25),"SaWDE":(2.0,-0.40),"FWPSO":(1.7,0.25),
-    "MEL":(1.7,-0.40),"MEL_NHD":(1.7,0.25),"MEL_KGEF_noNHD":(1.7,-0.40),
+    "FWPSO":(1.7,0.25),"MEL":(1.7,-0.40),"MEL_NHD":(1.7,0.25),"MEL_KGEF_noNHD":(1.7,-0.40),
     "PSO_CSM":(1.7,0.25),"IGPSO":(1.7,-0.40),
+    "SaWDE":(2.0,-0.40),"BPSO":(2.0,0.25),
 }
 fig, ax = plt.subplots(figsize=(5.8,4.5))
 for v in ALL_V:
