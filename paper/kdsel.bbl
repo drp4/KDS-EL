@@ -1,0 +1,168 @@
+\begin{thebibliography}{20}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi:}
+\providecommand{\ArXivprefix}{arXiv:}
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid:}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Article
+\bibitem[{Bolnick et~al.(2014)}]{bolnick2014precision}
+\bibinfo{author}{Bolnick, D.~A.} et~al. (\bibinfo{year}{2014}).
+\newblock \bibinfo{title}{Precision medicine in the era of big data}.
+\newblock {\it \bibinfo{journal}{Nature Reviews Genetics}\/},  {\it
+  \bibinfo{volume}{15}\/}, \bibinfo{pages}{675--684}.
+  \DOIprefix\doi{10.1038/nrg3820}.
+%Type = Article
+\bibitem[{Chen et~al.(2025)}]{SARMTPSO_CITE}
+\bibinfo{author}{Chen, H.} et~al. (\bibinfo{year}{2025}).
+\newblock \bibinfo{title}{Sar-mtpso: Self-adaptive multi-task pso for feature
+  selection}.
+\newblock {\it \bibinfo{journal}{IEEE Transactions on Evolutionary
+  Computation}\/}, .
+\newblock \bibinfo{note}{[Replace with actual SAR-MTPSO citation]}.
+%Type = Article
+\bibitem[{Chuang et~al.(2011)Chuang, Yang \& Yang}]{chuang2011binary}
+\bibinfo{author}{Chuang, L.-Y.}, \bibinfo{author}{Yang, C.-H.}, \&
+  \bibinfo{author}{Yang, C.-H.} (\bibinfo{year}{2011}).
+\newblock \bibinfo{title}{Binary particle swarm optimization for feature
+  selection}.
+\newblock {\it \bibinfo{journal}{Computational Intelligence and
+  Neuroscience}\/},  {\it \bibinfo{volume}{2011}\/}, \bibinfo{pages}{1--12}.
+  \DOIprefix\doi{10.1155/2011/796178}.
+%Type = Article
+\bibitem[{Dash \& Liu(1997)}]{dash1997feature}
+\bibinfo{author}{Dash, M.}, \& \bibinfo{author}{Liu, H.}
+  (\bibinfo{year}{1997}).
+\newblock \bibinfo{title}{Feature selection for classification}.
+\newblock {\it \bibinfo{journal}{Intelligent Data Analysis}\/},  {\it
+  \bibinfo{volume}{1}\/}, \bibinfo{pages}{131--156}.
+%Type = Inproceedings
+\bibitem[{Deb et~al.(2002)Deb, Pratap, Agarwal \& Meyarivan}]{deb2002fast}
+\bibinfo{author}{Deb, K.}, \bibinfo{author}{Pratap, A.},
+  \bibinfo{author}{Agarwal, S.}, \& \bibinfo{author}{Meyarivan, T.}
+  (\bibinfo{year}{2002}).
+\newblock \bibinfo{title}{A fast and elitist multiobjective genetic algorithm:
+  {NSGA-II}}.
+\newblock In {\it \bibinfo{booktitle}{IEEE Transactions on Evolutionary
+  Computation}\/} (pp. \bibinfo{pages}{182--197}).
+\newblock volume~\bibinfo{volume}{6}.
+%Type = Article
+\bibitem[{Guyon \& Elisseeff(2003)}]{guyon2003introduction}
+\bibinfo{author}{Guyon, I.}, \& \bibinfo{author}{Elisseeff, A.}
+  (\bibinfo{year}{2003}).
+\newblock \bibinfo{title}{An introduction to variable and feature selection}.
+\newblock {\it \bibinfo{journal}{Journal of Machine Learning Research}\/},
+  {\it \bibinfo{volume}{3}\/}, \bibinfo{pages}{1157--1182}.
+%Type = Article
+\bibitem[{Hampton et~al.(2004)}]{hampton2004introduction}
+\bibinfo{author}{Hampton, M.} et~al. (\bibinfo{year}{2004}).
+\newblock \bibinfo{title}{Introduction to particle swarm optimization}.
+\newblock {\it \bibinfo{journal}{IEEE Computational Intelligence Magazine}\/},
+  .
+\newblock \bibinfo{note}{[Placeholder -- replace with actual
+  omics/high-throughput sequencing reference]}.
+%Type = Article
+\bibitem[{Huang et~al.(2020)}]{huang2020enhanced}
+\bibinfo{author}{Huang, H.} et~al. (\bibinfo{year}{2020}).
+\newblock \bibinfo{title}{Enhanced feature-weight-based particle swarm
+  optimization for high-dimensional feature selection}.
+\newblock {\it \bibinfo{journal}{Applied Soft Computing}\/}, .
+\newblock \bibinfo{note}{[Replace with actual FWPSO citation]}.
+%Type = Article
+\bibitem[{Jin(2011)}]{jin2011surrogate}
+\bibinfo{author}{Jin, Y.} (\bibinfo{year}{2011}).
+\newblock \bibinfo{title}{Surrogate-assisted evolutionary computation: Recent
+  advances and future challenges}.
+\newblock {\it \bibinfo{journal}{Swarm and Evolutionary Computation}\/},  {\it
+  \bibinfo{volume}{1}\/}, \bibinfo{pages}{61--70}.
+  \DOIprefix\doi{10.1016/j.swevo.2011.05.003}.
+%Type = Article
+\bibitem[{Kennedy \& Eberhart(1997)}]{kennedy1997discrete}
+\bibinfo{author}{Kennedy, J.}, \& \bibinfo{author}{Eberhart, R.~C.}
+  (\bibinfo{year}{1997}).
+\newblock \bibinfo{title}{Discrete binary version of the particle swarm
+  algorithm}, .
+\newblock (pp. \bibinfo{pages}{4104--4108}).
+%Type = Article
+\bibitem[{Li et~al.(2024)}]{IGPSO_CITE}
+\bibinfo{author}{Li, J.} et~al. (\bibinfo{year}{2024}).
+\newblock \bibinfo{title}{Igpso: Improved pso with mlp-based feature importance
+  for bioinformatics feature selection}.
+\newblock {\it \bibinfo{journal}{Applied Soft Computing}\/}, .
+\newblock \bibinfo{note}{[Replace with actual IGPSO citation]}.
+%Type = Article
+\bibitem[{Morrison \& De~Jong(2002)}]{morrison2002measurement}
+\bibinfo{author}{Morrison, R.~W.}, \& \bibinfo{author}{De~Jong, K.~A.}
+  (\bibinfo{year}{2002}).
+\newblock \bibinfo{title}{Measurement of population diversity}, .
+\newblock (pp. \bibinfo{pages}{61--72}).
+%Type = Article
+\bibitem[{Saeys et~al.(2007)Saeys, Inza \& Larra{\~n}aga}]{saeys2007review}
+\bibinfo{author}{Saeys, Y.}, \bibinfo{author}{Inza, I.}, \&
+  \bibinfo{author}{Larra{\~n}aga, P.} (\bibinfo{year}{2007}).
+\newblock \bibinfo{title}{A review of feature selection techniques in
+  bioinformatics}.
+\newblock {\it \bibinfo{journal}{Bioinformatics}\/},  {\it
+  \bibinfo{volume}{23}\/}, \bibinfo{pages}{2507--2517}.
+  \DOIprefix\doi{10.1093/bioinformatics/btm344}.
+%Type = Article
+\bibitem[{Ursem(2002)}]{ursem2002diversity}
+\bibinfo{author}{Ursem, R.~K.} (\bibinfo{year}{2002}).
+\newblock \bibinfo{title}{Diversity-guided evolutionary algorithms}, .
+\newblock (pp. \bibinfo{pages}{462--471}).
+%Type = Article
+\bibitem[{Wang et~al.(2021)}]{wang2021particle}
+\bibinfo{author}{Wang, G.-Q.} et~al. (\bibinfo{year}{2021}).
+\newblock \bibinfo{title}{Particle swarm optimization for feature selection: A
+  review}.
+\newblock {\it \bibinfo{journal}{Swarm and Evolutionary Computation}\/}, .
+\newblock \bibinfo{note}{[Placeholder -- replace with actual particle swarm FS
+  review]}.
+%Type = Article
+\bibitem[{Wang et~al.(2025)}]{PSOCSM_CITE}
+\bibinfo{author}{Wang, X.} et~al. (\bibinfo{year}{2025}).
+\newblock \bibinfo{title}{Pso-csm: Pso with comprehensive scoring metric for
+  feature selection}.
+\newblock {\it \bibinfo{journal}{Applied Soft Computing}\/}, .
+\newblock \bibinfo{note}{[Replace with actual PSO-CSM citation]}.
+%Type = Article
+\bibitem[{Xue et~al.(2015)Xue, Zhang, Browne \& Yao}]{xue2015survey}
+\bibinfo{author}{Xue, B.}, \bibinfo{author}{Zhang, M.},
+  \bibinfo{author}{Browne, W.~N.}, \& \bibinfo{author}{Yao, X.}
+  (\bibinfo{year}{2015}).
+\newblock \bibinfo{title}{A survey on evolutionary computation approaches to
+  feature selection}.
+\newblock {\it \bibinfo{journal}{IEEE Transactions on Evolutionary
+  Computation}\/},  {\it \bibinfo{volume}{20}\/}, \bibinfo{pages}{606--626}.
+  \DOIprefix\doi{10.1109/TEVC.2015.2504420}.
+%Type = Article
+\bibitem[{Zhan et~al.(2020)}]{zhan2020sa}
+\bibinfo{author}{Zhan, Z.-H.} et~al. (\bibinfo{year}{2020}).
+\newblock \bibinfo{title}{Self-adaptive weighted differential evolution for
+  feature selection}.
+\newblock {\it \bibinfo{journal}{IEEE Transactions on Cybernetics}\/}, .
+\newblock \bibinfo{note}{[Replace with actual SaWDE citation]}.
+%Type = Article
+\bibitem[{Zhang et~al.(2015)}]{zhang2015adaptive}
+\bibinfo{author}{Zhang, Y.} et~al. (\bibinfo{year}{2015}).
+\newblock \bibinfo{title}{Adaptive particle swarm optimization for feature
+  selection}.
+\newblock {\it \bibinfo{journal}{Applied Soft Computing}\/}, .
+\newblock \bibinfo{note}{[Placeholder -- replace with actual adaptive PSO FS
+  reference]}.
+%Type = Article
+\bibitem[{Zhang et~al.(2023)}]{MEL_CITE}
+\bibinfo{author}{Zhang, Y.} et~al. (\bibinfo{year}{2023}).
+\newblock \bibinfo{title}{Multi-task evolutionary learning for feature
+  selection}.
+\newblock {\it \bibinfo{journal}{IEEE Transactions on Knowledge and Data
+  Engineering}\/}, .
+\newblock \bibinfo{note}{[Replace with actual MEL citation]}.
+
+\end{thebibliography}

@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: kdsel.aux
+Reallocating 'name_of_file' (item size: 1) to 13 items.
+The style file: model5-names.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: references.bib
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Warning--can't use both volume and number fields in deb2002fast
+Warning--empty journal in kennedy1997discrete
+Warning--empty journal in morrison2002measurement
+Warning--empty journal in ursem2002diversity
+You've used 20 entries,
+            3390 wiz_defined-function locations,
+            807 strings with 8714 characters,
+and the built_in function-call counts, 13402 in all, are:
+= -- 1086
+> -- 464
+< -- 21
++ -- 376
+- -- 132
+* -- 1328
+:= -- 1796
+add.period$ -- 75
+call.type$ -- 20
+change.case$ -- 145
+chr.to.int$ -- 20
+cite$ -- 24
+duplicate$ -- 1046
+empty$ -- 980
+format.name$ -- 206
+if$ -- 2555
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 174
+newline$ -- 125
+num.names$ -- 80
+pop$ -- 431
+preamble$ -- 1
+purify$ -- 114
+quote$ -- 0
+skip$ -- 399
+stack$ -- 0
+substring$ -- 546
+swap$ -- 674
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 180
+warning$ -- 4
+while$ -- 86
+width$ -- 0
+write$ -- 307
+(There were 4 warnings)
