@@ -1,2 +1,183 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\csgdef{mark@fnau1}{1}
+\emailauthor{first@university.edu.cn}{\textcolor [RGB]{0,0,1}{First Author}}
+\csgdef{mark@fnau2}{1}
+\csgdef{mark@corau2}{1}
+\emailauthor{second@university.edu.cn}{\textcolor [RGB]{0,0,1}{Second Author}}
+\csgdef{mark@fnau3}{1}
+\emailauthor{third@university.edu.cn}{\textcolor [RGB]{0,0,1}{Third Author}}
+\NewLabel{cor1}{1}
+\NewLabel{fn1}{1}
+\citation{bolnick2014precision,hampton2004introduction}
+\citation{saeys2007review,dash1997feature}
+\citation{xue2015survey,wang2021particle}
+\citation{chuang2011binary,zhang2015adaptive,huang2020enhanced}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\citation{guyon2003introduction}
+\citation{kennedy1997discrete}
+\citation{zhang2015adaptive}
+\citation{huang2020enhanced}
+\citation{zhan2020sa}
+\citation{MEL_CITE}
+\citation{chuang2011binary}
+\citation{zhan2020sa}
+\citation{huang2020enhanced}
+\citation{MEL_CITE}
+\citation{IGPSO_CITE}
+\citation{PSOCSM_CITE}
+\citation{morrison2002measurement,ursem2002diversity}
+\citation{MEL_CITE}
+\citation{ursem2002diversity}
+\citation{deb2002fast}
+\citation{jin2011surrogate}
+\citation{IGPSO_CITE}
+\citation{huang2020enhanced}
+\citation{SARMTPSO_CITE}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{2}{Related Work}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Evolutionary Feature Selection}{2}{subsection.2.1}\protected@file@percent }
+\newlabel{sec:related:evofs}{{2.1}{2}{Evolutionary Feature Selection}{subsection.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Population Diversity in Evolutionary Feature Selection}{2}{subsection.2.2}\protected@file@percent }
+\newlabel{sec:related:diversity}{{2.2}{2}{Population Diversity in Evolutionary Feature Selection}{subsection.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Knowledge-Guided and Multi-Task Evolutionary FS}{2}{subsection.2.3}\protected@file@percent }
+\newlabel{sec:related:knowledge}{{2.3}{2}{Knowledge-Guided and Multi-Task Evolutionary FS}{subsection.2.3}{}}
+\citation{MEL_CITE}
+\citation{deb2002fast}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary of recent PSO-based feature selection methods. Div.~= diversity maintenance mechanism; Know.~= knowledge-guided mechanism.}}{3}{table.1}\protected@file@percent }
+\newlabel{tab:literature}{{1}{3}{Summary of recent PSO-based feature selection methods. Div.~= diversity maintenance mechanism; Know.~= knowledge-guided mechanism}{table.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}The Proposed KDS-EL Framework}{3}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{3}{The Proposed KDS-EL Framework}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem Formulation}{3}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:method:formulation}{{3.1}{3}{Problem Formulation}{subsection.3.1}{}}
+\newlabel{eq:fitness}{{1}{3}{Problem Formulation}{equation.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Dual-Population PSO Backbone}{3}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:method:backbone}{{3.2}{3}{Dual-Population PSO Backbone}{subsection.3.2}{}}
+\newlabel{eq:pso_update}{{2}{3}{Dual-Population PSO Backbone}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Diversity-Regulated Selection (DRS)}{3}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:method:drs}{{3.3}{3}{Diversity-Regulated Selection (DRS)}{subsection.3.3}{}}
+\newlabel{eq:pool}{{3}{3}{Diversity-Regulated Selection (DRS)}{equation.3}{}}
+\newlabel{eq:nhd}{{4}{3}{Diversity-Regulated Selection (DRS)}{equation.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Overall architecture of the KDS-EL framework. The dual-space design operates in two complementary spaces: DRS (green, structural space) maintains population diversity via bi-objective Pareto selection, while KER (yellow, fitness space) accumulates improvement evidence to guide elite refinement. The two mechanisms are synergistically coupled across iterations.}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:framework}{{1}{4}{Overall architecture of the KDS-EL framework. The dual-space design operates in two complementary spaces: DRS (green, structural space) maintains population diversity via bi-objective Pareto selection, while KER (yellow, fitness space) accumulates improvement evidence to guide elite refinement. The two mechanisms are synergistically coupled across iterations}{figure.1}{}}
+\newlabel{eq:selection_score}{{5}{4}{Diversity-Regulated Selection (DRS)}{equation.5}{}}
+\newlabel{eq:alpha_cd}{{6}{4}{Diversity-Regulated Selection (DRS)}{equation.6}{}}
+\newlabel{prop:drs}{{1}{4}{Diversity Lower Bound}{proposition.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Knowledge-Guided Elite Refinement (KER)}{4}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:method:ker}{{3.4}{4}{Knowledge-Guided Elite Refinement (KER)}{subsection.3.4}{}}
+\newlabel{eq:weight_update}{{8}{4}{Knowledge-Guided Elite Refinement (KER)}{equation.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Illustration of the DRS mechanism. (a)~Bi-objective Pareto selection: solutions are sorted by fitness and NHD, with the Pareto front $\mathcal  {F}_1$ receiving priority. (b)~Adaptive schedule $\alpha _{\mathrm  {cd}}(t) = (t/T)^2$: early iterations prioritise diversity (green region), while later iterations prioritise fitness precision (red region).}}{5}{figure.2}\protected@file@percent }
+\newlabel{fig:drs}{{2}{5}{Illustration of the DRS mechanism. (a)~Bi-objective Pareto selection: solutions are sorted by fitness and NHD, with the Pareto front $\mathcal {F}_1$ receiving priority. (b)~Adaptive schedule $\alpha _{\mathrm {cd}}(t) = (t/T)^2$: early iterations prioritise diversity (green region), while later iterations prioritise fitness precision (red region)}{figure.2}{}}
+\newlabel{eq:flip_prob}{{9}{5}{Knowledge-Guided Elite Refinement (KER)}{equation.9}{}}
+\newlabel{prop:ker}{{2}{5}{Ergodicity}{proposition.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Complete KDS-EL Algorithm}{5}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:method:complete}{{3.5}{5}{Complete KDS-EL Algorithm}{subsection.3.5}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces KDS-EL: Knowledge-guided Dual-Space Evolutionary Learning}}{5}{algorithm.1}\protected@file@percent }
+\newlabel{alg:kdsel}{{1}{5}{Complete KDS-EL Algorithm}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Time Complexity Analysis}{5}{subsection.3.6}\protected@file@percent }
+\newlabel{sec:method:complexity}{{3.6}{5}{Time Complexity Analysis}{subsection.3.6}{}}
+\citation{chuang2011binary}
+\citation{zhan2020sa}
+\citation{huang2020enhanced}
+\citation{MEL_CITE}
+\citation{PSOCSM_CITE}
+\citation{IGPSO_CITE}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Illustration of the KER mechanism. (a)~Improvement-feedback weight update: when a new solution improves upon $P_{\mathrm  {best}}$, the weight vector $\mathbf  {w}$ is updated before $P_{\mathrm  {best}}$ is replaced. (b)~Elite perturbation: features with high $|w_j|$ have higher flip probability, while random flips with probability $p_r = 0.10$ guarantee ergodicity.}}{6}{figure.3}\protected@file@percent }
+\newlabel{fig:ker}{{3}{6}{Illustration of the KER mechanism. (a)~Improvement-feedback weight update: when a new solution improves upon $P_{\mathrm {best}}$, the weight vector $\mathbf {w}$ is updated before $P_{\mathrm {best}}$ is replaced. (b)~Elite perturbation: features with high $|w_j|$ have higher flip probability, while random flips with probability $p_r = 0.10$ guarantee ergodicity}{figure.3}{}}
+\newlabel{eq:complexity}{{10}{6}{Time Complexity Analysis}{equation.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental Results and Discussion}{6}{section.4}\protected@file@percent }
+\newlabel{sec:experiments}{{4}{6}{Experimental Results and Discussion}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental Setup}{6}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:experiments:setup}{{4.1}{6}{Experimental Setup}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Datasets}{6}{subsubsection.4.1.1}\protected@file@percent }
+\newlabel{sec:experiments:datasets}{{4.1.1}{6}{Datasets}{subsubsection.4.1.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Comparison Algorithms}{6}{subsubsection.4.1.2}\protected@file@percent }
+\newlabel{sec:experiments:algorithms}{{4.1.2}{6}{Comparison Algorithms}{subsubsection.4.1.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Summary of the nine bioinformatics datasets used in experiments.}}{6}{table.2}\protected@file@percent }
+\newlabel{tab:datasets}{{2}{6}{Summary of the nine bioinformatics datasets used in experiments}{table.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.3}Parameter Settings}{6}{subsubsection.4.1.3}\protected@file@percent }
+\newlabel{sec:experiments:params}{{4.1.3}{6}{Parameter Settings}{subsubsection.4.1.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Parameter settings for all algorithms.}}{7}{table.3}\protected@file@percent }
+\newlabel{tab:params}{{3}{7}{Parameter settings for all algorithms}{table.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.4}Evaluation Protocol}{7}{subsubsection.4.1.4}\protected@file@percent }
+\newlabel{sec:experiments:protocol}{{4.1.4}{7}{Evaluation Protocol}{subsubsection.4.1.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Classification Accuracy Comparison}{7}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:experiments:accuracy}{{4.2}{7}{Classification Accuracy Comparison}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Feature Subset Size Comparison}{7}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:experiments:features}{{4.3}{7}{Feature Subset Size Comparison}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Statistical Significance Analysis}{7}{subsection.4.4}\protected@file@percent }
+\newlabel{sec:experiments:statistical}{{4.4}{7}{Statistical Significance Analysis}{subsection.4.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Ablation Study}{7}{subsection.4.5}\protected@file@percent }
+\newlabel{sec:experiments:ablation}{{4.5}{7}{Ablation Study}{subsection.4.5}{}}
+\newlabel{eq:synergy}{{11}{7}{Ablation Study}{equation.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Comparison of mean classification accuracy (\%) and standard deviation. Bold values indicate the best result; underlined values indicate the second-best.}}{8}{table.4}\protected@file@percent }
+\newlabel{tab:accuracy}{{4}{8}{Comparison of mean classification accuracy (\%) and standard deviation. Bold values indicate the best result; underlined values indicate the second-best}{table.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Comparison of the mean number of selected features. Bold values indicate the fewest features; underlined values indicate the second-fewest.}}{8}{table.5}\protected@file@percent }
+\newlabel{tab:features}{{5}{8}{Comparison of the mean number of selected features. Bold values indicate the fewest features; underlined values indicate the second-fewest}{table.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Stability Analysis}{8}{subsection.4.6}\protected@file@percent }
+\newlabel{sec:experiments:stability}{{4.6}{8}{Stability Analysis}{subsection.4.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces $p$-values of the Wilcoxon signed-rank test between KDS-EL and each competitor. Bold values denote $p>0.05$ (not significant); underlined values denote $0.01<p\leq 0.05$.}}{8}{table.6}\protected@file@percent }
+\newlabel{tab:wilcoxon}{{6}{8}{$p$-values of the Wilcoxon signed-rank test between KDS-EL and each competitor. Bold values denote $p>0.05$ (not significant); underlined values denote $0.01<p\leq 0.05$}{table.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Ablation study results. For each dataset, accuracy (mean\,$\pm $\,std, \%) and number of selected features (mean) are reported for four variants. Bold = best accuracy; $\dagger $ = best feature count per dataset.}}{9}{table.7}\protected@file@percent }
+\newlabel{tab:ablation}{{7}{9}{Ablation study results. For each dataset, accuracy (mean\,$\pm $\,std, \%) and number of selected features (mean) are reported for four variants. Bold = best accuracy; $\dagger $ = best feature count per dataset}{table.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Classification accuracy comparison across all nine datasets. KDS-EL (red) achieves the highest accuracy on 7 of 9 datasets.}}{9}{figure.4}\protected@file@percent }
+\newlabel{fig:accuracy}{{4}{9}{Classification accuracy comparison across all nine datasets. KDS-EL (red) achieves the highest accuracy on 7 of 9 datasets}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Box plots of classification accuracy across 10 independent runs for all methods on each dataset. KDS-EL (red) shows consistently compact distributions with low variance.}}{10}{figure.5}\protected@file@percent }
+\newlabel{fig:boxplot}{{5}{10}{Box plots of classification accuracy across 10 independent runs for all methods on each dataset. KDS-EL (red) shows consistently compact distributions with low variance}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Convergence Analysis}{10}{subsection.4.7}\protected@file@percent }
+\newlabel{sec:experiments:convergence}{{4.7}{10}{Convergence Analysis}{subsection.4.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.8}Feature Reduction Visualisation}{10}{subsection.4.8}\protected@file@percent }
+\newlabel{sec:experiments:feat_viz}{{4.8}{10}{Feature Reduction Visualisation}{subsection.4.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.9}Ablation Visualisation}{10}{subsection.4.9}\protected@file@percent }
+\newlabel{sec:experiments:ablation_viz}{{4.9}{10}{Ablation Visualisation}{subsection.4.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Fitness convergence curves on six representative datasets. KDS-EL (red) converges to the lowest fitness with tight variance bands.}}{11}{figure.6}\protected@file@percent }
+\newlabel{fig:convergence}{{6}{11}{Fitness convergence curves on six representative datasets. KDS-EL (red) converges to the lowest fitness with tight variance bands}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Population NHD diversity curves on six representative datasets. KDS-EL/DRS and KDS-EL sustain high diversity throughout the search, validating Proposition~\ref {prop:drs}.}}{11}{figure.7}\protected@file@percent }
+\newlabel{fig:nhd}{{7}{11}{Population NHD diversity curves on six representative datasets. KDS-EL/DRS and KDS-EL sustain high diversity throughout the search, validating Proposition~\ref {prop:drs}}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Feature count comparison (logarithmic scale) across all datasets. KDS-EL (red) selects the fewest features on 7 of 9 datasets.}}{12}{figure.8}\protected@file@percent }
+\newlabel{fig:features}{{8}{12}{Feature count comparison (logarithmic scale) across all datasets. KDS-EL (red) selects the fewest features on 7 of 9 datasets}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.10}Significance Heatmap}{12}{subsection.4.10}\protected@file@percent }
+\newlabel{sec:experiments:heatmap}{{4.10}{12}{Significance Heatmap}{subsection.4.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.11}Computational Cost Analysis}{12}{subsection.4.11}\protected@file@percent }
+\newlabel{sec:experiments:runtime}{{4.11}{12}{Computational Cost Analysis}{subsection.4.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.12}Accuracy-Feature-Time Trade-off}{12}{subsection.4.12}\protected@file@percent }
+\newlabel{sec:experiments:bubble}{{4.12}{12}{Accuracy-Feature-Time Trade-off}{subsection.4.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.13}Discussion}{12}{subsection.4.13}\protected@file@percent }
+\newlabel{sec:experiments:discussion}{{4.13}{12}{Discussion}{subsection.4.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Ablation study comparison: accuracy (left) and feature count (right) for MEL, KDS-EL/DRS, KDS-EL/KER, and KDS-EL.}}{13}{figure.9}\protected@file@percent }
+\newlabel{fig:ablation}{{9}{13}{Ablation study comparison: accuracy (left) and feature count (right) for MEL, KDS-EL/DRS, KDS-EL/KER, and KDS-EL}{figure.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Heatmap of Wilcoxon signed-rank test $p$-values between KDS-EL and each competitor. Darker cells indicate stronger statistical significance.}}{13}{figure.10}\protected@file@percent }
+\newlabel{fig:wilcoxon}{{10}{13}{Heatmap of Wilcoxon signed-rank test $p$-values between KDS-EL and each competitor. Darker cells indicate stronger statistical significance}{figure.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Runtime comparison across all datasets. KDS-EL achieves competitive runtime while delivering superior accuracy and feature reduction.}}{14}{figure.11}\protected@file@percent }
+\newlabel{fig:runtime}{{11}{14}{Runtime comparison across all datasets. KDS-EL achieves competitive runtime while delivering superior accuracy and feature reduction}{figure.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Bubble chart of accuracy vs.\ feature count vs.\ runtime. Bubble size represents runtime. KDS-EL (red) occupies the optimal region (top-left, small bubbles).}}{14}{figure.12}\protected@file@percent }
+\newlabel{fig:bubble}{{12}{14}{Bubble chart of accuracy vs.\ feature count vs.\ runtime. Bubble size represents runtime. KDS-EL (red) occupies the optimal region (top-left, small bubbles)}{figure.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusions and Future Work}{14}{section.5}\protected@file@percent }
+\newlabel{sec:conclusion}{{5}{14}{Conclusions and Future Work}{section.5}{}}
+\bibstyle{model5-names}
+\bibdata{references}
+\bibcite{bolnick2014precision}{{1}{2014}{{Bolnick et~al.}}{{}}}
+\bibcite{SARMTPSO_CITE}{{2}{2025}{{Chen et~al.}}{{}}}
+\bibcite{chuang2011binary}{{3}{2011}{{Chuang et~al.}}{{Chuang, Yang \& Yang}}}
+\bibcite{dash1997feature}{{4}{1997}{{Dash \& Liu}}{{}}}
+\bibcite{deb2002fast}{{5}{2002}{{Deb et~al.}}{{Deb, Pratap, Agarwal \& Meyarivan}}}
+\bibcite{guyon2003introduction}{{6}{2003}{{Guyon \& Elisseeff}}{{}}}
+\bibcite{hampton2004introduction}{{7}{2004}{{Hampton et~al.}}{{}}}
+\bibcite{huang2020enhanced}{{8}{2020}{{Huang et~al.}}{{}}}
+\bibcite{jin2011surrogate}{{9}{2011}{{Jin}}{{}}}
+\bibcite{kennedy1997discrete}{{10}{1997}{{Kennedy \& Eberhart}}{{}}}
+\bibcite{IGPSO_CITE}{{11}{2024}{{Li et~al.}}{{}}}
+\bibcite{morrison2002measurement}{{12}{2002}{{Morrison \& De~Jong}}{{}}}
+\bibcite{saeys2007review}{{13}{2007}{{Saeys et~al.}}{{Saeys, Inza \& Larra{\~n}aga}}}
+\bibcite{ursem2002diversity}{{14}{2002}{{Ursem}}{{}}}
+\bibcite{wang2021particle}{{15}{2021}{{Wang et~al.}}{{}}}
+\bibcite{PSOCSM_CITE}{{16}{2025}{{Wang et~al.}}{{}}}
+\bibcite{xue2015survey}{{17}{2015}{{Xue et~al.}}{{Xue, Zhang, Browne \& Yao}}}
+\bibcite{zhan2020sa}{{18}{2020}{{Zhan et~al.}}{{}}}
+\bibcite{zhang2015adaptive}{{19}{2015}{{Zhang et~al.}}{{}}}
+\bibcite{MEL_CITE}{{20}{2023}{{Zhang et~al.}}{{}}}
+\csxdef{lastpage}{15}
+\gdef \@abspage@last{16}

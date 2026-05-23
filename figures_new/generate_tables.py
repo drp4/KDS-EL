@@ -216,7 +216,7 @@ abl_header_sub = (r" & Acc. & Feat. "
 emit(r"\begin{tabular}{lcccccccc}")
 emit(r"\toprule")
 emit(abl_header_top)
-emit(r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}")
+emit(r"\cmidrule(r){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(l){8-9}")
 emit(abl_header_sub)
 emit(r"\midrule")
 for ds, dslbl in zip(DATASETS, DS_LABELS):
