@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(grep -oE '\\\\\\\\cite[pt]?\\\\{[^}]+\\\\}' kdsel.tex)",
+      "Bash(python check_cites.py)",
+      "Bash(find ~/.claude/ -type f \\\\\\( -name \"SKILL.md\" -o -name \"MODE_REGISTRY.md\" -o -name \"*academic-paper*\" -o -name \"*academic-research*\" \\\\\\) 2>/dev/null | head -50)",
+      "Read(//c/Users/Lenovo/.claude/**)",
+      "Bash(find ~/.claude/skills/ -type f 2>/dev/null | head -50)"
     ]
   }
 }

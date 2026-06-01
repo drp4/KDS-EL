@@ -63,7 +63,7 @@
 	\item Develop a Knowledge-guided Elite Refinement (KER) mechanism that
 	      accumulates improvement evidence online to direct targeted bit-flip perturbations.
 	\item Demonstrate synergistic gain of DRS and KER on 7 of 9 benchmark datasets.
-	\item Achieve superior classification accuracy and maximum feature reduction
+	\item Achieve superior classification accuracy and substantial feature reduction
 	      against eight competitors including PSO-CSM (2025) and IGPSO (2024).
 	\end{highlights}
 
@@ -92,7 +92,7 @@
 	diversity ensures heterogeneous improvement signals for KER, while KER's
 	directed perturbations enrich the DRS selection pool.
 	Extensive experiments on nine high-dimensional bioinformatics datasets
-	($d \in [927,\,26{,}877]$) against eight state-of-the-art competitors
+	($d \in [2{,}000,\,26{,}877]$) against eight state-of-the-art competitors
 	demonstrate that KDS-EL achieves the highest average Friedman rank
 	of 1.222 (Friedman $\chi^2=47.38$, $p=1.30\times10^{-7}$),
 	reduces selected feature counts by up to 88\% relative to the base
@@ -574,6 +574,10 @@
 	\textbf{Crucially}, this weight update is performed \emph{before}
 	$P_{\mathrm{best}}$ is updated, ensuring that the improvement
 	signal is captured while the comparison is still valid.
+	After each iteration, the weight vector is decayed by a factor
+	$\gamma = 0.99$ (i.e., $\mathbf{w} \leftarrow \gamma \mathbf{w}$)
+	to discount stale evidence and bias the weight vector toward
+	recent improvement patterns.
 	}
 
 	\par{
@@ -594,8 +598,9 @@
 		\label{eq:flip_prob}
 	\end{equation}
 	where $\epsilon$ is a small positive constant.
-	The top-$k$ features by flip probability are flipped to produce
-	the mutant.
+	The top-$k_f = \lfloor f_{\mathrm{frac}} \cdot d \rfloor$ features
+	by flip probability are flipped to produce the mutant, where
+	$f_{\mathrm{frac}} = 0.01$ controls the perturbation sparsity.
 	If the mutant improves upon the corresponding $P_{\mathrm{best}}$,
 	it replaces it.
 	}
@@ -731,7 +736,7 @@
 	\par{
 	Nine high-dimensional bioinformatics datasets (some of which exhibit
 	class imbalance~\citep{chawla2002smote}) are used in this
-	study, spanning a wide range of sample sizes ($n \in [60, 2500]$),
+	study, spanning a wide range of sample sizes ($n \in [36, 2500]$),
 	feature dimensions ($d \in [2000, 26877]$), and class counts
 	($C \in \{2, 9\}$).
 	Table~\ref{tab:datasets} summarises the characteristics of each
@@ -826,6 +831,8 @@
 	$c_1, c_2, c_3$ & 2  & Acceleration coefficients \\
 	$p_r$        & 0.10  & Random flip probability (KER) \\
 	$k_e$        & 3     & Elite perturbation count (KER) \\
+	$\gamma$     & 0.99  & Weight decay factor (KER) \\
+	$f_{\mathrm{frac}}$ & 0.01 & Perturbation sparsity fraction (KER) \\
 	$\alpha_{\mathrm{cd}}(t)$ & $(t/T)^2$ & Adaptive schedule (DRS) \\
 	Runs         & 10    & Independent runs \\
 	Seeds        & $42 + \text{run} \times 37$ & Reproducibility \\
@@ -1026,6 +1033,10 @@ Stroke & \textbf{87.87$\pm$1.80} & 1,105$^\dagger$ & 83.31$\pm$3.95 & 7,625 & 84
 	KDS-EL selects the fewest features on 7 of 9 datasets, with an
 	overall average of 595 features---a 66.6\% reduction compared to
 	FWPSO (1,617) and a 67.0\% reduction compared to MEL (1,797).
+	When computed as the arithmetic mean of per-dataset reduction
+	rates (each dataset weighted equally), the average reduction is
+	49\%, indicating consistent feature reduction across datasets
+	of varying dimensionality.
 	The most dramatic reductions are observed on ALL-AML (2,124
 	$\to$ 258, $-$88\%), Stroke (6,448 $\to$ 1,105, $-$83\%),
 	and DLBCL (2,038 $\to$ 371, $-$82\%).
@@ -1048,9 +1059,11 @@ Stroke & \textbf{87.87$\pm$1.80} & 1,105$^\dagger$ & 83.31$\pm$3.95 & 7,625 & 84
 	\par{
 	Table~\ref{tab:wilcoxon} reports the $p$-values of the Wilcoxon
 	signed-rank test between KDS-EL and each competitor.
-	KDS-EL demonstrates statistically significant superiority
-	($p < 0.05$) over BPSO on 9/9 datasets, SaWDE on 9/9, MEL on 9/9,
-	PSO-CSM on 9/9, and IGPSO on 9/9.
+	KDS-EL achieves higher accuracy than all competitors on 9/9
+	datasets, with statistically significant superiority ($p < 0.05$)
+	over BPSO on 9/9 datasets, SaWDE on 9/9, PSO-CSM on 9/9, IGPSO
+	on 9/9, and MEL on 7/9 (Adenoma: $p = 0.3223$, ns; Leukaemia:
+	$p = 0.0742$, ns).
 	Against the strongest competitor FWPSO, KDS-EL achieves significant
 	wins on 2 of 9 datasets (Stroke: $p = 0.0273$, Leukaemia:
 	$p = 0.0020$), with the remaining 7 datasets showing no significant
@@ -1089,12 +1102,65 @@ Stroke & \textbf{87.87$\pm$1.80} & 1,105$^\dagger$ & 83.31$\pm$3.95 & 7,625 & 84
 	Adenoma (+2.22pp), Stroke (+1.90pp), ALL-AML (+1.43pp), DLBCL
 	(+1.06pp), Lymphoma (+1.22pp), and ALL4 (+0.58pp).
 	The two negative-synergy cases (CNS: $-$1.34pp, Leukaemia:
-	$-$1.20pp) occur on datasets where KER alone already achieves
-	near-ceiling performance, leaving limited room for additional
-	improvement from DRS.
+	$-$1.20pp) admit data-driven explanations.
+	On CNS, KDS-EL/DRS selects only 431 features compared to 1,094
+	for the full framework, indicating that DRS alone performs
+	aggressive feature pruning on this dataset; KER's weight-guided
+	perturbation re-introduces features that DRS had eliminated,
+	mildly diluting the pruning effect.
+	On Leukaemia, KDS-EL/DRS alone achieves the highest accuracy
+	(97.35\%) among all four variants, suggesting that DRS's
+	diversity maintenance is the dominant contributor and KER's
+	directed refinement provides no additional benefit.
 	Overall, the synergistic gain is positive on 78\% of datasets,
 	validating the dual-space design rationale.
 	}
+
+	\par{
+	To statistically validate the synergistic contribution of DRS and
+	KER, we apply the Wilcoxon signed-rank test between Full KDS-EL and
+	each ablation variant (Table~\ref{tab:wilcoxon_ablation}).
+	For classification accuracy, Full KDS-EL achieves statistically
+	significant improvements over KDS-EL/DRS on 6 of 9 datasets
+	($p < 0.05$) and over KDS-EL/KER on 5 of 9 datasets.
+	For feature reduction, Full KDS-EL selects significantly fewer
+	features than KDS-EL/DRS on 5 of 9 datasets and than KDS-EL/KER
+	on 7 of 9 datasets, confirming that the KER mechanism is the
+	primary driver of feature compaction.
+	The non-significant results on CNS and Leukaemia are consistent
+	with the negative-synergy observations discussed above: on these
+	two datasets, the individual components already capture the
+	dominant signal, leaving limited margin for the combined framework
+	to demonstrate additional statistical superiority.
+	}
+
+	\begin{table}[t]
+	\centering
+	\caption{Wilcoxon signed-rank test $p$-values between Full KDS-EL and ablation variants.
+	Accuracy: one-tailed (KDS-EL $>$ variant); Features: one-tailed (KDS-EL $<$ variant).
+	$^{***}p<0.001$; $^{**}p<0.01$; $^{*}p<0.05$; ns: not significant.}
+	\label{tab:wilcoxon_ablation}
+	\resizebox{\linewidth}{!}{
+	\begin{tabular}{lcccc}
+	\toprule
+	 & \multicolumn{2}{c}{\textbf{Accuracy}} & \multicolumn{2}{c}{\textbf{\#Features}} \\
+	\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+	\textbf{Dataset} & vs KDS-EL/DRS & vs KDS-EL/KER & vs KDS-EL/DRS & vs KDS-EL/KER \\
+	\midrule
+	Adenoma     & 0.3848        & \textbf{0.0020}$^{**}$  & 0.2783        & \textbf{0.0020}$^{**}$  \\
+	ALL-AML     & \textbf{0.0010}$^{***}$ & 0.0137$^{*}$  & \textbf{0.0010}$^{***}$ & \textbf{0.0049}$^{**}$  \\
+	ALL4        & \textbf{0.0049}$^{**}$  & 0.1611        & 0.1611        & 0.0654        \\
+	CNS         & 0.1162        & 0.4229        & 0.9756        & 0.0137$^{*}$  \\
+	Colon       & \textbf{0.0010}$^{***}$ & 0.0420$^{*}$  & \textbf{0.0010}$^{***}$ & 0.0322$^{*}$  \\
+	DLBCL       & \textbf{0.0010}$^{***}$ & 0.0527        & \textbf{0.0020}$^{**}$  & 0.0420$^{*}$  \\
+	Leukaemia   & 0.8984        & 0.3477        & 0.9512        & 0.3477        \\
+	Lymphoma    & \textbf{0.0020}$^{**}$  & 0.0322$^{*}$  & 0.0137$^{*}$  & 0.0244$^{*}$  \\
+	Stroke      & \textbf{0.0049}$^{**}$  & \textbf{0.0098}$^{**}$  & \textbf{0.0068}$^{**}$  & \textbf{0.0020}$^{**}$  \\
+	\midrule
+	Sig. wins   & 6/9 & 5/9 & 5/9 & 7/9 \\
+	\bottomrule
+	\end{tabular}}
+	\end{table}
 
 	\subsection{Stability Analysis}
 	\label{sec:experiments:stability}

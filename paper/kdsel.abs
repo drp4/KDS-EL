@@ -21,7 +21,7 @@ Feature selection is essential for reducing dimensionality and improving
 	diversity ensures heterogeneous improvement signals for KER, while KER's
 	directed perturbations enrich the DRS selection pool.
 	Extensive experiments on nine high-dimensional bioinformatics datasets
-	($d \in [927,\,26{,}877]$) against eight state-of-the-art competitors
+	($d \in [2{,}000,\,26{,}877]$) against eight state-of-the-art competitors
 	demonstrate that KDS-EL achieves the highest average Friedman rank
 	of 1.222 (Friedman $\chi^2=47.38$, $p=1.30\times10^{-7}$),
 	reduces selected feature counts by up to 88\% relative to the base
