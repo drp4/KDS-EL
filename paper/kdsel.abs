@@ -4,14 +4,14 @@ Feature selection is essential for reducing dimensionality and improving
 	susceptible to structural population collapse and knowledge waste.
 	To address these coupled challenges, we propose \textbf{KDS-EL}
 	(\textit{Knowledge-guided Dual-Space Evolutionary Learning}), a novel
-	bi-objective-regulated evolutionary framework that simultaneously
+	bi-criteria-regulated evolutionary framework that simultaneously
 	optimises a dual-population PSO backbone across two complementary
 	search spaces.
 	First, we design a \textbf{Diversity-regulated Selection} (DRS) operator
 	that elevates Normalised Hamming Distance (NHD) from a post-hoc
-	diagnostic metric to a first-class Pareto selection objective,
-	providing a provable structural diversity lower bound and preventing
-	premature population convergence.
+	diagnostic metric to a first-class Pareto selection criterion,
+	providing an empirically validated diversity preservation mechanism
+	and preventing premature population convergence.
 	Second, we develop a \textbf{Knowledge-guided Elite Refinement} (KER)
 	mechanism that accumulates improvement-event evidence from the
 	evolutionary trajectory into a feature-importance weight vector,
@@ -23,7 +23,7 @@ Feature selection is essential for reducing dimensionality and improving
 	Extensive experiments on nine high-dimensional bioinformatics datasets
 	($d \in [2{,}000,\,26{,}877]$) against eight state-of-the-art competitors
 	demonstrate that KDS-EL achieves the highest average Friedman rank
-	of 1.222 (Friedman $\chi^2=47.38$, $p=1.30\times10^{-7}$),
+	of 1.222 (Friedman $\chi^2=47.38$, $p=1.30\times10^{-7}$; Kendall's $W=0.658$, large effect),
 	reduces selected feature counts by up to 88\% relative to the base
 	framework, and outperforms recent methods including PSO-CSM (2025)
 	and IGPSO (2024) across all nine datasets with statistical significance.
