@@ -272,7 +272,8 @@ def main():
     os.system('cls')
     os.system('close')
     num_run = 10
- 
+    problems = ['Adenoma', 'ALL_AML', 'ALL3', 'ALL4', 'CNS', 'Colon', 'DLBCL', 'Gastric',
+               'Leukemia', 'Lymphoma', 'Prostate', 'Stroke']
     # problems = ['Stroke']
 
     for i in range(num_run):
