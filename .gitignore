@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# Duplicate datasets (use datasets/ instead)
+MEL/Datasets/
