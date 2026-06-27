@@ -10,7 +10,8 @@
       "Bash(ls -la ~/.claude/plugins/)",
       "Read(//c/Users/86185/.claude/plugins/**)",
       "Bash(ls -la ~/.claude/plugins/cache/)",
-      "Read(//c/Users/86185/.claude/plugins/cache/**)"
+      "Read(//c/Users/86185/.claude/plugins/cache/**)",
+      "Bash(python code/test_kds_el_and_mel.py)"
     ]
   }
 }
