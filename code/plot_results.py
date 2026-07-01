@@ -44,31 +44,31 @@ DS_LABELS = [
 
 ALL_V = [
     "BPSO", "SaWDE", "FWPSO", "MEL",
-    "MEL_NHD", "KDS_EL_KER", "KDS_EL",
+    "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL",
     "PSO_CSM", "IGPSO",
 ]
-ABL_V = ["MEL", "MEL_NHD", "KDS_EL_KER", "KDS_EL"]
+ABL_V = ["MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
 
 V_LABELS = {
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "MEL_NHD": "KDS-EL/DRS",
+    "MEL": "MEL", "KDS_EL_DRS": "KDS-EL/DRS",
     "KDS_EL_KER": "KDS-EL/KER", "KDS_EL": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
 }
 ABL_LABELS = {
-    "MEL": "MEL (Baseline)", "MEL_NHD": "KDS-EL/DRS",
+    "MEL": "MEL (Baseline)", "KDS_EL_DRS": "KDS-EL/DRS",
     "KDS_EL_KER": "KDS-EL/KER", "KDS_EL": "KDS-EL (Proposed)",
 }
 
 COLORS = {
     "BPSO": "#9e9e9e", "SaWDE": "#bdbdbd", "FWPSO": "#1565c0",
-    "MEL": "#00838f", "MEL_NHD": "#2e7d32",
+    "MEL": "#00838f", "KDS_EL_DRS": "#2e7d32",
     "KDS_EL_KER": "#f57f17", "KDS_EL": "#b71c1c",
     "PSO_CSM": "#6a1b9a", "IGPSO": "#e65100",
 }
 HATCHES = {
     "BPSO": "////", "SaWDE": "\\\\\\\\", "FWPSO": "----",
-    "MEL": "....", "MEL_NHD": "xxxx", "KDS_EL_KER": "++++",
+    "MEL": "....", "KDS_EL_DRS": "xxxx", "KDS_EL_KER": "++++",
     "KDS_EL": "", "PSO_CSM": "oooo", "IGPSO": "****",
 }
 
@@ -288,7 +288,7 @@ def fig_rank(df, out_dir):
 def fig_runtime(df, out_dir):
     """Fig 8: Runtime comparison."""
     print("Fig 8: Runtime...")
-    RT_V = [v for v in ALL_V if v != "MEL_NHD" and v != "KDS_EL_KER"]
+    RT_V = [v for v in ALL_V if v != "KDS_EL_DRS" and v != "KDS_EL_KER"]
     fig, axes = plt.subplots(1, 2, figsize=(7.16, 2.7))
     # Panel A: non-Stroke
     ax = axes[0]

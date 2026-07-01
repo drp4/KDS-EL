@@ -6,7 +6,7 @@ KDS-EL 全量实验 — 依次运行所有 9 种方法
 依赖顺序：
   1. BPSO / SaWDE / FWPSO  — SOTA baseline（独立）
   2. MEL                   — 本框架 baseline
-  3. MEL_NHD               — 消融：+DRS
+  3. KDS_EL_DRS            — 消融：+DRS
   4. KDS_EL_KER            — 消融：+KER
   5. KDS_EL                — 完整 proposed 方法
   6. PSO_CSM / IGPSO       — 最新 SOTA 对比
@@ -26,7 +26,7 @@ VERSION_ORDER = [
     "SaWDE",
     "FWPSO",
     "MEL",
-    "MEL_NHD",
+    "KDS_EL_DRS",
     "KDS_EL_KER",
     "KDS_EL",
     "PSO_CSM",

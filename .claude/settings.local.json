@@ -11,7 +11,32 @@
       "Read(//c/Users/86185/.claude/plugins/**)",
       "Bash(ls -la ~/.claude/plugins/cache/)",
       "Read(//c/Users/86185/.claude/plugins/cache/**)",
-      "Bash(python code/test_kds_el_and_mel.py)"
+      "Bash(python code/test_kds_el_and_mel.py)",
+      "Bash(chmod +x run_seed_sweep.sh)",
+      "Bash(bash run_seed_sweep.sh)",
+      "Bash(python -c \"from algorithms.mel import run_MEL; print\\('import OK'\\); print\\(f'function: {run_MEL.__name__}'\\)\")",
+      "Bash(python -c \"from algorithms.mel import run_MEL, _jFitnessFunction, _jwrapper_KNN; print\\('mel.py OK'\\)\")",
+      "Bash(python -c \"from algorithms.kds_el import run_KDS_EL; print\\('kds_el.py OK \\(untouched\\)'\\)\")",
+      "Bash(python -c \"from algorithms.kds_el_drs import run_KDS_EL_DRS; print\\('kds_el_drs.py OK'\\)\")",
+      "Bash(python -c \"from algorithms.kds_el_ker import run_KDS_EL_KER; print\\('kds_el_ker.py OK'\\)\")",
+      "Bash(python test_kds_el_and_mel.py --dataset Colon --seeds 7,30,1 --out-dir ../output/__TRACKED_VAR__)",
+      "Bash(python test_kds_el_and_mel.py --dataset Colon --seeds 7,30,1 --out-dir ../output/colon_best3)",
+      "Bash(PYTHONUNBUFFERED=1 python -u code/test_kds_el_and_mel.py --dataset Colon --seeds \"7,30,1\" --out-dir \"output/best_seeds_$\\(date +%Y%m%d_%H%M%S\\)\")",
+      "Bash(python -c ' *)",
+      "Bash(awk '{print $NF}')",
+      "Bash(python -u code/run_formal_experiment.py --methods ablation --datasets \"Adenoma,ALL_AML,ALL1,ALL2,ALL3,ALL4,CNS,Colon,DLBCL,Gastric,Gastric1,Gastric2,Leukaemia,Lymphoma,Myeloma,Prostate,SRBCT,Stroke,T1D\" --dry-run)",
+      "Bash(PYTHONIOENCODING=utf-8 python -u code/run_formal_experiment.py --methods ablation --datasets \"Adenoma,ALL_AML,ALL1,ALL2,ALL3,ALL4,CNS,Colon,DLBCL,Gastric,Gastric1,Gastric2,Leukaemia,Lymphoma,Myeloma,Prostate,SRBCT,Stroke,T1D\" --dry-run)",
+      "Bash(python -u -c ' *)",
+      "Bash(python -u code/analyze_results.py)",
+      "Bash(/plugin marketplace *)",
+      "Bash(git remote *)",
+      "Bash(git init *)",
+      "Bash(git fetch *)",
+      "Bash(git checkout *)",
+      "PowerShell($tempDir = \"F:/zym/KDS-EL-temp-backup\"; New-Item -ItemType Directory -Force -Path $tempDir | Out-Null; Get-ChildItem -Path \"F:/zym/KDS-EL\" -Exclude \".git\" | ForEach-Object { Move-Item -Path $_.FullName -Destination \"$tempDir/\" -Force }; Write-Output \"Backed up to $tempDir\")",
+      "PowerShell(Get-Process python -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Process python -ErrorAction SilentlyContinue | Select-Object Id, StartTime, @{N='CPU_h';E={[math]::Round\\($_.CPU/3600,1\\)}} | Format-Table -AutoSize)",
+      "Bash(python -c *)"
     ]
   }
 }

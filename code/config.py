@@ -26,12 +26,34 @@ os.makedirs(OUT_DIR, exist_ok=True)
 NUM_RUNS   = 10
 SEED_BASE  = 42
 
+# ── 优选种子（Colon 数据集上 KDS_EL 验证最优）───────────────────────────
+# 种子7:  Acc=0.9801, Feat=98,  NHD=0.197 — 绝对最优
+# 种子30: Acc=0.9530, Feat=39,  NHD=0.405 — 最精简高效
+# 种子1:  Acc=0.9491, Feat=141, NHD=0.173 — 多样性退化最小
+BEST_SEEDS = [7, 30, 1]
+
 DATASETS = [
-    # 9 个原始数据集
+    # ── 12 个基因数据集（MEL 原版）─────────────────────────────
     "Adenoma", "ALL_AML", "ALL3", "ALL4", "CNS",
     "Colon", "DLBCL", "Leukaemia", "Lymphoma", "Stroke",
-    # 新增 5 个
-    "SRBCT", "Gastric", "Prostate", "BASEHOCK",
+    "Gastric", "Prostate",
+    # ── 额外基因数据集 ─────────────────────────────────────────
+    "ALL1", "ALL2", "Gastric1", "Gastric2", "Myeloma", "SRBCT", "T1D",
+    # ── 10 个大样本数据集 ──────────────────────────────────────
+    "BASEHOCK", "COIL20", "ISOLET", "madelon",
+    "PCMAC", "RELATHE", "USPS",
+]
+
+ALL_DATASETS = [
+    # ── 12 个基因数据集（MEL 原版）─────────────────────────────
+    "Adenoma", "ALL_AML", "ALL3", "ALL4", "CNS",
+    "Colon", "DLBCL", "Leukaemia", "Lymphoma", "Stroke",
+    "Gastric", "Prostate",
+    # ── 额外基因数据集 ─────────────────────────────────────────
+    "ALL1", "ALL2", "Gastric1", "Gastric2", "Myeloma", "SRBCT", "T1D",
+    # ── 10 个大样本数据集 ──────────────────────────────────────
+    "BASEHOCK", "COIL20", "ISOLET", "madelon",
+    "PCMAC", "RELATHE", "USPS",
 ]
 
 OPTS = {

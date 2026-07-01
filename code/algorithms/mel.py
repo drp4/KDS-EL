@@ -2,87 +2,127 @@
 MEL — Multi-task Ensemble Learning (baseline)
 =============================================
 双子群多任务 PSO：
-  - 子群1: 标准 PSO 速度-位置更新
-  - 子群2: 基于权重矩阵的概率采样（加权特征选择）
-池选择机制：合并 Pbest 和新种群，按适应度排序保留 Top-N。
+  - 子群1: 标准 PSO 速度-位置更新（连续空间）
+  - 子群2: 基于权重矩阵的概率采样（二进制特征选择）
+无池选择，原地更新。权重对改进/未改进解均进行双向调整。
+
+评估函数使用统一的 StratifiedKFold + jFitness（与其他算法一致）。
 """
 import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
 from utils import jFitness
 
 
+# ════════════════════════════════════════════════════════════════════════
+# MEL 主算法
+# ════════════════════════════════════════════════════════════════════════
+
 def run_MEL(X, y, opts):
-    lb, ub, thres = 0.0, 1.0, opts["thres"]
+    lb, ub = 0.0, 1.0
+    thres = opts["thres"]
     c1 = c2 = c3 = 2.0
     w = 0.9
-    Vmax = (ub - lb) / 2
     N = opts["N"]
     T = opts["T"]
     dim = X.shape[1]
 
+    Vmax = (ub - lb) / 2
+    numSub = 2
+    subSize = N // numSub
+
+    # 特征权重矩阵
     weight = np.zeros(dim)
+
+    # 初始化
     P = np.random.uniform(lb, ub, (N, dim))
     V = np.zeros((N, dim))
+    fit = np.zeros(N)
+    fitG = np.inf
+    fitSub = np.ones(numSub) * np.inf
+    Xsub = np.zeros((numSub, dim))
 
-    subSize = N // 2
+    fun = jFitness
 
-    fit = np.array([jFitness(X, y, (P[i] > thres).astype(bool), opts)
-                    for i in range(N)])
-    fitP = fit.copy()
+    # 初始评估 + 子群最优 & 全局最优
+    k = 0
+    for i in range(N):
+        fit[i] = fun(X, y, P[i] > thres, opts)
+        if fit[i] < fitSub[k]:
+            Xsub[k] = P[i].copy()
+            fitSub[k] = fit[i]
+        if (i + 1) % subSize == 0:
+            k += 1
+        if fit[i] < fitG:
+            Gbest = P[i].copy()
+            fitG = float(fit[i])
+
     Pbest = P.copy()
-    Gbest = P[np.argmin(fit)].copy()
-    fitG = float(np.min(fit))
+    fitP = fit.copy()
 
     curve = np.zeros(T + 1)
     curve[0] = fitG
 
     for t in range(1, T + 1):
-        P_new = P.copy()
-        Xsub_best = Pbest[subSize + np.argmin(fitP[subSize:])].copy()
-
+        k = 0
         for i in range(N):
-            if i < subSize:
-                r1, r2, r3 = np.random.rand(dim), np.random.rand(dim), np.random.rand(dim)
-                V[i] = np.clip(
-                    w * V[i] + c1 * r1 * (Pbest[i] - P[i])
-                    + c2 * r2 * (Gbest - P[i])
-                    + c3 * r3 * (Xsub_best - P[i]),
-                    -Vmax, Vmax,
-                )
-                P_new[i] = np.clip(P[i] + V[i], lb, ub)
-            else:
+            if k == 0:  # 子群1: PSO 速度-位置更新（逐维）
+                for d in range(dim):
+                    r1, r2, r3 = np.random.rand(), np.random.rand(), np.random.rand()
+                    VB = (w * V[i, d]
+                          + c1 * r1 * (Pbest[i, d] - P[i, d])
+                          + c2 * r2 * (Gbest[d] - P[i, d])
+                          + c3 * r3 * (Xsub[1, d] - P[i, d]))
+                    V[i, d] = np.clip(VB, -Vmax, Vmax)
+                    P[i, d] = np.clip(P[i, d] + V[i, d], lb, ub)
+            else:  # 子群2: 权重概率采样（二进制）
                 vf = np.maximum(weight, 0.0)
                 sv = vf.sum()
-                prob = vf / sv if sv > 0 else np.full(dim, 0.5)
-                P_new[i] = (np.random.rand(dim) < prob).astype(float)
+                if sv > 0:
+                    for d in range(dim):
+                        P[i, d] = 1.0 if vf[d] / sv > np.random.rand() else 0.0
+                else:
+                    P[i] = (np.random.rand(dim) < 0.5).astype(float)
 
-        # 池选择（按适应度排序）
-        pool = np.vstack([Pbest, P_new])
-        pool_bin = (pool > thres).astype(bool)
-        pool_fit = np.array([jFitness(X, y, pool_bin[i], opts)
-                             for i in range(2 * N)])
-        idx = np.argsort(pool_fit)[:N]
-        P = pool[idx]
-        fit_sel = pool_fit[idx]
-        bin_sel = pool_bin[idx]
+            # 适应度评估
+            fv_n = P[i] > thres
+            fit[i] = fun(X, y, fv_n, opts)
+            fv_o = Pbest[i] > thres
 
-        # 权重更新
-        for i in range(N):
-            fv_n = bin_sel[i]
-            fv_o = (Pbest[i] > thres)
-            if fit_sel[i] < fitP[i]:
-                inc = fitP[i] - fit_sel[i]
+            # Pbest 更新 + 权重调整
+            if fit[i] < fitP[i]:
+                inc = fitP[i] - fit[i]
+                Pbest[i] = P[i].copy()
+                fitP[i] = fit[i]
                 change = np.logical_xor(fv_n, fv_o)
-                weight[change & (fv_n > fv_o)] += inc
-                weight[change & (fv_n < fv_o)] -= inc
+                case_emerge = np.where(change & (fv_n > fv_o))[0]
+                case_disappear = np.where(change & (fv_n < fv_o))[0]
+                for j in case_emerge:
+                    weight[j] += inc
+                for j in case_disappear:
+                    weight[j] -= inc
+            else:
+                dec = fit[i] - fitP[i]
+                change = np.logical_xor(fv_o, fv_n)
+                case_emerge = np.where(change & (fv_o > fv_n))[0]
+                case_disappear = np.where(change & (fv_o < fv_n))[0]
+                for j in case_emerge:
+                    weight[j] -= dec
+                for j in case_disappear:
+                    weight[j] += dec
 
-        improved = fit_sel < fitP
-        Pbest = np.where(improved[:, None], P, Pbest)
-        fitP = np.minimum(fit_sel, fitP)
+            # 子群最优更新
+            if fit[i] < fitSub[k]:
+                Xsub[k] = P[i].copy()
+                fitSub[k] = fit[i]
 
-        bi = np.argmin(fitP)
-        if fitP[bi] < fitG:
-            fitG = float(fitP[bi])
-            Gbest = Pbest[bi].copy()
+            # 子群切换
+            if (i + 1) % subSize == 0:
+                k += 1
+
+            # 全局最优更新（基于 Pbest）
+            if fitP[i] < fitG:
+                Gbest = Pbest[i].copy()
+                fitG = float(fitP[i])
 
         curve[t] = fitG
 
