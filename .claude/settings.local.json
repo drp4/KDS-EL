@@ -36,7 +36,20 @@
       "PowerShell($tempDir = \"F:/zym/KDS-EL-temp-backup\"; New-Item -ItemType Directory -Force -Path $tempDir | Out-Null; Get-ChildItem -Path \"F:/zym/KDS-EL\" -Exclude \".git\" | ForEach-Object { Move-Item -Path $_.FullName -Destination \"$tempDir/\" -Force }; Write-Output \"Backed up to $tempDir\")",
       "PowerShell(Get-Process python -ErrorAction SilentlyContinue)",
       "PowerShell(Get-Process python -ErrorAction SilentlyContinue | Select-Object Id, StartTime, @{N='CPU_h';E={[math]::Round\\($_.CPU/3600,1\\)}} | Format-Table -AutoSize)",
-      "Bash(python -c *)"
+      "Bash(python -c *)",
+      "Bash(awk -F',' '{sum[$1]+=$9; cnt[$1]++} END{for\\(m in sum\\) printf \"%s: avg %.1fs\\\\n\", m, sum[m]/cnt[m]}')",
+      "Bash(Get-ChildItem -Recurse -File \"F:\\\\zym\\\\KDS-EL\\\\output\\\\formal_experiment_20260701_094943\")",
+      "Bash(Select-Object FullName, Length)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(Get-ChildItem -Recurse -File \"F:\\\\zym\\\\KDS-EL\\\\output\\\\formal_experiment_20260628_205157\")",
+      "Bash(Get-ChildItem -Directory \"F:\\\\zym\\\\KDS-EL\\\\output\\\\formal_experiment_20260701_094943\")",
+      "Bash(Select-Object FullName)",
+      "Bash(Get-ChildItem -Directory \"F:\\\\zym\\\\KDS-EL\\\\output\\\\formal_experiment_20260628_205157\")",
+      "Bash(python analysis/comprehensive_analysis.py)",
+      "Bash(pip install *)",
+      "Bash(python code/generate_tables.py)",
+      "Bash(python code/generate_figures.py)",
+      "Bash(python analysis/combine_analysis.py)"
     ]
   }
 }

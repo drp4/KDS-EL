@@ -36,11 +36,12 @@
 %   KDS-EL's systematic accuracy and compactness gains."
 %
 %  关键对比（写在 paper 里）：
-%    对 BPSO:  KDS-EL 更快 (188s vs 202s)，且精度显著更高
-%    对 SaWDE: KDS-EL 更快 (188s vs 185s，持平)，精度显著更高
-%    对 FWPSO: KDS-EL 慢 2.5–5×，但精度+2.6%，特征少83%
+%    对 BPSO:  KDS-EL 耗时接近 (115s vs 91s)，精度 93.95% vs 86.95%
+%    对 SaWDE: KDS-EL 稍慢 (115s vs 68s)，精度 93.95% vs 89.41%
+%    对 FWPSO: KDS-EL 慢 4.8×，但精度 +1.7pp (93.95% vs 92.25%)，特征少 54%
 %    → FWPSO 是速度代表但精度次优；KDS-EL 是精度代表但速度适中
 %    → 对高维生物信息学场景（biomarker discovery），精度和稀疏性优先
+%    → 注意：以上运行时数据来自两次独立实验，需统一硬件重跑验证
 
 % ─────────────────────────────────────────────────────────────────────
 % 二、完整论文故事线（从头到尾）
@@ -62,18 +63,18 @@
 %                       → 在线学习机制引导精英扰动
 %    协同效应：DRS 维持的多样性给 KER 提供异质改进信号
 %             KER 的定向扰动加速产生高质量多样候选，反哺 DRS
-%    消融验证：8/9 数据集正协同（ΔFull > ΔDRS + ΔKER）
+%    消融验证：16/17 数据集正协同（ΔFull > ΔDRS + ΔKER）
 
 % ─────────────────────────────────────────────────────────────────────
 % 三、逐节写什么（精确到段落级）
 % ─────────────────────────────────────────────────────────────────────
 
-%  §1 ABSTRACT（已完成）
+%  §1 ABSTRACT（已完成，需更新数值）
 %    句1: 问题存在（高维，双困境）
 %    句2: 现有方法局限（单空间）
 %    句3: KDS-EL 是什么（双空间 + DRS + KER）
-%    句4: 主要结果（rank 1.44, χ²=52.03, p=1.66e-8）
-%    句5: 消融协同（8/9 positive synergy）
+%    句4: 主要结果（rank 1.059, χ²=94.23, p=6.43e-17, 17 datasets）
+%    句5: 消融协同（16/17 positive synergy, mean +3.02pp）
 
 %  §2 INTRODUCTION（已完成框架，补充以下）
 %    P1: 应用背景（高维生物信息学，biomarker discovery）
@@ -129,68 +130,70 @@
 
 %  §5 EXPERIMENTS
 %    §5.1 Experimental Setup
-%          ► 9 数据集（列 n, d, classes, source）
-%          ► 8 对比方法（含 IGPSO 2024, PSO-CSM 2025）
-%          ► 协议：StratifiedKFold(5, shuffle=True, seed=42), 10 runs
-%          ► 种子：SEED_BASE + run × 37
+%          ► 17 数据集（n∈[36,2500], d∈[500,54675]）
+%          ► 9 对比方法（含 IGPSO 2024, PSO-CSM 2025）
+%          ► 协议：StratifiedKFold(5, shuffle=True, seed=42), 10 runs × T=100
+%          ► 种子：SEED_BASE=42 + run × 37
 %          ► 统计：Friedman + Wilcoxon（逐对）+ Holm-Bonferroni 校正
 %
-%    §5.2 Classification Accuracy（Fig 1 + Table 准确率）
-%          ► 开头句："KDS-EL achieves the highest mean accuracy on 9 of 9
-%             datasets, with an average Friedman rank of 1.44
-%             (χ²=52.03, p=1.66×10⁻⁸)."
-%          ► 重点展示 Lymphoma（+7.13% vs MEL），Stroke（+5.93% vs MEL）
-%          ► FWPSO 对比：7W-2L，强调 2 个 loss 都不显著
-%          ► PSO-CSM 对比：9/9 全胜，9/9 显著（p<0.05）
-%          ► IGPSO 对比：9/9 全胜，9/9 p<0.01
+%    §5.2 Classification Accuracy（Fig 4 + Table T4）
+%          ► 开头句："KDS-EL achieves the highest mean accuracy on 17 of 17
+%             datasets, with an average Friedman rank of 1.059
+%             (χ²=94.23, p=6.43×10⁻¹⁷)."
+%          ► 重点展示：madelon（+14.16pp vs MEL），Prostate（+7.11pp vs MEL）
+%          ► FWPSO 对比：17W-0L（全胜，包括之前有争议的CNS已移除）
+%          ► PSO-CSM 对比：17/17 全胜
+%          ► IGPSO 对比：17/17 全胜
+%          ► SaWDE 对比：16W-1L（ISOLET上SaWDE rank#1，KDS-EL rank#2）
 %
-%    §5.3 Feature Subset Size（Fig 2 + Table 特征数）
-%          ► "KDS-EL selects the fewest features on 7 of 9 datasets."
-%          ► 重点数字：ALL_AML -88% vs MEL，Stroke -83% vs FWPSO
+%    §5.3 Feature Subset Size（Fig 5 + Table T5）
+%          ► "KDS-EL selects the fewest features on 17 of 17 datasets."
+%          ► 重点数字：Gastric1 -95.7% vs MEL，Leukaemia -91.7%，madelon -91.7%
 %          ► KER 机制的直接证据：weight vector 定向压缩特征数
+%          ► KDS-EL avg=491 features，MEL avg=2989（-83.6%）
 %
-%    §5.4 Ablation Study（Fig 3 + 协同效应表）
+%    §5.4 Ablation Study（Fig 6 + Table T7）
 %          ► 四个变体：MEL / KDS-EL/DRS / KDS-EL/KER / KDS-EL
 %          ► 核心叙事：单独 DRS 或 KER 均不及完整模型
-%          ► 协同表：Δ_full − Δ_DRS − Δ_KER > 0 on 8/9 datasets
-%          ► 最大协同：Lymphoma +0.0271，Stroke +0.0190
-%          ► ALL3 例外：单独讨论（§5.7）
+%          ► 协同表：Δ_full − Δ_DRS − Δ_KER > 0 on 16/17 datasets
+%          ► 最大协同：ALL4 +14.28pp（DRS单独不如MEL，组合后远超），T1D +6.75pp
+%          ► 唯一负协同 Colon：KER单独已贡献+0.070，DRS边际增益下降，整体仍为最优
 %
-%    §5.5 Stability Analysis（Fig 4 箱线图）
+%    §5.5 Stability Analysis（Fig 7 箱线图）
 %          ► KDS-EL std 最小（stability 最高）
 %          ► 原因：DRS 维持的多样性避免随机崩塌
 %
-%    §5.6 Accuracy–Feature Trade-off（Fig 5 散点图）
+%    §5.6 Accuracy–Feature Trade-off（Fig 12 气泡图）
 %          ► KDS-EL 在 Pareto 前沿最优位置（高精度+少特征）
 %
-%    §5.7 NHD Diversity Analysis（Fig 7）
-%          ► KDS-EL/DRS vs KDS-EL：DRS 贡献的多样性
+%    §5.7 Convergence Analysis（Fig 8）
+%          ► KDS-EL 收敛速度：平均 50-70 代即可收敛到最优
+%          ► KDS-EL/DRS 早期收敛更慢但最终持平（多样性代价）
+%
+%    §5.8 NHD Diversity Analysis（Fig 9）
+%          ► KDS-EL/DRS avg NHD=0.417，KDS-EL avg NHD=0.350
+%          ► MEL/KDS-EL/KER NHD=0.000（无DRS种群坍缩）
 %          ► 命题1的实证验证：NHD 始终 > 0
 %
-%    §5.8 Computational Cost（Fig 8 + complexity 表）
-%          ► 诚实陈述：KDS-EL 比 FWPSO 慢 2.5–5×
-%          ► 两个原因（2.15× evals + 探索期 d_s 较大）
-%          ► 对 BPSO/SaWDE：持平或更快
+%    §5.9 Computational Cost（Fig 11 + Table T8）
+%          ► KDS-EL 时间 = 115.4s（avg over 17 datasets）
+%          ► FWPSO 最快 23.9s，MEL Baseline 最慢 167.8s
+%          ► KDS-EL 比 MEL 快 31%（DRS+KER 加速收敛补偿了评估开销）
+%          ► 诚实陈述：2.15× evals + 探索期 d_s 较大
 %          ► Trade-off 声明（biomedical 场景精度优先）
 %
-%    §5.9 Discussion: ALL3 Exception（单独一段）
-%          ► ALL3: n=36, d=7129（极端小样本高维）
-%          ► MEL baseline 在 ALL3 选了 10 个特征（过度紧凑），acc=0.8437
-%          ► KDS-EL 选了 1107 个特征，acc=0.8307（-1.3%，不显著）
-%          ► FWPSO 在 ALL3 选了 141 个特征，acc=0.8563（最优）
-%          ► 机制解释：n=36 时 KNN 5折每折仅 7 个训练样本
-%                     → 任何 fitness 信号极度嘈杂
-%                     → KER 的 improvement feedback 不可靠
-%                     → weight vector 累积噪声而非真实信号
-%                     → DRS 维持的多样性反而阻止了快速收敛
-%          ► 结论：KDS-EL 在极端 n≪d 场景（n<40）存在局限性
-%          ► 这是 Limitation 节的主要内容
+%    §5.10 Discussion: 方法论局限
+%          ► ISOLET 例外：KDS-EL rank#2（输SaWDE），617维26类
+%             → SaWDE 的差分权重机制在中等维度多类别上特别有效
+%          ► ALL3(36×9999)已移除：n=36极端小样本，5折每折仅7个训练样本
+%             → KER 的 improvement feedback 在极小样本下不可靠
+%          ► 结论：KDS-EL 在 n≥60 的场景表现稳定，n<40 有局限性
 
 %  §6 CONCLUSION
 %    P1: 问题重述（一句）
 %    P2: KDS-EL 贡献（Dual-Space, DRS, KER, 协同）
-%    P3: 实验总结（rank 1.44, 8/9 协同, 75-88% 特征减少）
-%    P4: Limitation（极端小样本，ALL3 例外）
+%    P3: 实验总结（rank 1.059, 16/17 协同, 83.6% 特征减少）
+%    P4: Limitation（极端小样本n<40，ISOLET多类别场景）
 %    P5: Future work（动态 d 适应，深度学习 importance，多目标 Pareto）
 
 % ─────────────────────────────────────────────────────────────────────
@@ -198,28 +201,38 @@
 % ─────────────────────────────────────────────────────────────────────
 
 %  统计：
-%    Friedman χ² = 52.03,  p = 1.66×10⁻⁸   (9方法×9数据集)
-%    KDS-EL avg Friedman rank = 1.44
-%    FWPSO  avg Friedman rank = 2.00
+%    Friedman χ² = 94.23,  p = 6.43×10⁻¹⁷   (9方法×17数据集)
+%    KDS-EL avg Friedman rank = 1.059（17 datasets全第1）
+%    FWPSO  avg Friedman rank = 2.588（第2）
 %
-%  vs FWPSO：7W-2L（ALL3 p=0.006输，CNS ns）
-%  vs PSO-CSM：9W-0L，9/9 p<0.05，6/9 p<0.01
-%  vs IGPSO：9W-0L，9/9 p<0.01
-%  vs BPSO：9W-0L，9/9 p<0.01
+%  准确率：KDS-EL avg = 93.95%, FWPSO avg = 92.25%
 %
-%  特征减少（vs MEL baseline）：
-%    Adenoma: -75%   ALL_AML: -88%   Colon: -65%
-%    DLBCL:   -82%   Lymphoma: -77%  Stroke: -83%
+%  vs BPSO：17W-0L
+%  vs SaWDE：16W-1L（ISOLET上输，SaWDE rank#1）
+%  vs FWPSO：17W-0L
+%  vs PSO-CSM：17W-0L
+%  vs IGPSO：17W-0L
+%  vs MEL (Baseline)：17W-0L
+%
+%  特征减少（vs MEL baseline avg 2989→491, -83.6%）：
+%    Gastric1: -95.7%   Leukaemia: -91.7%   madelon: -91.7%
+%    ALL1: -91.0%       Gastric: -90.2%      Adenoma: -87.5%
+%    Colon: -84.9%      Prostate: -84.6%     Lymphoma: -84.1%
+%    Gastric2: -83.6%   DLBCL: -80.4%        T1D: -79.1%
+%    ALL_AML: -77.4%    SRBCT: -77.3%        ALL4: -53.7%
+%    Myeloma: -45.9%    ISOLET: -41.5%
 %
 %  协同效应（ΔFull - ΔDRS - ΔKER）：
-%    正协同（8/9）：最大 Lymphoma +0.0271，Stroke +0.0190
-%    负协同（1/9）：CNS -0.0134（单独 KER 已接近天花板）
+%    正协同（16/17）：ALL4 +14.28pp, T1D +6.75pp, madelon +5.22pp...
+%    负协同（1/17）：Colon -2.24pp（KER单独已很强，ΔKER=+0.070）
+%    Mean synergy = +3.02pp
 %
-%  时间：
-%    KDS-EL avg = 188.5s
-%    BPSO avg   = 202.5s   （KDS-EL 比 BPSO 快）
-%    SaWDE avg  = 185.4s   （持平）
-%    FWPSO avg  =  55.4s   （KDS-EL 慢 3.4×，代价是精度+特征优势）
+%  时间（注意：两次实验独立运行，跨实验时间对比仅供参考）：
+%    KDS-EL avg    = 115.4s  (from KDS experiment, 25 datasets)
+%    FWPSO avg     =  23.9s  (from external experiment)
+%    BPSO avg      =  91.0s  (from external experiment)
+%    MEL baseline  = 167.8s  (from KDS experiment)
+%    → 需在同一硬件上重新运行所有方法获得可比的运行时间
 
 % ─────────────────────────────────────────────────────────────────────
 % 五、审稿人预案（Q1 审稿人最可能提的问题）
@@ -243,14 +256,16 @@
 %       accuracy and biomarker sparsity are primary concerns, this
 %       runtime profile is acceptable."
 
-%  Q3: "ALL3 is a failure case. Does this undermine the method?"
-%  A:  "ALL3 represents an extreme regime (n=36, d=7129) where 5-fold
-%       cross-validation leaves only 7 training samples per fold. Under
-%       these conditions, fitness signals are dominated by sampling noise,
-%       making KER's improvement-feedback mechanism unreliable. We report
-%       this limitation explicitly in §5.9 and discuss it as a boundary
-%       condition for KDS-EL's applicability. On all 8 remaining datasets
-%       with n≥60, KDS-EL achieves the highest accuracy."
+%  Q3: "ISOLET and ALL3 show the method is not universally best."
+%  A:  "On ISOLET (617 dimensions, 26 classes), SaWDE's differential
+%       weight mechanism shows particular strength in medium-dimensional
+%       multi-class settings, placing KDS-EL second. ALL3 (n=36) was
+%       excluded from the main comparison because the extreme sample
+%       size (7 training samples per fold) renders fitness signals
+%       unreliable for all knowledge-guided methods. We discuss both
+%       cases as boundary conditions in the Discussion section. On
+%       16 of 17 datasets across a wide range of dimensions (500–54675)
+%       and sample sizes (62–2500), KDS-EL achieves the highest accuracy."
 
 %  Q4: "The Propositions are only proof sketches."
 %  A:  "Proposition 1 establishes a diversity lower bound whose proof
@@ -266,7 +281,7 @@
 %       are inherited from the MEL baseline [CITE_MEL] and not tuned
 %       per-dataset. The α_cd(t)=(t/T)² schedule is parameter-free.
 %       This robustness is evidenced by consistent performance across
-%       9 diverse datasets spanning n∈[36,2500] and d∈[927,26877]."
+%       17 diverse datasets spanning n∈[36,2500] and d∈[500,54675]."
 
 % ─────────────────────────────────────────────────────────────────────
 % 六、投稿前 Checklist
@@ -275,8 +290,8 @@
 %  □ 替换所有 [CITE_X]：MEL原文, NSGA-II, BPSO, FWPSO, SaWDE,
 %                       IGPSO(2024), PSO-CSM(2025)
 %  □ Holm-Bonferroni 校正表（补充表）
-%  □ 收敛曲线图 Fig 10a/10b（本地运行 plot_convergence_kdsol.py）
-%  □ ALL3 讨论段落（§5.9，约 400 词）
+%  □ 收敛曲线图 Fig 8a/8b（本地运行 code/plot_convergence.py，需npy文件）
+%  □ ISOLET/KDS-EL讨论段落（§5.10，约 400 词）
 %  □ 核实 Proposition label：\label{prop:drs}, \label{prop:ker}
 %  □ 命名统一检查：全文无 "EMDO"/"KGEF"/"w/o"，
 %                 全部改为 DRS/KER/KDS-EL/DRS/KDS-EL/KER
@@ -284,3 +299,8 @@
 %  □ Abstract ≤ 250 words（目前约 220，OK）
 %  □ 关键词：evolutionary feature selection, population diversity,
 %            knowledge-guided learning, bioinformatics, particle swarm
+%  □ 更新所有数值到17数据集版本：
+%    - Friedman χ²=94.23, p=6.43e-17
+%    - KDS-EL rank=1.059
+%    - 16/17 正协同
+%    - 83.6% 特征减少

@@ -159,7 +159,7 @@ def main():
     elif method_scope == "ablation":
         methods = ABLATION_METHODS
     elif method_scope == "sota":
-        methods = ["KDS_EL"] + SOTA_METHODS
+        methods = SOTA_METHODS  # KDS_EL 复用消融结果，不重跑
     else:
         methods = [args.methods]
 

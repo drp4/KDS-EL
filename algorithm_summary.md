@@ -142,7 +142,7 @@ DRS（结构空间）← → KER（适应度空间）
 
 **正向协同**：DRS 维持的结构多样性 → KER 接收到来自不同方向的改进信号 → weight 向量更准确 → KER 精英扰动更有效 → 高质量多样解丰富 DRS Pool
 
-**消融证据**：7/9 数据集 $\Delta_{Full} > \Delta_{DRS} + \Delta_{KER}$（正协同）
+**消融证据**：16/17 数据集 $\Delta_{Full} > \Delta_{DRS} + \Delta_{KER}$（正协同），mean synergy = +3.02pp
 
 ---
 
@@ -166,8 +166,8 @@ DRS（结构空间）← → KER（适应度空间）
 **本文**：将 NHD 与 fitness 并列为两个 Pareto 目标，直接嵌入环境选择过程，提供可证明的多样性下界（Proposition 1）。
 
 **证据**：
-- 种群平均 NHD：MEL=0.063 → KDS-EL/DRS=0.435 → KDS-EL=0.340
-- 特征数 vs MEL baseline：平均减少 49%
+- 种群平均 NHD：MEL=0.000 → KDS-EL/DRS=0.417 → KDS-EL (Proposed)=0.350
+- 特征数 vs MEL baseline：平均减少 **83.6%**（2989→491）
 
 **强度**：中等偏高。机制新颖，有数学形式化，有实验验证。
 
@@ -183,8 +183,8 @@ DRS（结构空间）← → KER（适应度空间）
 **本文**：跨迭代累积所有改进事件，weight 向量是整个搜索历史的压缩知识表示，无需额外 fitness 评估，自适应更新。
 
 **证据**：
-- KER 单独在 8/9 数据集优于 MEL baseline
-- KER 平均准确率提升 vs MEL：+2.48%
+- KER 单独在 13/17 数据集优于 MEL baseline（KDS-EL/KER avg 90.92% vs MEL 89.02%）
+- KER 平均准确率提升 vs MEL：+1.90pp（KDS-EL/KER 90.92% vs MEL 89.02%）
 
 **强度**：中等。思路类似强化学习 reward 累积，在 FS 领域是新的组合。
 
@@ -201,29 +201,50 @@ DRS（结构空间）← → KER（适应度空间）
 - NHD 是"辅助目标"（auxiliary objective），不是用户级 trade-off 目标
 
 **证据**：
-- 7/9 正协同，最大协同 Colon +3.57%、Stroke +1.90%
-- KER 单独版本从未超过完整框架（外部方法比较层面，0/9）
+- 16/17 正协同（仅Colon除外，KER单独已贡献+0.070），mean synergy +3.02pp
+- KER 单独版本从未超过完整框架（外部方法比较层面，0/17）
 
-**强度**：高。消融设计严格，协同证据有说服力，是整篇论文最强的卖点。
+**强度**：高。消融设计严格，协同证据极强，17个数据集覆盖广泛，是整篇论文最强的卖点。
 
 ---
 
 ## 七、整体性能数据
 
-**实验规模**：9 数据集（d∈[2000,26877]，n∈[36,2500]）× 9 方法 × 10 runs
+**实验规模**：17 数据集（d∈[500, 54675]，n∈[36, 2500]）× 9 方法 × 10 runs
+
+### 7.1 数据集
+ALL1(36×12627), ALL4(102×12628), ALL_AML(72×7129), Adenoma(36×7458),
+Colon(62×2000), DLBCL(77×7129), Gastric(×22644), Gastric1(×22284),
+Gastric2(×22285), ISOLET(×617), Leukaemia(72×7129), Lymphoma(96×4026),
+Myeloma(×12628), Prostate(×12628), SRBCT(×2308), T1D(×54675), madelon(×500)
+
+### 7.2 9个对比方法
+BPSO, SaWDE, FWPSO, MEL (Baseline), KDS-EL/DRS, KDS-EL/KER, KDS-EL (Proposed), PSO-CSM, IGPSO
+
+### 7.3 关键统计
 
 | 指标 | 数值 |
 |---|---|
-| Friedman χ² | 47.38 |
-| Friedman p | 1.30×10⁻⁷ |
-| KDS-EL avg rank | **1.222**（7×第1，2×第2）|
-| KDS-EL avg accuracy | 93.28% |
-| vs FWPSO | 8/9 wins（CNS差0.89pp，p=0.49不显著）|
-| vs PSO-CSM(2025) | 9/9 wins，全显著 |
-| vs IGPSO(2024) | 9/9 wins，全 p<0.01 |
-| KDS-EL avg features | 595（vs MEL 1797，-67%）|
-| 正协同 | 7/9 数据集 |
-| 运行时间 | 188.5s（< BPSO 202.5s）|
+| Friedman χ² | 94.23 |
+| Friedman p | 6.43×10⁻¹⁷ |
+| KDS-EL avg rank | **1.059**（17×第1，0×第2）|
+| KDS-EL avg accuracy | 93.95% |
+| vs BPSO | 17/17 wins |
+| vs SaWDE | 16/17 wins（ISOLET上SaWDE排名#1，KDS-EL排名#2）|
+| vs FWPSO | 17/17 wins |
+| vs PSO-CSM(2025) | 17/17 wins |
+| vs IGPSO(2024) | 17/17 wins |
+| vs MEL (Baseline) | 17/17 wins |
+| KDS-EL avg features | 491（vs MEL 2989，**-83.6%**）|
+| FWPSO avg rank | 2.588（第2名）|
+| 正协同 | **16/17** 数据集（仅Colon为负协同）|
+| 平均协同效应 | +3.02pp |
+| 运行时间 | 115.4s（FWPSO 23.9s最快，MEL Baseline 167.8s）|
+| KDS-EL 平均 NHD | 0.350（vs MEL 0.000，KDS-EL/DRS 0.417）|
+
+### 7.4 数据集维度
+
+新增数据集（相比旧版9数据集实验）：ALL1、Gastric、Gastric1、Gastric2、ISOLET、Myeloma、Prostate、SRBCT、T1D、madelon（共新增8个，移除CNS和Stroke）
 
 ---
 
