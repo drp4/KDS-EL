@@ -5,7 +5,7 @@ KDS-EL_KER — KDS-EL with Knowledge-Guided Elite Fine-tuning only (KER)
 对应论文中的 KDS-EL/KER。
 """
 import numpy as np
-from utils import jFitness, kgef_flip
+from utils import jFitness, kgef_flip, compute_mi_scores
 
 
 def run_KDS_EL_KER(X, y, opts):
@@ -19,9 +19,16 @@ def run_KDS_EL_KER(X, y, opts):
     decay = opts["weight_decay"]
     flip_count = max(1, int(opts["flip_frac"] * dim))
     rand_p = opts["rand_flip_p"]
+    patience = opts.get("stall_patience", 20)
 
     weight = np.zeros(dim)
-    P = np.random.uniform(lb, ub, (N, dim))
+
+    # MI 引导初始化（一半 MI + 一半随机）
+    mi = compute_mi_scores(X, y)
+    half = N // 2
+    P = np.zeros((N, dim))
+    P[:half] = np.clip(mi + np.random.normal(0, 0.1, (half, dim)), lb, ub)
+    P[half:] = np.random.uniform(lb, ub, (N - half, dim))
     V = np.zeros((N, dim))
 
     subSize = N // 2
@@ -32,6 +39,7 @@ def run_KDS_EL_KER(X, y, opts):
     Pbest = P.copy()
     Gbest = P[np.argmin(fit)].copy()
     fitG = float(np.min(fit))
+    stall_counter = 0
 
     curve = np.zeros(T + 1)
     curve[0] = fitG
@@ -58,11 +66,24 @@ def run_KDS_EL_KER(X, y, opts):
                 prob = vf / sv if sv > 0 else np.full(dim, 0.5)
                 P_new[i] = (np.random.rand(dim) < prob).astype(float)
 
-        # 池选择（按适应度排序）
+        # 评估池
         pool = np.vstack([Pbest, P_new])
         pool_bin = (pool > thres).astype(bool)
         pool_fit = np.array([jFitness(X, y, pool_bin[i], opts)
                              for i in range(2 * N)])
+
+        # 权重更新（池选择前，P_new[i] ↔ Pbest[i] 对应正确）
+        for i in range(N):
+            fv_n = (P_new[i] > thres)
+            fv_o = (Pbest[i] > thres)
+            fit_new = pool_fit[N + i]
+            if fit_new < fitP[i]:
+                inc = fitP[i] - fit_new
+                change = np.logical_xor(fv_n, fv_o)
+                weight[change & (fv_n > fv_o)] += inc
+                weight[change & (fv_n < fv_o)] -= inc
+
+        # 池选择（按适应度排序）
         idx = np.argsort(pool_fit)[:N]
         P = pool[idx]
         fit_sel = pool_fit[idx]
@@ -84,6 +105,20 @@ def run_KDS_EL_KER(X, y, opts):
         if fitP[bi] < fitG:
             fitG = float(fitP[bi])
             Gbest = Pbest[bi].copy()
+            stall_counter = 0
+        else:
+            stall_counter += 1
+
+        # 自适应重初始化：long stall 时重启下半种群
+        if stall_counter >= patience:
+            order = np.argsort(fitP)
+            keep = order[:half]
+            restart = order[half:]
+            for idx in restart:
+                Pbest[idx] = np.clip(mi + np.random.normal(0, 0.1, dim), lb, ub)
+                P[idx] = Pbest[idx].copy()
+                fitP[idx] = jFitness(X, y, (Pbest[idx] > thres).astype(bool), opts)
+            stall_counter = 0
 
         curve[t] = fitG
 

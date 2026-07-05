@@ -140,8 +140,7 @@ def build_summary_lookup(all_detail_rows):
 def main():
     parser = argparse.ArgumentParser(description="KDS-EL 正式实验 (MEL 协议, 支持断点续跑)")
     parser.add_argument("--methods", type=str, default="all",
-                        choices=["all", "ablation", "sota"],
-                        help="实验范围: all(9方法), ablation(4), sota(5+KDS_EL)")
+                        help="实验范围: all/ablation/sota 或逗号分隔的方法名")
     parser.add_argument("--out-dir", type=str, default=None,
                         help="输出目录。若已存在则自动续跑，默认 output/formal_experiment_<timestamp>")
     parser.add_argument("--datasets", type=str, default="all",
@@ -161,7 +160,14 @@ def main():
     elif method_scope == "sota":
         methods = SOTA_METHODS  # KDS_EL 复用消融结果，不重跑
     else:
-        methods = [args.methods]
+        methods = [m.strip() for m in args.methods.split(",") if m.strip()]
+
+    # 验证方法名
+    valid = set(ALL_METHODS)
+    for m in methods:
+        if m not in valid:
+            print(f"[ERROR] 未知方法: {m}，可选: {sorted(valid)}")
+            return
 
     # ── 输出目录 ─────────────────────────────────────────────────────
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

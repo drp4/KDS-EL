@@ -6,7 +6,7 @@ KDS_EL_DRS — KDS-EL with Diversity-based Replacement Selection (DRS) only
 对应论文中的 KDS-EL/DRS（消融实验：仅含 DRS，不含 KER）。
 """
 import numpy as np
-from utils import jFitness, pairwise_nhd, emdo_select
+from utils import jFitness, pairwise_nhd, emdo_select, compute_mi_scores
 
 
 def run_KDS_EL_DRS(X, y, opts):
@@ -17,9 +17,16 @@ def run_KDS_EL_DRS(X, y, opts):
     N = opts["N"]
     T = opts["T"]
     dim = X.shape[1]
+    patience = opts.get("stall_patience", 20)
 
     weight = np.zeros(dim)
-    P = np.random.uniform(lb, ub, (N, dim))
+
+    # MI 引导初始化（一半 MI + 一半随机）
+    mi = compute_mi_scores(X, y)
+    half = N // 2
+    P = np.zeros((N, dim))
+    P[:half] = np.clip(mi + np.random.normal(0, 0.1, (half, dim)), lb, ub)
+    P[half:] = np.random.uniform(lb, ub, (N - half, dim))
     V = np.zeros((N, dim))
 
     subSize = N // 2
@@ -30,6 +37,7 @@ def run_KDS_EL_DRS(X, y, opts):
     Pbest = P.copy()
     Gbest = P[np.argmin(fit)].copy()
     fitG = float(np.min(fit))
+    stall_counter = 0
 
     curve = np.zeros(T + 1)
     nhd_curve = np.zeros(T + 1)
@@ -67,17 +75,6 @@ def run_KDS_EL_DRS(X, y, opts):
         sel = emdo_select(pool_fit, nhd_mat, N, alpha_cd)
         P = pool[sel]
         fit_sel = pool_fit[sel]
-        bin_sel = pool_bin[sel].astype(bool)
-
-        # 权重更新
-        for i in range(N):
-            fv_n = bin_sel[i]
-            fv_o = (Pbest[i] > thres)
-            if fit_sel[i] < fitP[i]:
-                inc = fitP[i] - fit_sel[i]
-                change = np.logical_xor(fv_n, fv_o)
-                weight[change & (fv_n > fv_o)] += inc
-                weight[change & (fv_n < fv_o)] -= inc
 
         improved = fit_sel < fitP
         Pbest = np.where(improved[:, None], P, Pbest)
@@ -87,6 +84,19 @@ def run_KDS_EL_DRS(X, y, opts):
         if fitP[bi] < fitG:
             fitG = float(fitP[bi])
             Gbest = Pbest[bi].copy()
+            stall_counter = 0
+        else:
+            stall_counter += 1
+
+        # 自适应重初始化：long stall 时重启下半种群
+        if stall_counter >= patience:
+            order = np.argsort(fitP)
+            restart = order[N // 2:]
+            for idx in restart:
+                Pbest[idx] = np.clip(mi + np.random.normal(0, 0.1, dim), lb, ub)
+                P[idx] = Pbest[idx].copy()
+                fitP[idx] = jFitness(X, y, (Pbest[idx] > thres).astype(bool), opts)
+            stall_counter = 0
 
         # 记录种群 NHD 多样性
         sb = (Pbest > thres).astype(int)

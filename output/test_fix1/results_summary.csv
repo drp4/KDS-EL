@@ -1,0 +1,3 @@
+Version,Dataset,Mean_Acc,Std_Acc,Mean_Feat,Std_Feat,Mean_SR,Std_SR,Mean_NHD,Std_NHD,Mean_Best_Iter,Std_Best_Iter,Mean_Time,Std_Time
+KDS_EL,Adenoma,0.999051,0.000913,70.8,68.0,0.009494,0.009125,0.354834,0.087781,63.6,26.8,51.8,2.1
+KDS_EL_KER,Adenoma,0.998903,0.000732,81.8,54.6,0.01097,0.007316,0.0,0.0,52.8,36.4,51.4,1.2

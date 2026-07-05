@@ -5,7 +5,7 @@ KDS-EL (Proposed)
 对应论文提出的 KDS-EL 方法。
 """
 import numpy as np
-from utils import jFitness, pairwise_nhd, emdo_select, kgef_flip
+from utils import jFitness, pairwise_nhd, emdo_select, kgef_flip, compute_mi_scores
 
 
 def run_KDS_EL(X, y, opts):
@@ -19,9 +19,16 @@ def run_KDS_EL(X, y, opts):
     decay = opts["weight_decay"]
     flip_count = max(1, int(opts["flip_frac"] * dim))
     rand_p = opts["rand_flip_p"]
+    patience = opts.get("stall_patience", 20)
 
     weight = np.zeros(dim)
-    P = np.random.uniform(lb, ub, (N, dim))
+
+    # MI 引导初始化（一半 MI + 一半随机）
+    mi = compute_mi_scores(X, y)
+    half = N // 2
+    P = np.zeros((N, dim))
+    P[:half] = np.clip(mi + np.random.normal(0, 0.1, (half, dim)), lb, ub)
+    P[half:] = np.random.uniform(lb, ub, (N - half, dim))
     V = np.zeros((N, dim))
 
     subSize = N // 2
@@ -32,6 +39,7 @@ def run_KDS_EL(X, y, opts):
     Pbest = P.copy()
     Gbest = P[np.argmin(fit)].copy()
     fitG = float(np.min(fit))
+    stall_counter = 0
 
     curve = np.zeros(T + 1)
     nhd_curve = np.zeros(T + 1)
@@ -67,7 +75,28 @@ def run_KDS_EL(X, y, opts):
                              for i in range(2 * N)])
         nhd_mat = pairwise_nhd(pool_bin)
 
+        # 权重更新（EMDO选择前，P_new[i] ↔ Pbest[i] 对应正确）
+        for i in range(N):
+            fv_n = (P_new[i] > thres)
+            fv_o = (Pbest[i] > thres)
+            fit_new = pool_fit[N + i]
+            if fit_new < fitP[i]:
+                inc = fitP[i] - fit_new
+                change = np.logical_xor(fv_n, fv_o)
+                weight[change & (fv_n > fv_o)] += inc
+                weight[change & (fv_n < fv_o)] -= inc
+
+        # EMDO 选择（联合优化适应度 + 多样性）
         sel = emdo_select(pool_fit, nhd_mat, N, alpha_cd)
+
+        # 精英保护：池中纯 fitness 最好的个体必须存活
+        elite_n = max(1, N // 4)
+        top_fit = np.argsort(pool_fit)[:elite_n]
+        missing = [e for e in top_fit if e not in sel]
+        if missing:
+            worst = np.argsort(-pool_fit[sel])[:len(missing)]
+            sel[worst] = missing
+
         P = pool[sel]
         fit_sel = pool_fit[sel]
 
@@ -88,6 +117,20 @@ def run_KDS_EL(X, y, opts):
         if fitP[bi] < fitG:
             fitG = float(fitP[bi])
             Gbest = Pbest[bi].copy()
+            stall_counter = 0
+        else:
+            stall_counter += 1
+
+        # 自适应重初始化：long stall 时重启下半种群
+        if stall_counter >= patience:
+            order = np.argsort(fitP)
+            keep = order[:half]
+            restart = order[half:]
+            for idx in restart:
+                Pbest[idx] = np.clip(mi + np.random.normal(0, 0.1, dim), lb, ub)
+                P[idx] = Pbest[idx].copy()
+                fitP[idx] = jFitness(X, y, (Pbest[idx] > thres).astype(bool), opts)
+            stall_counter = 0
 
         # 记录种群 NHD 多样性
         sb = (Pbest > thres).astype(int)

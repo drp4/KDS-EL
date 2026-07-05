@@ -138,7 +138,23 @@ def load_datasets(datasets, data_dir_txt, data_dir_mat, verbose=True):
 
 
 # ════════════════════════════════════════════════════════════════════════
-# 2) KNN 适应度评估
+# 1.5) 互信息初始化辅助
+# ════════════════════════════════════════════════════════════════════════
+
+def compute_mi_scores(X, y):
+    """计算每个特征与标签的互信息，归一化到 [0, 1]。
+
+    用于种群初始化引导：高 MI 特征更可能被初始化为选中状态，
+    解决知识权重冷启动问题。
+    """
+    from sklearn.feature_selection import mutual_info_classif
+    mi = mutual_info_classif(X, y, random_state=42)
+    mi = np.nan_to_num(mi, nan=0.0)
+    if mi.max() > mi.min():
+        mi = (mi - mi.min()) / (mi.max() - mi.min())
+    return mi
+
+
 # ════════════════════════════════════════════════════════════════════════
 
 def jwrapper(X_sub, y, opts):
