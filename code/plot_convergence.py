@@ -23,6 +23,7 @@ import matplotlib.ticker as mticker
 PROJ = Path(__file__).resolve().parent.parent
 EXP1_CURVES = PROJ / "output" / "formal_experiment_20260701_094943" / "curves"
 EXP2_CURVES = PROJ / "output" / "formal_experiment_20260628_205157" / "curves"
+EXP3_CURVES = PROJ / "output" / "formal_experiment_20260702_145828" / "curves"
 
 # ── 样式 ──
 mpl.rcParams.update({
@@ -57,22 +58,32 @@ LINE_STYLES = {
     "SaWDE": "-.", "PSO_CSM": ":", "IGPSO": "--",
 }
 
-# ── 数据集标签 ──
-DS_LABELS = {
-    "Colon": "Colon", "ALL_AML": "ALL-AML", "DLBCL": "DLBCL",
-    "Gastric": "Gastric", "Prostate": "Prostate", "madelon": "madelon",
-    "ALL1": "ALL1", "Leukaemia": "Leukaemia", "SRBCT": "SRBCT",
-    "Lymphoma": "Lymphoma", "Adenoma": "Adenoma", "ALL4": "ALL4",
-}
 
-# ── F8 数据集: 6个代表性数据集 ──
-F8_DATASETS = ["Colon", "ALL_AML", "DLBCL", "Gastric", "Prostate", "madelon"]
+# ── 计算共有数据集（所有方法都有 curve 数据）──
+def _get_curve_shared_datasets(versions, prefix="curve"):
+    """Compute datasets that have curve data for all specified versions."""
+    ds_sets = []
+    for v in versions:
+        files = set()
+        for d in [EXP3_CURVES, EXP2_CURVES, EXP1_CURVES]:
+            if d.exists():
+                pattern = re.compile(rf"{re.escape(prefix)}_{re.escape(v)}_(\w+)_run\d+\.npy")
+                for f in d.iterdir():
+                    m = pattern.match(f.name)
+                    if m:
+                        files.add(m.group(1))
+        if files:
+            ds_sets.append(files)
+    shared = set.intersection(*ds_sets) if ds_sets else set()
+    return sorted(shared)
+
+def _auto_grid(n, max_cols=5):
+    cols = min(n, max_cols)
+    rows = (n + cols - 1) // cols
+    return rows, cols
 
 # F8 算法: FWPSO (best baseline) + Ablation variants
 F8_VERSIONS = ["FWPSO", "MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
-
-# ── F9 数据集: 同上 ──
-F9_DATASETS = ["Colon", "ALL_AML", "DLBCL", "Gastric", "Prostate", "madelon"]
 
 # F9 算法: 显示有 NHD 的和没有 NHD 的对比
 F9_VERSIONS = ["FWPSO", "MEL", "KDS_EL_DRS", "KDS_EL"]  # FWPSO/MEL NHD=0
@@ -100,11 +111,24 @@ def load_curves(version, dataset, curves_dir, prefix="curve"):
 
 
 def load_from_both(version, dataset, prefix="curve"):
-    """从两个实验目录加载曲线（优先 Exp2，再 Exp1）。"""
-    # KDS_EL 系列在 Exp2, 基线在 Exp1
-    data = load_curves(version, dataset, EXP2_CURVES, prefix)
-    if data is None:
+    """从正确的实验目录加载曲线：
+       - KDS-EL 三变体 → Exp3 (V2, 已修复所有 bug)
+       - MEL → Exp2 (V1 有效)
+       - SOTA → Exp1
+    """
+    KDS_VERSIONS = {"KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"}
+    if version in KDS_VERSIONS:
+        data = load_curves(version, dataset, EXP3_CURVES, prefix)
+        if data is None:
+            data = load_curves(version, dataset, EXP2_CURVES, prefix)
+    elif version == "MEL":
+        data = load_curves(version, dataset, EXP2_CURVES, prefix)
+        if data is None:
+            data = load_curves(version, dataset, EXP1_CURVES, prefix)
+    else:
         data = load_curves(version, dataset, EXP1_CURVES, prefix)
+        if data is None:
+            data = load_curves(version, dataset, EXP2_CURVES, prefix)
     return data
 
 
@@ -134,13 +158,16 @@ def save_fig(fig, name, out_dir):
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f8_convergence(out_dir):
-    """F8: Fitness convergence curves — 2×3 subplots, 6 datasets."""
-    print("F8: Convergence curves (2x3)...")
+    """F8: Fitness convergence curves — auto-grid, all shared datasets."""
+    ds_list = _get_curve_shared_datasets(F8_VERSIONS, prefix="curve")
+    n_ds = len(ds_list)
+    rows, cols = _auto_grid(n_ds, max_cols=5)
+    print(f"F8: Convergence curves ({n_ds} datasets, {rows}x{cols})...")
 
-    fig, axes = plt.subplots(2, 3, figsize=(7.5, 4.8))
+    fig, axes = plt.subplots(rows, cols, figsize=(2.1 * cols, 1.8 * rows))
     axes = axes.ravel()
 
-    for i, ds in enumerate(F8_DATASETS):
+    for i, ds in enumerate(ds_list):
         ax = axes[i]
         for v in F8_VERSIONS:
             data = load_from_both(v, ds, prefix="curve")
@@ -150,13 +177,16 @@ def fig_f8_convergence(out_dir):
                 plot_with_band(ax, acc_data, COLORS[v], V_LABELS[v],
                                LINE_STYLES.get(v, "-"), alpha_fill=0.12)
 
-        ax.set_title(DS_LABELS.get(ds, ds), fontsize=8, pad=2)
-        ax.set_xlabel("Iteration", fontsize=7)
-        ax.set_ylabel("Accuracy", fontsize=7)
+        ax.set_title(ds, fontsize=7, pad=1.5)
+        ax.set_xlabel("Iteration", fontsize=6.5)
+        ax.set_ylabel("Accuracy", fontsize=6.5)
         ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
-        ax.yaxis.set_major_locator(mticker.MaxNLocator(5, prune="lower"))
+        ax.yaxis.set_major_locator(mticker.MaxNLocator(4, prune="lower"))
         ax.grid(linestyle="--", alpha=0.4, which="both")
         ax.set_xlim(0, 100)
+
+    for j in range(n_ds, len(axes)):
+        axes[j].set_visible(False)
 
     # 统一图例
     handles = []
@@ -171,22 +201,25 @@ def fig_f8_convergence(out_dir):
     fig.suptitle("F8: Convergence Curves (Mean Accuracy ± Std across 10 runs)",
                  fontsize=9, y=1.01)
     fig.tight_layout(rect=[0, 0.06, 1, 0.97])
-    save_fig(fig, "F8_convergence", out_dir)
+    save_fig(fig, "F8_convergence_all", out_dir)
     plt.close(fig)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F9: NHD 多样性曲线 (2×3)
+# F9: NHD 多样性曲线 (全部共有数据集)
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f9_nhd(out_dir):
-    """F9: NHD diversity curves — 2×3 subplots, 6 datasets."""
-    print("F9: NHD diversity curves (2x3)...")
+    """F9: NHD diversity curves — auto-grid, all shared datasets."""
+    ds_list = _get_curve_shared_datasets(F9_VERSIONS, prefix="nhd")
+    n_ds = len(ds_list)
+    rows, cols = _auto_grid(n_ds, max_cols=5)
+    print(f"F9: NHD diversity curves ({n_ds} datasets, {rows}x{cols})...")
 
-    fig, axes = plt.subplots(2, 3, figsize=(7.5, 4.8))
+    fig, axes = plt.subplots(rows, cols, figsize=(2.1 * cols, 1.8 * rows))
     axes = axes.ravel()
 
-    for i, ds in enumerate(F9_DATASETS):
+    for i, ds in enumerate(ds_list):
         ax = axes[i]
         for v in F9_VERSIONS:
             data = load_from_both(v, ds, prefix="nhd")
@@ -196,23 +229,24 @@ def fig_f9_nhd(out_dir):
                     # 基线 NHD=0，画虚线标注
                     ax.axhline(y=0, color=COLORS[v], linestyle=":",
                                linewidth=0.6, alpha=0.5)
-                    # 加文字标注
                     ax.text(50, 0.02, f"{V_LABELS[v]}: NHD=0",
-                            color=COLORS[v], fontsize=5.5, alpha=0.7,
+                            color=COLORS[v], fontsize=5, alpha=0.7,
                             ha="center", va="bottom")
                 else:
                     plot_with_band(ax, data, COLORS[v], V_LABELS[v],
                                    LINE_STYLES.get(v, "-"), alpha_fill=0.12)
 
-        ax.set_title(DS_LABELS.get(ds, ds), fontsize=8, pad=2)
-        ax.set_xlabel("Iteration", fontsize=7)
-        ax.set_ylabel("NHD", fontsize=7)
-        ax.yaxis.set_major_locator(mticker.MaxNLocator(5, prune="lower"))
+        ax.set_title(ds, fontsize=7, pad=1.5)
+        ax.set_xlabel("Iteration", fontsize=6.5)
+        ax.set_ylabel("NHD", fontsize=6.5)
+        ax.yaxis.set_major_locator(mticker.MaxNLocator(4, prune="lower"))
         ax.grid(linestyle="--", alpha=0.4)
         ax.set_xlim(0, 100)
-        # 预留一些上方空间用于标注
         ymax = ax.get_ylim()[1]
         ax.set_ylim(-0.02, max(ymax, 0.5) * 1.1)
+
+    for j in range(n_ds, len(axes)):
+        axes[j].set_visible(False)
 
     # 图例
     handles = []
@@ -227,7 +261,7 @@ def fig_f9_nhd(out_dir):
     fig.suptitle("F9: NHD Diversity Curves (Mean ± Std across 10 runs)",
                  fontsize=9, y=1.01)
     fig.tight_layout(rect=[0, 0.06, 1, 0.97])
-    save_fig(fig, "F9_nhd_diversity", out_dir)
+    save_fig(fig, "F9_nhd_diversity_all", out_dir)
     plt.close(fig)
 
 
@@ -247,8 +281,9 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
 
     print(f"Curve data sources:")
-    print(f"  Exp1: {EXP1_CURVES}")
-    print(f"  Exp2: {EXP2_CURVES}")
+    print(f"  Exp1 (SOTA): {EXP1_CURVES}")
+    print(f"  Exp2 (MEL): {EXP2_CURVES}")
+    print(f"  Exp3 (KDS-EL): {EXP3_CURVES}")
     print(f"\nGenerating → {out_dir}\n")
 
     all_figs = {"F8": fig_f8_convergence, "F9": fig_f9_nhd}

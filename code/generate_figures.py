@@ -27,8 +27,9 @@ except ImportError:
 # ══════════════════════════════════════════════════════════════════════════════
 
 PROJ = Path(__file__).resolve().parent.parent
-EXP1_DIR = PROJ / "output" / "formal_experiment_20260701_094943"   # 基线对比 (5算法)
-EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"   # 消融实验 (4变体)
+EXP1_DIR = PROJ / "output" / "formal_experiment_20260701_094943"   # SOTA 对比 (5算法)
+EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"   # 旧消融 V1 (仅 MEL 有效)
+EXP3_DIR = PROJ / "output" / "formal_experiment_20260702_145828"   # 最新消融 V2 (KDS-EL 三变体)
 
 # ── 所有9个算法（统一顺序） ──
 ALL_VERSIONS = [
@@ -63,24 +64,35 @@ HATCHES = {
 
 # ── 图表数据集（取代表性的14个，对标 config.DATASETS） ──
 PLOT_DATASETS = [
-    "Adenoma", "ALL_AML", "ALL4", "CNS",
+    "Adenoma", "ALL_AML", "ALL4", "ISOLET",
     "Colon", "DLBCL", "Leukaemia", "Lymphoma",
     "SRBCT", "Gastric", "Prostate", "BASEHOCK",
 ]
 PLOT_LABELS = [
-    "Adenoma", "ALL-AML", "ALL4", "CNS",
+    "Adenoma", "ALL-AML", "ALL4", "ISOLET",
     "Colon", "DLBCL", "Leukaemia", "Lymphoma",
     "SRBCT", "Gastric", "Prostate", "BASEHOCK",
 ]
 
 DS_LABEL_MAP = dict(zip(PLOT_DATASETS, PLOT_LABELS))
 
-# 共享数据集（两个实验都有）
-SHARED_DS = sorted(set(
-    pd.read_csv(EXP1_DIR / "results_summary.csv")["Dataset"].unique()
-) & set(
-    pd.read_csv(EXP2_DIR / "results_summary.csv")["Dataset"].unique()
-))
+def _auto_grid(n, max_cols=5):
+    """自动计算网格行列数"""
+    cols = min(n, max_cols)
+    rows = (n + cols - 1) // cols
+    return rows, cols
+
+# 共享数据集（9 方法全部有数据的 17 个）
+def get_shared_datasets(df_detail):
+    """Get datasets shared across all methods in the merged detail dataframe."""
+    versions = df_detail["Version"].unique()
+    ds_sets = []
+    for v in versions:
+        ds = set(df_detail[df_detail["Version"] == v]["Dataset"].unique())
+        if ds:
+            ds_sets.append(ds)
+    shared = set.intersection(*ds_sets) if ds_sets else set()
+    return sorted(shared)
 
 # matplotlib 全局样式
 mpl.rcParams.update({
@@ -113,20 +125,56 @@ def load_detail(path):
 
 
 def load_merged_detail():
-    """合并两个实验的 detail 数据"""
+    """合并三个实验的 detail 数据：各方法从各自有效来源加载"""
+    SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
+    KDS_VERSIONS = ["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"]
+
+    dfs = []
+
+    # Exp1: SOTA 方法
     df1 = load_detail(EXP1_DIR / "results_detail.csv")
+    dfs.append(df1[df1["Version"].isin(SOTA_VERSIONS)])
+
+    # Exp2: 仅 MEL 有效
     df2 = load_detail(EXP2_DIR / "results_detail.csv")
-    # 只取共有的列
-    common_cols = [c for c in df1.columns if c in df2.columns]
-    return pd.concat([df1[common_cols], df2[common_cols]], ignore_index=True)
+    dfs.append(df2[df2["Version"] == "MEL"])
+
+    # Exp3: KDS-EL 三变体（已修复所有 bug）
+    df3 = load_detail(EXP3_DIR / "results_detail.csv")
+    dfs.append(df3[df3["Version"].isin(KDS_VERSIONS)])
+
+    # 取共有列并合并
+    common_cols = None
+    for d in dfs:
+        if common_cols is None:
+            common_cols = set(d.columns)
+        else:
+            common_cols &= set(d.columns)
+    common_cols = list(common_cols) if common_cols else []
+    return pd.concat([d[common_cols] for d in dfs], ignore_index=True)
 
 
 def load_merged_summary():
-    """合并两个实验的 summary 数据"""
+    """合并三个实验的 summary 数据：各方法从各自有效来源加载"""
+    SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
+    KDS_VERSIONS = ["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"]
+
+    dfs = []
     df1 = pd.read_csv(EXP1_DIR / "results_summary.csv")
+    dfs.append(df1[df1["Version"].isin(SOTA_VERSIONS)])
     df2 = pd.read_csv(EXP2_DIR / "results_summary.csv")
-    common_cols = [c for c in df1.columns if c in df2.columns]
-    return pd.concat([df1[common_cols], df2[common_cols]], ignore_index=True)
+    dfs.append(df2[df2["Version"] == "MEL"])
+    df3 = pd.read_csv(EXP3_DIR / "results_summary.csv")
+    dfs.append(df3[df3["Version"].isin(KDS_VERSIONS)])
+
+    common_cols = None
+    for d in dfs:
+        if common_cols is None:
+            common_cols = set(d.columns)
+        else:
+            common_cols &= set(d.columns)
+    common_cols = list(common_cols) if common_cols else []
+    return pd.concat([d[common_cols] for d in dfs], ignore_index=True)
 
 
 def g(df, version, dataset, metric="Accuracy"):
@@ -170,15 +218,16 @@ def set_axis_style(ax):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F4: 准确率柱状图 (3×3)
+# F4: 准确率柱状图（全部 17 个共享数据集）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f4_accuracy(df_detail, out_dir):
-    """F4: Accuracy bar chart — 3×3 subplots, 9 algorithms."""
-    print("F4: Accuracy bar chart (3x3)...")
-    ds_list = PLOT_DATASETS[:9]
-    rows = 3
-    fig, axes = plt.subplots(rows, 3, figsize=(7.5, 5.5))
+    """F4: Accuracy bar chart — auto-grid, 17 shared datasets, 9 algorithms."""
+    print("F4: Accuracy bar chart (17 datasets)...")
+    ds_list = get_shared_datasets(df_detail)
+    n_ds = len(ds_list)
+    rows, cols = _auto_grid(n_ds, max_cols=5)
+    fig, axes = plt.subplots(rows, cols, figsize=(2.1 * cols, 1.7 * rows))
     axes = axes.ravel()
 
     for i, ds in enumerate(ds_list):
@@ -203,36 +252,38 @@ def fig_f4_accuracy(df_detail, out_dir):
         for bar, v in zip(ax.patches, valid_v):
             if HATCHES[v]:
                 bar.set_hatch(HATCHES[v])
-        ax.set_title(DS_LABEL_MAP.get(ds, ds), fontsize=8, pad=2)
+        ax.set_title(ds, fontsize=7, pad=1.5)
         ax.set_xticks([])
         ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
         ax.yaxis.set_major_locator(mticker.MaxNLocator(4, prune="lower"))
         set_axis_style(ax)
 
-    for j in range(len(ds_list), len(axes)):
+    for j in range(n_ds, len(axes)):
         axes[j].set_visible(False)
 
     handles = make_handles(ALL_VERSIONS)
     fig.legend(handles=handles, loc="lower center", ncol=5,
-               bbox_to_anchor=(0.5, -0.03), frameon=True,
+               bbox_to_anchor=(0.5, -0.01), frameon=True,
                columnspacing=0.6, handlelength=1.1, handleheight=0.85,
                fontsize=6.5)
     fig.text(0.02, 0.5, "Classification Accuracy", va="center",
              rotation="vertical", fontsize=8)
-    fig.tight_layout(rect=[0.04, 0.06, 1, 1])
-    save_fig(fig, "F4_accuracy_3x3", out_dir)
+    fig.tight_layout(rect=[0.02, 0.04, 1, 1])
+    save_fig(fig, "F4_accuracy_all", out_dir)
     plt.close(fig)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F5: 特征数柱状图 (3×3, 对数轴)
+# F5: 特征数柱状图（全部 17 个共享数据集, 对数轴）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f5_features(df_detail, out_dir):
-    """F5: Feature count bar chart — 3×3, log scale."""
-    print("F5: Feature count bar chart (3x3, log)...")
-    ds_list = PLOT_DATASETS[:9]
-    fig, axes = plt.subplots(3, 3, figsize=(7.5, 5.5))
+    """F5: Feature count bar chart — 17 shared datasets, log scale."""
+    print("F5: Feature count bar chart (17 datasets, log)...")
+    ds_list = get_shared_datasets(df_detail)
+    n_ds = len(ds_list)
+    rows, cols = _auto_grid(n_ds, max_cols=5)
+    fig, axes = plt.subplots(rows, cols, figsize=(2.1 * cols, 1.7 * rows))
     axes = axes.ravel()
 
     for i, ds in enumerate(ds_list):
@@ -273,7 +324,7 @@ def fig_f5_features(df_detail, out_dir):
     fig.text(0.02, 0.5, "Number of Selected Features (log scale)",
              va="center", rotation="vertical", fontsize=8)
     fig.tight_layout(rect=[0.04, 0.06, 1, 1])
-    save_fig(fig, "F5_features_3x3", out_dir)
+    save_fig(fig, "F5_features_all", out_dir)
     plt.close(fig)
 
 
@@ -326,14 +377,16 @@ def fig_f6_ablation(df_detail, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F7: 稳定性箱线图 (3×3)
+# F7: 稳定性箱线图（全部 17 个共享数据集）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f7_boxplot(df_detail, out_dir):
-    """F7: Stability boxplot — 3×3, accuracy distribution."""
-    print("F7: Stability boxplot (3x3)...")
-    ds_list = PLOT_DATASETS[:9]
-    fig, axes = plt.subplots(3, 3, figsize=(7.5, 5.5))
+    """F7: Stability boxplot — 17 shared datasets, auto-grid."""
+    print("F7: Stability boxplot (17 datasets)...")
+    ds_list = get_shared_datasets(df_detail)
+    n_ds = len(ds_list)
+    rows, cols = _auto_grid(n_ds, max_cols=5)
+    fig, axes = plt.subplots(rows, cols, figsize=(2.1 * cols, 1.7 * rows))
     axes = axes.ravel()
 
     for i, ds in enumerate(ds_list):
@@ -368,7 +421,7 @@ def fig_f7_boxplot(df_detail, out_dir):
     fig.text(0.02, 0.5, "Classification Accuracy", va="center",
              rotation="vertical", fontsize=8)
     fig.tight_layout(rect=[0.04, 0.02, 1, 1])
-    save_fig(fig, "F7_boxplot_3x3", out_dir)
+    save_fig(fig, "F7_boxplot_all", out_dir)
     plt.close(fig)
 
 
@@ -399,7 +452,8 @@ def fig_f10_wilcoxon(df_detail, out_dir):
                 continue
             wins = 0
             total = 0
-            for ds in SHARED_DS:
+            shared_ds = get_shared_datasets(df_detail)
+            for ds in shared_ds:
                 a1 = g(df_detail, v1, ds)
                 a2 = g(df_detail, v2, ds)
                 if len(a1) < 3 or len(a2) < 3:
@@ -518,7 +572,8 @@ def fig_f12_bubble(df_detail, out_dir):
 
     for v in ALL_VERSIONS:
         xs, ys, sizes = [], [], []
-        for ds in SHARED_DS:
+        shared_ds = get_shared_datasets(df_detail)
+        for ds in shared_ds:
             acc = gm(df_detail, v, ds, "Accuracy")
             feat = gm(df_detail, v, ds, "Num_Features")
             t = gm(df_detail, v, ds, "Time_sec")
@@ -535,8 +590,8 @@ def fig_f12_bubble(df_detail, out_dir):
                        zorder=2 if v == "KDS_EL" else 1)
 
         # 高亮 KDS_EL
-        if v == "KDS_EL" and xs:
-            for xi, yi, ds in zip(xs, ys, SHARED_DS):
+        if v == "KDS_EL" and xs and shared_ds:
+            for xi, yi, ds in zip(xs, ys, shared_ds):
                 if yi > 0.85:  # 只标注高准确率的
                     ax.annotate(ds, (xi, yi), fontsize=5.5, alpha=0.8,
                                 textcoords="offset points", xytext=(4, 4))
@@ -577,11 +632,13 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
 
     print(f"Loading data from:")
-    print(f"  Exp1: {EXP1_DIR}")
-    print(f"  Exp2: {EXP2_DIR}")
+    print(f"  Exp1 (SOTA): {EXP1_DIR}")
+    print(f"  Exp2 (MEL only): {EXP2_DIR}")
+    print(f"  Exp3 (KDS-EL): {EXP3_DIR}")
     df = load_merged_detail()
+    shared = get_shared_datasets(df)
     print(f"  Merged: {len(df)} rows, datasets={df.Dataset.nunique()}, versions={df.Version.nunique()}")
-    print(f"  Shared datasets: {len(SHARED_DS)}")
+    print(f"  Shared datasets: {len(shared)}")
     print(f"\nGenerating figures → {out_dir}\n")
 
     all_figs = {

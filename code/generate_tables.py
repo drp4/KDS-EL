@@ -24,6 +24,7 @@ except ImportError:
 PROJ = Path(__file__).resolve().parent.parent
 EXP1_DIR = PROJ / "output" / "formal_experiment_20260701_094943"
 EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"
+EXP3_DIR = PROJ / "output" / "formal_experiment_20260702_145828"
 
 ALL_VERSIONS = [
     "BPSO", "SaWDE", "FWPSO", "MEL",
@@ -49,17 +50,49 @@ def load_detail(path):
 
 
 def load_merged_detail():
+    """合并三个实验的 detail 数据：各方法从各自有效来源加载"""
+    SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
+    KDS_VERSIONS = ["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"]
+
+    dfs = []
     df1 = load_detail(EXP1_DIR / "results_detail.csv")
+    dfs.append(df1[df1["Version"].isin(SOTA_VERSIONS)])
     df2 = load_detail(EXP2_DIR / "results_detail.csv")
-    common_cols = [c for c in df1.columns if c in df2.columns]
-    return pd.concat([df1[common_cols], df2[common_cols]], ignore_index=True)
+    dfs.append(df2[df2["Version"] == "MEL"])
+    df3 = load_detail(EXP3_DIR / "results_detail.csv")
+    dfs.append(df3[df3["Version"].isin(KDS_VERSIONS)])
+
+    common_cols = None
+    for d in dfs:
+        if common_cols is None:
+            common_cols = set(d.columns)
+        else:
+            common_cols &= set(d.columns)
+    common_cols = list(common_cols) if common_cols else []
+    return pd.concat([d[common_cols] for d in dfs], ignore_index=True)
 
 
 def load_merged_summary():
+    """合并三个实验的 summary 数据：各方法从各自有效来源加载"""
+    SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
+    KDS_VERSIONS = ["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"]
+
+    dfs = []
     df1 = pd.read_csv(EXP1_DIR / "results_summary.csv")
+    dfs.append(df1[df1["Version"].isin(SOTA_VERSIONS)])
     df2 = pd.read_csv(EXP2_DIR / "results_summary.csv")
-    common_cols = [c for c in df1.columns if c in df2.columns]
-    return pd.concat([df1[common_cols], df2[common_cols]], ignore_index=True)
+    dfs.append(df2[df2["Version"] == "MEL"])
+    df3 = pd.read_csv(EXP3_DIR / "results_summary.csv")
+    dfs.append(df3[df3["Version"].isin(KDS_VERSIONS)])
+
+    common_cols = None
+    for d in dfs:
+        if common_cols is None:
+            common_cols = set(d.columns)
+        else:
+            common_cols &= set(d.columns)
+    common_cols = list(common_cols) if common_cols else []
+    return pd.concat([d[common_cols] for d in dfs], ignore_index=True)
 
 
 def g(df, version, dataset, metric="Accuracy"):
@@ -259,9 +292,13 @@ def table_t7_ablation(df_summary, out_dir):
     """T7: Ablation study — Accuracy and Features for 4 variants."""
     print("T7: Ablation study table...")
 
-    # Use only exp2 data
+    # MEL → 来自 Exp2, KDS-EL 三变体 → 来自 Exp3
     df2 = pd.read_csv(EXP2_DIR / "results_summary.csv")
-    all_ds = sorted(df2["Dataset"].unique())
+    df_mel = df2[df2["Version"] == "MEL"]
+    df3 = pd.read_csv(EXP3_DIR / "results_summary.csv")
+    df3_abl = df3[df3["Version"].isin(["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"])]
+    df_abl = pd.concat([df_mel, df3_abl], ignore_index=True)
+    all_ds = sorted(set(df_mel["Dataset"].unique()) & set(df3_abl["Dataset"].unique()))
 
     table = []
     for ds in all_ds:
@@ -270,7 +307,7 @@ def table_t7_ablation(df_summary, out_dir):
         best_feat = float("inf")
         best_acc_v = best_feat_v = ""
         for v in ABL_VERSIONS:
-            sub = df2[(df2["Version"] == v) & (df2["Dataset"] == ds)]
+            sub = df_abl[(df_abl["Version"] == v) & (df_abl["Dataset"] == ds)]
             if len(sub) > 0:
                 acc = sub["Mean_Acc"].values[0]
                 feat = sub["Mean_Feat"].values[0]
@@ -302,7 +339,7 @@ def table_t7_ablation(df_summary, out_dir):
     for ds in all_ds:
         row = {"Dataset": ds}
         for v in ABL_VERSIONS:
-            sub = df2[(df2["Version"] == v) & (df2["Dataset"] == ds)]
+            sub = df_abl[(df_abl["Version"] == v) & (df_abl["Dataset"] == ds)]
             if len(sub) > 0:
                 row[V_LABELS[v]] = f"{sub['Mean_Acc'].values[0]:.4f}±{sub['Std_Acc'].values[0]:.4f}"
             else:
@@ -336,7 +373,7 @@ def main():
     out_dir = args.out or str(PROJ / "output" / "tables")
     os.makedirs(out_dir, exist_ok=True)
 
-    print(f"Loading summary data...")
+    print(f"Loading summary data from Exp1 (SOTA) + Exp2 (MEL) + Exp3 (KDS-EL)...")
     df_summary = load_merged_summary()
     print(f"  {len(df_summary)} rows, datasets={df_summary.Dataset.nunique()}, versions={df_summary.Version.nunique()}")
     print(f"\nGenerating tables → {out_dir}\n")
