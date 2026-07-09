@@ -80,7 +80,17 @@
       "Bash(git -C \"f:/zym/KDS-EL\" log --oneline --all -- code/algorithms/kds_el_drs.py)",
       "Bash(git -C \"f:/zym/KDS-EL\" log -1 --format=\"%H %ci %s\" -- code/algorithms/kds_el_drs.py)",
       "Bash(git -C \"f:/zym/KDS-EL\" diff 029cd3a -- code/algorithms/kds_el_drs.py)",
-      "Bash(python code/analyze_ablation_validity.py)"
+      "Bash(python code/analyze_ablation_validity.py)",
+      "PowerShell(python -u code/run_formal_experiment.py --methods sota --datasets PCMAC,BASEHOCK,COIL20 --out-dir output/formal_experiment_20260701_094943)",
+      "Bash(python code/analyze_experiments.py)",
+      "Bash(python -c \"from algorithms import RUNNERS; print\\('Registered:', len\\(RUNNERS\\), 'methods'\\); [print\\(f'  {k}'\\) for k in sorted\\(RUNNERS\\)]\")",
+      "Bash(python -c \"import sys; sys.path.insert\\(0,'code'\\); from algorithms import RUNNERS; print\\('Registered:', len\\(RUNNERS\\), 'methods'\\); [print\\(f'  {k}'\\) for k in sorted\\(RUNNERS\\)]\")",
+      "Bash(timeout 300)",
+      "Bash(python \"F:/zym/KDS-EL/output/_analyze_mofs.py\")",
+      "Bash(python \"F:/zym/KDS-EL/output/_check_metric.py\")",
+      "Bash(python \"F:/zym/KDS-EL/output/_fix_acc.py\")",
+      "Bash(python \"F:/zym/KDS-EL/output/_mofs_corrected.py\")",
+      "Bash(python \"F:/zym/KDS-EL/output/_full_analysis.py\")"
     ],
     "additionalDirectories": [
       "F:\\zym\\KDS-EL\\output\\formal_experiment_20260702_145828\\curves"

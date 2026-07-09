@@ -56,6 +56,14 @@ ALL_DATASETS = [
     "PCMAC", "RELATHE", "USPS",
 ]
 
+# ── MOFS 对比实验专用数据集（20 个）─────────────────────────────────────────
+MOFS_DATASETS = [
+    "ALL1", "ALL4", "ALL_AML", "Adenoma", "BASEHOCK", "COIL20",
+    "Colon", "DLBCL", "Gastric", "Gastric1", "Gastric2", "ISOLET",
+    "Leukaemia", "Lymphoma", "Myeloma", "PCMAC", "Prostate",
+    "SRBCT", "T1D", "madelon",
+]
+
 OPTS = {
     "k": 3,
     "N": 20,

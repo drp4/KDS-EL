@@ -35,7 +35,9 @@ NUM_RUNS = 10          # 对标 MEL: numRun = 10
 
 ABLATION_METHODS = ["MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
 SOTA_METHODS     = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
-ALL_METHODS      = ABLATION_METHODS + SOTA_METHODS
+MOFS_METHODS     = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
+                    "fMOPSO-FS", "VGS-MOEA", "W-MOPSO-FS"]
+ALL_METHODS      = ABLATION_METHODS + SOTA_METHODS + MOFS_METHODS
 
 # CSV 字段
 FIELDS_DETAIL  = ["Version", "Dataset", "Run",
@@ -159,6 +161,8 @@ def main():
         methods = ABLATION_METHODS
     elif method_scope == "sota":
         methods = SOTA_METHODS  # KDS_EL 复用消融结果，不重跑
+    elif method_scope == "mofs":
+        methods = MOFS_METHODS
     else:
         methods = [m.strip() for m in args.methods.split(",") if m.strip()]
 
@@ -191,7 +195,10 @@ def main():
 
     # ── 数据集扫描 ───────────────────────────────────────────────────
     if args.datasets == "all":
-        candidates = config.ALL_DATASETS
+        if method_scope == "mofs":
+            candidates = config.MOFS_DATASETS
+        else:
+            candidates = config.ALL_DATASETS
     else:
         candidates = [d.strip() for d in args.datasets.split(",") if d.strip()]
 

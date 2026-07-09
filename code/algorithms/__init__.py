@@ -12,6 +12,12 @@ from .kds_el_ker import run_KDS_EL_KER
 from .kds_el import run_KDS_EL
 from .pso_csm import run_PSO_CSM
 from .igpso import run_IGPSO
+from .nsga2_fs import run_NSGA_II_FS
+from .mopso_fs import run_MOPSO_FS
+from .moead_fs import run_MOEA_D_FS
+from .fmopso_fs import run_fMOPSO_FS
+from .vgs_moea import run_VGS_MOEA
+from .wmopso_fs import run_W_MOPSO_FS
 
 RUNNERS = {
     "BPSO":            run_BPSO,
@@ -23,4 +29,10 @@ RUNNERS = {
     "KDS_EL":          run_KDS_EL,
     "PSO_CSM":         run_PSO_CSM,
     "IGPSO":           run_IGPSO,
+    "NSGA-II-FS":      run_NSGA_II_FS,
+    "MOPSO-FS":        run_MOPSO_FS,
+    "MOEA-D-FS":       run_MOEA_D_FS,
+    "fMOPSO-FS":       run_fMOPSO_FS,
+    "VGS-MOEA":        run_VGS_MOEA,
+    "W-MOPSO-FS":      run_W_MOPSO_FS,
 }
