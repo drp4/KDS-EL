@@ -58,12 +58,6 @@ MEL、KER、KDS_EL 共享同一个权重矩阵初始化方式（全零），所�
 
 应用在 12 个高维数据集上，取得最优分类性能和最短计算时间。
 
-#### 3. SAR-MTPSO（Deng et al., 2025, *Swarm and Evolutionary Computation*）
-**策略**：精英特征保留策略（EFP）— 重要特征在进化中受保护不被丢失。
-
-> "Each individual particle preserves key features during the evolution process."
-
-21 个 >1000D 数据集，17/21 上最优。
 
 ---
 

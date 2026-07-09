@@ -2,12 +2,14 @@
 F8 + F9: 收敛曲线 & NHD 多样性曲线
 =====================================
 从 npy 文件读取迭代曲线数据，生成：
-  F8  — 适应度收敛曲线 (2×3)
-  F9  — NHD 多样性曲线 (2×3)
+  F8  — 适应度收敛曲线 (auto-grid, 所有共有数据集)
+  F9  — NHD 多样性曲线 (auto-grid, 所有共有数据集)
 
 数据来源：
   - Exp1: output/formal_experiment_20260701_094943/curves/
   - Exp2: output/formal_experiment_20260628_205157/curves/
+  - Exp3: output/formal_experiment_20260702_145828/curves/
+  - Exp4: output/formal_experiment_20260707_142018/curves/
 
 用法：
     python plot_convergence.py
@@ -24,6 +26,7 @@ PROJ = Path(__file__).resolve().parent.parent
 EXP1_CURVES = PROJ / "output" / "formal_experiment_20260701_094943" / "curves"
 EXP2_CURVES = PROJ / "output" / "formal_experiment_20260628_205157" / "curves"
 EXP3_CURVES = PROJ / "output" / "formal_experiment_20260702_145828" / "curves"
+EXP4_CURVES = PROJ / "output" / "formal_experiment_20260707_142018" / "curves"
 
 # ── 样式 ──
 mpl.rcParams.update({
@@ -39,33 +42,41 @@ mpl.rcParams.update({
     "savefig.bbox": "tight", "savefig.pad_inches": 0.03,
 })
 
-# ── 颜色和标签 ──
+# ── 颜色和标签（扩展到15方法）──
 COLORS = {
     "KDS_EL": "#b71c1c", "KDS_EL_DRS": "#2e7d32",
     "KDS_EL_KER": "#f57f17", "MEL": "#00838f",
     "FWPSO": "#1565c0", "BPSO": "#9e9e9e",
     "SaWDE": "#bdbdbd", "PSO_CSM": "#6a1b9a", "IGPSO": "#e65100",
+    "NSGA_II_FS": "#455a64", "MOPSO_FS": "#78909c",
+    "MOEA_D_FS": "#90a4ae", "fMOPSO_FS": "#00acc1",
+    "VGS_MOEA": "#ff6f00", "W_MOPSO_FS": "#c62828",
 }
 V_LABELS = {
     "KDS_EL": "KDS-EL (Proposed)", "KDS_EL_DRS": "KDS-EL/DRS",
-    "KDS_EL_KER": "KDS-EL/KER", "MEL": "MEL",
+    "KDS_EL_KER": "KDS-EL/KER", "MEL": "MEL (Baseline)",
     "FWPSO": "FWPSO", "BPSO": "BPSO",
     "SaWDE": "SaWDE", "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
+    "NSGA_II_FS": "NSGA-II-FS", "MOPSO_FS": "MOPSO-FS",
+    "MOEA_D_FS": "MOEA-D-FS", "fMOPSO_FS": "fMOPSO-FS",
+    "VGS_MOEA": "VGS-MOEA", "W_MOPSO_FS": "W-MOPSO-FS",
 }
 LINE_STYLES = {
     "KDS_EL": "-", "KDS_EL_DRS": "--", "KDS_EL_KER": "-.",
     "MEL": ":", "FWPSO": "-", "BPSO": "--",
     "SaWDE": "-.", "PSO_CSM": ":", "IGPSO": "--",
+    "NSGA_II_FS": "-", "MOPSO_FS": "--", "MOEA_D_FS": "-.",
+    "fMOPSO_FS": "-", "VGS_MOEA": "--", "W_MOPSO_FS": "-.",
 }
 
 
-# ── 计算共有数据集（所有方法都有 curve 数据）──
 def _get_curve_shared_datasets(versions, prefix="curve"):
     """Compute datasets that have curve data for all specified versions."""
+    all_dirs = [EXP3_CURVES, EXP2_CURVES, EXP1_CURVES, EXP4_CURVES]
     ds_sets = []
     for v in versions:
         files = set()
-        for d in [EXP3_CURVES, EXP2_CURVES, EXP1_CURVES]:
+        for d in all_dirs:
             if d.exists():
                 pattern = re.compile(rf"{re.escape(prefix)}_{re.escape(v)}_(\w+)_run\d+\.npy")
                 for f in d.iterdir():
@@ -77,16 +88,19 @@ def _get_curve_shared_datasets(versions, prefix="curve"):
     shared = set.intersection(*ds_sets) if ds_sets else set()
     return sorted(shared)
 
+
 def _auto_grid(n, max_cols=5):
     cols = min(n, max_cols)
     rows = (n + cols - 1) // cols
     return rows, cols
 
-# F8 算法: FWPSO (best baseline) + Ablation variants
-F8_VERSIONS = ["FWPSO", "MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
 
-# F9 算法: 显示有 NHD 的和没有 NHD 的对比
-F9_VERSIONS = ["FWPSO", "MEL", "KDS_EL_DRS", "KDS_EL"]  # FWPSO/MEL NHD=0
+# F8 算法: KDS-EL family + FWPSO (best SOTA) + MEL + Top MOFS
+F8_VERSIONS = ["FWPSO", "MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL",
+               "VGS_MOEA", "NSGA_II_FS"]
+
+# F9 算法: NHD curves — only methods with NHD support
+F9_VERSIONS = ["FWPSO", "MEL", "KDS_EL_DRS", "KDS_EL", "VGS_MOEA"]
 
 
 def load_curves(version, dataset, curves_dir, prefix="curve"):
@@ -104,23 +118,31 @@ def load_curves(version, dataset, curves_dir, prefix="curve"):
             runs.append(arr.astype(np.float64))
     if not runs:
         return None
-    # 对齐长度（取最小长度）
     min_len = min(len(r) for r in runs)
     runs = np.array([r[:min_len] for r in runs])
     return runs
 
 
-def load_from_both(version, dataset, prefix="curve"):
+def load_from_all(version, dataset, prefix="curve"):
     """从正确的实验目录加载曲线：
        - KDS-EL 三变体 → Exp3 (V2, 已修复所有 bug)
        - MEL → Exp2 (V1 有效)
        - SOTA → Exp1
+       - MOFS → Exp4
     """
     KDS_VERSIONS = {"KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"}
+    MOFS_NAMES = {"NSGA_II_FS", "MOPSO_FS", "MOEA_D_FS",
+                   "fMOPSO_FS", "VGS_MOEA", "W_MOPSO_FS"}
+    SOTA_NAMES = {"BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"}
+
     if version in KDS_VERSIONS:
         data = load_curves(version, dataset, EXP3_CURVES, prefix)
         if data is None:
             data = load_curves(version, dataset, EXP2_CURVES, prefix)
+    elif version in MOFS_NAMES:
+        data = load_curves(version, dataset, EXP4_CURVES, prefix)
+        if data is None:
+            data = load_curves(version, dataset, EXP1_CURVES, prefix)
     elif version == "MEL":
         data = load_curves(version, dataset, EXP2_CURVES, prefix)
         if data is None:
@@ -154,7 +176,7 @@ def save_fig(fig, name, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F8: 适应度收敛曲线 (2×3)
+# F8: 适应度收敛曲线 (auto-grid, 所有共有数据集)
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f8_convergence(out_dir):
@@ -170,11 +192,11 @@ def fig_f8_convergence(out_dir):
     for i, ds in enumerate(ds_list):
         ax = axes[i]
         for v in F8_VERSIONS:
-            data = load_from_both(v, ds, prefix="curve")
+            data = load_from_all(v, ds, prefix="curve")
             if data is not None:
-                # 转换为 accuracy = 1 - fitness
-                acc_data = 1.0 - data
-                plot_with_band(ax, acc_data, COLORS[v], V_LABELS[v],
+                acc_data = 1.0 - data  # fitness → accuracy
+                plot_with_band(ax, acc_data, COLORS.get(v, "#333333"),
+                               V_LABELS.get(v, v),
                                LINE_STYLES.get(v, "-"), alpha_fill=0.12)
 
         ax.set_title(ds, fontsize=7, pad=1.5)
@@ -188,16 +210,15 @@ def fig_f8_convergence(out_dir):
     for j in range(n_ds, len(axes)):
         axes[j].set_visible(False)
 
-    # 统一图例
+    from matplotlib.lines import Line2D
     handles = []
     for v in F8_VERSIONS:
-        from matplotlib.lines import Line2D
-        handles.append(Line2D([0], [0], color=COLORS[v],
+        handles.append(Line2D([0], [0], color=COLORS.get(v, "#333333"),
                               linestyle=LINE_STYLES.get(v, "-"),
-                              linewidth=1.3, label=V_LABELS[v]))
+                              linewidth=1.3, label=V_LABELS.get(v, v)))
     fig.legend(handles=handles, loc="lower center", ncol=5,
                bbox_to_anchor=(0.5, -0.03), frameon=True,
-               columnspacing=0.8, handlelength=1.3, fontsize=6.5)
+               columnspacing=0.6, handlelength=1.2, fontsize=5.5)
     fig.suptitle("F8: Convergence Curves (Mean Accuracy ± Std across 10 runs)",
                  fontsize=9, y=1.01)
     fig.tight_layout(rect=[0, 0.06, 1, 0.97])
@@ -206,7 +227,7 @@ def fig_f8_convergence(out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F9: NHD 多样性曲线 (全部共有数据集)
+# F9: NHD 多样性曲线 (auto-grid, 所有共有数据集)
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f9_nhd(out_dir):
@@ -222,18 +243,17 @@ def fig_f9_nhd(out_dir):
     for i, ds in enumerate(ds_list):
         ax = axes[i]
         for v in F9_VERSIONS:
-            data = load_from_both(v, ds, prefix="nhd")
+            data = load_from_all(v, ds, prefix="nhd")
             if data is not None:
-                # 检查是否全为 0
                 if np.all(data < 1e-8):
-                    # 基线 NHD=0，画虚线标注
-                    ax.axhline(y=0, color=COLORS[v], linestyle=":",
+                    ax.axhline(y=0, color=COLORS.get(v, "#333333"), linestyle=":",
                                linewidth=0.6, alpha=0.5)
-                    ax.text(50, 0.02, f"{V_LABELS[v]}: NHD=0",
-                            color=COLORS[v], fontsize=5, alpha=0.7,
+                    ax.text(50, 0.02, f"{V_LABELS.get(v, v)}: NHD=0",
+                            color=COLORS.get(v, "#333333"), fontsize=5, alpha=0.7,
                             ha="center", va="bottom")
                 else:
-                    plot_with_band(ax, data, COLORS[v], V_LABELS[v],
+                    plot_with_band(ax, data, COLORS.get(v, "#333333"),
+                                   V_LABELS.get(v, v),
                                    LINE_STYLES.get(v, "-"), alpha_fill=0.12)
 
         ax.set_title(ds, fontsize=7, pad=1.5)
@@ -248,16 +268,15 @@ def fig_f9_nhd(out_dir):
     for j in range(n_ds, len(axes)):
         axes[j].set_visible(False)
 
-    # 图例
+    from matplotlib.lines import Line2D
     handles = []
     for v in F9_VERSIONS:
-        from matplotlib.lines import Line2D
-        handles.append(Line2D([0], [0], color=COLORS[v],
+        handles.append(Line2D([0], [0], color=COLORS.get(v, "#333333"),
                               linestyle=LINE_STYLES.get(v, "-"),
-                              linewidth=1.3, label=V_LABELS[v]))
-    fig.legend(handles=handles, loc="lower center", ncol=4,
+                              linewidth=1.3, label=V_LABELS.get(v, v)))
+    fig.legend(handles=handles, loc="lower center", ncol=5,
                bbox_to_anchor=(0.5, -0.03), frameon=True,
-               columnspacing=0.8, handlelength=1.3, fontsize=6.5)
+               columnspacing=0.6, handlelength=1.2, fontsize=5.5)
     fig.suptitle("F9: NHD Diversity Curves (Mean ± Std across 10 runs)",
                  fontsize=9, y=1.01)
     fig.tight_layout(rect=[0, 0.06, 1, 0.97])
@@ -281,9 +300,10 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
 
     print(f"Curve data sources:")
-    print(f"  Exp1 (SOTA): {EXP1_CURVES}")
-    print(f"  Exp2 (MEL): {EXP2_CURVES}")
+    print(f"  Exp1 (SOTA):  {EXP1_CURVES}")
+    print(f"  Exp2 (MEL):   {EXP2_CURVES}")
     print(f"  Exp3 (KDS-EL): {EXP3_CURVES}")
+    print(f"  Exp4 (MOFS):  {EXP4_CURVES}")
     print(f"\nGenerating → {out_dir}\n")
 
     all_figs = {"F8": fig_f8_convergence, "F9": fig_f9_nhd}

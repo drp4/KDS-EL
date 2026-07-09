@@ -90,7 +90,8 @@
       "Bash(python \"F:/zym/KDS-EL/output/_check_metric.py\")",
       "Bash(python \"F:/zym/KDS-EL/output/_fix_acc.py\")",
       "Bash(python \"F:/zym/KDS-EL/output/_mofs_corrected.py\")",
-      "Bash(python \"F:/zym/KDS-EL/output/_full_analysis.py\")"
+      "Bash(python \"F:/zym/KDS-EL/output/_full_analysis.py\")",
+      "Bash(git worktree *)"
     ],
     "additionalDirectories": [
       "F:\\zym\\KDS-EL\\output\\formal_experiment_20260702_145828\\curves"

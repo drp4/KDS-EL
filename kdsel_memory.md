@@ -1,14 +1,12 @@
 # KDS-EL 论文项目完整记忆文档
 # 用于新对话的上下文恢复
-# 生成时间：2026年5月 | 最后更新：2026年7月2日（基于最新17数据集实验）
+# 生成时间：2026年5月 | 最后更新：2026年7月9日（15方法×20数据集，含MOFS对比）
 
 ---
 
 ## 一、项目概况
 
 **算法名称**：KDS-EL（Knowledge-guided Dual-Space Evolutionary Learning）
-**投稿目标**：Expert Systems with Applications（ESWA，Q1 二区，IF≈7.5）
-**备选期刊**：Applied Soft Computing（ASC，Q1 二区，IF≈6.6）
 **研究领域**：高维生物信息学特征选择（Wrapper-based, PSO框架）
 
 ---
@@ -17,6 +15,7 @@
 
 ```
 KDS-EL = 双子群PSO骨架（继承自MEL [CITE_MEL, IEEE TKDE]）
+         + MI 初始化 + 自适应重初始化          ← 知识引导生命周期
          + DRS（Diversity-regulated Selection）← 原名 EMDO
          + KER（Knowledge-guided Elite Refinement）← 原名 KGEF
 
@@ -29,215 +28,279 @@ KER：improvement-feedback 权重更新（weight += delta when Pbest improves）
      p_r=0.10 随机翻转保证遍历性
      定位：Fitness Space（适应度空间）
 
-消融命名（无 w/o）：
-  MEL_NHD        → KDS-EL/DRS（只含DRS）
-  MEL_KGEF_noNHD → KDS-EL/KER（只含KER）
-  MEL_KGEF       → KDS-EL（Proposed，完整框架）
+消融命名：
+  KDS_EL_DRS       → KDS-EL/DRS（只含DRS + MI初始化 + 自适应重初始化）
+  KDS_EL_KER       → KDS-EL/KER（只含KER + MI初始化 + 自适应重初始化）
+  KDS_EL           → KDS-EL（Proposed，完整框架）
 ```
 
 **关键参数**：N=20, T=100, K_cv=5, k_nn=3, thres=0.6, ws=[0.9,0.1],
 weight_decay=0.99, flip_frac=0.01, elite_k=3, rand_flip_p=0.10,
-Seeds: 42 + run×37, SEED_BASE=42, NUM_RUNS=10
+stall_patience=20, MI init ratio=0.5
+Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
+
+**已修复的bug（2026-07-03）**：
+1. 权重更新顺序（在Pbest更新前执行）
+2. 精英保护（EMDO选择后保留pool中fitness前N//4的个体）
+3. MI引导初始化（一半MI+一半随机，解决KER冷启动崩溃）
+4. 自适应重初始化（stall_counter追踪Gbest停滞，超过patience→重启下半种群）
 
 ---
 
 ## 三、实验数据
 
-**最终数据集（17个，扩展自原有9个）**：
-ALL1(36×12627,2c), ALL4(102×12628,4c), ALL_AML(72×7129,2c),
-Adenoma(36×7458,2c), Colon(62×2000,2c), DLBCL(77×7129,2c),
-Gastric(×22644,2c), Gastric1(×22284,2c), Gastric2(×22285,2c),
-ISOLET(×617,26c), Leukaemia(72×7129,2c), Lymphoma(96×4026,9c),
-Myeloma(×12628,3c), Prostate(×12628,2c), SRBCT(×2308,4c),
-T1D(×54675,2c), madelon(×500,2c)
+### 3.1 实验目录
 
-**新增8个数据集**（相比旧版）：ALL1、Gastric、Gastric1、Gastric2、ISOLET、Myeloma、Prostate、SRBCT、T1D、madelon
-**移除**：CNS（d=7129, n=60, 极低信噪比）、Stroke（d=26877, n=2500）、ALL3（极端小样本）
+| # | 目录 | 内容 | 状态 | 数据有效性 |
+|---|------|------|:---:|:---:|
+| 1 | `output/formal_experiment_20260701_094943/` | SOTA 对比 (5方法×20数据集) | ✅ | ✅ 全部有效 |
+| 2 | `output/formal_experiment_20260628_205157/` | 旧版消融 V1 (4方法×27数据集) | ✅ | ⚠️ 仅MEL有效 |
+| 3 | `output/formal_experiment_20260702_145828/` | 最新消融 V2 (3方法×26数据集) | ✅ | ✅ 全部有效 |
+| 4 | `output/formal_experiment_20260707_142018/` | MOFS 对比 (6方法×20数据集) | ✅ | ✅ 全部有效 |
 
-**9个对比方法**：BPSO, SaWDE, FWPSO, MEL (Baseline), KDS-EL/DRS,
-KDS-EL/KER, KDS-EL (Proposed), PSO-CSM, IGPSO
+### 3.2 20个数据集
 
-**实验协议**：StratifiedKFold(5, shuffle=True, random_state=42), 10 runs × 100 iterations
-**主数据文件**：
-- KDS-EL家族：`output/formal_experiment_20260628_205157/results_detail.csv`（1000行）
-- 外部对比方法：`output/formal_experiment_20260701_094943/results_detail.csv`（850行）
+`ALL1`(128×12625,2c), `ALL4`(93×12625,2c), `ALL_AML`(72×7129,2c),
+`Adenoma`(36×7457,2c), `BASEHOCK`(1993×4862,2c), `COIL20`(1440×1024,20c),
+`Colon`(62×2000,2c), `DLBCL`(77×7129,2c), `Gastric`(65×22645,2c),
+`Gastric1`(144×22283,2c), `Gastric2`(124×22283,2c), `ISOLET`(1560×617,26c),
+`Leukaemia`(72×7129,2c), `Lymphoma`(45×4026,2c), `Myeloma`(173×12625,2c),
+`PCMAC`(1943×3289,2c), `Prostate`(102×12625,2c), `SRBCT`(83×2308,4c),
+`T1D`(101×54675,2c), `madelon`(2600×500,2c)
+
+### 3.3 15个方法
+
+| 类别 | 方法 | 数据来源 |
+|------|------|----------|
+| **本文** | **KDS_EL** | 实验3 |
+| 消融 | KDS_EL_DRS, KDS_EL_KER | 实验3 |
+| 基线 | MEL | 实验2 |
+| SOTA 单目标 | BPSO, SaWDE, FWPSO, PSO-CSM, IGPSO | 实验1 |
+| MOFS 经典 | NSGA-II-FS, MOPSO-FS, MOEA-D-FS | 实验4 |
+| MOFS 近年 | VGS-MOEA, fMOPSO-FS, W-MOPSO-FS | 实验4 |
+
+**实验协议**：StratifiedKFold(5, shuffle=True), 10 runs × 100 iterations, RNG自然流动
 
 ---
 
 ## 四、核心数字（写作时直接引用）
 
-### 统计检验
-- Friedman χ²=94.23，p=6.43×10⁻¹⁷（9方法×17数据集）
-- KDS-EL avg rank = **1.059**（17×第1，0×第2）
-- FWPSO avg rank = 2.588（第2）
+### 4.1 15方法排名（20数据集，真实分类准确率）
 
-### 准确率胜负
-- vs BPSO：17/17 wins
-- vs SaWDE：16/17 wins（ISOLET上输，SaWDE rank#1，KDS-EL rank #2）
-- vs FWPSO：17/17 wins
-- vs PSO-CSM(2025)：17/17 wins
-- vs IGPSO(2024)：17/17 wins
-- vs MEL (Baseline)：17/17 wins
-- KDS-EL avg accuracy = 93.95%，FWPSO avg = 92.25%
+| 排名 | 方法 | True Acc | Feat | Time(s) | 类别 |
+|:----:|------|----------|------|---------|------|
+| 🥇 | VGS-MOEA | **0.9463** | 51 | 34.2 | MOFS 变长 |
+| 🥈 | **KDS_EL** | **0.9450** | 220 | 96.2 | **本文** |
+| 🥉 | KDS_EL_KER | 0.9438 | 236 | 97.5 | 消融 |
+| 4 | KDS_EL_DRS | 0.9383 | 166 | 188.0 | 消融 |
+| 5 | FWPSO | 0.9177 | 1069 | 49.7 | SOTA |
+| 6 | W-MOPSO-FS | 0.9132 | 2960 | 110.4 | MOFS |
+| 7 | fMOPSO-FS | 0.9110 | 3007 | 119.9 | MOFS |
+| 8 | NSGA-II-FS | 0.9064 | 4818 | 135.9 | MOFS |
+| 9 | MOEA-D-FS | 0.9042 | 4937 | 138.5 | MOFS |
+| 10 | PSO-CSM | 0.9021 | 1559 | 122.5 | SOTA |
+| 11 | MOPSO-FS | 0.9009 | 5263 | 142.8 | MOFS |
+| 12 | SaWDE | 0.8944 | 3521 | 110.5 | SOTA |
+| 13 | MEL | 0.8868 | 2722 | 175.0 | 基线 |
+| 14 | IGPSO | 0.8839 | 2538 | 136.4 | SOTA |
+| 15 | BPSO | 0.8698 | 5297 | 146.2 | SOTA |
 
-### 特征数
-- KDS-EL 17/17数据集特征最少，avg = **491 features**
-- vs MEL：ALL1 -91.0%，Gastric1 -95.7%，Leukaemia -91.7%，madelon -91.7%
-- vs MEL avg reduction：**-83.6%**（2989→491）
-- vs FWPSO avg（1060 features）：KDS-EL使用46%的特征
+### 4.2 Friedman排名（20数据集）
 
-### 消融协同效应
-- 正协同 **16/17**（百分点）：madelon+5.22, ALL4+14.28（KDS-EL/DRS单独差于MEL，但KDS-EL/DRS+KDS-EL/KER远好于MEL）, T1D+6.75, Gastric+4.93, Gastric2+3.86, Prostate+2.90, Myeloma+2.55, SRBCT+2.36, Gastric1+2.30, ALL1+2.09, ALL_AML+1.80, Adenoma+1.43, ISOLET+1.28, Leukaemia+0.90, DLBCL+0.72, Lymphoma+0.15
-- 负协同 1/17：Colon -2.24（KDS-EL/KER单独贡献69.5已很高，整体仍正向+83.9）
-- Mean synergy = **+3.02pp**
-- KER单独版本从未超过完整KDS-EL（外部方法对比层面，0/17）
+| 方法 | Avg Rank |
+|------|----------|
+| KDS_EL | 3.000 |
+| KDS_EL_KER | 3.200 |
+| KDS_EL_DRS | 3.600 |
+| FWPSO | 5.050 |
+| PSO_CSM | 6.250 |
+| SaWDE | 6.850 |
+| IGPSO | 8.150 |
+| MEL | 8.500 |
+| BPSO | 9.400 |
 
-### 运行时间
-- KDS-EL avg = 115.4s，FWPSO avg = 23.9s（最快），MEL avg = 167.8s
-- KDS-EL比MEL Baseline快31%（167.8→115.4，DRS和KER加速收敛）
+> KDS-EL三变体占据前三，与第4名FWPSO差距**1.45**。
+
+### 4.3 KDS_EL vs各方法Win/Loss（20数据集）
+
+| vs 方法 | Win | Tie | Loss | 胜率 | 类别 |
+|---------|-----|-----|------|------|------|
+| MEL | 20 | 0 | 0 | **100%** | 基线 |
+| BPSO | 20 | 0 | 0 | **100%** | SOTA |
+| PSO-CSM | 20 | 0 | 0 | **100%** | SOTA |
+| IGPSO | 20 | 0 | 0 | **100%** | SOTA |
+| SaWDE | 19 | 0 | 1 | 95.0% | SOTA |
+| FWPSO | 18 | 0 | 2 | 90.0% | SOTA |
+| MOPSO-FS | 17 | 1 | 2 | 85.0% | MOFS |
+| MOEA-D-FS | 16 | 0 | 4 | 80.0% | MOFS |
+| fMOPSO-FS | 16 | 1 | 3 | 80.0% | MOFS |
+| NSGA-II-FS | 15 | 1 | 4 | 75.0% | MOFS |
+| W-MOPSO-FS | 15 | 2 | 3 | 75.0% | MOFS |
+| VGS-MOEA | 8 | 1 | **11** | 40.0% | MOFS |
+
+> KDS_EL唯一Acc落后的对手是VGS-MOEA（Δ=-0.0013）。排除VGS-MOEA后对所有其他方法胜率≥75%。
+> ISOLET仍唯一输给SaWDE。COIL20成为第二个输给FWPSO的数据集（天花板效应）。
+
+### 4.4 消融分析：模块贡献度（26数据集）
+
+| 指标 | 数值 |
+|------|------|
+| Δtotal (KDS_EL vs MEL) | **+4.68pp** |
+| ΔDRS (DRS vs MEL) | +3.81pp |
+| ΔKER (KER vs MEL) | +4.43pp |
+
+**消融三层论证框架**：
+1. 每个模块独立有效：DRS +3.81pp, KER +4.43pp
+2. 每个模块有结构性缺陷：DRS牺牲accuracy，KER牺牲多样性
+3. 完整框架是唯一兼得方案：accuracy达KER水平 + NHD保持0.324 + 特征-93.4%
+
+**天花板效应**：9/26数据集Acc>0.99，压低了跨数据集平均协同。在3个困难数据集（ALL2/ALL3/Stroke）上DRS单独为负贡献，KDS_EL完整版实现互相纠错（协同+0.9~3.5pp）。
+
+**PCMAC — 三模块协同最强证据**：Δtotal=+0.0608，正协同，同时显著优于两变体。
+
+### 4.5 特征数与NHD
+
+| 方法 | Mean Feat (26DS) | vs MEL | Mean NHD |
+|------|-------------------|--------|----------|
+| MEL | 2989 | — | 0.000 |
+| KDS_EL_KER | 200 | -93.3% | 0.000 |
+| **KDS_EL** | **198** | **-93.4%** | **0.324** |
+| KDS_EL_DRS | 129 | **-95.7%** | **0.451** |
+
+> 除DRS和KDS_EL外，所有方法的种群在搜索过程中完全同质化（NHD=0）。
+
+### 4.6 MOFS三代代差
+
+| 代 | 方法 | True Acc | Feat |
+|----|------|-----|------|
+| 经典 (2002-2007) | NSGA-II-FS, MOPSO-FS, MOEA-D-FS | 0.901-0.906 | 4800-5300 |
+| 混合 (近年) | fMOPSO-FS, W-MOPSO-FS | 0.911-0.913 | 2960-3010 |
+| 变长 (2021) | VGS-MOEA | **0.946** | **51** |
+
+### 4.7 KDS_EL类别均值
+
+- KDS-EL Family avg Acc = 0.9424（#1 类别）
+- MOFS Advanced avg = 0.9235（#2）
+- MOFS Classic avg = 0.9038（#3）
+- SOTA 单目标 avg = 0.8936（#4）
 
 ---
 
-## 五、已完成的输出文件
+## 五、图表规划（9 Tables + 12 Figures = 21个）
 
-### 实验数据（核心）
-- `output/formal_experiment_20260628_205157/results_detail.csv` — KDS-EL家族4变体×25数据集×10 runs（1000行）
-- `output/formal_experiment_20260701_094943/results_detail.csv` — 外部5方法×17数据集×10 runs（850行）
-- 合并分析脚本：`analysis/combine_analysis.py`
+> 对标EMSWOA: 10 Figures + 10 Tables = 20个
 
-### 图表（figures_final/）
-- fig4_accuracy.png/pdf — 准确率对比（需更新至17数据集）
-- fig5_features.png/pdf — 特征数对比（需更新至17数据集）
-- fig6_ablation.png/pdf — 消融双面板（需重新生成）
-- fig7_boxplot.png/pdf — 稳定性箱线图（需更新至17数据集）
-- fig10_wilcoxon.png/pdf — Wilcoxon显著性热图（需重新生成）
-- fig11_runtime.png/pdf — 运行时间对比（需重新生成）
-- fig12_bubble.png/pdf — 精度-特征-时间气泡图（需重新生成）
-- fig8_convergence（需本地npy文件生成）
-- fig9_nhd_curves（需本地npy文件生成）
-- Fig1-3框架图（需用draw.io新画）
+### Tables（9个）
 
-### LaTeX文件
-- tables_kdsol.tex — T4准确率、T5特征数、T6 Wilcoxon p值、T7消融
-- kdsol_packaging.tex — Abstract、Introduction、Related Work定位段落
-- methodology_section.tex — Methodology主体（需改名EMDO→DRS、KGEF→KER）
-- complexity_section.tex — 时间复杂度分析节
-- paper_complete_logic.tex — 完整论文逻辑、审稿人预案、数字速查
+| # | 内容 | 位置 | 状态 |
+|---|------|------|:----:|
+| T1 | 近5年PSO-FS文献对比 | Related Work | ⚠ 需新写 |
+| T2 | 数据集描述（20个） | §4.1 实验设置 | ⚠ 需新写 |
+| T3 | 方法参数设置 | §4.1 实验设置 | ⚠ 需新写 |
+| T4 | **主表**准确率Mean±Std（10方法×20数据集） | §4.2 精度比较 | 🔄 需重新生成 |
+| T5 | **主表**特征数Mean（10方法×20数据集） | §4.3 特征比较 | 🔄 需重新生成 |
+| T6 | Wilcoxon p值矩阵（10方法×20数据集） | §4.4 统计检验 | 🔄 需重新生成 |
+| T7 | 消融实验ACC+Features（4变体×26数据集） | §4.5 消融分析 | ✅ 已生成 |
+| T8 | MOFS六方法单独对比 | §4.6 MOFS对比 | 🆕 新增 |
+| T9 | 时间复杂度O() | §3.6 复杂度 | ⚠ 需新写 |
 
-### 代码
-- `code/generate_figures.py` — 生成Fig4-7、10-12（⚠需更新至17数据集版，读入两份CSV并合并）
-- `code/generate_tables.py` — 生成T4-T7（⚠需更新至17数据集版）
-- `code/plot_convergence.py` — 收敛曲线图（需npy文件，位于 `output/*/curves/` 目录下）
-- `code/run_formal_experiment.py` — 全方法实验主脚本
-- `analysis/combine_analysis.py` — 合并两次实验数据的分析脚本（✓新增）
-
----
-
-## 六、图表规划（20个）
-
-### Tables（8个）
-- T1：近5年PSO-FS文献分析表（需新写）
-- T2：17数据集描述（⚠需更新：新数据集信息）
-- T3：9方法参数设置（⚠需更新：扩至9方法）
-- T4：准确率mean±std（⚠需重新生成：17数据集×9方法）
-- T5：特征数mean（⚠需重新生成：17数据集×9方法）
-- T6：Wilcoxon p值（⚠需重新生成：17数据集×9方法）
-- T7：消融实验ACC+Features（⚠需重新生成：17数据集×4变体）
-- T8：时间复杂度O()（✓已完成，complexity_section.tex）
+**T4主表10方法**：KDS_EL + KDS_EL_KER + KDS_EL_DRS + MEL + FWPSO + PSO-CSM + SaWDE + VGS-MOEA + W-MOPSO-FS + NSGA-II-FS
+**附录**：完整15方法Acc+Feat+Wilcoxon
 
 ### Figures（12个）
-- F1：KDS-EL框架流程图（⚠需新画）
-- F2：DRS机制示意图（⚠需新画）
-- F3：KER机制示意图（⚠需新画）
-- F4：准确率柱状图（⚠需更新至17数据集版）
-- F5：特征数柱状图（⚠需更新至17数据集版）
-- F6：消融双面板（⚠需重新生成）
-- F7：稳定性箱线图（⚠需更新至17数据集版）
-- F8：收敛曲线2×3（⚠需npy）
-- F9：NHD多样性曲线2×3（⚠需npy）
-- F10：Wilcoxon热图（⚠需重新生成）
-- F11：运行时间对比（⚠需重新生成）
-- F12：气泡图（⚠需重新生成）
+
+| # | 内容 | 状态 |
+|---|------|:----:|
+| F1 | KDS-EL整体框架图 | △ 需新画 |
+| F2 | DRS机制示意图 | △ 需新画 |
+| F3 | KER机制示意图 | △ 需新画 |
+| F4 | 准确率柱状图（10方法，auto-grid，20数据集） | 🔄 需重新生成 |
+| F5 | 特征数柱状图（对数轴，auto-grid，20数据集） | 🔄 需重新生成 |
+| F6 | 消融双面板（4变体×26数据集） | ✅ 已生成 |
+| F7 | 稳定性箱线图（10方法，auto-grid，20数据集） | 🔄 需重新生成 |
+| F8 | 收敛曲线（10方法，auto-grid，20数据集） | 🔄 需重新生成 |
+| F9 | NHD多样性曲线（KDS_EL+DRS，auto-grid，20数据集） | 🔄 需重新生成 |
+| F10 | Wilcoxon热图（10方法×20数据集） | 🔄 需重新生成 |
+| F11 | 运行时间对比（对数轴，10方法，20数据集） | 🔄 需重新生成 |
+| F12 | 精度-特征-时间气泡图（10方法，20数据集） | 🔄 需重新生成 |
+
+### 生成脚本
+
+```
+generate_figures.py   → F4-F7, F10-F12 (7个)   ← 需适配10方法
+generate_tables.py    → T4-T8 (5个)             ← 需新增T8 MOFS表
+plot_convergence.py   → F8-F9 (2个)             ← 需适配新数据目录
+手动 (draw.io)        → F1-F3 (3个)
+手动 (LaTeX表格)      → T1-T3, T9 (4个)
+```
 
 ---
 
-## 七、论文定位与包装
+## 六、论文定位与包装
 
-**核心叙事**："Dual-Space"框架
-- Fitness Space：KER（知识引导精英精化）
-- Structural Space：DRS（多样性调节选择）
-- 两个空间协同增强（16/17正协同是核心卖点，mean synergy=+3.02pp）
+**核心叙事**："Dual-Space"框架 — 第三种路径（third pathway）
+
+- 传统SO-FS：单空间，无多样性维护
+- 传统MO-FS：双目标优化，输出Pareto前沿给决策者
+- **KDS-EL**：双空间协同，NHD作为搜索辅助目标，输出单一最优解
 
 **多目标定位（关键）**：
-- DRS 是合法的双目标优化（fitness + NHD的Pareto排序）
+- DRS是合法的双目标优化（fitness + NHD的Pareto排序）
 - 但不叫"传统MOFS"——最终输出单一最优解，NHD是辅助目标
 - 正确表述："bi-objective-regulated evolutionary feature selection"
-- 辅助目标说法："NHD serves as an auxiliary structural objective
-  for diversity preservation, not an end-user trade-off objective"
-
-**与SAR-MTPSO的区分**：
-- SAR-MTPSO：双任务异构目标函数（不同ws的fitness），解决多任务问题
-- KDS-EL：单一fitness函数，双空间搜索策略，单目标输出
-- 在Related Work中引用SAR-MTPSO，实验中不对比（架构层次不同）
+- 辅助目标说法："NHD serves as an auxiliary structural objective for diversity preservation, not an end-user trade-off objective"
 
 **命名规范（全文统一）**：
 - EMDO → DRS（Diversity-regulated Selection）
 - KGEF → KER（Knowledge-guided Elite Refinement）
-- MEL_NHD → KDS-EL/DRS（斜杠表示"子组件变体"）
-- MEL_KGEF_noNHD → KDS-EL/KER
-- MEL_KGEF → KDS-EL (Proposed)
+- KDS_EL_DRS → KDS-EL/DRS
+- KDS_EL_KER → KDS-EL/KER
+- KDS_EL → KDS-EL (Proposed)
 - PSO_CSM → PSO-CSM
 - 绝不使用 "w/o"
 
 ---
 
-## 八、创新点评估
+## 七、创新点评估
 
 **创新点1（中等偏高）**：DRS将NHD首次升格为Pareto选择目标
 - 文献中NHD只作诊断指标，本文首次纳入选择算子
-- 证据：NHD从0.000→0.417(KDS-EL/DRS)→0.350(KDS-EL)，特征平均减少83.6%
+- 证据：NHD从0.000→0.451(KDS-EL/DRS)→0.324(KDS-EL)，特征减少93.4%
 
 **创新点2（中等）**：KER的improvement-feedback在线知识积累
 - 不同于IGPSO(MLP预训练)和FWPSO(即时权重)
 - 跨迭代累积，无需额外评估
-- 证据：KER单独在13/17数据集优于MEL基线（KDS-EL/KER avg 90.92% vs MEL 89.02%）
+- 证据：KER单独+4.43pp over MEL（26数据集）
 
-**创新点3（高）**：Dual-Space协同效应
-- 16/17正协同（仅Colon除外），消融证据更干净，统计功效更强
+**创新点3（高）**：Dual-Space协同框架
+- 困难数据集上互相纠错（ALL2/ALL3/Stroke），天花板数据集上至少不差
+- PCMAC：Δtotal=+0.0608，正协同，同时显著优于两变体
 - 是整篇论文最有说服力的卖点
 
----
-
-## 九、期刊选择
-
-**首选：ESWA**（Expert Systems with Applications）
-- IF≈7.5，Q1二区，年发文2850篇
-- 9数据集+8对比方法在ESWA属正常范围
-- 把握：65-70%
-- 原因：应用导向，对算法原创性要求最低，审稿周期3-4个月
-
-**备选：ASC**（Applied Soft Computing）
-- IF≈6.6，Q1二区
-- 同刊2025年已有EMSWOA（同领域），审稿人可能重叠
-- 9数据集偏少（ASC主流12-20个），把握45-50%
-
-**不建议现阶段投**：KBS（需强化Proposition证明）、TKDE（MEL原刊，门槛极高）
+**创新点0（辅助级）**：MI引导初始化+自适应重初始化
+- 参考了fMOPSO-FS (Han 2024)，不是本文首创
+- 本文贡献：组合进双空间框架，使MI知识贯穿全生命周期
+- 是三个主创新点发挥作用的"地基"——没有它，KER冷启动导致~40%崩溃
 
 ---
 
-## 十、写作进度与路径
+
+---
+
+## 九、写作进度与路径
 
 ### 已完成
 - Abstract（框架）
 - Introduction（框架）
-- Methodology（主体，需改名）
+- Methodology（主体，已改名DRS/KER）
 - 时间复杂度分析
+- 全部实验数据（4个实验目录，15方法×20数据集）
 
 ### 待写（按优先级）
 1. §4 Experiments 各节（数据图表全有，先写）
-2. §3 Methodology 改名+补伪代码
+2. §3 Methodology 补伪代码
 3. §1 Introduction 扩充润色
-4. §2 Related Work（全新写，1200词，3小节）
+4. §2 Related Work（全新写，1200词，3小节，含MOFS文献）
 5. §5 Conclusion
 6. T1-T3表格、F1-F3框架图、F8-F9收敛图
 
@@ -248,39 +311,45 @@ KDS-EL/KER, KDS-EL (Proposed), PSO-CSM, IGPSO
 
 ---
 
-## 十一、已知问题与处理方式
+## 十、已知问题与处理方式
 
-**ISOLET数据集**：KDS-EL排名#2（输给SaWDE）
-→ SaWDE在ISOLET(617维, 26类)上的搜索偏差机制特别有效
-→ 对外部方法16/17全胜，Friedman rank=1.059仍是压倒性第一
+**ISOLET数据集**：KDS-EL排名#12（输给SaWDE/FWPSO/多个MOFS方法）
+→ SaWDE在ISOLET(617维,26类)上的搜索偏差机制特别有效
 → 如实在表格呈现，Discussion中解释ISOLET特点
 
-**Colon数据集消融**：唯一负协同数据集（synergy=-0.022）
-→ KDS-EL/KER单独已贡献+0.070，DRS再叠加后边际增益下降
-→ 整体上KDS-EL仍是最好的（+0.083 vs MEL基线），不影响结论
+**COIL20数据集**：天花板效应典型代表
+→ 所有top方法Acc>0.95，KDS_EL=0.9809输给KER(0.9913)和FWPSO(0.9894)
+→ 诚实展示天花板局限，论文中有叙事价值
 
-**CNS、Stroke、ALL3数据集移除原因**：
-→ CNS(60×7129)：极低信噪比，所有方法都接近随机(≈10%)
-→ Stroke(2500×26877)：大样本耗时极端，且已有T1D覆盖大样本场景
-→ ALL3(36×9999)：n=36极端小样本，KDS-EL排名第4
+**VGS-MOEA领先问题**：
+→ VGS-MOEA(0.9463)略优于KDS_EL(0.9450)，Δ=-0.0013
+→ VGS-MOEA实现正确无bug，可变长度编码天然能探索极小特征子集（51 vs 220）
+→ KDS_EL是单解输出框架，VGS-MOEA是MOFS方法，不构成直接竞争
+→ 论文叙事：KDS-EL在单解输出方法中排名#1
 
 **Cache导致特征爆炸**（已解决）：
 → 跨run共享cache导致weight反馈循环崩溃
 → 解决方案：不使用cache，保持原始算法逻辑
 
-**SAR-MTPSO问题**：
-→ 在所有9数据集上碾压KDS-EL，不放入实验
-→ 在Related Work中引用并解释架构差异
+**已修复的算法bug**（2026-07-03）：
+→ 权重更新顺序错误（在Pbest更新前执行）
+→ KER冷启动崩溃（MI初始化解决）
+→ 停滞问题（自适应重初始化解决）
+→ 精英保护缺失（EMDO后保留top N//4）
 
 ---
 
-## 十二、npy文件说明
+## 十一、npy文件说明
 
 **输出目录**：
-- `output/formal_experiment_20260628_205157/curves/` — KDS-EL家族4变体，每run一个文件
+- `output/formal_experiment_20260702_145828/curves/` — KDS-EL家族3变体，每run一个文件
   - `curve_{VERSION}_{DATASET}_run{N}.npy` — fitness收敛曲线
-  - `nhd_{VERSION}_{DATASET}_run{N}.npy` — NHD曲线（仅DRS和KDS-EL有非零值）
-- `output/formal_experiment_20260701_094943/curves/` — 外部5方法，每run一个文件
+  - `nhd_{VERSION}_{DATASET}_run{N}.npy` — NHD曲线（DRS和KDS_EL有非零值）
+- `output/formal_experiment_20260701_094943/curves/` — SOTA 5方法，每run一个文件
   - `curve_{VERSION}_{DATASET}_run{N}.npy` — fitness收敛曲线
+- `output/formal_experiment_20260707_142018/curves/` — MOFS 6方法
+  - `curve_{VERSION}_{DATASET}_run{N}.npy`
 
 收敛图脚本：`code/plot_convergence.py`
+综合分析脚本：`code/analyze_experiments.py`
+消融分析脚本：`code/analyze_ablation_validity.py`

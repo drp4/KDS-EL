@@ -1,11 +1,12 @@
 """
 KDS-EL 表格生成脚本
 ===================
-根据《图表规划.md》生成 T4-T7（共4张表）。
+根据《图表规划.md》生成 T4-T8（共5张表）。
+数据来源：四个正式实验目录。
 
 用法：
     python generate_tables.py
-    python generate_tables.py --out tables/
+    python generate_tables.py --out tables/ --tab T4
 """
 import os, sys, argparse
 import numpy as np
@@ -22,23 +23,50 @@ except ImportError:
 # ══════════════════════════════════════════════════════════════════════════════
 
 PROJ = Path(__file__).resolve().parent.parent
-EXP1_DIR = PROJ / "output" / "formal_experiment_20260701_094943"
-EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"
-EXP3_DIR = PROJ / "output" / "formal_experiment_20260702_145828"
+EXP1_DIR = PROJ / "output" / "formal_experiment_20260701_094943"   # SOTA
+EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"   # Ablation V1 (MEL only)
+EXP3_DIR = PROJ / "output" / "formal_experiment_20260702_145828"   # Ablation V2 (KDS-EL variants)
+EXP4_DIR = PROJ / "output" / "formal_experiment_20260707_142018"   # MOFS
 
+# ── 全部15个方法 ──
 ALL_VERSIONS = [
     "BPSO", "SaWDE", "FWPSO", "MEL",
     "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL",
     "PSO_CSM", "IGPSO",
+    "NSGA_II_FS", "MOPSO_FS", "MOEA_D_FS",
+    "fMOPSO_FS", "VGS_MOEA", "W_MOPSO_FS",
 ]
+
+# ── 主表10方法（正文用）──
+MAIN_VERSIONS = [
+    "KDS_EL", "KDS_EL_KER", "KDS_EL_DRS", "MEL",
+    "FWPSO", "PSO_CSM", "SaWDE",
+    "VGS_MOEA", "W_MOPSO_FS", "NSGA_II_FS",
+]
+
 ABL_VERSIONS = ["MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
+
+# ── 消融方法（T7用）──
+MOFS_VERSIONS = ["NSGA_II_FS", "MOPSO_FS", "MOEA_D_FS",
+                 "fMOPSO_FS", "VGS_MOEA", "W_MOPSO_FS"]
 
 V_LABELS = {
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
     "MEL": "MEL", "KDS_EL_DRS": "KDS-EL/DRS",
     "KDS_EL_KER": "KDS-EL/KER", "KDS_EL": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
+    "NSGA_II_FS": "NSGA-II-FS", "MOPSO_FS": "MOPSO-FS",
+    "MOEA_D_FS": "MOEA-D-FS", "fMOPSO_FS": "fMOPSO-FS",
+    "VGS_MOEA": "VGS-MOEA", "W_MOPSO_FS": "W-MOPSO-FS",
 }
+
+# ── 20个MOFS数据集 ──
+MOFS_DATASETS = [
+    "ALL1", "ALL4", "ALL_AML", "Adenoma", "BASEHOCK", "COIL20",
+    "Colon", "DLBCL", "Gastric", "Gastric1", "Gastric2", "ISOLET",
+    "Leukaemia", "Lymphoma", "Myeloma", "PCMAC", "Prostate",
+    "SRBCT", "T1D", "madelon",
+]
 
 
 def load_detail(path):
@@ -50,7 +78,7 @@ def load_detail(path):
 
 
 def load_merged_detail():
-    """合并三个实验的 detail 数据：各方法从各自有效来源加载"""
+    """合并四个实验的 detail 数据：各方法从各自有效来源加载"""
     SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
     KDS_VERSIONS = ["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"]
 
@@ -61,6 +89,8 @@ def load_merged_detail():
     dfs.append(df2[df2["Version"] == "MEL"])
     df3 = load_detail(EXP3_DIR / "results_detail.csv")
     dfs.append(df3[df3["Version"].isin(KDS_VERSIONS)])
+    df4 = load_detail(EXP4_DIR / "results_detail.csv")
+    dfs.append(df4[df4["Version"].isin(MOFS_VERSIONS)])
 
     common_cols = None
     for d in dfs:
@@ -73,7 +103,7 @@ def load_merged_detail():
 
 
 def load_merged_summary():
-    """合并三个实验的 summary 数据：各方法从各自有效来源加载"""
+    """合并四个实验的 summary 数据：各方法从各自有效来源加载"""
     SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
     KDS_VERSIONS = ["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"]
 
@@ -84,6 +114,8 @@ def load_merged_summary():
     dfs.append(df2[df2["Version"] == "MEL"])
     df3 = pd.read_csv(EXP3_DIR / "results_summary.csv")
     dfs.append(df3[df3["Version"].isin(KDS_VERSIONS)])
+    df4 = pd.read_csv(EXP4_DIR / "results_summary.csv")
+    dfs.append(df4[df4["Version"].isin(MOFS_VERSIONS)])
 
     common_cols = None
     for d in dfs:
@@ -101,20 +133,19 @@ def g(df, version, dataset, metric="Accuracy"):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# T4: 准确率 Mean ± Std
+# T4: 准确率 Mean ± Std（主表10方法 × 20数据集）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def table_t4_accuracy(df_summary, out_dir):
-    """T4: Classification accuracy Mean ± Std for all methods on all datasets."""
-    print("T4: Accuracy Mean ± Std table...")
-    # Get all datasets from both experiments
-    all_ds = sorted(set(df_summary["Dataset"].unique()))
+    """T4: Classification accuracy Mean ± Std — 10 main methods × 20 datasets."""
+    print("T4: Accuracy Mean ± Std table (10 methods × 20 datasets)...")
+    all_ds = [d for d in MOFS_DATASETS if d in df_summary["Dataset"].unique()]
+    versions = [v for v in MAIN_VERSIONS if v in df_summary["Version"].unique()]
 
-    # Build table: columns = versions, rows = datasets
     table = []
     for ds in all_ds:
         row = {"Dataset": ds}
-        for v in ALL_VERSIONS:
+        for v in versions:
             sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
             if len(sub) > 0:
                 row[V_LABELS[v]] = f"{sub['Mean_Acc'].values[0]:.4f}±{sub['Std_Acc'].values[0]:.4f}"
@@ -123,34 +154,52 @@ def table_t4_accuracy(df_summary, out_dir):
         table.append(row)
 
     df_t = pd.DataFrame(table)
-    # Mark best per row
     outpath = os.path.join(out_dir, "T4_accuracy.csv")
     df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
 
-    # Also write a LaTeX version
     latex_path = os.path.join(out_dir, "T4_accuracy.tex")
-    latex = df_t.to_latex(index=False, column_format="l" + "c" * len(ALL_VERSIONS),
-                          caption="Classification Accuracy (Mean $\\pm$ Std) across all datasets.",
+    latex = df_t.to_latex(index=False, column_format="l" + "c" * len(versions),
+                          caption="Classification Accuracy (Mean $\\pm$ Std) — 10 methods on 20 datasets.",
                           label="tab:accuracy")
     with open(latex_path, "w", encoding="utf-8") as f:
         f.write(latex)
     print(f"  {outpath}")
     print(f"  {latex_path}")
 
+    # Also generate appendix table with ALL 15 methods
+    print("  → T4-Appendix: all 15 methods...")
+    all_versions = [v for v in ALL_VERSIONS if v in df_summary["Version"].unique()]
+    table_app = []
+    for ds in all_ds:
+        row = {"Dataset": ds}
+        for v in all_versions:
+            sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
+            if len(sub) > 0:
+                row[V_LABELS[v]] = f"{sub['Mean_Acc'].values[0]:.4f}±{sub['Std_Acc'].values[0]:.4f}"
+            else:
+                row[V_LABELS[v]] = "—"
+        table_app.append(row)
+
+    df_app = pd.DataFrame(table_app)
+    app_path = os.path.join(out_dir, "T4_appendix_accuracy.csv")
+    df_app.to_csv(app_path, index=False, encoding="utf-8-sig")
+    print(f"  {app_path}")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
-# T5: 特征数 Mean
+# T5: 特征数 Mean（主表10方法 × 20数据集）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def table_t5_features(df_summary, out_dir):
-    """T5: Number of selected features Mean for all methods on all datasets."""
-    print("T5: Feature count Mean table...")
-    all_ds = sorted(set(df_summary["Dataset"].unique()))
+    """T5: Number of selected features Mean — 10 main methods × 20 datasets."""
+    print("T5: Feature count Mean table (10 methods × 20 datasets)...")
+    all_ds = [d for d in MOFS_DATASETS if d in df_summary["Dataset"].unique()]
+    versions = [v for v in MAIN_VERSIONS if v in df_summary["Version"].unique()]
 
     table = []
     for ds in all_ds:
         row = {"Dataset": ds}
-        for v in ALL_VERSIONS:
+        for v in versions:
             sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
             if len(sub) > 0:
                 row[V_LABELS[v]] = f"{sub['Mean_Feat'].values[0]:.0f}"
@@ -163,8 +212,8 @@ def table_t5_features(df_summary, out_dir):
     df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
 
     latex_path = os.path.join(out_dir, "T5_features.tex")
-    latex = df_t.to_latex(index=False, column_format="l" + "c" * len(ALL_VERSIONS),
-                          caption="Number of Selected Features (Mean) across all datasets.",
+    latex = df_t.to_latex(index=False, column_format="l" + "c" * len(versions),
+                          caption="Number of Selected Features (Mean) — 10 methods on 20 datasets.",
                           label="tab:features")
     with open(latex_path, "w", encoding="utf-8") as f:
         f.write(latex)
@@ -173,36 +222,39 @@ def table_t5_features(df_summary, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# T6: Wilcoxon p-value matrix
+# T6: Wilcoxon p-value matrix（10方法）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def table_t6_wilcoxon(df_summary, out_dir):
-    """T6: Wilcoxon signed-rank p-value matrix (aggregate over shared datasets)."""
-    print("T6: Wilcoxon p-value matrix...")
+    """T6: Wilcoxon signed-rank p-value matrix — 10 main methods."""
+    print("T6: Wilcoxon p-value matrix (10 methods)...")
     if sp_stats is None:
         print("  [SKIP] scipy not available")
         return
 
-    # Load detail for per-run data
     df_detail = load_merged_detail()
-    shared_ds = sorted(set(
-        pd.read_csv(EXP1_DIR / "results_summary.csv")["Dataset"].unique()
-    ) & set(
-        pd.read_csv(EXP2_DIR / "results_summary.csv")["Dataset"].unique()
-    ))
+    versions = [v for v in MAIN_VERSIONS if v in df_summary["Version"].unique()]
+    n_v = len(versions)
 
-    n_v = len(ALL_VERSIONS)
-    # Build p-value matrix: count wins/losses/ties
+    # Find shared datasets for these versions
+    ds_sets = []
+    for v in versions:
+        ds = set(df_detail[df_detail["Version"] == v]["Dataset"].unique())
+        if ds:
+            ds_sets.append(ds)
+    shared_ds = sorted(set.intersection(*ds_sets))
+    print(f"  Shared datasets: {len(shared_ds)}")
+
     pval_matrix = np.zeros((n_v, n_v))
     win_matrix = np.zeros((n_v, n_v), dtype=int)
     total_matrix = np.zeros((n_v, n_v), dtype=int)
 
     for ds in shared_ds:
-        for i, v1 in enumerate(ALL_VERSIONS):
+        for i, v1 in enumerate(versions):
             a1 = g(df_detail, v1, ds)
             if len(a1) < 3:
                 continue
-            for j, v2 in enumerate(ALL_VERSIONS):
+            for j, v2 in enumerate(versions):
                 if i >= j:
                     continue
                 a2 = g(df_detail, v2, ds)
@@ -215,7 +267,7 @@ def table_t6_wilcoxon(df_summary, out_dir):
                         _, p = sp_stats.mannwhitneyu(a1, a2, alternative='two-sided')
                 except Exception:
                     continue
-                pval_matrix[i, j] += -np.log10(max(p, 1e-10))  # aggregate -log10(p)
+                pval_matrix[i, j] += -np.log10(max(p, 1e-10))
                 pval_matrix[j, i] += -np.log10(max(p, 1e-10))
                 total_matrix[i, j] += 1
                 total_matrix[j, i] += 1
@@ -224,23 +276,20 @@ def table_t6_wilcoxon(df_summary, out_dir):
                 elif p < 0.05 and np.mean(a2) > np.mean(a1):
                     win_matrix[j, i] += 1
 
-    # Average the -log10(p)
     for i in range(n_v):
         for j in range(n_v):
             if total_matrix[i, j] > 0:
                 pval_matrix[i, j] /= total_matrix[i, j]
 
-    # Build output: format = "win / total (avg -log10 p)"
     table = []
-    for i, v1 in enumerate(ALL_VERSIONS):
+    for i, v1 in enumerate(versions):
         row = {"Method": V_LABELS[v1]}
-        for j, v2 in enumerate(ALL_VERSIONS):
+        for j, v2 in enumerate(versions):
             if i == j:
                 row[V_LABELS[v2]] = "—"
             else:
                 w = win_matrix[i, j]
                 t = total_matrix[i, j]
-                lp = pval_matrix[i, j]
                 row[V_LABELS[v2]] = f"{w}/{int(t)}" if t > 0 else "—"
         table.append(row)
 
@@ -248,34 +297,28 @@ def table_t6_wilcoxon(df_summary, out_dir):
     outpath = os.path.join(out_dir, "T6_wilcoxon.csv")
     df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
 
-    # LaTeX with proper formatting
     latex_lines = [
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{Wilcoxon Signed-Rank Test Results — Win Count / Total Shared Datasets.}",
+        r"\caption{Wilcoxon Signed-Rank Test — Win Count / Total Shared Datasets (10 methods).}",
         r"\label{tab:wilcoxon}",
         r"\small",
-        r"\begin{tabular}{l" + "c" * len(ALL_VERSIONS) + "}",
+        r"\begin{tabular}{l" + "c" * n_v + "}",
         r"\toprule",
-        r"Method & " + " & ".join(V_LABELS[v] for v in ALL_VERSIONS) + r" \\",
+        r"Method & " + " & ".join(V_LABELS[v] for v in versions) + r" \\",
         r"\midrule",
     ]
-    for i, v1 in enumerate(ALL_VERSIONS):
+    for i, v1 in enumerate(versions):
         cells = [V_LABELS[v1]]
-        for j, v2 in enumerate(ALL_VERSIONS):
+        for j, v2 in enumerate(versions):
             if i == j:
                 cells.append("—")
             else:
                 w = win_matrix[i, j]
                 t = total_matrix[i, j]
-                lp = pval_matrix[i, j]
                 cells.append(f"{w}/{int(t)}" if t > 0 else "—")
         latex_lines.append(" & ".join(cells) + r" \\")
-    latex_lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
-    ])
+    latex_lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}"])
 
     latex_path = os.path.join(out_dir, "T6_wilcoxon.tex")
     with open(latex_path, "w", encoding="utf-8") as f:
@@ -285,20 +328,20 @@ def table_t6_wilcoxon(df_summary, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# T7: 消融实验 ACC + Features
+# T7: 消融实验 ACC + Features（4变体 × 26数据集, 不受MOFS影响）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def table_t7_ablation(df_summary, out_dir):
-    """T7: Ablation study — Accuracy and Features for 4 variants."""
-    print("T7: Ablation study table...")
+    """T7: Ablation study — Accuracy, Features, NHD for 4 variants on 26 datasets."""
+    print("T7: Ablation study table (4 variants × 26 datasets)...")
 
-    # MEL → 来自 Exp2, KDS-EL 三变体 → 来自 Exp3
     df2 = pd.read_csv(EXP2_DIR / "results_summary.csv")
     df_mel = df2[df2["Version"] == "MEL"]
     df3 = pd.read_csv(EXP3_DIR / "results_summary.csv")
     df3_abl = df3[df3["Version"].isin(["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"])]
     df_abl = pd.concat([df_mel, df3_abl], ignore_index=True)
     all_ds = sorted(set(df_mel["Dataset"].unique()) & set(df3_abl["Dataset"].unique()))
+    print(f"  Ablation datasets: {len(all_ds)}")
 
     table = []
     for ds in all_ds:
@@ -311,7 +354,7 @@ def table_t7_ablation(df_summary, out_dir):
             if len(sub) > 0:
                 acc = sub["Mean_Acc"].values[0]
                 feat = sub["Mean_Feat"].values[0]
-                nhd = sub["Mean_NHD"].values[0]
+                nhd = sub["Mean_NHD"].values[0] if "Mean_NHD" in sub.columns else 0
                 row[f"{V_LABELS[v]}_Acc"] = f"{acc:.4f}±{sub['Std_Acc'].values[0]:.4f}"
                 row[f"{V_LABELS[v]}_Feat"] = f"{feat:.0f}"
                 row[f"{V_LABELS[v]}_NHD"] = f"{nhd:.4f}"
@@ -322,19 +365,15 @@ def table_t7_ablation(df_summary, out_dir):
                     best_feat = feat
                     best_feat_v = V_LABELS[v]
             else:
-                row[f"{V_LABELS[v]}_Acc"] = "—"
-                row[f"{V_LABELS[v]}_Feat"] = "—"
-                row[f"{V_LABELS[v]}_NHD"] = "—"
-        row["Best_Acc"] = best_acc_v
+                for suffix in ["_Acc", "_Feat", "_NHD"]:
+                    row[f"{V_LABELS[v]}{suffix}"] = "—"
         table.append(row)
 
     df_t = pd.DataFrame(table)
-
-    # Save CSV
     outpath = os.path.join(out_dir, "T7_ablation.csv")
     df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
 
-    # Save a compact version for LaTeX (Acc only)
+    # Compact LaTeX version (Acc only)
     compact = []
     for ds in all_ds:
         row = {"Dataset": ds}
@@ -350,8 +389,54 @@ def table_t7_ablation(df_summary, out_dir):
     latex_path = os.path.join(out_dir, "T7_ablation.tex")
     latex = df_compact.to_latex(index=False,
                                 column_format="l" + "c" * len(ABL_VERSIONS),
-                                caption="Ablation Study — Classification Accuracy (Mean $\\pm$ Std).",
+                                caption="Ablation Study — Classification Accuracy (Mean $\\pm$ Std) on 26 datasets.",
                                 label="tab:ablation")
+    with open(latex_path, "w", encoding="utf-8") as f:
+        f.write(latex)
+    print(f"  {outpath}")
+    print(f"  {latex_path}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# T8: MOFS 六方法单独对比（NEW）
+# ══════════════════════════════════════════════════════════════════════════════
+
+def table_t8_mofs(df_summary, out_dir):
+    """T8: MOFS comparison — Acc, Feat, SR, Time for 6 MOFS methods + KDS_EL for reference."""
+    print("T8: MOFS comparison table (6 MOFS + KDS_EL)...")
+    mofs_v = [v for v in MOFS_VERSIONS if v in df_summary["Version"].unique()]
+    # Include KDS_EL as baseline
+    kds_ref = "KDS_EL"
+    all_methods = mofs_v + [kds_ref] if kds_ref in df_summary["Version"].unique() else mofs_v
+    all_ds = [d for d in MOFS_DATASETS if d in df_summary["Dataset"].unique()]
+
+    # Overall averages
+    table = []
+    for v in all_methods:
+        sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"].isin(all_ds))]
+        if len(sub) > 0:
+            row = {
+                "Method": V_LABELS[v],
+                "True_Acc": f"{sub['Mean_Acc'].mean():.4f}",
+                "Mean_Feat": f"{sub['Mean_Feat'].mean():.0f}",
+            }
+            # Compute average selection ratio
+            row["SR_pct"] = f"{sub['Mean_Feat'].mean() / 5000 * 100:.1f}%"
+            row["Time_s"] = f"{sub['Mean_Time'].mean():.1f}"
+            table.append(row)
+
+    df_t = pd.DataFrame(table)
+    # Sort by True_Acc descending
+    df_t = df_t.sort_values("True_Acc", ascending=False)
+
+    outpath = os.path.join(out_dir, "T8_mofs.csv")
+    df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
+
+    latex_path = os.path.join(out_dir, "T8_mofs.tex")
+    latex = df_t.to_latex(index=False,
+                          column_format="lcccc",
+                          caption="MOFS Methods Comparison — True Accuracy, Features, Selection Ratio, Runtime (Mean over 20 datasets).",
+                          label="tab:mofs")
     with open(latex_path, "w", encoding="utf-8") as f:
         f.write(latex)
     print(f"  {outpath}")
@@ -367,15 +452,20 @@ def main():
     parser.add_argument("--out", default=None,
                         help="Output directory (default: output/tables/)")
     parser.add_argument("--tab", nargs="*", default=None,
-                        help="Specific tables to generate (T4 T5 T6 T7)")
+                        help="Specific tables to generate (T4 T5 T6 T7 T8)")
     args = parser.parse_args()
 
     out_dir = args.out or str(PROJ / "output" / "tables")
     os.makedirs(out_dir, exist_ok=True)
 
-    print(f"Loading summary data from Exp1 (SOTA) + Exp2 (MEL) + Exp3 (KDS-EL)...")
+    print(f"Loading summary data from 4 experiments...")
+    print(f"  Exp1 (SOTA):  {EXP1_DIR}")
+    print(f"  Exp2 (MEL):   {EXP2_DIR}")
+    print(f"  Exp3 (KDS-EL): {EXP3_DIR}")
+    print(f"  Exp4 (MOFS):  {EXP4_DIR}")
     df_summary = load_merged_summary()
     print(f"  {len(df_summary)} rows, datasets={df_summary.Dataset.nunique()}, versions={df_summary.Version.nunique()}")
+    print(f"  Methods: {sorted(df_summary['Version'].unique())}")
     print(f"\nGenerating tables → {out_dir}\n")
 
     all_tabs = {
@@ -383,6 +473,7 @@ def main():
         "T5": table_t5_features,
         "T6": table_t6_wilcoxon,
         "T7": table_t7_ablation,
+        "T8": table_t8_mofs,
     }
 
     requested = args.tab if args.tab else list(all_tabs.keys())
