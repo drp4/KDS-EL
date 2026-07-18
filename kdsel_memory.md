@@ -1,6 +1,6 @@
 # KDS-EL 论文项目完整记忆文档
 # 用于新对话的上下文恢复
-# 生成时间：2026年5月 | 最后更新：2026年7月9日（15方法×20数据集，含MOFS对比）
+# 生成时间：2026年5月 | 最后更新：2026年7月18日（多审稿人审查完成，消融叙事重构，VGS-MOEA策略确定）
 
 ---
 
@@ -321,11 +321,22 @@ plot_convergence.py   → F8-F9 (2个)             ← 需适配新数据目录
 → 所有top方法Acc>0.95，KDS_EL=0.9809输给KER(0.9913)和FWPSO(0.9894)
 → 诚实展示天花板局限，论文中有叙事价值
 
-**VGS-MOEA领先问题**：
+**VGS-MOEA领先问题**（2026-07-18 审查后决定：保留，不替换）：
 → VGS-MOEA(0.9463)略优于KDS_EL(0.9450)，Δ=-0.0013
 → VGS-MOEA实现正确无bug，可变长度编码天然能探索极小特征子集（51 vs 220）
-→ KDS_EL是单解输出框架，VGS-MOEA是MOFS方法，不构成直接竞争
-→ 论文叙事：KDS-EL在单解输出方法中排名#1
+→ **不建议替换**：VGS-MOEA是变长MOEA代表作，审稿人会追问为什么没有它
+→ **处理策略**：排名表按编码类型分组，KDS-EL在定长单解方法中排#1
+
+**排名表分组策略**：
+  主排名表 — Fixed-Length Methods:
+    🥇 KDS_EL        0.9450  (single solution)
+    🥈 KDS_EL/KER    0.9438
+    🥉 KDS_EL/DRS    0.9383
+    ...
+  MOFS Variable-Length (单独表):
+    VGS-MOEA         0.9463  (Pareto front, variable-length)
+    KDS-EL           0.9450  (single solution, fixed-length)
+  → 区分定长单解 vs 变长Pareto前沿两种范式，不构成直接竞争
 
 **Cache导致特征爆炸**（已解决）：
 → 跨run共享cache导致weight反馈循环崩溃

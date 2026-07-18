@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="F3-KER-Mechanism">
+    <mxGraphModel dx="1400" dy="820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="820" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="t3" value="&lt;b&gt;Figure 3:&lt;/b&gt; Knowledge-guided Elite Refinement (KER) — mechanism and theoretical guarantee." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="12" width="700" height="22" as="geometry" />
+        </mxCell>
+
+        <!-- ====== LEFT: CIRCULAR FLOW ====== -->
+        <mxCell id="flow_label" value="&lt;b&gt;KER cycle&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontFamily=Times New Roman;fontColor=#999999;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="42" width="80" height="16" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: Elite -->
+        <mxCell id="n1" value="&lt;b&gt;Current Elite x*&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px&quot;&gt;Best solution in population&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#8CA88C;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="230" y="62" width="190" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Perturbation -->
+        <mxCell id="n2" value="&lt;b&gt;Elite Perturbation&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px&quot;&gt;Flip subset of features → candidate x'&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#8CA88C;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="230" y="130" width="190" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Decision diamond -->
+        <mxCell id="n3" value="&lt;b&gt;f(x') &amp;gt;&lt;br&gt;f(Pbest)?&lt;/b&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#8CA88C;strokeWidth=1;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="255" y="200" width="140" height="95" as="geometry" />
+        </mxCell>
+
+        <!-- NO branch -->
+        <mxCell id="no" value="&lt;b&gt;No&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px&quot;&gt;Discard x'&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF8F6;strokeColor=#C4958A;strokeWidth=1;fontSize=9;fontFamily=Times New Roman;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="430" y="220" width="90" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- YES branch -->
+        <mxCell id="yes" value="&lt;b&gt;Yes: Record Event&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px&quot;&gt;Update Pbest → x'&lt;br&gt;Identify flipped feature set F&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DCE8DC;strokeColor=#4A704A;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="325" width="250" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- Node 5: Weight Update -->
+        <mxCell id="n5" value="&lt;b&gt;Update Feature Weights&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px&quot;&gt;For each j ∈ F: &lt;b&gt;w_j += 1&lt;/b&gt;&lt;br&gt;Weights accumulate across all historical improvements&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DCE8DC;strokeColor=#4A704A;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="400" width="250" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- Node 6: KER-guided Perturbation -->
+        <mxCell id="n6" value="&lt;b&gt;KER-guided Perturbation&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px&quot;&gt;Biased coin flips: P(flip j) ∝ w_j / Σ_k w_k&lt;br&gt;Features with high historical impact perturbed more&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DCE8DC;strokeColor=#4A704A;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="485" width="310" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- Flow arrows -->
+        <mxCell id="ef1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="n1" target="n2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="n2" target="n3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef3" value="&lt;font style=&quot;font-size:8px&quot;&gt;No&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#C4958A;strokeWidth=1;endArrow=block;endFill=1;endSize=4;fontSize=8;fontFamily=Times New Roman;fontColor=#C4958A;" edge="1" parent="1" source="n3" target="no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef4" value="&lt;font style=&quot;font-size:8px&quot;&gt;Yes&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;fontSize=8;fontFamily=Times New Roman;fontColor=#4A704A;" edge="1" parent="1" source="n3" target="yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="yes" target="n5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ef6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="n5" target="n6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- No → back to perturbation -->
+        <mxCell id="ef_no" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#C4958A;strokeWidth=0.8;dashed=1;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="no" target="n2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="475" y="238" />
+              <mxPoint x="475" y="150" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Feedback loop: KER-guided → back to elite -->
+        <mxCell id="ef_loop" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1;dashed=1;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="n6" target="n1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="511" />
+              <mxPoint x="40" y="82" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="fb_label" value="&lt;font style=&quot;font-size:7.5px&quot;&gt;feedback loop&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=8;fontFamily=Times New Roman;fontColor=#4A704A;" vertex="1" parent="1">
+          <mxGeometry x="42" y="270" width="55" height="16" as="geometry" />
+        </mxCell>
+
+        <!-- ====== MIDDLE: WEIGHT VISUALIZATION ====== -->
+        <mxCell id="wv_label" value="&lt;b&gt;Accumulated Weight Vector w&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontFamily=Times New Roman;fontColor=#999999;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="42" width="220" height="16" as="geometry" />
+        </mxCell>
+
+        <mxCell id="wv_bg" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#DDDDDD;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="62" width="300" height="185" as="geometry" />
+        </mxCell>
+
+        <mxCell id="wv_chart" value="&lt;font style=&quot;font-size:8.5px&quot;&gt;&lt;b&gt;Feature importance (bar chart)&lt;/b&gt;&lt;br&gt;&lt;br&gt;f₁₂₇  ████████████████  &lt;b&gt;16&lt;/b&gt;&lt;br&gt;f₃₅₆  ██████████████    &lt;b&gt;14&lt;/b&gt;&lt;br&gt;f₈₉   ██████████        &lt;b&gt;10&lt;/b&gt;&lt;br&gt;f₅₀₁  ████████          &lt;b&gt; 8&lt;/b&gt;&lt;br&gt;f₂₃   ██████            &lt;b&gt; 6&lt;/b&gt;&lt;br&gt;f₄₄₂  ████              &lt;b&gt; 4&lt;/b&gt;&lt;br&gt;f₇₁   ██                &lt;b&gt; 2&lt;/b&gt;&lt;br&gt;  ···                     &lt;b&gt;0&lt;/b&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=none;fontSize=9;fontFamily=Courier New;fontColor=#333333;align=left;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="555" y="65" width="290" height="178" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow from n5 to wv -->
+        <mxCell id="e_wv" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#AAAAAA;strokeWidth=0.8;dashed=1;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="n5" target="wv_bg">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="426" />
+              <mxPoint x="500" y="155" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ====== RIGHT: PROPOSITION 2 ====== -->
+        <mxCell id="pr2_container" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EDF2ED;strokeColor=#4A704A;strokeWidth=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="280" width="800" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="pr2_title" value="&lt;b&gt;Proposition 2: Ergodicity Guarantee&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;fontFamily=Times New Roman;fontColor=#4A704A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="565" y="287" width="340" height="18" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pr2_math" value="&lt;b&gt;Statement.&lt;/b&gt; For any feature j with accumulated weight w_j &amp;gt; 0, the KER perturbation&lt;br&gt;step flips j with probability bounded below by&lt;br&gt;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;P(flip j in one KER step)  ≥  (1/N) · (w_j / Σ_k w_k) · p_mut,&lt;br&gt;where p_mut is the base mutation rate and N is the number of flipped features.&lt;br&gt;&lt;br&gt;&lt;b&gt;Proof sketch.&lt;/b&gt; The KER perturbation selects N features without replacement, each&lt;br&gt;with probability proportional to its accumulated weight w_j. For any feature with&lt;br&gt;w_j &amp;gt; 0, the selection probability is at least (1/N) · (w_j / Σ_k w_k). Multiplied by&lt;br&gt;the base mutation probability p_mut, this yields the stated lower bound.&lt;br&gt;&lt;br&gt;&lt;b&gt;Consequence (Weak Ergodicity).&lt;/b&gt; From any initial binary vector x_0 ∈ {0,1}^d,&lt;br&gt;any target feature subset x* is reachable in a finite expected number of iterations.&lt;br&gt;This guarantees that no promising feature combination is permanently inaccessible.&lt;br&gt;&lt;br&gt;&lt;b&gt;Practical implication.&lt;/b&gt; Unlike random perturbation (MEL/PSO), KER directs exploration&lt;br&gt;toward historically useful features while maintaining ergodicity — informed search&lt;br&gt;without search-space foreclosure." style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#8CA88C;strokeWidth=1;fontSize=9.5;fontFamily=Times New Roman;fontColor=#333333;align=left;spacingLeft=10;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="565" y="310" width="770" height="195" as="geometry" />
+        </mxCell>
+
+        <!-- ====== BOTTOM: WITH vs WITHOUT ====== -->
+        <mxCell id="bot3_title" value="&lt;b&gt;KER contribution analysis&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontFamily=Times New Roman;fontColor=#999999;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="45" y="565" width="200" height="16" as="geometry" />
+        </mxCell>
+
+        <mxCell id="without3" value="&lt;b&gt;Without KER&lt;/b&gt; (MEL, classical PSO)&lt;br&gt;&lt;font style=&quot;font-size:8.5px&quot;&gt;✗ Improvement signals discarded after Pbest update&lt;br&gt;✗ Random perturbation — undirected, slow convergence&lt;br&gt;✗ No memory of which features drove past improvements&lt;br&gt;✗ Repeated exploration of irrelevant feature combinations&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF8F6;strokeColor=#C4958A;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#555555;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="585" width="450" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="with3" value="&lt;b&gt;With KER&lt;/b&gt; (KDS-EL)&lt;br&gt;&lt;font style=&quot;font-size:8.5px&quot;&gt;✓ Improvement events permanently encoded in weight vector w&lt;br&gt;✓ Directed perturbation — biased toward historically useful features&lt;br&gt;✓ +4.68 pp over MEL (25 datasets, p &amp;lt; 10⁻⁴)&lt;br&gt;✓ KER captures ~99.8% of KDS-EL's total accuracy gain over MEL&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#EDF2ED;strokeColor=#4A704A;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="550" y="585" width="530" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- KER arrow -->
+        <mxCell id="kere" value="&lt;b&gt;KER enables&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=2;endArrow=block;endFill=1;endSize=6;fontSize=9;fontFamily=Times New Roman;fontColor=#4A704A;fontStyle=1;" edge="1" parent="1" source="without3" target="with3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Integration insight -->
+        <mxCell id="insight3" value="&lt;font style=&quot;font-size:8.5px;font-style:italic&quot;&gt;&lt;b&gt;DRS + KER integration:&lt;/b&gt; KER is the primary accuracy engine — it captures virtually all of KDS-EL's accuracy improvement over MEL.&lt;br&gt;DRS provides the structural scaffold (diversity &amp;gt; 0, feature compression) that enables KER to operate on heterogeneous populations.&lt;br&gt;Together they form a single-solution framework approaching Pareto-front performance (Acc 0.9450, rank #2/15, only 0.0013 behind VGS-MOEA).&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#CCCCCC;strokeWidth=1;fontSize=9;fontFamily=Times New Roman;fontColor=#888888;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="690" width="1310" height="46" as="geometry" />
+        </mxCell>
+
+        <!-- KER comparison table -->
+        <mxCell id="comp_title" value="&lt;b&gt;KER vs related knowledge-guided approaches&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontFamily=Times New Roman;fontColor=#999999;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="45" y="750" width="350" height="16" as="geometry" />
+        </mxCell>
+
+        <mxCell id="comp_box" value="&lt;font style=&quot;font-size:8.5px&quot;&gt;&lt;table style=&quot;border-collapse:collapse;width:100%&quot;&gt;&lt;tr style=&quot;border-bottom:1px solid #ddd&quot;&gt;&lt;th align=&quot;left&quot; width=&quot;25%&quot;&gt;Property&lt;/th&gt;&lt;th align=&quot;left&quot; width=&quot;25%&quot;&gt;KER (ours)&lt;/th&gt;&lt;th align=&quot;left&quot; width=&quot;25%&quot;&gt;IGPSO (2024)&lt;/th&gt;&lt;th align=&quot;left&quot; width=&quot;25%&quot;&gt;PSO-CSM (2025)&lt;/th&gt;&lt;/tr&gt;&lt;tr style=&quot;border-bottom:1px solid #eee&quot;&gt;&lt;td&gt;Knowledge source&lt;/td&gt;&lt;td&gt;Online improvement events&lt;/td&gt;&lt;td&gt;Pre-trained MLP&lt;/td&gt;&lt;td&gt;Correlation matrix&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;border-bottom:1px solid #eee&quot;&gt;&lt;td&gt;Extra cost&lt;/td&gt;&lt;td&gt;&lt;b&gt;Zero&lt;/b&gt; extra evaluations&lt;/td&gt;&lt;td&gt;O(d·h·epoch) pre-training&lt;/td&gt;&lt;td&gt;O(d²) correlation computation&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;border-bottom:1px solid #eee&quot;&gt;&lt;td&gt;Adaptivity&lt;/td&gt;&lt;td&gt;&lt;b&gt;Online&lt;/b&gt; — accumulates during search&lt;/td&gt;&lt;td&gt;Static — fixed after pre-training&lt;/td&gt;&lt;td&gt;Static — computed once&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Interpretability&lt;/td&gt;&lt;td&gt;&lt;b&gt;Single parameter&lt;/b&gt; (p_mut)&lt;/td&gt;&lt;td&gt;MLP architecture + training&lt;/td&gt;&lt;td&gt;Correlation threshold&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#DDDDDD;strokeWidth=1;fontSize=8;fontFamily=Times New Roman;fontColor=#333333;align=left;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="240" y="745" width="880" height="72" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

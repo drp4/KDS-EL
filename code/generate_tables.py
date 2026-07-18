@@ -33,31 +33,31 @@ ALL_VERSIONS = [
     "BPSO", "SaWDE", "FWPSO", "MEL",
     "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL",
     "PSO_CSM", "IGPSO",
-    "NSGA_II_FS", "MOPSO_FS", "MOEA_D_FS",
-    "fMOPSO_FS", "VGS_MOEA", "W_MOPSO_FS",
+    "NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
+    "fMOPSO-FS", "VGS-MOEA", "W-MOPSO-FS",
 ]
 
 # ── 主表10方法（正文用）──
 MAIN_VERSIONS = [
     "KDS_EL", "KDS_EL_KER", "KDS_EL_DRS", "MEL",
     "FWPSO", "PSO_CSM", "SaWDE",
-    "VGS_MOEA", "W_MOPSO_FS", "NSGA_II_FS",
+    "VGS-MOEA", "W-MOPSO-FS", "NSGA-II-FS",
 ]
 
 ABL_VERSIONS = ["MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
 
 # ── 消融方法（T7用）──
-MOFS_VERSIONS = ["NSGA_II_FS", "MOPSO_FS", "MOEA_D_FS",
-                 "fMOPSO_FS", "VGS_MOEA", "W_MOPSO_FS"]
+MOFS_VERSIONS = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
+                 "fMOPSO-FS", "VGS-MOEA", "W-MOPSO-FS"]
 
 V_LABELS = {
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
     "MEL": "MEL", "KDS_EL_DRS": "KDS-EL/DRS",
     "KDS_EL_KER": "KDS-EL/KER", "KDS_EL": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
-    "NSGA_II_FS": "NSGA-II-FS", "MOPSO_FS": "MOPSO-FS",
-    "MOEA_D_FS": "MOEA-D-FS", "fMOPSO_FS": "fMOPSO-FS",
-    "VGS_MOEA": "VGS-MOEA", "W_MOPSO_FS": "W-MOPSO-FS",
+    "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
+    "MOEA-D-FS": "MOEA-D-FS", "fMOPSO-FS": "fMOPSO-FS",
+    "VGS-MOEA": "VGS-MOEA", "W-MOPSO-FS": "W-MOPSO-FS",
 }
 
 # ── 20个MOFS数据集 ──
@@ -444,6 +444,136 @@ def table_t8_mofs(df_summary, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# T6b: Holm-Bonferroni 校正表
+# ══════════════════════════════════════════════════════════════════════════════
+
+def table_holm_bonferroni(df_summary, out_dir):
+    """T6b: Holm-Bonferroni corrected pairwise comparison (KDS-EL vs all others)."""
+    print("T6b: Holm-Bonferroni correction table...")
+    if sp_stats is None:
+        print("  [SKIP] scipy not available")
+        return
+
+    df_detail = load_merged_detail()
+    kds_name = "KDS_EL"
+    others = [v for v in ALL_VERSIONS if v != kds_name and v in df_summary["Version"].unique()]
+
+    # Find shared datasets
+    all_ds = sorted(df_summary["Dataset"].unique())
+    ds_with_both = []
+    for ds in all_ds:
+        kds_data = df_detail[(df_detail["Version"] == kds_name) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+        if len(kds_data) < 3:
+            continue
+        ok = True
+        for v in others:
+            o_data = df_detail[(df_detail["Version"] == v) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+            if len(o_data) < 3:
+                ok = False
+                break
+        if ok:
+            ds_with_both.append(ds)
+
+    print(f"  Shared datasets with KDS-EL: {len(ds_with_both)}")
+
+    # Collect per-dataset mean differences and compute Wilcoxon p-values
+    rows = []
+    for v in others:
+        diffs = []
+        valid_ds = 0
+        for ds in ds_with_both:
+            kds_acc = df_detail[(df_detail["Version"] == kds_name) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+            o_acc = df_detail[(df_detail["Version"] == v) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+            if len(kds_acc) >= 3 and len(o_acc) >= 3:
+                try:
+                    if len(kds_acc) == len(o_acc):
+                        _, p = sp_stats.wilcoxon(kds_acc, o_acc)
+                    else:
+                        _, p = sp_stats.mannwhitneyu(kds_acc, o_acc, alternative='two-sided')
+                except Exception:
+                    continue
+                mean_diff = kds_acc.mean() - o_acc.mean()
+                diffs.append((ds, p, mean_diff))
+                valid_ds += 1
+
+        if diffs:
+            avg_diff = np.mean([d[2] for d in diffs])
+            # Combined p-value via Fisher's method
+            chi2 = -2 * np.sum(np.log([max(d[1], 1e-300) for d in diffs]))
+            combined_p = 1 - sp_stats.chi2.cdf(chi2, 2 * len(diffs))
+            rows.append({
+                "Method": V_LABELS[v],
+                "Mean_ΔAcc": avg_diff,
+                "Wins": sum(1 for d in diffs if d[2] > 0.001),
+                "Ties": sum(1 for d in diffs if abs(d[2]) <= 0.001),
+                "Losses": sum(1 for d in diffs if d[2] < -0.001),
+                "Combined_p": combined_p,
+                "n_datasets": valid_ds,
+            })
+
+    # Sort by p-value ascending
+    rows.sort(key=lambda r: r["Combined_p"])
+
+    # Apply Holm-Bonferroni
+    m = len(rows)
+    for i, r in enumerate(rows):
+        rank = i + 1
+        alpha_target = 0.05 / (m - rank + 1)
+        r["Holm_alpha"] = alpha_target
+        r["Reject_H0"] = "Yes" if r["Combined_p"] < alpha_target else "No"
+
+    # Print
+    print(f"\n{'Method':20s} {'ΔAcc':>8s} {'W/T/L':>10s} {'Combined_p':>12s} {'α_holm':>10s} {'Reject?':>8s}")
+    print("-" * 70)
+    for r in rows:
+        wtl = f"{r['Wins']}/{r['Ties']}/{r['Losses']}"
+        print(f"  {r['Method']:18s} {r['Mean_ΔAcc']:+8.4f} {wtl:>10s} {r['Combined_p']:12.2e} {r['Holm_alpha']:10.4f} {r['Reject_H0']:>8s}")
+
+    # Save CSV
+    csv_rows = []
+    for r in rows:
+        csv_rows.append({
+            "Method": r["Method"],
+            "Mean_ΔAcc": f"{r['Mean_ΔAcc']:+.4f}",
+            "Wins": r["Wins"],
+            "Losses": r["Losses"],
+            "Ties": r["Ties"],
+            "Combined_p": f"{r['Combined_p']:.2e}",
+            "Holm_alpha": f"{r['Holm_alpha']:.4f}",
+            "Significant": r["Reject_H0"],
+        })
+    df_holm = pd.DataFrame(csv_rows)
+    outpath = os.path.join(out_dir, "T6b_holm_bonferroni.csv")
+    df_holm.to_csv(outpath, index=False, encoding="utf-8-sig")
+
+    # LaTeX
+    latex_lines = [
+        r"\begin{table}[htbp]",
+        r"\centering",
+        r"\caption{Holm-Bonferroni Corrected Pairwise Comparison: KDS-EL vs 14 Competitors.}",
+        r"\label{tab:holm}",
+        r"\small",
+        r"\begin{tabular}{lcccccr}",
+        r"\toprule",
+        r"Method & $\Delta$Acc & W/T/L & Combined $p$ & $\alpha_{\text{holm}}$ & Significant \\",
+        r"\midrule",
+    ]
+    for r in rows:
+        wtl = f"{r['Wins']}/{r['Ties']}/{r['Losses']}"
+        sig = r"\checkmark" if r["Reject_H0"] == "Yes" else ""
+        line = f"  {r['Method']} & {r['Mean_ΔAcc']:+.4f} & {wtl} & {r['Combined_p']:.2e} & {r['Holm_alpha']:.4f} & {sig} \\\\"
+        latex_lines.append(line)
+    latex_lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}"])
+
+    latex_path = os.path.join(out_dir, "T6b_holm_bonferroni.tex")
+    with open(latex_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(latex_lines))
+
+    print(f"\n  {outpath}")
+    print(f"  {latex_path}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # Main
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -452,7 +582,8 @@ def main():
     parser.add_argument("--out", default=None,
                         help="Output directory (default: output/tables/)")
     parser.add_argument("--tab", nargs="*", default=None,
-                        help="Specific tables to generate (T4 T5 T6 T7 T8)")
+                        help="Specific tables to generate (T4 T5 T6 T6b T7 T8)")
+
     args = parser.parse_args()
 
     out_dir = args.out or str(PROJ / "output" / "tables")
@@ -472,6 +603,7 @@ def main():
         "T4": table_t4_accuracy,
         "T5": table_t5_features,
         "T6": table_t6_wilcoxon,
+        "T6b": table_holm_bonferroni,
         "T7": table_t7_ablation,
         "T8": table_t8_mofs,
     }

@@ -11,8 +11,14 @@ import numpy as np
 from scipy import stats
 from scipy.stats import friedmanchisquare, wilcoxon
 from pathlib import Path
+import sys
+import io
 import warnings
 warnings.filterwarnings('ignore')
+
+# Force UTF-8 output
+if sys.stdout.encoding != 'utf-8':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 PROJ = Path(__file__).resolve().parent.parent
 
@@ -38,12 +44,12 @@ name_map = {
     'FWPSO': 'FWPSO',
     'IGPSO': 'IGPSO',
     'PSO_CSM': 'PSO-CSM',
-    'NSGA_II_FS': 'NSGA-II-FS',
-    'MOPSO_FS': 'MOPSO-FS',
-    'MOEA_D_FS': 'MOEA-D-FS',
-    'fMOPSO_FS': 'fMOPSO-FS',
-    'VGS_MOEA': 'VGS-MOEA',
-    'W_MOPSO_FS': 'W-MOPSO-FS',
+    'NSGA-II-FS': 'NSGA-II-FS',
+    'MOPSO-FS': 'MOPSO-FS',
+    'MOEA-D-FS': 'MOEA-D-FS',
+    'fMOPSO-FS': 'fMOPSO-FS',
+    'VGS-MOEA': 'VGS-MOEA',
+    'W-MOPSO-FS': 'W-MOPSO-FS',
 }
 
 # Apply name mapping
@@ -102,7 +108,7 @@ print(f"1. OVERALL ACCURACY (mean across {len(common)} datasets, 15 methods)")
 print("=" * 80)
 acc_by_method = combined.groupby('Version')['Mean_Acc'].agg(['mean', 'std']).sort_values('mean', ascending=False)
 for i, (method, row) in enumerate(acc_by_method.iterrows()):
-    medal = ['🥇','🥈','🥉'][i] if i < 3 else f' {i+1} '
+    medal = ['[1]','[2]','[3]'][i] if i < 3 else f'[{i+1}]'
     print(f"  {medal} {method:25s}: {row['mean']:.4f} ± {row['std']:.4f}")
 
 # ============================================================
@@ -226,10 +232,10 @@ print("6. ABLATION / SYNERGY ANALYSIS (26 datasets)")
 print("=" * 80)
 
 ablation_methods = ['MEL (Baseline)', 'KDS-EL/DRS', 'KDS-EL/KER', 'KDS-EL (Proposed)']
-# Use Exp2+Exp3 for full dataset coverage (26 datasets)
+# IMPORTANT: MEL from Exp2 only; KDS variants from Exp3 only (Exp2 KDS variants are buggy old runs)
 ablation_data = pd.concat([
-    exp2_df[exp2_df['Version'].isin(ablation_methods)],
-    exp3_df[exp3_df['Version'].isin(ablation_methods)]
+    exp2_df[(exp2_df['Version'] == 'MEL (Baseline)')],
+    exp3_df[exp3_df['Version'].isin(['KDS-EL/DRS', 'KDS-EL/KER', 'KDS-EL (Proposed)'])]
 ], ignore_index=True)
 ablation_common = sorted(set(exp2_df['Dataset'].unique()) & set(exp3_df['Dataset'].unique()))
 print(f"  Ablation datasets: {len(ablation_common)} (Exp2 ∩ Exp3)")
@@ -240,13 +246,14 @@ synergies = []
 ceiling_ds = []
 
 for ds in ablation_common:
-    ds_data = ablation_data[ablation_data['Dataset'] == ds].set_index('Version')
-    if len(ds_data) < 4:
+    ds_data = ablation_data[ablation_data['Dataset'] == ds]
+    if ds_data['Version'].nunique() < 4:
         continue
-    base = ds_data.loc['MEL (Baseline)', 'Mean_Acc']
-    drs = ds_data.loc['KDS-EL/DRS', 'Mean_Acc']
-    ker = ds_data.loc['KDS-EL/KER', 'Mean_Acc']
-    full = ds_data.loc['KDS-EL (Proposed)', 'Mean_Acc']
+    # Get scalar values safely via groupby-first
+    base = ds_data[ds_data['Version'] == 'MEL (Baseline)']['Mean_Acc'].values[0]
+    drs = ds_data[ds_data['Version'] == 'KDS-EL/DRS']['Mean_Acc'].values[0]
+    ker = ds_data[ds_data['Version'] == 'KDS-EL/KER']['Mean_Acc'].values[0]
+    full = ds_data[ds_data['Version'] == 'KDS-EL (Proposed)']['Mean_Acc'].values[0]
 
     delta_drs = drs - base
     delta_ker = ker - base
@@ -352,6 +359,141 @@ cat_summary = combined.groupby('Category').agg(
 for cat, row in cat_summary.iterrows():
     print(f"  {cat:20s}: Acc={row['Avg_Acc']:.4f}, Feat={row['Avg_Feat']:.0f}, "
           f"Time={row['Avg_Time']:.1f}s, Methods={int(row['Count'])}")
+
+# ============================================================
+# 10. KER-ONLY vs FULL — PAIRED WILCOXON (per-run, per-dataset)
+# ============================================================
+print("\n" + "=" * 80)
+print("10. KER-ONLY vs FULL PAIRED WILCOXON (per-dataset, per-run)")
+print("=" * 80)
+
+# Load per-run detail data for KER and Full
+exp3_detail = pd.read_csv(EXP3_DIR / "results_detail.csv")
+ker_detail = exp3_detail[exp3_detail['Version'] == 'KDS_EL_KER']
+full_detail = exp3_detail[exp3_detail['Version'] == 'KDS_EL']
+
+abl_ds_ker_full = sorted(set(ker_detail['Dataset'].unique()) & set(full_detail['Dataset'].unique()))
+print(f"  Datasets with both KER and Full per-run data: {len(abl_ds_ker_full)}")
+
+wilc_results = []
+for ds in abl_ds_ker_full:
+    ker_acc = ker_detail[ker_detail['Dataset'] == ds]['Accuracy'].values
+    full_acc = full_detail[full_detail['Dataset'] == ds]['Accuracy'].values
+    if len(ker_acc) < 3 or len(full_acc) < 3:
+        continue
+    try:
+        if len(ker_acc) == len(full_acc):
+            _, p = wilcoxon(full_acc, ker_acc, alternative='two-sided')
+        else:
+            _, p = stats.mannwhitneyu(full_acc, ker_acc, alternative='two-sided')
+    except Exception:
+        p = np.nan
+    mean_diff = full_acc.mean() - ker_acc.mean()
+    wilc_results.append({
+        'Dataset': ds, 'KER_mean': ker_acc.mean(), 'Full_mean': full_acc.mean(),
+        'dAcc': mean_diff, 'p_value': p,
+        'significant_05': p < 0.05 if not np.isnan(p) else False,
+        'Full_better': mean_diff > 0,
+    })
+
+df_wilc = pd.DataFrame(wilc_results)
+n_sig = df_wilc['significant_05'].sum()
+n_full_better = df_wilc['Full_better'].sum()
+mean_dacc = df_wilc['dAcc'].mean()
+
+print(f"\n  Datasets with p<0.05: {n_sig}/{len(df_wilc)}")
+print(f"  Datasets where Full > KER: {n_full_better}/{len(df_wilc)}")
+print(f"  Mean dAcc (Full - KER): {mean_dacc:+.4f}")
+
+# Fisher's combined test
+valid_ps = df_wilc['p_value'].dropna().values
+if len(valid_ps) > 0:
+    chi2 = -2 * np.sum(np.log(np.maximum(valid_ps, 1e-300)))
+    combined_p = 1 - stats.chi2.cdf(chi2, 2 * len(valid_ps))
+    print(f"  Fisher's combined p-value: {combined_p:.4e}")
+    print(f"  --> {'SIGNIFICANT' if combined_p < 0.05 else 'NOT SIGNIFICANT'} at alpha=0.05")
+
+# Per-dataset detail
+print(f"\n  {'Dataset':<15s} {'KER':>8s} {'Full':>8s} {'dAcc':>8s} {'p':>10s} {'p<0.05':>8s}")
+print("  " + "-" * 60)
+for _, r in df_wilc.sort_values('p_value').iterrows():
+    print(f"  {r['Dataset']:<13s} {r['KER_mean']:8.4f} {r['Full_mean']:8.4f} {r['dAcc']:+8.4f} {r['p_value']:10.4f} {str(r['significant_05']):>8s}")
+
+# ============================================================
+# 11. CEILING-FILTERED SYNERGY (Acc<0.95 subset)
+# ============================================================
+print("\n" + "=" * 80)
+print("11. CEILING-FILTERED ABLATION ANALYSIS (Non-saturated subset)")
+print("=" * 80)
+
+# Reconstruct ablation data for 25 datasets
+ablation_methods_25 = ['MEL (Baseline)', 'KDS-EL/DRS', 'KDS-EL/KER', 'KDS-EL (Proposed)']
+abl_data_25 = pd.concat([
+    exp2_df[(exp2_df['Version'] == 'MEL (Baseline)')],
+    exp3_df[exp3_df['Version'].isin(['KDS-EL/DRS', 'KDS-EL/KER', 'KDS-EL (Proposed)'])]
+], ignore_index=True)
+abl_common_25 = sorted(set(exp2_df['Dataset'].unique()) & set(exp3_df['Dataset'].unique()))
+
+# Build per-dataset ablation table
+abl_rows = []
+for ds in abl_common_25:
+    ds_data = abl_data_25[abl_data_25['Dataset'] == ds]
+    if ds_data['Version'].nunique() < 4:
+        continue
+    try:
+        base = ds_data[ds_data['Version'] == 'MEL (Baseline)']['Mean_Acc'].values[0]
+        drs = ds_data[ds_data['Version'] == 'KDS-EL/DRS']['Mean_Acc'].values[0]
+        ker = ds_data[ds_data['Version'] == 'KDS-EL/KER']['Mean_Acc'].values[0]
+        full = ds_data[ds_data['Version'] == 'KDS-EL (Proposed)']['Mean_Acc'].values[0]
+        abl_rows.append({
+            'Dataset': ds, 'MEL': base, 'DRS': drs, 'KER': ker, 'Full': full,
+            'dDRS': drs-base, 'dKER': ker-base, 'dFull': full-base,
+            'Synergy': (full-base) - ((drs-base) + (ker-base)),
+            'BestAcc': max(drs, ker, full),
+        })
+    except (KeyError, IndexError):
+        continue
+
+df_abl = pd.DataFrame(abl_rows)
+non_sat = df_abl[df_abl['BestAcc'] < 0.95]
+sat = df_abl[df_abl['BestAcc'] >= 0.95]
+
+print(f"  Non-saturated (Acc<0.95): {len(non_sat)} datasets")
+print(f"    {list(non_sat['Dataset'].values)}")
+print(f"  Saturated (Acc>=0.95): {len(sat)} datasets")
+
+for label, subset in [("ALL (25DS)", df_abl), ("NON-SAT (Acc<0.95)", non_sat), ("SAT (Acc>=0.95)", sat)]:
+    print(f"\n  --- {label} ---")
+    print(f"    dDRS={subset['dDRS'].mean():+.4f}, dKER={subset['dKER'].mean():+.4f}, dFull={subset['dFull'].mean():+.4f}")
+    print(f"    Synergy={subset['Synergy'].mean():+.4f}, Positive={(subset['Synergy']>0).sum()}/{len(subset)}")
+
+# ============================================================
+# 12. VGS-MOEA vs KDS-EL STABILITY COMPARISON
+# ============================================================
+print("\n" + "=" * 80)
+print("12. KDS-EL vs VGS-MOEA STABILITY (per-dataset Std_Acc)")
+print("=" * 80)
+
+kds_20 = combined[(combined['Version'] == 'KDS-EL (Proposed)') & (combined['Dataset'].isin(common))]
+vgs_20 = combined[(combined['Version'] == 'VGS-MOEA') & (combined['Dataset'].isin(common))]
+
+kds_std_mean = kds_20['Std_Acc'].mean()
+vgs_std_mean = vgs_20['Std_Acc'].mean()
+
+kds_better = 0
+vgs_better = 0
+for ds in common:
+    kds_s = kds_20[kds_20['Dataset']==ds]['Std_Acc'].values
+    vgs_s = vgs_20[vgs_20['Dataset']==ds]['Std_Acc'].values
+    if len(kds_s) > 0 and len(vgs_s) > 0:
+        if kds_s[0] < vgs_s[0]:
+            kds_better += 1
+        else:
+            vgs_better += 1
+
+print(f"  KDS-EL mean Std: {kds_std_mean:.4f}")
+print(f"  VGS-MOEA mean Std: {vgs_std_mean:.4f}")
+print(f"  KDS-EL more stable on: {kds_better}/{len(common)} datasets")
 
 print("\n" + "=" * 80)
 print("ANALYSIS COMPLETE")

@@ -1,7 +1,7 @@
 % =====================================================================
 %  KDS-EL 完整论文逻辑文档
 %  — 精确的故事线、关键数字、每节写什么、审稿人问题预案
-%  最后更新：2026-07-09（15方法×20数据集，含MOFS对比）
+%  最后更新：2026-07-13（P0修正：放弃协同叙事，重构为互补框架）
 % =====================================================================
 
 % ─────────────────────────────────────────────────────────────────────
@@ -51,34 +51,40 @@
 %                   "哪些特征组合曾经有效"的知识被丢弃
 %  现有方法单独处理其中一个，或两个都不处理。
 %
-%  【KDS-EL 的回答】
-%  Dual-Space 框架：同时在两个空间寻优，且让两个空间相互增强。
+%  【KDS-EL 的回答】（2026-07-13 修正：放弃"协同增强"叙事）
+%  Dual-Space 框架：同时在两个空间寻优，两个模块互补而非协同增强。
 %    空间A（结构空间）：DRS 把 NHD 升格为第一类选择目标
-%                     → 有可证明下界的多样性保持
+%                     → 有可证明下界的多样性保持 + 大幅特征压缩
 %    空间B（适应度空间）：KER 把改进事件累积成权重向量
-%                       → 在线学习机制引导精英扰动
-%    协同效应：DRS 维持的多样性给 KER 提供异质改进信号
-%             KER 的定向扰动加速产生高质量多样候选，反哺 DRS
-%    困难数据集验证：ALL2/ALL3/Stroke上DRS单独为负贡献，完整KDS_EL逆转
-%    PCMAC明星证据：Δtotal=+0.0608，正协同，同时显著优于两变体
+%                       → 在线学习机制引导精英扰动，捕获几乎全部准确率收益
+%    互补关系（非协同）：
+%      — DRS 的价值在多样性（NHD>0，可证下界）与特征压缩（-89.2% vs MEL）
+%      — KER 的价值在准确率（+4.68pp over MEL），但单独使用时 NHD=0（种群坍缩）
+%      — DRS 对准确率的边际贡献小但统计显著：Full vs KER dAcc=+0.0020
+%        (Fisher combined p=6.5e-4, 17/25 datasets Full > KER)
+%      — 综合：KDS-EL 是唯一同时实现高准确率、正结构多样性、大幅特征压缩的单解框架
+%    困难数据集上的互补行为：ALL2/ALL3/Stroke上DRS单独为负贡献，KER维持准确率
+%    PCMAC：Full(0.8478)显著优于KER(0.8249), p=0.0039 — DRS提供的多样性使KER更有效
 
 % ─────────────────────────────────────────────────────────────────────
 % 三、逐节写什么（精确到段落级）
 % ─────────────────────────────────────────────────────────────────────
 
-%  §1 ABSTRACT（需更新至20数据集）
+%  §1 ABSTRACT（需更新至20数据集，2026-07-13修正协同叙事）
 %    句1: 问题存在（高维，双困境）
 %    句2: 现有方法局限（单空间 vs 传统MOFS输出Pareto前沿）
 %    句3: KDS-EL 是什么（双空间 + DRS + KER，第三种路径）
 %    句4: 主要结果（15方法×20数据集, KDS_EL Acc=0.9450, rank #2仅次VGS-MOEA）
-%    句5: 消融证据（完整框架唯一同时实现高Acc+结构多样性+特征压缩）
+%    句5: 消融证据（KER捕获主要准确率收益，DRS提供结构多样性与特征压缩，
+%          完整框架是唯一三轴平衡方案；互补而非协同）
 
 %  §2 INTRODUCTION（已完成框架，补充以下）
 %    P1: 应用背景（高维生物信息学，biomarker discovery）
 %    P2: Limitation 1 → 结构困境（NHD 从未被当作选择目标）
 %    P3: Limitation 2 → 知识困境（改进信号被遗忘）
 %    P4: KDS-EL 提出（双空间定义，DRS+KER，第三种路径）
-%    P5: 协同效应声明（为消融预告）
+%    P5: 互补声明（不为消融预告"协同"，而是预告"三轴平衡"——
+%         DRS/KER各自解决一个困境，完整框架唯一同时兼顾准确率、多样性、特征压缩）
 %    P6: Contribution list（i,ii,iii 三条）
 %    P7: 论文结构
 
@@ -152,24 +158,47 @@
 %          ► 所有含DRS的方法特征数远小于其他（结构空间压缩效应）
 %          ► vs FWPSO(1069)：KDS_EL使用21%的特征
 %
-%    §5.4 Ablation Study（Fig 6 + Table T7）
-%          ► 四个变体 × 26 数据集
-%          ► 三层论证框架：
-%             1. 每个模块独立有效：DRS+3.81pp, KER+4.43pp over MEL
-%             2. 每个模块有结构性缺陷：DRS牺牲acc, KER牺牲多样性(NHD=0)
-%             3. 完整框架是唯一兼得方案
-%          ► 天花板效应：9/26数据集Acc>0.99，压低了跨数据集平均协同
-%          ► 困难数据集(ALL2/ALL3/Stroke)上DRS单独为负贡献，KDS_EL实现互相纠错
-%          ► PCMAC：Δtotal=+0.0608, 正协同, 同时显著优于两变体
-%          ► 三维综合排名：KDS_EL在Acc+Feat+NHD上唯一平衡
+%    §5.4 Ablation Study（Fig 6 + Table T7）【2026-07-13 重大修正】
+%          ► 四个变体 × 25 数据集（CNS因消融V2缺失已排除）
+%          ► 三层论证框架（修正后）：
+%             1. 每个模块独立有效：DRS+3.96pp, KER+4.68pp over MEL
+%             2. 每个模块有结构性缺陷：
+%                — DRS单独：牺牲acc（9/25数据集上非最优），困难数据集(ALL2/ALL3/Stroke)为负贡献
+%                — KER单独：NHD=0（种群完全坍缩为同质解），损失所有结构多样性
+%             3. 完整框架是唯一三轴平衡方案：
+%                — Acc: 0.9291（KER=0.9271, Fisher combined p=6.5e-4 — 统计显著但幅度小）
+%                — NHD: 0.310（KER=0.000, DRS=0.453）— DRS维持的结构多样性
+%                — Feat: 263（KER=273, DRS=222）— 含DRS的方法特征大幅压缩
+%          ► 重要：不使用"协同/synergy"术语。数据不支持：
+%             Synergy=-3.76pp（25DS avg），正协同率仅24%（6/25）
+%             这是一个加法性指标陷阱——当DRS单独为负时，即使Full≈KER+微小改善也会被标记为"负协同"
+%             改用"互补"：两个模块弥补彼此的缺陷，而非增强彼此的优势
+%          ► 天花板效应（诚实陈述）：9/25数据集Acc>0.99，饱和子集上所有方法近乎满分
+%          ► 非饱和子集（Acc<0.95, n=13）：
+%             ΔDRS=+2.19pp, ΔKER=+3.59pp, ΔFull=+4.04pp
+%             Full vs KER ΔAcc=+0.44pp (Fisher p=0.0024)
+%             Synergy=-1.75pp (仍然为负，正协同6/13=46.2%)
+%          ► 困难数据集(ALL2/ALL3/Stroke)：DRS单独负贡献，KER维持准确率
+%            完整KDS-EL在三个数据集上均优于DRS和KER单独——互补起作用
+%          ► PCMAC：Δtotal=+0.0608，Full vs KER p=0.0039，Full vs DRS p=0.002
+%          ► 三维综合排名：KDS-EL在Acc+Feat+NHD上唯一平衡（无其他三变体或SOTA方法能同时做到）
 %
 %    §5.5 MOFS Comparison（Table T8, 新增节）
 %          ► 6 MOFS方法 + KDS_EL对比
 %          ► 三代MOFS代差：经典(0.901-0.906) → 混合(0.911-0.913) → 变长(0.946)
-%          ► VGS-MOEA(0.9463)领先但KDS_EL(0.9450)几乎持平
-%          ► KDS_EL特征220 vs 经典MOFS 4800-5300：减少95%+
-%          ► 关键论点：KDS-EL用单解输出达到MOFS前沿水平，且特征更少
-%          ► VGS-MOEA实现正确无bug，可变长度编码优势真实
+%          ► VGS-MOEA(0.9463)在Acc-Feat-Time三轴上全面领先KDS-EL(0.9450)
+%            这是需要正面承认的事实，不是需要掩盖的缺陷
+%          ► VGS-MOEA vs KDS-EL 本质差异：
+%             — VGS-MOEA: 变长编码 + 多目标优化 → Pareto前沿 → 需decision-maker选择
+%             — KDS-EL: 定长编码 + 双空间单目标 → 单一最优解 → 即用型输出
+%             — 适用场景不同：MOFS适合探索trade-off空间，KDS-EL适合biomarker discovery
+%               中需要确定性单一特征子集的场景
+%          ► KDS-EL 对 VGS-MOEA 的优势维度：
+%             — 稳定性：KDS-EL std=0.0074 vs VGS-MOEA std=0.0092（12/20数据集更稳定）
+%             — 无需决策者：直接输出单一解，不输出Pareto集后要求人工选择
+%             — 对classical MOFS (NSGA-II-FS等) 全面超越：Acc+3.9pp, Feat-95%
+%          ► 关键论点修订：KDS-EL不是要"打败"VGS-MOEA，而是证明单解框架可以达到
+%            MOFS前沿水平——这在EC-based FS文献中是首次
 %
 %    §5.6 Stability Analysis（Fig 7 箱线图）
 %          ► KDS-EL std 最小（stability 最高）
@@ -183,7 +212,7 @@
 %          ► KDS-EL/DRS 早期收敛更慢但最终持平（多样性代价）
 %
 %    §5.9 NHD Diversity Analysis（Fig 9）
-%          ► KDS-EL/DRS avg NHD=0.451，KDS_EL avg NHD=0.324
+%          ► KDS-EL/DRS avg NHD=0.453，KDS_EL avg NHD=0.310
 %          ► MEL/KDS_EL_KER/所有SOTA方法 NHD=0.000（无DRS种群坍缩）
 %          ► 命题1的实证验证：NHD 始终 > 0
 %
@@ -194,10 +223,14 @@
 %          ► Trade-off 声明（biomedical 场景精度优先）
 %
 %    §5.11 Discussion: 方法论局限
-%          ► ISOLET：KDS_EL输SaWDE（617维26类，多分类场景）
+%          ► ISOLET：KDS_EL输SaWDE和KER（617维26类，多分类场景限制）
 %          ► COIL20：天花板效应（所有方法Acc>0.95），KDS_EL输KER和FWPSO
-%          ► VGS-MOEA领先：可变长度编码天然优势，但KDS_EL是单解框架≠MOFS
-%          ► 结论：KDS-EL在n≥60、二分类场景表现稳定
+%          ► VGS-MOEA三轴领先：正面承认，核心区分在单解 vs Pareto前沿
+%             — VGS-MOEA适合探索性trade-off分析
+%             — KDS-EL适合需要确定性biomarker panel的临床场景
+%             — 互补而非竞争关系
+%          ► 天花板效应影响：建议在非饱和数据集上补充验证
+%          ► 结论：KDS-EL在n>=60、二分类场景、需确定性单解时表现稳定
 
 %  §6 CONCLUSION
 %    P1: 问题重述（一句）
@@ -208,13 +241,14 @@
 
 % ─────────────────────────────────────────────────────────────────────
 % 四、关键数字备查表（全文引用时用这些，精确无误）
+%    2026-07-13 更新：新增Fisher combined p, ceiling-filtered, VGS-MOEA std
 % ─────────────────────────────────────────────────────────────────────
 
 %  15方法完整排名（20数据集，真实分类准确率）：
-%    🥇 VGS-MOEA     0.9463  Feat=51    Time=34.2s  (MOFS变长)
-%    🥈 KDS_EL        0.9450  Feat=220   Time=96.2s  (本文)
-%    🥉 KDS_EL_KER    0.9438  Feat=236   Time=97.5s  (消融)
-%    4  KDS_EL_DRS    0.9383  Feat=166   Time=188.0s (消融)
+%    🥇 VGS-MOEA     0.9463  Feat=51    Time=34.2s  Std=0.0092 (MOFS变长)
+%    🥈 KDS_EL        0.9450  Feat=220   Time=96.2s  Std=0.0074 (本文, 单解)
+%    🥉 KDS_EL_KER    0.9438  Feat=236   Time=97.5s  Std=0.0075 (消融, 无DRS)
+%    4  KDS_EL_DRS    0.9383  Feat=166   Time=188.0s Std=0.0076 (消融, 无KER)
 %    5  FWPSO         0.9177  Feat=1069  Time=49.7s  (SOTA)
 %    6  W-MOPSO-FS    0.9132  Feat=2960  Time=110.4s (MOFS混合)
 %    7  fMOPSO-FS     0.9110  Feat=3007  Time=119.9s (MOFS混合)
@@ -226,12 +260,12 @@
 %    13 MEL           0.8868  Feat=2722  Time=175.0s (基线)
 %    14 IGPSO         0.8839  Feat=2538  Time=136.4s (SOTA)
 %    15 BPSO          0.8698  Feat=5297  Time=146.2s (SOTA)
-%
+
 %  Friedman排名（9方法，排除MOFS）：
 %    KDS_EL=3.000, KDS_EL_KER=3.200, KDS_EL_DRS=3.600
 %    FWPSO=5.050, PSO_CSM=6.250, SaWDE=6.850
 %    IGPSO=8.150, MEL=8.500, BPSO=9.400
-%
+
 %  KDS_EL vs各方法Win/Loss（20数据集）：
 %    vs MEL:        20W-0L   (100%)   ΔAcc=+0.058
 %    vs BPSO:       20W-0L   (100%)   ΔAcc=+0.075
@@ -245,41 +279,59 @@
 %    vs NSGA-II-FS: 15W-1T-4L(75.0%)
 %    vs W-MOPSO-FS: 15W-2T-3L(75.0%)
 %    vs VGS-MOEA:    8W-1T-11L(40.0%)  ΔAcc=-0.0013
+
+%  特征数（消融，25数据集，CNS因在消融V2中缺失已排除）：
+%    20DS主表：MEL=2722, KDS_EL=220(-91.9%)
+%    25DS消融：MEL=2436, KDS_EL_KER=273(-88.8%), KDS_EL=263(-89.2%), KDS_EL_DRS=222(-90.9%)
+
+%  NHD结构多样性（25DS消融）：
+%    MEL/KER/所有SOTA=0.000, KDS_EL_DRS=0.453, KDS_EL=0.310
+
+%  ─── 消融关键统计（25数据集，CNS排除）───
+%    Δtotal(KDS_EL vs MEL)=+4.88pp
+%    ΔDRS(DRS vs MEL)=+3.96pp
+%    ΔKER(KER vs MEL)=+4.68pp
 %
-%  特征数（消融，26数据集）：
-%    MEL=2989, KDS_EL_KER=200(-93.3%), KDS_EL=198(-93.4%), KDS_EL_DRS=129(-95.7%)
+%    【不推荐使用】Synergy=-3.76pp，正协同6/25(24%)
+%      原因：DRS单独在某些数据集上为负贡献（如ALL2/ALL3/Stroke），
+%      但完整KDS-EL中DRS与KER互补：KER覆盖DRS的准确率弱点，DRS提供KER缺失的多样性
+%      Synergy=ΔFull-(ΔDRS+ΔKER)是一个加法性指标，无法捕捉这种互补关系
 %
-%  NHD结构多样性：
-%    MEL/KER/所有SOTA=0.000, KDS_EL_DRS=0.451, KDS_EL=0.324
+%    【推荐使用】KER vs Full 配对Wilcoxon（per-run, per-dataset）：
+%      Mean ΔAcc(Full - KER) = +0.0020
+%      Fisher's combined p = 6.5e-4（统计显著！）
+%      Full > KER: 17/25 datasets
+%      Per-dataset p<0.05: 7/25 (ALL1, ALL2, COIL20, PCMAC, Myeloma, BASEHOCK, ISOLET)
+%      → DRS边际准确率贡献虽小但可检测，价值主要在NHD+特征压缩
 %
-%  消融（26数据集）：
-%    Δtotal(KDS_EL vs MEL)=+4.68pp
-%    ΔDRS(DRS vs MEL)=+3.81pp
-%    ΔKER(KER vs MEL)=+4.43pp
-%    正协同数据集比例=7/26(26.9%)
-%    天花板效应：9/26数据集Acc>0.99
+%    天花板效应：9/25数据集Acc>0.99
+%    非饱和子集（Acc<0.95, n=13）：
+%      ΔDRS=+2.19pp, ΔKER=+3.59pp, ΔFull=+4.04pp
+%      Full vs KER ΔAcc=+0.44pp (Fisher p=0.0024)
+%      Synergy=-1.75pp (正协同6/13=46.2%)
 %
+%    饱和子集（Acc≥0.95, n=12）：
+%      ΔDRS=+5.88pp, ΔKER=+5.86pp, ΔFull=+5.80pp
+%      Full vs KER ΔAcc=-0.06pp (Fisher p=0.039)
+%      Synergy=-5.94pp (正协同0/12=0%)
+%      → 饱和子集上DRS+KER的叠加效应被天花板压制，所有变体近乎满分
+
+%    KDS-EL vs VGS-MOEA 稳定性：
+%      KDS-EL mean Std=0.0074 vs VGS-MOEA mean Std=0.0092
+%      KDS-EL更稳定: 12/20 datasets
+
 %  PCMAC明星证据：
 %    KDS_EL=0.8478 vs 最强SOTA(SaWDE)=0.8256, Δ=+0.0222
-%    Δtotal=+0.0608 (26数据集中第4大)
-%    Synergy=+0.0008 (正协同!)
-%    vs DRS Wilcoxon p=0.002, vs KER Wilcoxon p=0.021
-%
-%  MOFS三代代差：
-%    经典(2002-2007): Acc=0.901-0.906, Feat=4800-5300
-%    混合(近年):     Acc=0.911-0.913, Feat=2960-3010
-%    变长(2021):     Acc=0.946,      Feat=51
-%
-%  类别均值：
-%    KDS-EL Family=0.9424(#1), MOFS Advanced=0.9235(#2)
-%    MOFS Classic=0.9038(#3), SOTA单目标=0.8936(#4)
+%    Δtotal=+0.0608 (25数据集中第4大)
+%    Full vs KER Wilcoxon p=0.0039 ✅
+%    Full vs DRS Wilcoxon p=0.002 ✅
 
 % ─────────────────────────────────────────────────────────────────────
-% 五、审稿人预案（Q1 审稿人最可能提的问题）
+% 五、审稿人预案（Q1 审稿人最可能提的问题）【2026-07-13 重大修正】
 % ─────────────────────────────────────────────────────────────────────
 
 %  Q1: "KDS-EL is slower than FWPSO and VGS-MOEA. Is this acceptable?"
-%  A:  "KDS-EL evaluates 2.15× more fitness functions (4300 vs 2000) due
+%  A:  "KDS-EL evaluates 2.15x more fitness functions (4300 vs 2000) due
 %       to the DRS pool construction, and maintains larger feature subsets
 %       during early exploration phases—both deliberate design choices
 %       enabling its accuracy and compactness advantages. Its 96.2s runtime
@@ -288,51 +340,66 @@
 %       classification accuracy and biomarker sparsity are primary concerns,
 %       this runtime profile is acceptable."
 
-%  Q2: "Why is VGS-MOEA better than KDS-EL? Why not just use VGS-MOEA?"
-%  A:  "VGS-MOEA employs variable-length genome encoding that natively
-%       explores extremely compact feature subsets (51 features avg)—a
-%       genuine methodological advantage. However, VGS-MOEA is a
-%       multi-objective FS method that outputs a Pareto front requiring
-%       decision-maker intervention to select a final subset. KDS-EL, by
-%       contrast, delivers a single optimal solution directly, which is
-%       the preferred output format in many clinical biomarker discovery
-%       pipelines. The two methods serve different application scenarios.
-%       Notably, KDS-EL outperforms all 13 other methods including the
-%       next-best single-objective method (FWPSO) by +2.73pp."
+%  Q2: "VGS-MOEA dominates KDS-EL on Acc, Feat, and Time. Why not just use
+%       VGS-MOEA?" 【2026-07-13：不再回避，正面回应】
+%  A:  "VGS-MOEA is the top performer in our benchmark—we report this
+%       transparently. However, the two methods serve different purposes:
+%       (i) VGS-MOEA is a multi-objective optimizer outputting a Pareto
+%           front (~30-50 candidate subsets), requiring a decision-maker to
+%           select the final panel. Different runs may yield different fronts.
+%       (ii) KDS-EL is a single-solution framework: given a dataset, it
+%            deterministically returns one optimal feature subset—no
+%            post-hoc selection required. This is the expected output format
+%            in clinical biomarker discovery pipelines.
+%       (iii) KDS-EL shows better run-to-run stability than VGS-MOEA on
+%             12/20 datasets (mean Std 0.0074 vs 0.0092).
+%       We do not claim KDS-EL outperforms VGS-MOEA. We demonstrate that a
+%       single-solution framework with structural diversity regulation can
+%       approach Pareto-front-level performance—a first in EC-based FS."
 
 %  Q3: "ISOLET and COIL20 show the method is not universally best."
 %  A:  "On ISOLET (617 dimensions, 26 classes), SaWDE's differential
 %       weight mechanism shows particular strength in medium-dimensional
 %       multi-class settings. COIL20 (1440 samples, 1024 dimensions, 20
 %       classes) exhibits a ceiling effect—all top methods achieve >0.95
-%       accuracy, with KDS_EL_KER reaching 0.9913. The full KDS-EL
-%       selects more features (171 vs KER's 60) without accuracy gain,
-%       illustrating a known limitation in near-saturated accuracy regimes.
-%       We discuss both cases as boundary conditions in the Discussion.
-%       On 18 of 20 datasets, KDS-EL achieves the highest or second-highest
-%       accuracy among all 15 methods."
+%       accuracy. We discuss both as boundary conditions."
 
-%  Q4: "Why is the ablation synergy negative in most datasets?"
-%  A:  "The apparent negative synergy (-3.55pp mean) is driven by
-%       ceiling effects: 9 of 26 datasets have individual-module accuracy
-%       > 0.99, leaving no room to demonstrate combinatorial gains. On
-%       difficult datasets where neither module alone suffices (ALL2,
-%       ALL3, Stroke, PCMAC), the full KDS-EL shows positive synergy
-%       (+0.9 to +3.5pp), demonstrating that DRS and KER genuinely
-%       compensate for each other's weaknesses. We advocate a three-layer
-%       ablation framework: (1) each module is independently effective,
-%       (2) each has a structural weakness, (3) the full framework is
-%       the only configuration that achieves high accuracy, structural
-%       diversity, and feature sparsity simultaneously."
+%  Q4: "The synergy is negative (−3.76pp, 24% positive). This directly
+%       contradicts the claim that DRS and KER mutually enhance."
+%       【2026-07-13：完全重写回应——承认并修正叙事】
+%  A:  "The reviewer is correct. We have removed all claims of 'synergy'
+%       or 'mutual enhancement' from the revised manuscript. The additive
+%       synergy metric (Syn = ΔFull − ΔDRS − ΔKER) is negative because
+%       (a) 9/25 datasets exhibit ceiling effects where all variants
+%       achieve near-perfect accuracy, and (b) DRS alone degrades accuracy
+%       on difficult datasets (ALL2: −0.67pp, ALL3: −0.45pp, Stroke:
+%       −3.32pp) where it over-prioritizes diversity.
+%       The relationship is better characterized as complementarity:
+%       — KER alone: high accuracy (0.9271 on 25DS) but NHD=0 (population
+%         fully collapsed to homogeneous solutions).
+%       — DRS alone: maintains diversity (NHD=0.453) and compresses features
+%         (222 vs MEL=2436), but loses accuracy on difficult datasets.
+%       — KDS-EL: achieves KER-level accuracy (0.9291) with a small but
+%         statistically significant improvement over KER-only (ΔAcc=+0.0020,
+%         Fisher combined p=6.5e-4, Full>KER on 17/25 datasets), while
+%         maintaining positive structural diversity (NHD=0.310) and
+%         substantial feature compression (263 features, −89.2% vs MEL).
+%       On the non-saturated subset (Acc<0.95, n=13): ΔAcc=+0.44pp
+%       (Fisher p=0.0024). The three-axis balance (Acc + NHD + Feat) is
+%       achieved only by the full KDS-EL—no other variant or SOTA method
+%       simultaneously delivers high accuracy, non-zero diversity, and
+%       compact feature subsets."
 
-%  Q5: "The Propositions are only proof sketches."
-%  A:  "Proposition 1 establishes a diversity lower bound whose proof
-%       follows directly from the strict positivity of the NHD weight
-%       in the crowding score for t<T. Proposition 2's ergodicity follows
-%       from the positive probability of the random flip branch. Both
-%       proofs are complete within the conventions of applied soft
-%       computing literature. A full Markov chain analysis is deferred
-%       to future theoretical work."
+%  Q5: "Proposition 2 (ergodicity) is only a proof sketch. It needs
+%       formal bounds or should be downgraded."
+%  A:  "We have strengthened Proposition 2 with a formal bound: for any
+%       feature j with accumulated weight w_j>0, the probability of
+%       flipping its selection state in a single KER perturbation step is
+%       at least (1/N)*(w_j/Σ_k w_k)*p_mut, where p_mut is the base
+%       mutation rate. This yields a worst-case expected hitting time to
+%       reach any feature subset from any initial state, establishing weak
+%       ergodicity. If preferred, we can downgrade to 'Design Rationale'
+%       and move the formal treatment to supplementary material."
 
 %  Q6: "How sensitive is KDS-EL to hyperparameters?"
 %  A:  "The key hyperparameters (N=20, T=100, flip_frac=0.01, k_e=3)
@@ -354,25 +421,26 @@
 %  □ 主表放10方法（KDS_EL+KDS_EL_KER+KDS_EL_DRS+MEL+FWPSO+PSO-CSM+
 %                       SaWDE+VGS-MOEA+W-MOPSO-FS+NSGA-II-FS）
 %    完整15方法放附录
-%  □ Holm-Bonferroni 校正表（补充表）
-%  □ 收敛曲线图 Fig 8a/8b（本地运行 code/plot_convergence.py，需npy文件）
-%  □ NHD曲线图 Fig 9（code/plot_convergence.py）
+%  ✅ Holm-Bonferroni 校正表（T6b，已生成）
+%  ✅ 收敛曲线图 Fig 8（已生成）
+%  ✅ NHD曲线图 Fig 9（已生成）
+%  ✅ 所有图表基于15方法×20数据集重新生成
 %  □ ISOLET/COIL20讨论段落（§5.11，约 500 词）
 %  □ MOFS对比讨论段落（§5.5，约 400 词）
 %  □ 核实 Proposition label：\label{prop:drs}, \label{prop:ker}
-%  □ 命名统一检查：全文无 "EMDO"/"KGEF"/"w/o"/"SAR-MTPSO"，
-%                 全部改为 DRS/KER/KDS-EL/DRS/KDS-EL/KER
-%  □ 图表标题中的方法名与 V_LABELS 字典一致
+%  ✅ 命名统一检查：全文已统一为 DRS/KER，无 "EMDO"/"KGEF"/"w/o"
+%  ✅ 图表标题中的方法名与 V_LABELS 字典一致
 %  □ Abstract ≤ 250 words
 %  □ 关键词：evolutionary feature selection, population diversity,
 %            knowledge-guided learning, bioinformatics, particle swarm
-%  □ 更新所有数值到20数据集版本：
+%  ✅ 所有数值已更新到20数据集实测版：
 %    - 15方法×20数据集
 %    - KDS_EL Acc=0.9450 (#2 overall)
 %    - KDS-EL三变体包揽Friedman rank前3
-%    - 特征减少-91.9% vs MEL
-%    - PCMAC Δtotal=+0.0608 明星证据
+%    - 特征减少20DS: -91.9% vs MEL (2722→220)；25DS消融: -89.2% (2436→263)
+%    - PCMAC Δtotal=+0.0608
 %    - VGS-MOEA Δ=-0.0013 几乎持平
-%  □ 所有Acc标注为真实分类准确率（非jFitness）
-%  □ T8 MOFS单独对比表（新增）
+%  ✅ 所有Acc为真实分类准确率（非jFitness）
+%  ✅ T8 MOFS单独对比表（已生成）
 %  □ 第三种路径（third pathway）叙事统一
+%  ✅ 记忆文档消融数字已同步更新（25数据集）

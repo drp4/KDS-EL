@@ -37,15 +37,15 @@ ALL_VERSIONS = [
     "BPSO", "SaWDE", "FWPSO", "MEL",
     "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL",
     "PSO_CSM", "IGPSO",
-    "NSGA_II_FS", "MOPSO_FS", "MOEA_D_FS",
-    "fMOPSO_FS", "VGS_MOEA", "W_MOPSO_FS",
+    "NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
+    "fMOPSO-FS", "VGS-MOEA", "W-MOPSO-FS",
 ]
 
 # ── 主表10方法（用于 F4/F5/F7/F11/F12）──
 MAIN_VERSIONS = [
     "KDS_EL", "KDS_EL_KER", "KDS_EL_DRS", "MEL",
     "FWPSO", "PSO_CSM", "SaWDE",
-    "VGS_MOEA", "W_MOPSO_FS", "NSGA_II_FS",
+    "VGS-MOEA", "W-MOPSO-FS", "NSGA-II-FS",
 ]
 
 ABL_VERSIONS = ["MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
@@ -55,9 +55,9 @@ V_LABELS = {
     "MEL": "MEL", "KDS_EL_DRS": "KDS-EL/DRS",
     "KDS_EL_KER": "KDS-EL/KER", "KDS_EL": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
-    "NSGA_II_FS": "NSGA-II-FS", "MOPSO_FS": "MOPSO-FS",
-    "MOEA_D_FS": "MOEA-D-FS", "fMOPSO_FS": "fMOPSO-FS",
-    "VGS_MOEA": "VGS-MOEA", "W_MOPSO_FS": "W-MOPSO-FS",
+    "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
+    "MOEA-D-FS": "MOEA-D-FS", "fMOPSO-FS": "fMOPSO-FS",
+    "VGS-MOEA": "VGS-MOEA", "W-MOPSO-FS": "W-MOPSO-FS",
 }
 ABL_LABELS = {
     "MEL": "MEL (Baseline)", "KDS_EL_DRS": "KDS-EL/DRS",
@@ -69,17 +69,17 @@ COLORS = {
     "MEL": "#00838f", "KDS_EL_DRS": "#2e7d32",
     "KDS_EL_KER": "#f57f17", "KDS_EL": "#b71c1c",
     "PSO_CSM": "#6a1b9a", "IGPSO": "#e65100",
-    "NSGA_II_FS": "#455a64", "MOPSO_FS": "#78909c",
-    "MOEA_D_FS": "#90a4ae", "fMOPSO_FS": "#00acc1",
-    "VGS_MOEA": "#ff6f00", "W_MOPSO_FS": "#c62828",
+    "NSGA-II-FS": "#455a64", "MOPSO-FS": "#78909c",
+    "MOEA-D-FS": "#90a4ae", "fMOPSO-FS": "#00acc1",
+    "VGS-MOEA": "#ff6f00", "W-MOPSO-FS": "#c62828",
 }
 HATCHES = {
     "BPSO": "////", "SaWDE": "\\\\\\\\", "FWPSO": "----",
     "MEL": "....", "KDS_EL_DRS": "xxxx", "KDS_EL_KER": "++++",
     "KDS_EL": "", "PSO_CSM": "oooo", "IGPSO": "****",
-    "NSGA_II_FS": "///", "MOPSO_FS": "\\\\\\",
-    "MOEA_D_FS": "---", "fMOPSO_FS": "+++",
-    "VGS_MOEA": "xx", "W_MOPSO_FS": "oo",
+    "NSGA-II-FS": "///", "MOPSO-FS": "\\\\\\",
+    "MOEA-D-FS": "---", "fMOPSO-FS": "+++",
+    "VGS-MOEA": "xx", "W-MOPSO-FS": "oo",
 }
 
 # ── 20个MOFS数据集 ──
@@ -151,8 +151,8 @@ def load_merged_detail():
     """合并四个实验的 detail 数据：各方法从各自有效来源加载"""
     SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
     KDS_VERSIONS = ["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"]
-    MOFS_VERSIONS = ["NSGA_II_FS", "MOPSO_FS", "MOEA_D_FS",
-                     "fMOPSO_FS", "VGS_MOEA", "W_MOPSO_FS"]
+    MOFS_VERSIONS = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
+                     "fMOPSO-FS", "VGS-MOEA", "W-MOPSO-FS"]
 
     dfs = []
 
