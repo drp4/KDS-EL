@@ -7,6 +7,7 @@ from .bpso import run_BPSO
 from .sawde import run_SaWDE
 from .fwpso import run_FWPSO
 from .mel import run_MEL
+from .mel_mi_reinit import run_MEL_MI
 from .kds_el_drs import run_KDS_EL_DRS
 from .kds_el_ker import run_KDS_EL_KER
 from .kds_el import run_KDS_EL
@@ -24,6 +25,7 @@ RUNNERS = {
     "SaWDE":           run_SaWDE,
     "FWPSO":           run_FWPSO,
     "MEL":             run_MEL,
+    "MEL_MI":          run_MEL_MI,
     "KDS_EL_DRS":      run_KDS_EL_DRS,
     "KDS_EL_KER":      run_KDS_EL_KER,
     "KDS_EL":          run_KDS_EL,

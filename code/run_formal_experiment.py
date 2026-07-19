@@ -33,7 +33,7 @@ from algorithms import RUNNERS
 # ── 实验配置 ─────────────────────────────────────────────────────────────
 NUM_RUNS = 10          # 对标 MEL: numRun = 10
 
-ABLATION_METHODS = ["MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
+ABLATION_METHODS = ["MEL", "MEL_MI", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
 SOTA_METHODS     = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
 MOFS_METHODS     = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
                     "fMOPSO-FS", "VGS-MOEA", "W-MOPSO-FS"]

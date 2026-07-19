@@ -91,7 +91,11 @@
       "Bash(python \"F:/zym/KDS-EL/output/_fix_acc.py\")",
       "Bash(python \"F:/zym/KDS-EL/output/_mofs_corrected.py\")",
       "Bash(python \"F:/zym/KDS-EL/output/_full_analysis.py\")",
-      "Bash(git worktree *)"
+      "Bash(git worktree *)",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"$env:USERPROFILE\\\\.claude\\\\skills\")",
+      "Bash(dir \"C:\\\\Users\\\\86185\\\\.claude\\\\skills\")",
+      "Bash(dir \"C:\\\\Users\\\\86185\\\\.claude\\\\skills\\\\academic-paper\")",
+      "Bash(dir \"C:\\\\Users\\\\86185\\\\.claude\\\\skills\\\\brainstorming\")"
     ],
     "additionalDirectories": [
       "F:\\zym\\KDS-EL\\output\\formal_experiment_20260702_145828\\curves"

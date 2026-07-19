@@ -1,54 +1,72 @@
 # KDS-EL 消融叙事重构 & 论文推进计划
 
-> 创建日期：2026-07-18
-> 背景：完成多审稿人审查后，确认消融是论文最弱环节。数据本身不差，但呈现方式需要重构。
+> 创建日期：2026-07-18 | 更新：2026-07-18（修正 DRS 评估框架：DRS 是多样性算子，不用精度衡量）
+> 背景：完成多审稿人审查后，确认消融叙事需要重构。数据本身不差，但评估框架和呈现方式是错的。
 
 ---
 
-## 一、消融现状诊断
+## 零、根本原则（第一性原理）
 
-### 当前的三个尴尬
+**DRS 是多样性维持算子，KER 是精度提升引擎。**
 
-| # | 问题 | 数据 |
-|---|------|------|
-| 1 | Full 比 KER 精度差距极小 | ΔAcc(Full-KER) = +0.0020（25DS avg），Fisher p=6.5e-4 |
-| 2 | 协同是负的 | Synergy = -3.76pp，正协同仅 6/25 (24%) |
-| 3 | Full 在任何一个单维度上都不是最优 | Acc：仅微弱领先 KER；Feat：输 DRS；NHD：输 DRS |
+| 模块 | 目标 | 成功标准 | 
+|------|------|------|
+| **DRS** | 防止种群结构坍缩 | NHD > 0，且不拖累精度 |
+| **KER** | 提升分类精度 | ΔAcc > 0 over MEL |
 
-### 但数据里藏着一条好故事
+用精度去衡量 DRS 的"贡献"是单位错误——就像用速度评价空调。同理 KER 不贡献多样性（NHD ≡ 0）。
 
-| 数据集组 | DRS Δ | KER Δ | Full Δ | 故事 |
-|----------|------:|------:|-------:|------|
-| ALL2 | **-0.67pp** | +0.14pp | **+1.74pp** | DRS 单独有害，Full 逆转 |
-| ALL3 | **-0.45pp** | +0.92pp | **+1.40pp** | DRS 单独有害，Full 逆转 |
-| Stroke | **-3.32pp** | -1.29pp | **-1.08pp** | 两者单独都差，Full 止损 |
-| PCMAC | +2.21pp | +3.79pp | **+6.08pp** | Full 显著优于两者 |
-
-**核心洞察**：消融弱不是方法弱，9/25 数据集天花板效应压平了差异。非饱和子集 (n=13): Full vs KER ΔAcc=+0.44pp, Fisher p=0.0024。
+**因此移除以下内容**：
+- ❌ Synergy = ΔFull - ΔDRS - ΔKER（加性分解公式，不再使用）
+- ❌ "DRS 贡献精度" 的论述（DRS 不贡献精度，它贡献多样性）
+- ❌ "两模块协同增强" 的叙事（不在同一维度，不存在协同/加性）
 
 ---
 
-## 二、新叙事策略（两层论证）
+## 一、消融现状诊断（修正后）
 
-### 第一层：每个模块解决一个困境，各自有一个致命缺陷
+### DRS 做到了它的设计目标
 
-> - KER 解决 knowledge-waste → 但产生完全同质种群 (NHD≡0)
-> - DRS 解决 diversity-collapse → 但在困难数据集上过度牺牲精度 (ALL2/ALL3/Stroke 负贡献)
-> - **单独使用任一模组都有结构性风险**
+| 评估 | 证据 | 结论 |
+|------|------|:---:|
+| DRS 维持多样性 | NHD: 0(MEL)=0(KER) → 0.453(DRS) → 0.310(Full) | ✅ |
+| DRS 不拖累精度 | Full Acc ≈ KER Acc (Δ=+0.0020, 几乎无差异) | ✅ |
+| DRS alone 的缺陷 | ALL2/ALL3/Stroke 上 DRS 单独负贡献 | 需要 KER 约束 |
+| DRS boundary condition | COIL20/ISOLET/madelon 上 Full < KER (3/25) | Discussion 讨论 |
 
-### 第二层：完整框架 = KER 精度 + DRS 多样性，互相纠错
+### 剩下的三个反例
 
-> - KDS-EL 达到 KER 级精度，同时维持 NHD>0
-> - 困难数据集上 DRS 的负贡献被 KER 覆盖，KER 的多样性盲点被 DRS 覆盖
-> - **唯一在三轴 (Acc + NHD + Feat) 上同时达标的方案**
+| 数据集 | Full | KER | Δ | 原因 |
+|--------|------|------|------:|------|
+| COIL20 | 0.9809 | 0.9913 | -1.05pp | 天花板效应 |
+| ISOLET | 0.8717 | 0.8804 | -0.87pp | 26类多分类 |
+| madelon | 0.8445 | 0.8634 | -1.89pp | 人工数据，特征独立 |
+
+---
+
+## 二、新叙事策略
+
+### 消融部分核心回答四个问题
+
+```
+Q1: DRS 有用吗？→ 看 NHD。MEL/KER/所有SOTA=0，DRS=0.453，Full=0.310。
+    有 DRS 才有正 NHD。
+
+Q2: KER 有用吗？→ 看 Acc。ΔKER=+4.68pp over MEL。几乎全部精度增益来自 KER。
+
+Q3: DRS 拖累 KER 吗？→ Full Acc ≈ KER Acc (Δ=+0.0020)。不拖累。
+    DRS 成功维持了多样性且没有精度代价。
+
+Q4: DRS 有没有副作用？→ 3/25 反例，Discussion 中讨论 boundary condition。
+```
 
 ### 严禁使用的术语
 
 | ❌ 禁止 | ✅ 替代 |
 |--------|--------|
-| synergy / 协同 | complementarity / 互补 |
-| mutual enhancement | mutual correction / 互相纠错 |
-| synergistic framework | balanced dual-space framework |
+| synergy / synergistic / 协同 | 不使用（不同维度，不能加性分解） |
+| synergy = ΔFull - ΔDRS - ΔKER | 不使用这个公式 |
+| DRS enhances accuracy | DRS maintains diversity without accuracy penalty |
 
 ---
 
