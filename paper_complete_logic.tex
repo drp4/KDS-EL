@@ -1,7 +1,7 @@
-% =====================================================================
+%  =====================================================================
 %  KDS-EL 完整论文逻辑文档
 %  — 精确的故事线、关键数字、每节写什么、审稿人问题预案
-%  最后更新：2026-07-13（P0修正：放弃协同叙事，重构为互补框架）
+%  最后更新：2026-07-21（五层消融整合，方法清单补MEL_MI）
 % =====================================================================
 
 % ─────────────────────────────────────────────────────────────────────
@@ -73,7 +73,7 @@
 %  §1 ABSTRACT（需更新至20数据集，2026-07-13修正协同叙事）
 %    句1: 问题存在（高维，双困境）
 %    句2: 现有方法局限（单空间 vs 传统MOFS输出Pareto前沿）
-%    句3: KDS-EL 是什么（双空间 + DRS + KER，第三种路径）
+%    句3: KDS-EL 是什么（双空间 + DRS + KER，多样性正则化单解框架）
 %    句4: 主要结果（15方法×20数据集, KDS_EL Acc=0.9450, rank #2仅次VGS-MOEA）
 %    句5: 消融证据（KER捕获主要准确率收益，DRS提供结构多样性与特征压缩，
 %          完整框架是唯一三轴平衡方案；互补而非协同）
@@ -82,7 +82,7 @@
 %    P1: 应用背景（高维生物信息学，biomarker discovery）
 %    P2: Limitation 1 → 结构困境（NHD 从未被当作选择目标）
 %    P3: Limitation 2 → 知识困境（改进信号被遗忘）
-%    P4: KDS-EL 提出（双空间定义，DRS+KER，第三种路径）
+%    P4: KDS-EL 提出（双空间定义，DRS+KER，多样性正则化单解框架）
 %    P5: 互补声明（不为消融预告"协同"，而是预告"三轴平衡"——
 %         DRS/KER各自解决一个困境，完整框架唯一同时兼顾准确率、多样性、特征压缩）
 %    P6: Contribution list（i,ii,iii 三条）
@@ -122,10 +122,10 @@
 %    §4.2 Dual-Population Backbone（原 MEL 框架，引用 MEL）
 %    §4.3 DRS: Diversity-regulated Selection（原 EMDO）
 %          ► 重点：NHD 升格为第一类目标的数学形式
-%          ► Proposition 1（多样性下界）
+%          ► Design Observation 1（多样性维持特性）
 %    §4.4 KER: Knowledge-guided Elite Refinement（原 KGEF）
 %          ► 重点：improvement-feedback 权重更新（先于 Pbest 更新）
-%          ► Proposition 2（遍历性保证）
+%          ► Design Observation 2（遍历性说明）
 %    §4.5 Knowledge-guided Initialization and Recovery
 %          ► MI引导初始化 + 自适应重初始化（Design choice，不单独列为创新点）
 %    §4.6 Complete Algorithm（伪代码，含 DRS+KER 命名）
@@ -133,7 +133,7 @@
 
 %  §5 EXPERIMENTS
 %    实验规模：15方法 × 20数据集 × 10 runs = 3000+次独立运行
-%    方法分类：本文(KDS_EL) + 消融(DRS/KER/MEL) + SOTA单目标(5) + MOFS(6)
+%    方法分类：本文(KDS_EL) + 消融(MEL_MI/DRS/KER/MEL) + SOTA单目标(5) + MOFS(6)
 %
 %    §5.1 Experimental Setup
 %          ► 20 数据集（n∈[36,2600], d∈[500,54675]）
@@ -158,10 +158,10 @@
 %          ► 所有含DRS的方法特征数远小于其他（结构空间压缩效应）
 %          ► vs FWPSO(1069)：KDS_EL使用21%的特征
 %
-%    §5.4 Ablation Study（Fig 6 + Table T7）【2026-07-13 重大修正】
-%          ► 四个变体 × 25 数据集（CNS因消融V2缺失已排除）
-%          ► 三层论证框架（修正后）：
-%             1. 每个模块独立有效：DRS+3.96pp, KER+4.68pp over MEL
+%    §5.4 Ablation Study（Fig 6 + Table T7）【2026-07-21 更新：五层消融，含MEL_MI】
+%          ► 五个变体（MEL → MEL_MI → DRS → KER → Full）× 25 数据集（CNS排除）
+%          ► 三层论证框架（基于五层消融）：
+%             1. 每个模块独立有效：DRS+3.96pp, KER+4.68pp over MEL（MEL_MI中间基座+3.89pp）
 %             2. 每个模块有结构性缺陷：
 %                — DRS单独：牺牲acc（9/25数据集上非最优），困难数据集(ALL2/ALL3/Stroke)为负贡献
 %                — KER单独：NHD=0（种群完全坍缩为同质解），损失所有结构多样性
@@ -234,7 +234,7 @@
 
 %  §6 CONCLUSION
 %    P1: 问题重述（一句）
-%    P2: KDS-EL 贡献（Dual-Space, DRS, KER, 第三种路径）
+%    P2: KDS-EL 贡献（Dual-Space, DRS, KER, 多样性正则化单解框架）
 %    P3: 实验总结（15方法×20数据集, rank #2单解方法#1, KDS_EL三变体包揽前三）
 %    P4: Limitation（ISOLET多类别, COIL20天花板, VGS-MOEA变长优势）
 %    P5: Future work（动态d适应, 深度学习importance, 多类别扩展）
@@ -427,7 +427,7 @@
 %  ✅ 所有图表基于15方法×20数据集重新生成
 %  □ ISOLET/COIL20讨论段落（§5.11，约 500 词）
 %  □ MOFS对比讨论段落（§5.5，约 400 词）
-%  □ 核实 Proposition label：\label{prop:drs}, \label{prop:ker}
+%  □ 确认 Design Observation 不再标为 Proposition（已降级为文本说明）
 %  ✅ 命名统一检查：全文已统一为 DRS/KER，无 "EMDO"/"KGEF"/"w/o"
 %  ✅ 图表标题中的方法名与 V_LABELS 字典一致
 %  □ Abstract ≤ 250 words
@@ -442,5 +442,5 @@
 %    - VGS-MOEA Δ=-0.0013 几乎持平
 %  ✅ 所有Acc为真实分类准确率（非jFitness）
 %  ✅ T8 MOFS单独对比表（已生成）
-%  □ 第三种路径（third pathway）叙事统一
+%  ✅ 第三种路径→多样性正则化单解框架 叙事统一
 %  ✅ 记忆文档消融数字已同步更新（25数据集）

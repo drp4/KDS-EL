@@ -48,7 +48,7 @@
 | vs 所有 SOTA 单目标方法 | 胜率 ≥ 90%（67W/0T/3L） |
 | vs 基线 MEL | 20/20 wins，ΔAcc +0.058 |
 | 特征减少 vs MEL（消融 26DS） | -93.4%（2989→198） |
-| KDS_EL NHD | 0.324（vs MEL/KER/SOTA 全部 = 0.000） |
+| KDS_EL NHD | 0.310（消融 25DS）/ 0.324（主表 20DS）| vs MEL/KER/SOTA 全部 = 0.000 |
 
 ---
 
@@ -67,7 +67,7 @@
 | T5 | **主表**特征数 Mean（10 方法 × 20 数据集） | ✅ 已重生成 |
 | T6 | Wilcoxon p 值矩阵（10 方法 × 20 数据集） | ✅ 已重生成 |
 | T6b | Holm-Bonferroni 校正表 | 🆕 已新增 |
-| T7 | 消融 ACC + Features（4 变体 × 25 数据集） | ✅ |
+| T7 | 消融 ACC + Features（5 变体 × 25 数据集） | ✅ |
 | T8 | MOFS 六方法单独对比 | ✅ 已生成 |
 | T9 | 时间复杂度 O() | ⚠ 需新写 |
 
@@ -80,10 +80,10 @@
 | F3 | KER 机制示意图 | △ 需 draw.io 新画 |
 | F4 | 准确率柱状图（10 方法，auto-grid，20 数据集） | ✅ 已重生成（15方法） |
 | F5 | 特征数柱状图（对数轴，10 方法，20 数据集） | ✅ 已重生成 |
-| F6 | 消融双面板（4 变体 × 25 数据集） | ✅ |
+| F6 | 消融双面板（5 变体 × 25 数据集） | ✅ |
 | F7 | 稳定性箱线图（10 方法，20 数据集） | ✅ 已重生成 |
 | F8 | 收敛曲线（含 MOFS Top3，20 数据集） | ✅ 已重生成 |
-| F9 | NHD 多样性曲线（KDS_EL + DRS，20 数据集） | ✅ 已重生成 |
+| F9 | NHD 多样性曲线（MEL+MEL_MI+KDS-EL/DRS+KDS-EL，4 条线，20 数据集） | ✅ 已重生成 |
 | F10 | Wilcoxon 热图（10 方法 × 20 数据集） | ✅ 已重生成 |
 | F11 | 运行时间对比（对数轴，10 方法，20 数据集） | ✅ 已重生成 |
 | F12 | 精度-特征-时间气泡图（10 方法，20 数据集） | ✅ 已重生成 |
@@ -138,7 +138,7 @@
 - [x] 生成收敛曲线图（`code/plot_convergence.py`）
 - [ ] ISOLET/COIL20/VGS-MOEA 讨论段落（~500 词）
 - [ ] MOFS 对比讨论段落（~400 词）
-- [ ] 核实 Proposition labels
+- [ ] 确认 Design Observation 不再标为 Proposition（已降级为文本说明）
 - [ ] 命名统一：全文 EMDO→DRS, KGEF→KER, 无 "w/o"/"SAR-MTPSO"
 - [ ] Abstract ≤ 250 words
 - [ ] 所有 Acc 标注为真实分类准确率（非 jFitness）

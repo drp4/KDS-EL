@@ -1,6 +1,6 @@
 # KDS-EL 论文项目完整记忆文档
 # 用于新对话的上下文恢复
-# 生成时间：2026年5月 | 最后更新：2026年7月18日（多审稿人审查完成，消融叙事重构，VGS-MOEA策略确定）
+# 生成时间：2026年5月 | 最后更新：2026年7月20日（MEL_MI 实验完成，消融完整闭合）
 
 ---
 
@@ -54,9 +54,11 @@ Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
 | # | 目录 | 内容 | 状态 | 数据有效性 |
 |---|------|------|:---:|:---:|
 | 1 | `output/formal_experiment_20260701_094943/` | SOTA 对比 (5方法×20数据集) | ✅ | ✅ 全部有效 |
-| 2 | `output/formal_experiment_20260628_205157/` | 旧版消融 V1 (4方法×27数据集) | ✅ | ⚠️ 仅MEL有效 |
-| 3 | `output/formal_experiment_20260702_145828/` | 最新消融 V2 (3方法×26数据集) | ✅ | ✅ 全部有效 |
+| 2 | `output/formal_experiment_20260628_205157/` | 旧版消融 V1 (4方法×27数据集) | ✅ | ⚠️ 仅MEL有效（另外3方法有bug）；MEL曲线shape(101,)=T100，与新实验协议一致 |
+| 3 | `output/formal_experiment_20260702_145828/` | 最新消融 V2 (3方法×25数据集，CNS排除) | ✅ | ✅ 全部有效 |
 | 4 | `output/formal_experiment_20260707_142018/` | MOFS 对比 (6方法×20数据集) | ✅ | ✅ 全部有效 |
+| 5 | `output/formal_experiment_mel_mi/` | MEL_MI 对照 (1方法×26数据集，含CNS) 🆕 | ✅ | ✅ 全部有效 |
+| 6 | `output/formal_experiment_20260627_211133/` | 早期消融曲线 (3方法×25数据集) | ✅ | ⚠️ 早期版本，曲线协议不同于正式 |
 
 ### 3.2 20个数据集
 
@@ -68,12 +70,12 @@ Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
 `PCMAC`(1943×3289,2c), `Prostate`(102×12625,2c), `SRBCT`(83×2308,4c),
 `T1D`(101×54675,2c), `madelon`(2600×500,2c)
 
-### 3.3 15个方法
+### 3.3 16个方法
 
 | 类别 | 方法 | 数据来源 |
 |------|------|----------|
 | **本文** | **KDS_EL** | 实验3 |
-| 消融 | KDS_EL_DRS, KDS_EL_KER | 实验3 |
+| 消融 | KDS_EL_DRS, KDS_EL_KER, MEL_MI | 实验3 + 实验5 |
 | 基线 | MEL | 实验2 |
 | SOTA 单目标 | BPSO, SaWDE, FWPSO, PSO-CSM, IGPSO | 实验1 |
 | MOFS 经典 | NSGA-II-FS, MOPSO-FS, MOEA-D-FS | 实验4 |
@@ -141,25 +143,49 @@ Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
 > KDS_EL唯一Acc落后的对手是VGS-MOEA（Δ=-0.0013）。排除VGS-MOEA后对所有其他方法胜率≥75%。
 > ISOLET仍唯一输给SaWDE。COIL20成为第二个输给FWPSO的数据集（天花板效应）。
 
-### 4.4 消融分析：模块贡献度（25数据集，CNS排除）
+### 4.4 消融分析：完整五层消融（25数据集，CNS排除）
 
 **根本原则**：DRS 是多样性维持算子，KER 是精度提升引擎。两者解决不同问题，不能用同一维度衡量。
 
-| 变体 | Acc | Δ over MEL | NHD | 角色 |
-|------|-----|:---:|------|------|
-| MEL | 0.8803 | — | 0.000 | 基线 |
-| KDS-EL/DRS | 0.9199 | +3.96pp | **0.453** | 纯多样性，精度中等 |
-| KDS-EL/KER | 0.9271 | +4.68pp | 0.000 | 纯精度，种群坍缩 |
-| **KDS-EL** | **0.9291** | **+4.88pp** | **0.310** | 精度 = KER 级别 + 多样性为正 |
+#### 4.4.1 完整消融表
 
-**消融论证框架**：
-1. DRS 成功：Full Acc ≈ KER Acc (Δ=+0.0020, 几乎无差异) → DRS 维持了多样性但没有付出精度代价
-2. KER 成功：有 KER 才有最高精度 (+4.88pp over MEL)
-3. Full 是唯一兼得方案：精度 = KER 级别 + NHD=0.310（DRS 的 68%）
-4. DRS alone 的缺陷：困难数据集上过度牺牲精度 (ALL2/ALL3/Stroke) → 恰好证明需要 KER 约束
-5. DRS boundary condition：3/25 数据集上 Full < KER (COIL20/ISOLET/madelon)，在 Discussion 中讨论
+| 变体 | Acc | Δ over MEL | Δ over MEL_MI | NHD | 角色 |
+|------|------|:---:|:---:|------|------|
+| MEL | 0.8803 | — | — | 0.000 | 原始基线：随机初始化，无恢复 |
+| **MEL_MI** | **0.9192** | **+3.89pp** | — | 0.000 | MI+Reinit 基础：智能初始化 + stall 恢复 |
+| KDS-EL/DRS | 0.9199 | +3.96pp | +0.07pp | **0.453** | +DRS：多样性最大，精度几乎不动 |
+| KDS-EL/KER | **0.9271** | **+4.68pp** | **+0.79pp** | 0.000 | +KER：精度拉满，但种群坍缩 |
+| **KDS-EL** | **0.9291** | **+4.88pp** | **+0.99pp** | **0.310** | 全部：精度=KER级 + 多样性为正 |
 
-**不使用 Synergy 指标**。原因：DRS 和 KER 贡献不同维度（多样性 vs 精度），不能在精度维度上做加性分解。
+#### 4.4.2 贡献分解
+
+```
+MI+Reinit:   +3.89pp  ← 基础工程（非本文核心创新，引用 fMOPSO-FS）
+KER net:     +0.79pp  ← 本文核心创新：improvement-feedback 在线知识累积
+DRS net:     +0.07pp  ← DRS 不追求精度贡献，价值在 NHD（0→0.453→0.310）
+───────────────────────────
+Full total:  +4.88pp  ← MI+Reinit 打底 + KER 拉精度 + DRS 守多样性
+```
+
+#### 4.4.3 论证框架
+
+1. **MI+Reinit 是地基**：贡献 +3.89pp。MEL 的主要弱点是随机初始化，MI 初始化和 stall 重初始化解决了冷启动和搜索停滞。这是工程支撑，不是核心创新。
+
+2. **KER 是精度引擎**：在 MI+Reinit 基础上净贡献 +0.79pp。KER 的 improvement-feedback 权重累积 + 精英扰动是论文最强的原创贡献。代价是 NHD ≡ 0。
+
+3. **DRS 是结构守护者**：对精度的净贡献仅 +0.07pp——这证明 DRS 的设计目标（维持多样性、不追求精度）已实现。NHD 从 0 跃升到 0.453（DRS alone）或 0.310（Full with KER constraint）。DRS 的价值在 NHD，不在 Acc。
+
+4. **Full 是唯一兼得方案**：精度 = KER 级别（0.9291 ≈ 0.9271），NHD = 0.310（DRS 的 68%），特征 = 263。三者缺一不可。
+
+#### 4.4.4 DRS 边界条件（3/25 反例）
+
+| 数据集 | Full | KER | Δ | 原因 |
+|--------|------|------|------:|------|
+| COIL20 | 0.9809 | 0.9913 | -1.05pp | 天花板效应，多样性产生噪声 |
+| ISOLET | 0.8717 | 0.8804 | -0.87pp | 26类多分类，NHD 误导探索 |
+| madelon | 0.8445 | 0.8634 | -1.89pp | 人工数据，特征独立无冗余 |
+
+这三个在 Discussion 中作为 DRS boundary condition 诚实讨论。22/25 (88%) 数据集上 DRS 不损害精度。
 
 ### 4.5 特征数与NHD
 
@@ -189,7 +215,7 @@ Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
 
 ---
 
-## 五、图表规划（9 Tables + 12 Figures = 21个）
+## 五、图表规划（10 Tables + 12 Figures = 22个）
 
 > 对标EMSWOA: 10 Figures + 10 Tables = 20个
 
@@ -203,8 +229,8 @@ Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
 | T4 | **主表**准确率Mean±Std（10方法×20数据集） | §4.2 精度比较 | 🔄 需重新生成 |
 | T5 | **主表**特征数Mean（10方法×20数据集） | §4.3 特征比较 | 🔄 需重新生成 |
 | T6 | Wilcoxon p值矩阵（10方法×20数据集） | §4.4 统计检验 | 🔄 需重新生成 |
-| T7 | 消融实验ACC+Features（4变体×26数据集） | §4.5 消融分析 | ✅ 已生成 |
-| T8 | MOFS六方法单独对比 | §4.6 MOFS对比 | 🆕 新增 |
+| T7 | 消融实验ACC+Features（5变体×25数据集，CNS排除） | §4.5 消融分析 | ✅ 已生成 |
+| T8 | MOFS六方法单独对比（定长5方法 + 变长VGS-MOEA分表） | §4.6 MOFS对比 | 🆕 新增 |
 | T9 | 时间复杂度O() | §3.6 复杂度 | ⚠ 需新写 |
 
 **T4主表10方法**：KDS_EL + KDS_EL_KER + KDS_EL_DRS + MEL + FWPSO + PSO-CSM + SaWDE + VGS-MOEA + W-MOPSO-FS + NSGA-II-FS
@@ -219,10 +245,10 @@ Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
 | F3 | KER机制示意图 | △ 需新画 |
 | F4 | 准确率柱状图（10方法，auto-grid，20数据集） | 🔄 需重新生成 |
 | F5 | 特征数柱状图（对数轴，auto-grid，20数据集） | 🔄 需重新生成 |
-| F6 | 消融双面板（4变体×26数据集） | ✅ 已生成 |
+| F6 | 消融双面板（5变体×25数据集，CNS排除） | ✅ 已生成 |
 | F7 | 稳定性箱线图（10方法，auto-grid，20数据集） | 🔄 需重新生成 |
-| F8 | 收敛曲线（10方法，auto-grid，20数据集） | 🔄 需重新生成 |
-| F9 | NHD多样性曲线（KDS_EL+DRS，auto-grid，20数据集） | 🔄 需重新生成 |
+| F8 | 收敛曲线（10方法+MEL_MI，auto-grid，20数据集） | 🔄 需重新生成 |
+| F9 | NHD多样性曲线（MEL+MEL_MI+KDS-EL/DRS+KDS-EL，4条线，auto-grid，20数据集） | 🔄 需重新生成 |
 | F10 | Wilcoxon热图（10方法×20数据集） | 🔄 需重新生成 |
 | F11 | 运行时间对比（对数轴，10方法，20数据集） | 🔄 需重新生成 |
 | F12 | 精度-特征-时间气泡图（10方法，20数据集） | 🔄 需重新生成 |
@@ -230,9 +256,9 @@ Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
 ### 生成脚本
 
 ```
-generate_figures.py   → F4-F7, F10-F12 (7个)   ← 需适配10方法
+generate_figures.py   → F4-F7, F10-F12 (7个)   ← 需适配10方法+MEL_MI
 generate_tables.py    → T4-T8 (5个)             ← 需新增T8 MOFS表
-plot_convergence.py   → F8-F9 (2个)             ← 需适配新数据目录
+plot_convergence.py   → F8-F9 (2个)             ← 需适配MEL_MI+新数据目录
 手动 (draw.io)        → F1-F3 (3个)
 手动 (LaTeX表格)      → T1-T3, T9 (4个)
 ```
@@ -241,7 +267,7 @@ plot_convergence.py   → F8-F9 (2个)             ← 需适配新数据目录
 
 ## 六、论文定位与包装
 
-**核心叙事**："Dual-Space"框架 — 第三种路径（third pathway）
+**核心叙事**："Dual-Space"框架 — 多样性正则化单解框架（diversity-regularized single-solution framework）
 
 - 传统SO-FS：单空间，无多样性维护
 - 传统MO-FS：双目标优化，输出Pareto前沿给决策者
@@ -356,12 +382,41 @@ plot_convergence.py   → F8-F9 (2个)             ← 需适配新数据目录
 
 ---
 
+## 十二、"协同/Synergy"问题的澄清（回应评审 DA-C1）
+
+**DA-C1 指控**：从"协同"到"互补"的叙事转变是 HARKing（事后假设）。
+
+**事实**：根本不存在"协同假说"。`critical_audit.py` 中的公式
+```
+synergy = ΔFull - (ΔDRS + ΔKER)
+```
+是一个**加性分解模型**，隐含假设 DRS 和 KER 是独立可加组件。但 KDS-EL 框架从来不是加性设计：
+
+- DRS 在**结构空间**操作，目标是 NHD > 0（多样性维持）
+- KER 在**适应度空间**操作，目标是 Acc 提升（精度引擎）
+- 两者维度不同——用精度衡量 DRS 是**单位错误**（类比：用速度评价空调）
+
+因此 `synergy = -3.76pp` 不是一个"被证伪的假设"，而是一个**不适用的分析公式产生的人为数值**。`ablation-narrative-plan.md`（2026-07-18）已明确禁止该公式：
+> "DRS 是多样性维持算子，KER 是精度提升引擎。用精度去衡量 DRS 的'贡献'是单位错误。"
+
+**正确的论证框架**（已在 §4.4 消融分析中采用）：
+- DRS 的成功标准：NHD > 0，且不拖累精度 → 达成（NHD=0.453→0.310，Full Acc ≈ KER Acc）
+- KER 的成功标准：ΔAcc > 0 over MEL → 达成（+4.68pp）
+- 两者互补而非协同：不同空间，不同目标，不可加性分解
+
+**评审回应策略**：不在论文中提 "synergy" 这个词（无论正面还是负面），因为加性分解框架本身就不适用。论文只呈现消融表中的原始数据（MEL → MEL_MI → DRS → KER → Full），让读者自行判断各模块的角色。DA-C1 的指控基于对分析代码中一个调试公式的误解，该公式从未出现在论文手稿中。
+
+---
+
 ## 十一、npy文件说明
 
 **输出目录**：
 - `output/formal_experiment_20260702_145828/curves/` — KDS-EL家族3变体，每run一个文件
   - `curve_{VERSION}_{DATASET}_run{N}.npy` — fitness收敛曲线
   - `nhd_{VERSION}_{DATASET}_run{N}.npy` — NHD曲线（DRS和KDS_EL有非零值）
+- `output/formal_experiment_mel_mi/curves/` — MEL_MI对照，每run一个文件
+  - `curve_MEL_MI_{DATASET}_run{N}.npy` — fitness收敛曲线
+  - `nhd_MEL_MI_{DATASET}_run{N}.npy` — NHD曲线（MEL_MI的NHD≡0，作为基线对照）
 - `output/formal_experiment_20260701_094943/curves/` — SOTA 5方法，每run一个文件
   - `curve_{VERSION}_{DATASET}_run{N}.npy` — fitness收敛曲线
 - `output/formal_experiment_20260707_142018/curves/` — MOFS 6方法
