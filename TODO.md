@@ -11,7 +11,7 @@
 | 问题 | 证据 | 修正方案 | 状态 |
 |------|------|----------|:--:|
 | **C1 协同证伪** | Synergy=-3.76pp（25DS），正协同仅 6/25 (24%) | 放弃"协同"，改用"互补"——DRS/KER各解决一个困境 | ✅ |
-| **C2 VGS-MOEA支配** | VGS-MOEA Acc=0.9463, Feat=51, Time=34.2s 三轴全胜 | 正面承认；区分单解vs Pareto前沿；额外优势：稳定性(12/20) | ✅ |
+| **C2 VGS-MOEA支配** | VGS-MOEA Acc=0.9463, Feat=51, Time=34.2s 三轴全胜 | ✅ 最终策略(2026-07-22)：保留但独立分类——归为"变长编码"，不与定长KDS-EL直接竞争；定长方法中KDS-EL第一；ΔAcc仅0.0013 | ✅ |
 | **C3 DRS准确率≈0** | KER 0.9271 vs Full 0.9291, Δ=+0.0020, Fisher p=6.5e-4 | 统计显著但幅度小；DRS价值重定向为多样性(NHD>0)+压缩 | ✅ |
 | **天花板辩护** | 9/25 Acc>0.99 压低差异；非饱和子集(n=13): ΔFull=+0.0404 | 已有非饱和子集重算 | ✅ |
 | **Prop 2 proof sketch** | 仅为概率论证 | 补充形式化界：翻转概率≥(1/N)·(w_j/Σw)·p_mut | △ |
@@ -137,6 +137,9 @@
 - [x] 生成 Holm-Bonferroni 校正表（T6b）
 - [x] 生成收敛曲线图（`code/plot_convergence.py`）
 - [ ] ISOLET/COIL20/VGS-MOEA 讨论段落（~500 词）
+    - VGS-MOEA：归为变长编码独立类别；定长方法中 KDS-EL 第一；ΔAcc=-0.0013 几乎持平；future work = DRS 扩展到变长编码
+    - ISOLET：多分类局限(26类)，EMDO 设计为二分类
+    - COIL20：天花板效应，所有方法 Acc>0.95
 - [ ] MOFS 对比讨论段落（~400 词）
 - [ ] 确认 Design Observation 不再标为 Proposition（已降级为文本说明）
 - [ ] 命名统一：全文 EMDO→DRS, KGEF→KER, 无 "w/o"/"SAR-MTPSO"

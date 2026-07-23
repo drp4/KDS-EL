@@ -27,10 +27,11 @@ EXP1_DIR = PROJ / "output" / "formal_experiment_20260701_094943"   # SOTA
 EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"   # Ablation V1 (MEL only)
 EXP3_DIR = PROJ / "output" / "formal_experiment_20260702_145828"   # Ablation V2 (KDS-EL variants)
 EXP4_DIR = PROJ / "output" / "formal_experiment_20260707_142018"   # MOFS
+MEL_MI_DIR = PROJ / "output" / "formal_experiment_mel_mi"            # MEL_MI 对照
 
 # ── 全部15个方法 ──
 ALL_VERSIONS = [
-    "BPSO", "SaWDE", "FWPSO", "MEL",
+    "BPSO", "SaWDE", "FWPSO", "MEL", "MEL_MI",
     "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL",
     "PSO_CSM", "IGPSO",
     "NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
@@ -44,7 +45,7 @@ MAIN_VERSIONS = [
     "VGS-MOEA", "W-MOPSO-FS", "NSGA-II-FS",
 ]
 
-ABL_VERSIONS = ["MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
+ABL_VERSIONS = ["MEL", "MEL_MI", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
 
 # ── 消融方法（T7用）──
 MOFS_VERSIONS = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
@@ -52,7 +53,8 @@ MOFS_VERSIONS = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
 
 V_LABELS = {
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "KDS_EL_DRS": "KDS-EL/DRS",
+    "MEL": "MEL", "MEL_MI": "MEL+MI",
+    "KDS_EL_DRS": "KDS-EL/DRS",
     "KDS_EL_KER": "KDS-EL/KER", "KDS_EL": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
     "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
@@ -92,6 +94,10 @@ def load_merged_detail():
     df4 = load_detail(EXP4_DIR / "results_detail.csv")
     dfs.append(df4[df4["Version"].isin(MOFS_VERSIONS)])
 
+    # MEL_MI: MI+Reinit 对照
+    df_mel_mi = load_detail(MEL_MI_DIR / "results_detail.csv")
+    dfs.append(df_mel_mi[df_mel_mi["Version"] == "MEL_MI"])
+
     common_cols = None
     for d in dfs:
         if common_cols is None:
@@ -116,6 +122,10 @@ def load_merged_summary():
     dfs.append(df3[df3["Version"].isin(KDS_VERSIONS)])
     df4 = pd.read_csv(EXP4_DIR / "results_summary.csv")
     dfs.append(df4[df4["Version"].isin(MOFS_VERSIONS)])
+
+    # MEL_MI
+    df_mel_mi = pd.read_csv(MEL_MI_DIR / "results_summary.csv")
+    dfs.append(df_mel_mi[df_mel_mi["Version"] == "MEL_MI"])
 
     common_cols = None
     for d in dfs:
@@ -328,19 +338,24 @@ def table_t6_wilcoxon(df_summary, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# T7: 消融实验 ACC + Features（4变体 × 26数据集, 不受MOFS影响）
+# T7: 消融实验 ACC + Features（5变体 × 25数据集, CNS排除）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def table_t7_ablation(df_summary, out_dir):
-    """T7: Ablation study — Accuracy, Features, NHD for 4 variants on 26 datasets."""
-    print("T7: Ablation study table (4 variants × 26 datasets)...")
+    """T7: Ablation study — Accuracy, Features, NHD for 5 variants on 25 datasets (CNS excluded)."""
+    print("T7: Ablation study table (5-layer: MEL → MEL_MI → DRS → KER → Full)...")
 
     df2 = pd.read_csv(EXP2_DIR / "results_summary.csv")
     df_mel = df2[df2["Version"] == "MEL"]
     df3 = pd.read_csv(EXP3_DIR / "results_summary.csv")
     df3_abl = df3[df3["Version"].isin(["KDS_EL", "KDS_EL_DRS", "KDS_EL_KER"])]
-    df_abl = pd.concat([df_mel, df3_abl], ignore_index=True)
-    all_ds = sorted(set(df_mel["Dataset"].unique()) & set(df3_abl["Dataset"].unique()))
+    df_mel_mi = pd.read_csv(MEL_MI_DIR / "results_summary.csv")
+    df_abl = pd.concat([df_mel, df_mel_mi, df3_abl], ignore_index=True)
+    all_ds = sorted(set(df_mel["Dataset"].unique()) &
+                    set(df_mel_mi["Dataset"].unique()) &
+                    set(df3_abl["Dataset"].unique()))
+    # Exclude CNS
+    all_ds = [d for d in all_ds if d != "CNS"]
     print(f"  Ablation datasets: {len(all_ds)}")
 
     table = []
@@ -389,7 +404,7 @@ def table_t7_ablation(df_summary, out_dir):
     latex_path = os.path.join(out_dir, "T7_ablation.tex")
     latex = df_compact.to_latex(index=False,
                                 column_format="l" + "c" * len(ABL_VERSIONS),
-                                caption="Ablation Study — Classification Accuracy (Mean $\\pm$ Std) on 26 datasets.",
+                                caption="Ablation Study — Classification Accuracy (Mean $\\pm$ Std) on 25 datasets.",
                                 label="tab:ablation")
     with open(latex_path, "w", encoding="utf-8") as f:
         f.write(latex)

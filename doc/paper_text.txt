@@ -1,0 +1,4286 @@
+===== PAGE 1 =====
+Expert Systems With Applications 241 (2024) 122701
+Available online 27 November 2023
+0957-4174/© 2023 Elsevier Ltd. All rights reserved.
+A multitasking multi-objective differential evolution gene selection 
+algorithm enhanced with new elite and guidance strategies for 
+tumor identification 
+Min Li *, Yangfan Zhao , Mingzhu Lou , Shaobo Deng , Lei Wang 
+School of Information Engineering, Nanchang Institute of Technology, Jiangxi 330099, PR China   
+A R T I C L E I N F O  
+Keywords: 
+Gene selection 
+Feature selection 
+Microarray expression profile data 
+Evolution multitasks 
+Multi-objection differential evolution 
+A B S T R A C T  
+A key preprocessing step in tumor recognition based on microarray expression profile data and machine learning 
+is to identify tumor marker genes. Gene selection aims to select the most relevant gene subset from the original 
+ultra-high dimensional microarray expression profile data to improve tumor identification performance. Inspired 
+by evolutionary multitasking (EMT) and multi-objective optimization, this paper puts forward a novel multi­
+tasking multi-objective differential evolution gene selection algorithm (MMODE) which uses new elite and 
+guidance strategies to select the best gene subsets. MMODE initializes two different populations according to 
+different filtering criteria to increase the diversity of the search. These two populations guide their respective 
+populations to search in the optimal direction through knowledge transfer in the evolutionary process. In 
+addition, MMODE employs new elite and guidance strategies that enables individuals to narrow the search range 
+and jump out of local optima. The proposed algorithm is validated on 13 publicly available microarray 
+expression datasets in comparison with state-of-the-art gene selection algorithms. The experimental results show 
+that MMODE can find smaller gene subsets and achieve higher classification accuracy compared with other 
+algorithms.   
+1. Introduction 
+The emergence and rapid development of large-scale gene expression 
+profiling provide a new technology platform for tumor research. The 
+features in microarray gene expression profile data are called genes, and 
+the process of selecting a subset of features from these data that are most 
+relevant for disease diagnosis is called gene selection. Tumor gene se­
+lection based on microarray expression profile data is a hot and difficult 
+topic in the field of machine learning and data mining. Microarray gene 
+expression profile data are characterized by high dimensionality (tens of 
+thousands) and a small number of samples (dozens of), but few genes are 
+related to disease diagnosis. How to identify the most relevant gene 
+subsets from ultra-high dimensional microarray expression profile data 
+to improve the accuracy of tumor recognition, which brings great 
+challenges to the task of gene selection (Deng, Li, Deng, & Wang, 2022; 
+Ke et al., 2022; Liang et al., 2022; Li et al., 2023). 
+Classification of high-dimensional data usually requires dimension­
+ality reduction to improve the generalization of classification models 
+and reduce the consumption of computational resources. As a data 
+preprocessing technology, feature selection (FS) (Ray, Reddy, & Bane­
+rjee, 2021) reduces the number of features by removing irrelevant and 
+redundant features, so as to achieve the purpose of improving the clas­
+sification performance of learning model Chen, Yuan, Lv, & Xiang, 2021; 
+Wang et al., 2017; Wang, Zhu, Li, Chen, & Zhang, 2021). Compared with 
+feature extraction, FS can retain the physical meanings of the original 
+feature space and improve the readability and interpretability of the 
+learning model (Nie, Wang, Tian, Wang, & Li, 2022). Due to its effec­
+tiveness, FS has been widely used in data mining, such as cancer 
+detection (Zibakhsh & Abadeh, 2013) and shop floor scheduling prob­
+lems (Zhang, Mei, Nguyen, & Zhang, 2021). 
+To date, many FS methods have been developed, which can be 
+roughly divided into the filter, wrapper, and hybrid methods (Hancer, 
+Xue,& Zhang, 2022; Li, Shang, Feng, & Fan, 2014; Tiwari & Chaturvedi, 
+2022). The filter-based approaches searched for a subset of features 
+based on characteristics of the features (e.g. similarity, correlation, etc.) 
+(Ba, Wang, Yang, Yu, & Yu, 2023). The wrapper-based methods utilize a 
+* Corresponding author. 
+E-mail addresses: liminghuadi@hotmail.com (M. Li), zhaoyangfan990618@gmail.com (Y. Zhao), minzhulou@163.com (M. Lou), houjiyuan2002@163.com 
+(S. Deng), ezhoulei@163.com (L. Wang).  
+Contents lists available at ScienceDirect 
+Expert Systems With Applications 
+journal homepage: www.elsevier.com/locate/eswa 
+https://doi.org/10.1016/j.eswa.2023.122701 
+Received 20 January 2023; Received in revised form 22 November 2023; Accepted 22 November 2023   
+
+
+===== PAGE 2 =====
+Expert Systems With Applications 241 (2024) 122701
+2
+classification model to evaluate feature subsets in a cross-validation 
+manner to determine the performance of candidate feature subsets 
+(Abdollahzadeh & Gharehchopogh, 2022). Therefore, the wrapper- 
+based methods are computationally expensive. In contrast, filter-based 
+methods are less costly but often less accurate than wrapper-based 
+methods. On combine the advantages of filer-based and wrapper- 
+based methods, filter-wrapper-based hybrid methods were proposed 
+(Ghosh, Guha, Sarkar, & Abraham, 2020). The filter-wrapper-based 
+methods achieve high classification accuracy with low time consump­
+tion, which has a great advantage over filter-based and wrapper-based 
+methods. Therefore, filter-wrapper-based methods are widely used in 
+FS for high-dimensional data (Huang, Yang, Zhou, & Huang, 2019). 
+Typically, a filter-wrapper-based approach includes two stages. The first 
+stage uses a filter method to evaluate the importance of features and 
+remove the most irrelevant and redundant features. Therefore, the re­
+sults of the first stage are influenced by a filter being adopted. The 
+second stage uses a wrapper-based approach to select the optimal 
+feature subset from the remaining features, which belongs to a combi­
+natorial optimization problem (Got, Moussaoui, & Zouache, 2021), and 
+many swarm intelligence methods have been developed to solve this 
+problem in recent years. 
+Differential evolution (DE), which was developed by Storn and Price 
+(1997), is one of the most effective evolutionary algorithms (Wang, Cai, 
+& Zhang, 2011). So far, many DE-based FS methods have been proposed. 
+For example, a hybrid FS method based on sine cosine algorithm (SCA) 
+and DE was proposed by Abd Elaziz et al. (2017). This method uses 
+differential evolution operator to improve the local search strategy and 
+overcomes the shortcoming that SCA is easy to fall into the local opti­
+mum. The history-guided differential evolution (HGDE) algorithm was 
+recently proposed by Guan et al. (2021) for feature selection of high- 
+dimensional data. It can remove duplicate individuals to maintain 
+population diversity and guide the search direction of individuals ac­
+cording to search history, thus reducing the probability of falling into 
+local optimum. In fact, many scholars have focused on solving the 
+problem that DE-based FS algorithms are prone to fall into local optima 
+(i.e., individuals are stagnant) (Liu et al., 2019; Wang, Xue, Liang, & 
+Zhang, 2021; Wang et al., 2015). However, for high-dimensional 
+microarray gene expression profile data, it is a very difficult task to 
+find the optimal solution due to its huge gene subset search space. In 
+addition, FS is considered a multi-objective problem since its two ob­
+jectives are to reduce the number of features and to improve the clas­
+sification performance. How to find the optimal subset of genes from 
+microarray expression data still needs further study. 
+Multi-objective evolutionary algorithms (MOEAs) can obtain groups 
+of non-dominated solutions and are frequently used to solve multi- 
+objective optimization problems (MOPs). At present, MOEAs can be 
+divided into three categories, namely, dominance-based algorithms 
+(Deb, Pratap, Agarwal, & Meyarivan, 2002; Palakonda & Mallipeddi, 
+2017; Tian et al., 2019), decomposition-based algorithms (Han, Chen, 
+Ling, & Han, 2021; Liao, Ishibuchi, & Meng Pang, 2020; Nguyen et al., 
+2020), and indicator-based methods (Bader & Zitzler, 2011; Hong et al., 
+2019; Zitzler & Künzli, 2004). However, these algorithms are also prone 
+to fall into local optimum and premature convergence. In previous 
+MOEAs, only one population is maintained during the population evo­
+lution. The disadvantage of this is that the population potentially lacks 
+diversity since the population tends to converge to a locally optimal 
+position in a multi-objective optimization problem (Zhao, Liu, Zhang, & 
+Liu, 2019). Compared with single-population evolution, multiple- 
+populations increase the diversity of populations, make individuals 
+more evenly distributed, and effectively overcome the local optimum 
+problem. Note that MOEAs cannot solve multiple MOPs simultaneously. 
+In other words, MOEAs can only solve one multi-objective problem at a 
+time. However, multiple MOPs are interrelated with each other, mean­
+ing that the beneficial knowledge gained in optimizing one MOPs can be 
+used to solve other related problems. 
+To effectively cope with the above problem, Gupta et al. (2016) 
+proposed a new paradigm called evolutionary multitasking (EMT) to 
+handle multiple optimization tasks simultaneously. Due to the potential 
+connection between task populations, the EMT algorithm often makes it 
+easier to achieve an optimum solution than the corresponding single- 
+task population algorithm. The EMT paradigm has attracted much 
+attention from MOPs researchers. For example, a multi-objective 
+multifactorial evolutionary algorithm MO-MFEA (Gupta, Ong, Feng, & 
+Tan, 2017) was proposed based on nondominated sorting genetic al­
+gorithm II (NSGA-II) (Deb, Pratap, Agarwal, & Meyarivan, 2002). On 
+this basis, Gupta proposed a new EMT algorithm, MO-MFEA-II (Bali, 
+Gupta, Ong, & Tan, 2021), which improved the lack of information 
+exchanged between tasks. In addition, Liang et al. (2022) proposed a 
+new subspace alignment and adaptive DE algorithm for EMT, namely 
+MOMFEA-SADE. This algorithm uses the mapping of subspaces to 
+transform the search space of populations and reduce the probability of 
+negative knowledge transfer between tasks. Recently, the EMT algo­
+rithm has also been applied to feature selection. For example, Chen et al. 
+(2021) proposed a PSO-based multi-task algorithm that can find a small 
+feature subset in a reasonable time and achieve high classification ac­
+curacy. However, to the best of our knowledge, there are very few FS 
+applications of the EMT algorithm for high-dimensional data, which 
+means that there is still research work to be done in this area. 
+Inspired by the EMT paradigm for solving complex problems, this 
+paper designs a novel Multitasking Multi-objective Differential Evolu­
+tion gene selection algorithm (MMODE) which uses new elite and 
+guidance strategies to select the best gene subsets. MMODE searches the 
+optimal gene subset by knowledge transfer between two related FS task 
+populations. Different from the traditional evolutionary multi-task 
+involving different problems, two FS tasks in this study are composed 
+of different feature weights in various filter criteria, and the different 
+weights of features determine the different search directions of each 
+task. Two FS tasks have the same search space but not the same search 
+direction, which ensures the internal relationship of the tasks and fa­
+cilitates the knowledge transfer between tasks. In this multitasking 
+system, knowledge is transferred between two tasks so that the popu­
+lation of one task can well guide the search for another task. In addition, 
+to address the stagnation of individuals, a new guidance strategy is 
+developed to cope with this situation. Furthermore, a new elitist strategy 
+is adopted to reduce the search range, which effectively improves the 
+performance of the algorithm for feature selection of high-dimensional 
+data. For gene selection of microarray gene expression profile data, 
+MMODE is promising to achieve high classification accuracy with a few 
+genes. Specifically, the main contributions of this paper are outstanding 
+as follows. 
+1) The MMODE proposed in this paper is a new feature selection al­
+gorithm based on multi-task DE algorithm. 
+2) MMODE generates differentiated task populations, transfers knowl­
+edge in the process of population evolution, adaptively changes 
+mutation operators, and effectively enhances the diversity of 
+populations.  
+3) Different from the traditional multi-objective paradigm, MMODE 
+uses a new elite strategy and a new guidance strategy to reduce the 
+search space and avoid falling into local optima. In the elite strategy, 
+a non-dominated ranking is used to generate elite populations for 
+multi-task evolution. The proposed guidance strategy can help 
+stagnant individuals jump out of local optima.  
+4) The effectiveness of MMODE was validated by comparing it with a 
+variety of state-of-the-art algorithms on 13 gene microarray datasets. 
+Experimental results show that MMODE outperforms the comparison 
+algorithms in terms of classification accuracy and number of selected 
+features. 
+The rest of the paper is organized as follows. Section 2 describes the 
+related work. Section 3 presents our proposed algorithm in detail. Sec­
+tion 4 gives the experimental results and analysis. Finally, Section 5 
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 3 =====
+Expert Systems With Applications 241 (2024) 122701
+3
+concludes the whole paper and proposes the next steps. 
+2. Related work 
+In this section, some related knowledges are briefly reviewed. Sec­
+tion 2.1 introduces the filter method used by MMODE. Section 2.2 in­
+troduces the differential evolution algorithm. In Section 2.3, the formal 
+definition of multi-objective optimization is given. Section 2.4 presents 
+evolutionary multitasking for multi-objective optimization. 
+2.1. Filter criteria 
+FS of high-dimensional data is extremely challenging due to a large 
+number of redundant and irrelevant features, so promising subsets of 
+features need to be identified quickly (i.e., a subset needs to include 
+important features) to improve efficiency. Filter methods are popular 
+due to their ability to extract a promising subset of features simply and 
+quickly. Among them, ReliefF (Spolaor, Cherman, Monard, & Lee, 2013) 
+and mutual information (Hancer, Xue, & Zhang, 2018) are widely used 
+in the field of data mining because they can effectively determine the 
+relationship between features and classes. In this study, ReliefF and 
+mutual information are used to assign different weights to candidate 
+features of the two task populations. 
+2.1.1. ReliefF 
+The Relief (Kononenko, 1994) algorithm is a nearest-neighbor-based 
+feature evaluation algorithm, which is widely used to solve binary 
+classification problems. ReliefF is an extension of Relief to handle multi- 
+classification problems. According to ReliefF, the weights of features are 
+evaluated based on their ability to distinguish the sampled instances 
+from their neighbors in the same class and neighboring instances in 
+different classes. The pseudo-code for calculating feature weights using 
+ReliefF is given in Algorithm 1. In Algorithm 1, Ri is a selected sample, 
+the h nearest neighbors of Ri in the same and different categories are 
+denoted as Hj(1, 2, ⋯, h) and Mj(1,2,⋯,h), respectively. Eq.(1) is used to 
+calculate the weight of each feature to discriminate between the sample 
+and its neighbors. In short, the higher the weight, the more important 
+the feature.  
+where Wr denotes a vector that is used to store the ReliefF values of all 
+features, the subscript r represents the relief, Wr[Fa] is the (ReliefF) 
+weight of the feature Fa, h is the number of nearest neighbor samples, 
+s(R) is the class label of the sample R, p(c) is the prior probability of class 
+c, and f
+(
+Fa, Ri, Rj
+)
+implies the difference between samples Ri and Rj on 
+feature Fa. 
+With ReliefF algorithm, the weight of each feature can be calculated, 
+and the ranking of features can be obtained accordingly, and then a 
+subset of features containing a small number of top-ranking features can 
+be selected. Therefore, using the ReliefF algorithm requires a threshold 
+to determine the number (or proportion) of selected features. Too small 
+a threshold will cause information loss, and too large a threshold will 
+contain too much redundancy and noise features. For high-dimensional 
+data sets, the top 3–5 % features are usually selected as the final feature 
+subset. Microarray gene expression profile data contain tens of thou­
+sands of features. In this study, the threshold value is 3 %, which can 
+filter out most irrelevant features and retain enough features as the 
+optimal feature subset search space.  
+Algorithm 1: Pseudocode of ReliefF 
+Input: 
+D, training dataset;u, the number of iterations; h, the number of nearest 
+neighbor samples; p, number of features; 
+Output: Wr, the weighs of features; 
+1: Set Wr = ∅,a = 1,2,⋯,p; 
+2: for i = 1 to u do 
+3: 
+Randomly select a sample from D, denotes as Ri; 
+4: 
+Find h nearest neighbors from the same category as sample Ri, records as Hi; 
+5: 
+Find h nearest neighbors different from category Ri, denotes as Mj(c); // 
+6: 
+for a = 1 to p do 
+7: 
+Update the weight Wr[a] based on Eq.(1); 
+8: 
+end 
+9: end 
+10: return Feature weight vector Wr.  
+2.1.2. Mutual information 
+Mutual information can be used to evaluate the degree of depen­
+dence between variables and to measure the similar uncertainty of one 
+variable to another given variable. 
+Let X be a discrete random variable that takes on values from {x1,x2,
+⋯,xk}, p(xk) is the probability function. The information entropy H(X) is 
+defined as: 
+H(X) = −
+∑
+k
+p(xk)log2p(xk)
+(2)  
+The joint entropy H(X, Y) of two random variables = {x1, x2, ⋯, xk} and 
+Y = {y1, y2, ⋯, yz} are defined as follows. 
+H(X, Y) = −
+∑
+k,z
+p
+(
+xk, yz
+)
+log2p
+(
+xk, yz
+)
+(3)  
+On such basis, the mutual information I(X; Y) is defined as Eq.(4). 
+I(X; Y) = H(X) + H(Y) −H(X, Y)
+(4)  
+Mutual information I(X; Y) is a measure of the degree of interdepen­
+dence between random variables X and Y. To evaluate the relationship 
+between features and class variable, X represents feature variables and Y 
+represents class variables in feature selection. 
+2.2. Differential evolution 
+Differential evolution (DE) process consists of three operators: mu­
+tation operator, crossover operator and selection operator. Mutation 
+operator creates mutation vectors V based on X vector of current parent 
+population. Eq.(5) and Eq.(6) are two commonly used mutation strate­
+gies. 
+Vi,t = Xr1,t + F •
+(
+Xr2,t −Xr3,t
+)
+(5)  
+Vi,t = Xi,t + F •
+(
+Xp
+best,t −Xi,t
+)
++ F •
+(
+Xr1,t −Xr2,t
+)
+(6)  
+where F and Xp
+best,t respectively represent the scale factor between (0, 1)
+and one of the top p% individuals in the current (t th) generation pop­
+ulation chosen (Zhang & Sanderson, 2009). Xi,t denotes the i th indi­
+vidual in the parent population. Xrj,t denotes a randomly selected 
+individual, rj ∈{1,2,⋯,N}, rj ∕= i, and j = {1,2,3}. 
+In general, the naming paradigm for various mutation strategies are 
+Wr[Fa] = Wr[Fa] −
+∑h
+j=1
+f
+(
+Fa, Ri, Hj
+)
+u*h
++
+∑
+c∕∈s(R)
+[
+p(c)
+1 −p(s(R) )*
+∑h
+j=1f
+(
+Fa, Ri, Mj(c)
+)
+]
+u*h
+(1)   
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 4 =====
+Expert Systems With Applications 241 (2024) 122701
+4
+DE/x/y, where DE stands for differential evolution, x stands for the 
+strategy to be executed by the denoted target vector X, and y is the 
+number of differential vectors perturbing X. Therefore, Eq.(5) and Eq.(6)
+are called DE/rand/1 and DE/current −to −pbest/1, respectively. 
+Different mutation operators have different perturbations to the 
+vector Xi,t. These perturbations affect the movement of the vector Xi,t. In 
+Eq.(5), the vector Xi,t move in a random direction for exploring a larger 
+space. The mutation operator (Eq.(5)) focuses on improving the global 
+exploration capability of the algorithm. In Eq.(6), the vector Xi,t moved 
+towards the best vector Xp
+best,t and there is a perturbation in the random 
+direction, allowing the vector Xi,t to explore the region around the vector 
+Xp
+best,t(Xp
+best,t comes from archive A (Zhang, & Sanderson, 2009), which 
+stores the top p% of outstanding individuals in parent population). The 
+mutation operator (Eq.(6)) focuses on improving the local exploitation 
+capability of the algorithm. 
+The mutation vector Vi,t after the mutation operation is crossed with 
+the target vector Xi,t to obtain the final trial vector Ui,t, as shown in the 
+following Eq.(7). 
+Ui,t,j =
+{ Vi,t,jif(rand(0, 1) ≤CRorj = jrand )
+Xi,t,jotherwise
+(7)  
+where CR is the crossover rate between [0, 1], jrand ∈{1, 2, ⋯, D} is a 
+random integer that ensures that at least one value in the generated 
+experimental vector is from the V vector. 
+The selection operation selects (as shown in Eq.(8)) the better one 
+from the target vector X and the trial vector U to survive into the next 
+generation based on its fitness value f(•). The selection operator is 
+shown below: 
+Xi,t+1 =
+{ Ui,tiff(Ui,t) < f(Xi,t)
+Xi,totherwise
+(8)  
+where f(Ui,t) represents the fitness function value of Ui,t. 
+The above operations are repeated until the iteration stop condition 
+is satisfied. 
+2.3. Multi-objective optimization 
+The goal of solving a multi-objective optimization problem (MOPs) is 
+to find a set of tradeoff solutions that satisfy all conflicting objectives. 
+The formal description of the multi-objective optimization problem is as 
+follows. 
+For a search space of X⊂RD, a multi-objective optimization problem 
+can be denoted in the following form 
+minimizeF(x) = (f1(x), f2(x), ⋯, fM(x) )
+(9)  
+where f1(x), f2(x), ⋯, fM(x) are M different minimization objectives, F(x)
+is a vector of objectives, and x ∈X is the decision vector. By the concept 
+of 
+Pareto 
+domination, 
+if 
+∀i ∈{1, 2, ⋯, M} : fi(x1) ≤fi(x2)
+and 
+∃j ∈{1, 2, ⋯, M} : fj(x1) < fj(x2), then it is means that the solution x1 
+dominates the solution x2 (i.e. x1 ≺x2). To summarize, x* is Pareto 
+optimal if there are no solutions dominate x*. The Pareto-front is the 
+Pareto optimal set of mutually non-dominated x*. Feature selection is 
+considered a multi-objective problem since its two main objectives are 
+usually conflicting, in which the number of features selected and the 
+classification error rate needs to be minimized. The classification error 
+rate is more important than the number of features selected, since the 
+main task for feature selection is to reduce the classification error rate. 
+As with most multi-objective FS algorithms, the objective function 
+for this experiment uses the classification error rate and the number of 
+features selected, two objectives that are minimal optimization prob­
+lems for this experiment. Specifically, these two objectives are defined 
+as: 
+f1(Xi) = 1 −Acc(Xi)
+(10)  
+f2(Xi) =
+∑n
+j=1Xij
+n
+(11)  
+where Xi represents the i th individual in the population; Xij is either 
+equal to 1 or 0, Xij == 1 implies that the j th feature is selected by in­
+dividual Xi, and Xij == 0 implies that the j th feature is not selected by 
+individual Xi; n represents the number of features; Acc(Xi) represents the 
+classification accuracy of that individual; f1(Xi) is the classification error 
+rate of the individual Xi, and f2(Xi) represents the proportion of the 
+number of features selected by that individual. 
+2.4. Evolutionary multitasking for multi-objective optimization 
+Most of the existing evolutionary algorithms are used to deal with a 
+single task (including single-objective optimization problems and multi- 
+objective optimization problems), with less research into solving mul­
+tiple tasks simultaneously. Gupta et al. (2016) applied to multitask 
+learning to evolutionary computing and proposed a paradigm evolu­
+tionary multitasking (EMT) for evolutionary computing. In evolutionary 
+multitask learning, multiple tasks can transfer knowledge to each other 
+when dealing with similar problems. The knowledge of one task is 
+transferred to the target task, and the performance of the target task is 
+improved. This kind of interactive learning between tasks is called 
+transfer learning. Multi-task learning improves the performance of all 
+tasks based on the inherent relationships between tasks, each task 
+benefits from the knowledge gained by the other tasks. 
+EMT algorithms tend to obtain better solutions for the optimization 
+tasks than the counterpart single-task-based algorithms and achieved 
+success in various optimization problems including MOPs. Multi- 
+objective multifactorial evolutionary algorithm (MO-MFEA) (Gupta, 
+Ong, Feng, & Tan, 2017) as an approach to solving MOPs, which solves 
+MOPs simultaneously using the knowledge gained from each task. In the 
+MO-MFEA framework, each task Tk will be considered as a factor 
+affecting the individual in the search process, while the individuals in 
+the task population Pk are encoded by a unique method that facilitates 
+interactive problem solving. Thus, an individual Xi of the population Pk 
+can be denoted as Pk(Xi) which can be represented as a solution in a 
+special decoding way. 
+To allow all tasks to transfer knowledge with each other, a unified 
+encoding is used to control the search scope of all tasks in the same 
+search space. The implicit connection can be generated by all tasks being 
+in the uniform search space. Transferring knowledge between tasks is 
+determined by the parameter of random mating probability (RMP), 
+which can be set to a value close to 1 when the correlation between two 
+tasks is high, and a low value (usually close to 0) when the correlation 
+between two tasks is low. This means that MO-MFEA is strongly 
+dependent on the experimenter’s prior knowledge about the tasks be­
+tween them. To overcome this deficiency, Gupta et al. proposed MO- 
+MFEA-II which generates the RMP matrix (Eq.(12)) based on the adap­
+tive learning of the probability distribution of the respective task 
+population. 
+RMPK,K =
+⎡
+⎢⎢⎣
+rmp1,1
+rmp1,2
+⋯
+rmp1,K
+rmp2,1
+rmp2,2
+⋯
+⋯
+⋯
+⋯
+⋯
+⋯
+rmpK,1
+⋯
+⋯
+rmpK,K
+⎤
+⎥⎥⎦,
+(12)  
+where rmpi,j (i, j = 1, 2, ⋯, K) represents the random mating probability 
+between task I and task II, which can effectively control the knowledge 
+transfer between the tasks. The basic framework of a multitask has K 
+tasks. The K th task is denoted Tk, and the corresponding fitness function 
+is fk. Therefore, MO-MFEA-II can adaptively determine the RMP pa­
+rameters between the two tasks, thus effectively controlling the 
+knowledge transfer between tasks. 
+In summary, although some scholars are committed to the research 
+of multi-tasking framework to solve the multi-objective optimization 
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 5 =====
+Expert Systems With Applications 241 (2024) 122701
+5
+problem, the application of multi-tasking framework in FS is very few. 
+DE-based multi-task algorithms for FS of high-dimensional data need 
+further research. 
+3. Proposed method 
+For FS of high-dimensional data, evolutionary algorithms often face 
+the problem of individual stagnation due to the overly broad search 
+scope. As the number of stagnant individuals increases, such algorithms 
+will fall into local optimum and premature convergence. 
+In this section, a novel multitasking multi-objective differential 
+evolution gene selection algorithm (MMODE) is presented in detail. The 
+principles of MMODE include differentiated populations, elite strategy, 
+multitasking population evolution, and guidance strategy, which are 
+described in section 3.1 to 3.4, respectively. In section 3.5, the overall 
+framework of MMODE is described. 
+3.1. Differentiated populations 
+When multitasking differential evolution algorithm is used to solve 
+the optimal solution, the correlation between tasks will have an 
+important influence on the result. MMODE introduces two differentiated 
+populations to enhance the ability to search the optimal subsets in the 
+high-dimensional feature space. Specifically, two populations (corre­
+sponding two tasks) are designed to search the same feature space in 
+different directions to increase the diversity of the populations, thus 
+improving the performance of the algorithm. 
+In the filter phase of MMODE, most irrelevant features are removed 
+by using the ReliefF algorithm, and a promising subset of features is 
+obtained. Next, the weight Wr of features according to ReliefF criterion 
+(Eq.(1)) is used for the initialization of population I (task I). And the 
+weight WIS of features according to Eq.(13) are used for the initialization 
+of population II (task II). 
+WIS[Fa] =
+I(Fa, C)
+Similar(Fa)
+(13)  
+where WIS denotes a vector that is used to store the weights of all fea­
+tures, WIS[Fa] denotes weight of a feature Fa, I(Fa, C) is the relevance 
+between feature Fa and the class variable, and Similar(Fa) represents the 
+average similarity between feature Fa and other features, more details 
+can be found in the literature (Moradi & Gholampour, 2016). Specif­
+ically, the higher the relevance and the lower the similarity, the more 
+important the feature is. 
+Before initialization of the task population, the weight Wr of task I 
+and the weight WIS of task II will be normalized to the same interval by 
+Eq.(14), 
+W = T2* W −Wmin
+Wmax −Wmin
++ T1W ∈{Wr, WIS}
+(14) 
+Fig. 1. Feature weights in population I are determined by ReliefF.  
+Fig. 2. Feature weights in population II are determined by Mutual Information and feature similarity.  
+Fig. 3. Initialization strategy and feature mapping relationship of population.  
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 6 =====
+Expert Systems With Applications 241 (2024) 122701
+6
+where W denotes the feature weights of task I and task II, Wmin repre­
+sents its lower bound, and Wmax represents the upper bound. The for­
+mula attempts to adjust the feature weights to between [T1, T1 + T2], 
+where 0 < T1, T2 < 1 and T1 + T2 < 1. The traditional normalization 
+range is between [0, 1], there will be some features whose weight be­
+comes 1 after normalized, causing all individual to select the feature at 
+initialization; or the weight becomes 0, then the feature weight is too 
+low thus causing the feature to be ignored. In this study, T1 and T2 were 
+set to 0.2 and 0.5 to scale the value between [0.2, 0.7], which not only 
+ensures that the probability of each feature being selected is positively 
+correlated with its weight, but also avoids the situation that some fea­
+tures are completely selected or excluded. One might ask why the weight 
+values are not mapped to other interval ranges, such as [0.1,0.8]. In fact, 
+this range only ensures that features with lower weights have a lower 
+probability of being selected (but avoid being completely excluded) and 
+features with higher weights have a higher probability of being selected 
+(but avoid necessarily being selected). Our experiments show that there 
+is no significant difference in the experimental results under the con­
+ditions of T1 ∈[0.1, 0.3] and T1 + T2 ∈[0.5, 0.8]. The reason should be 
+attributed to the evolutionary mechanism of differential evolution al­
+gorithm adopted. 
+Fig. 1 and Fig. 2 respectively show the calculation principles of the 
+corresponding feature weights of the two populations. The probability of 
+each feature being selected is different in different population in­
+dividuals because the corresponding feature weight W of each task is 
+different. Moreover, even within the same population, individual 
+chooses features differently due to randomness. If the i th dimension of 
+an individual is initialized to a randomly generated value between 0 and 
+Wi, that is [0, Wi], indicating that the i th feature is selected; otherwise, 
+the i th feature is not selected. The initialization strategies for population 
+I and population II are similar, except that the feature weights are 
+different, resulting in different directions for initializing the 
+populations. 
+Fig. 3 shows an example of population initialization. Suppose the 
+dataset has 8 features and the number of individuals in the population P 
+is 4. Firstly, weights WR(WIS) is obtained by Eq.(1) (or Eq.(13)), and then 
+the weight W is obtained by normalization through Eq.(14). Secondly, a 
+random population A ∈R4*8 based on a uniform probability distribution 
+is generated and each element Ai,j ∈[0,1). Thirdly, each individual ob­
+tains the selected features in the following rule: if Aij ≤W
+(
+Fj
+)
+, then Pij =
+1 (means feature Fj is selected by individual Xi); otherwise Pij = 0 
+(means feature Fj is not selected by individual Xi). As shown in Fig. 3, the 
+final selected gene subset for individual X4 is {F2, F3, F5, F7}. 
+3.2. Elite strategy 
+In recent years, some scholars have studied multi-objective differ­
+ential evolutionary (MODE) algorithms based on NSGA-II framework to 
+solve FS problems. However, as the non-domination proceeds, the 
+number of identical individuals increases, which affects the diversity of 
+the population. The selection operator of MODE is greedy selection (as 
+shown in Eq.(8)), which selects a better solution between the trial vector 
+and the target vector to survive in the offspring population. If the target 
+vector falls into a local optimum, the generated trial vector is more likely 
+to be worse than the target vector (according to the fitness value). Then 
+the target vector survives into the offspring population, resulting in the 
+parent population and offspring population having the same solution 
+vector. Two identical solution vectors cannot dominate each other, so 
+the two identical solutions survive to the next generation of populations. 
+This reduces population diversity and leads to premature convergence. 
+This means that the non-dominated processes in NSGA-II are not suitable 
+for DE, because DE needs to explore new spaces through vector move­
+ments, and too many identical vectors will only limit the performance of 
+DE.  
+Algorithm 2:Elite Strategy 
+Input: 
+m: the size of each task population; P: task populations; 
+Output: E, Elite population; 
+1: Es←∅, E←∅, i←0; 
+2: Calculate the Score of individual in task population P by Eq.(15); 
+3: P′← Sorting P in ascending order according to Score; 
+4: Compute the EN by Eq.(16); 
+5: while len(Es) < EN& i + + < m do 
+6: 
+if P′(Xi).HR = = Ture: // Xi is ith individual in population P′ 
+7: 
+Es = Es ∪P′(Xi); 
+8: end while 
+9: Obtain elite populations E by the Feature Recombination (Algorithm 3) on Es 
+10: return E;   
+Algorithm 3:Feature Recombination 
+Input:Es: subset of excellent individual; ep: elite rate; 
+L: the probability of weakly correlated features being selected; 
+Output: E, Elite population; 
+1:E←∅;
+2: for i = 0; i < len(Es); i + + do 
+3: 
+Extract selected features of individual Es(Xi) and store them in Fsi; 
+4: 
+Compute the vector MRMR of Fsi by Eq.(17); 
+5: 
+Convert the MRMR to a binary vector Dif I according to Eq.(18); 
+6: 
+for j = 0to1/ep do // 1/ep new individuals are generated 
+7: 
+new an individual X; 
+8: 
+if Dif I = = [1]& [rand()] > [ep] then 
+9: 
+The corresponding features are selected by X; 
+10: 
+if Dif I = = [0]& [rand()] < [L] then 
+11: 
+The corresponding features are selected by X; 
+12: 
+E = E ∪{X}; 
+13: return E;  
+To alleviate the above problem, MMODE no longer obtains the next 
+generation population by non-dominated sorting of the offspring pop­
+ulation with the parent population. Instead, the offspring population is 
+replaced for non-dominated sorting by elite population. Since the in­
+dividuals in the elite population are completely different from those in 
+the parent population, there are almost no duplicate individuals in the 
+new population obtained after non-dominated sorting. This effectively 
+enhances the diversity of the population. Therefore, the elite population 
+E is generated by the proposed Elite Strategy (Algorithm 2), which 
+contributes to the solution of the above problem. 
+In the Algorithm 2, elite population E is generated by performing 
+Feature Recombination (Algorithm 3) based on the elite subset Es. 
+The elite subset Es is the set of the individuals with excellent perfor­
+mance in the parent population P. The performance of individual X is 
+determined by Eq.(15) and whether the individual contains redundant 
+features. Eq.(15) reflects the individual’s score on the two minimization 
+objectives of FS. The lower the Score[X], the better the individual. 
+Score[X] = 0.9*F1(X) + 0.1*F2(X)
+(15) 
+In line 6 of the Algorithm 2, HR is a Boolean property that indicates 
+whether there is redundancy in the selected features that an individual 
+contains. HR == Ture indicates that the individual contains redundant 
+features, which implies that the individual can be further promoted. The 
+number of EN (obtained by Eq.(16)) individuals with HR == Ture are 
+selected from low to high according to Score[X] and stored in the variable 
+Es (line 7). 
+EN = ep*m
+(16)  
+Where ep represents the proportion of the number of individuals in Es to 
+the population, m represents the number of individuals in each popu­
+lation. An example of the elite subset Es obtained from the parent pop­
+ulation P is shown in Fig. 4. 
+Lines 5–7 of Algorithm 2 produce an elite subset Es with EN in­
+dividuals. Then individual X in Es generate 1/ep new individuals by the 
+proposed Feature Recombination (Algorithm 3). These new 
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 7 =====
+Expert Systems With Applications 241 (2024) 122701
+7
+individuals are combined into an elite population E with the number of 
+individuals m. 
+To avoid the newly generated individuals containing redundant 
+features, in Feature Recombination (Algorithm 3), max-relevance and 
+min-redundancy (mRMR) (Radovic, Ghalwash, Filipovic, & Obradovic, 
+2017) is used to evaluate the features selected by individuals and classify 
+the features into relevant and irrelevant features. mRMR evaluates 
+features according to the maximum correlation and minimum redun­
+dancy criteria. In mRMR, the selected features have maximum correla­
+tion with class labels and minimum redundancy with other features. 
+Next, the principle of Feature Recombination is described. 
+In line 3 of the Algorithm 3, the selected features in individual Es(Xi)
+(i th individual of Es) are extracted into variable Fsi. Then, in line 4, the 
+MRMR vector of Fsi is evaluated by Eq.(17). 
+MRMR[Fsi
+m] = I
+(
+Fsi
+m, Y
+)
+−
+∑
+Fsi
+n ∈FsiI
+(
+Fsi
+m, Fsi
+n
+)⃒⃒
+Fsi⃒⃒
+(17)  
+where |Fsi| denotes the number of features in Fsi, I
+(
+Fsi
+m, Fsi
+n
+)
+represents 
+the mutual information of Fsi
+m and Fsi
+n, Y is the class label, I
+(
+Fsi
+m, Y
+)
+is the 
+mutual information of feature Fsi
+m and class label Y. Different individuals 
+may contain some of the same features, repeatedly calculating the 
+redundancy between these features is inefficient and a waste of re­
+sources. To avoid repeating calculations, in our program, an archive IS ∈
+RD×D (D represents the number of features) be designed to store the 
+mutual information of features. If I
+(
+Fsi
+m, Fsi
+n
+)
+is computed, the value is 
+stored in IS(Fsi
+m, Fsi
+n) to avoid re-computation. For simplicity, the archive 
+variable IS does not appear in Algorithm 3. 
+In line 5, the vector MRMR is converted into a binary vector ac­
+cording to Eq.(18) and stored in the vector Dif I. The value 1 in Dif I 
+indicates that the corresponding feature is important by the individual 
+Es(Xi). 
+Dif I =
+{
+1ifMRMR > 0
+0otherwise
+(18) 
+In lines 7–11, the generation of individuals in the elite population 
+depends on Dif I. The features with marker 1 or 0 in Dif I all have the 
+probability of combining to generate a new individual. In lines 8–9, 
+those features with marker == 1 and the corresponding value of rand()
+(a random number between 0 and 1) is greater than ep are selected. 
+These features well meet the max-relevance and min-redundancy 
+criteria, so they are highly complementary to each other. In lines 
+10–11, those features with marker == 0 and the corresponding value of 
+rand() is less than L are selected. These features do not meet the max- 
+relevance and min-redundancy criteria, that is, redundant features of 
+the features marked as 0 or the features irrelevant to classification. 
+However, from the perspective of classification accuracy, a small num­
+ber of redundant features are often helpful to improve classification 
+accuracy and stability, because of the difference between training data 
+and test data. The flowchart of elite strategy is shown in Fig. 5. 
+In a word, each newly generated individual selects more features that 
+conform to mRMR criteria, and a small number of redundant features 
+are selected as supplements. This not only ensures that the generated 
+individuals have better performance, but also ensures the diversity of 
+individuals and increases the effective search. 
+It should be note that L is a small threshold parameter that controls 
+the selection of a small number of redundant features. By setting a larger 
+value of L, the global search ability of the algorithm can be enhanced. In 
+the experiments show that L = 0.01 is a relatively ideal setting, which 
+Fig. 4. An example of elite subset Es obtained from the parent population P.  
+Fig. 5. Flowchart for selecting elite individuals in population P.  
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 8 =====
+Expert Systems With Applications 241 (2024) 122701
+8
+will be discussed and analyzed in detail in the following experimental 
+section. 
+3.3. Multitasking population evolution 
+Classical MO-MFEA-II conducts multi-task population evolution ac­
+cording to the task population of the two parent individuals and RMP 
+matrix (Eq.(12)). MO-MFEA-II is based on genetic algorithm (GA), 
+which generates offspring according to exchange of information be­
+tween two parent individuals. However, the proposed MMODE is based 
+on the DE algorithm, which generates new individuals based on the 
+spatial motion of a single vector. To satisfy the conditions of multi-task 
+evolution, MMODE is carried out according to the task population of two 
+vectors (i.e., Xi,t, Xbest,t) and the RMP matrix. Algorithm 4 shows the 
+flow chart of the proposed Multitasking Population Evolution. 
+In line 2 of Algorithm 4, the top p% individuals in each task popu­
+lation Pk,t (k ∈{1, 2}) are saved in archive At. In line 5, an individual is 
+randomly selected as Xi,t from Pk,t and an individual is randomly selected 
+as Xbest,t from archive At. In line 6, the algorithm performs the following 
+operations to generate vector Vi,t according to the task population to 
+which the Xi,t and Xbest,t belongs. 
+If the two individuals Xi,t and Xbest,t belong to the same task popu­
+lation (i.e., Xi,t.k = = Xbest,t.k; k ∈{1,2}), then performs Operation I. 
+Operation I: Two individuals Xr1,t, Xr2,t are selected from the task 
+population Pk,t where Xi,t is located to generate the vector Vi,t according 
+to Eq.(6). This operation is like single-task population evolution which is 
+mainly used for task population exploitation of the current search 
+direction. 
+If Xi,t and Xbest,t belong to different task populations (i.e., Xi,t.k ∕=
+Xbest,t.k; k ∈{1,2}), one of the three operations of Operation II, III and 
+IV will be executed. Let rand 1() denotes a randomly generated number 
+between 0 and 1. 
+Operation II: If rand 1() < RMP[Xi,t.k, Xbest,t.k], then an individual 
+Xr1,t is selected from the task population where Xbest,t is located and an 
+individual Xr2,t is selected from the task population where Xi,t is located, 
+to generate the vector Vi,t according to Eq.(6). This operation generates 
+an individual to explore a new areas because the preconditions for 
+knowledge transfer are met. 
+If rand 1() ≥RMP
+(
+Xi,t.k, Xbest,t.k
+)
+, one of the two operations of 
+Operation III and IV will be executed. Let rand 2() denotes a randomly 
+generated number between 0 and 1, ep is the elite rate. 
+Operation III: If rand 2() > ep, three individuals Xr1,t, Xr2,t and Xr3,t 
+are selected from the task population where Xi,t is located to generate the 
+vector Vi,t according to Eq.(5). In the evolutionary search process, if 
+individuals evolve only toward the optimal solution, which tends to fall 
+into a local optimum. Random search is used to reduce this phenomenon 
+according to Eq.(5), which improves the ability of the algorithm to 
+explore unsearched regions. 
+Operation IV: If rand 2() ≤ep, two individuals Xr1,t and Xr2,t are 
+selected from the task population where Xbest,t is located to generate the 
+vector Vi,t according to Eq.(6). The evolution of individuals in this 
+operation is also a transfer of knowledge between two tasks. 
+In line 7, the vector Ui,t is generated according to Eq.(7). The Ui,t 
+vector needs to be decoded into binary values according to Eq.(19)
+before proceeding to the selection operator. 
+Ubini,j =
+{
+1 if Ui,j < W
+0 otherwise
+, W ∈{Wr, WIS}
+(19)  
+where W is the feature weight of the task corresponding to Xi,t. The 
+generated new individual Xi,t+1 performs the same tasks as Xi,t, 
+In line 8, according to Eq.(20), vector Xi,t+1 denotes a better vector 
+between vector Ui,t (Ubini,t is its binary form) and vector Xi,t based on 
+their Score. In line 9, vector Xi,t+1 is selected for the next generation Pt+1. 
+Xi,t+1 =
+{
+Ui,t
+if score(Ubini,t) < score(Xbini,t)
+Xi,t
+otherwise
+(20)   
+Algorithm 4: Multitasking Population Evolution 
+Input: 
+Pk,t : t th generation task populations (k ∈{1,2}); p: top p% individuals; m: 
+total number of individuals in both populations; ep: parametric elite rate. 
+Output: Pk,t+1, next generation population (k ∈{1,2}); 
+1: Calculate RMP by Eq.(12); 
+2: At← the top p% individuals of P1,t and the top p% individuals of P2,t; 
+3: Pk,t+1←∅; 
+4: for i = 0tom do 
+5: 
+Select individual Xi,t from Pk,t and Xbest,t from At; //k ∈{1,2}; 
+6: 
+Generate the vector Vi,t according to the different operations (i.e., 
+Operations I ~ IV); 
+7: 
+Generate the training vector Ui,t; // crossover operator (Eq.(7)); 
+8: 
+Xi,t+1← the better individual between Ui,t and Xi,t according to Eq.(20); 
+9: 
+Pk,t+1←Pk,t+1 ∪{Xi,t+1}; // Xi,t+1 performs the same tasks as Xi,t; 
+10: end for 
+11: return Pk,t+1;  
+3.4. Guidance Strategy 
+For evolutionary algorithms, individuals tend to enter a stagnant 
+state in the process of evolution, which affects the exploration ability of 
+the algorithm. In MMODE, a novel guidance strategy is proposed to 
+alleviate this situation. The proposed guidance strategy uses state 
+detection and feature shrinkage to make individuals jump out of stasis. 
+To determine whether an individual is in a stagnant state, in 
+MMODE, the individual has an age property with an initial value of 0. If 
+an individual stops updating during a certain generation of evolution, its 
+age attribute is increased by 1. If the age of an individual reache 
+threshold maxAge, then the individual is in the stagnation stage. 
+Similar to the Elite Strategy (Algorithm 2), the guidance strategy 
+also aims to remove redundant features of the individual to achieve 
+better classification performance. For the stagnant individuals, if their 
+attribute HR == Ture (meaning there are redundant features, as in Al­
+gorithm 2), the Guidance Strategy (Algorithm 5) removes the features 
+with lower weight from the selected features of the individuals, to make 
+the individuals jump out of the stopped state. 
+In Algorithm 5, X is an input individual with a stagnant state. In line 
+1, the features selected by the individual X are stored in variable r in 
+ascending order of feature weight. In lines 2–6, the classification error 
+rate of individual X after deleting feature r(j) is evaluated; if the clas­
+sification error rate is unchanged or is decreased, the algorithm returns 
+the corresponding individual of X −r(j) (i.e., individual X updated suc­
+cessfully and termination guidance strategies); otherwise, the next 
+feature in r is evaluated. Lines 7–8 mean that individual X cannot be 
+updated by guidance strategy, and its property HR is assigned False 
+means that the individual no longer participates in Elite Strategy (Al­
+gorithm 2) and Guidance Strategy (Algorithm 5).  
+Algorithm 5:Guidance Strategy 
+Input: X: individual; 
+Output: Xnew, a new individual; 
+1: 
+r← the features selected by the individual X in ascending order of the feature 
+weights W of its task population; // feature weights W ∈{Wr,WIS}
+2: for j = 0tolen(r) do 
+3: 
+Xnew←X −r(j); // Xnew represents the corresponding individual after removing 
+//feature r(j) from individual X 
+4: 
+if f1(Xnew) ≤f1(X) then // classification error rate 
+5: 
+return Xnew; // individual X updated successfully 
+6: end for 
+7: if j == len(r) then // individual X update failed 
+8: 
+X.HR = False;  
+In the experimental demonstration (Section 4.2.2), the Guidance 
+Strategy can effectively improve algorithm performance. As redundant 
+and irrelevant features in the solution are eliminated, the remaining 
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 9 =====
+Expert Systems With Applications 241 (2024) 122701
+9
+features tend to perform better. 
+3.5. Overall framework of MMODE 
+The proposed MMODE adopts two task populations to search the 
+feature space. Fig. 6 shows the flowchart of the MMODE. As shown in 
+Fig. 5, each task population has its initialization strategy to explore in 
+different regions. After population initialization, the proposed Elite 
+Strategy (Algorithm 2) is used to get the elite population E. The pop­
+ulation G is generated through the parent population P and the elite 
+population E for efficient non-dominated sorting (Zhang, Tian, Cheng, & 
+Jin, 2015) (P denotes the parent task population, E denotes the elite 
+population generated according to elite strategy, and G is then the result 
+of efficient non-domination of P and E). 
+After fast non-dominated sorting, the next generation population P is 
+generated through the multitasking evolution of population G (knowl­
+edge will transfer between two task populations). The transferred 
+knowledge also affects the distribution of individuals within each task 
+population and the direction of exploration. Once an individual is at a 
+stagnant stage (individuals no longer evolve) in its evolution, then 
+Guidance Strategy (Algorithm 5) will help the individual out of this 
+state. When the termination condition is satisfied, the set of non- 
+dominated solutions in both task populations is output. To reduce the 
+influence of redundant features, individuals in the non-dominated so­
+lution set will be re-executed to guidance strategy. 
+The pseudo-code of MMODE is shown in Algorithm 6. In lines 1––4, 
+the two task populations are initialized according to the information 
+entropy weight WIs and reliefF weight Wr of the features, respectively. 
+The evolutionary search process of the two task populations is 
+completed in lines 5–13, which roughly includes three parts. Part I (lines 
+6–7), two new populations G1,t and G2,t are generated based on the non- 
+dominance sorting of elite populations generated by Elite Strategy 
+(Algorithm 2). Part II (line 8) generates next generation Pk,t+1 of pop­
+ulations based on multi-task population evolution (Algorithm 4). Part II 
+(lines 9–12), the Guidance Strategy (Algorithm 5) is used to update 
+stagnant individuals. After the population evolution is completed, in line 
+15, the Guidance Strategy has performed again on the non-dominant 
+set to remove the redundant features.  
+Algorithm 6: MMODE 
+Input: 
+D: training set; m: population size; maxIterate: maximum number of 
+generations; 
+maxAge: the upper limit of the age at which individuals stagnate; 
+Output: Optimal feature subset; 
+1: Obtain the weight vector Wr according to Eq.(1); 
+2: Obtain the filtered dataset D′ by filtering D according to Wr; 
+3: Obtain the weight vector WIs based on D′ and Eq.(13); 
+4: Initialize the task populations Pk,t respectively by using Wr and WIs; //k ∈{1,2}
+5: for t = 1tomaxIterate do 
+6: 
+Ek,t← Elite Strategy (Algorithm 2); //k ∈{1,2}
+7 
+Gk,t← Efficient non-dominated sorting of Ek,t and Pk,t; //k ∈{1,2}
+8: 
+Pk,t+1← Multitasking Population Evolution (G1,t,G2,t) (Algorithm 4); 
+9: 
+for each individual in Pk,t+1 //k ∈{1,2}
+10: 
+if individual.age == maxAge then 
+11: 
+Update the stagnant individuals on Pk,t+1 by Guidance Strategy 
+(Algorithm 5); 
+12: 
+end for 
+13: end for 
+14: Obtain the non-dominated solution set of all task populations; 
+15: Execute the Guidance Strategy (Algorithm 5) on the non-dominated set; 
+16: return Optimal feature subset;  
+4. Experimental results 
+To evaluate the overall performance and demonstrate the effective­
+ness of the proposed algorithm, we compare MMODE with nine popular 
+evolutionary algorithms based on 13 public benchmark microarray 
+datasets. In section 4.1, the experimental framework, including the 
+benchmark datasets, compared algorithms, and parameter settings, are 
+presented. In section 4.2, the experimental results are presented and 
+analyzed. 
+All experiments are conducted on a PC equipped with Intel Core i5- 
+7300HQ CPU, 2.50 GHz, 16 GB RAM, and Windows 11 64-bit operating 
+system. 
+Fig. 6. Flowchart of MMODE.  
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 10 =====
+Expert Systems With Applications 241 (2024) 122701
+10
+4.1. Experimental settings 
+4.1.1. Datasets 
+All experiments run on eleven publicly available microarray 
+expression profile datasets. The characteristics of these datasets are 
+listed in Table 1, where “Features”, “Classes” and “Instances” denote the 
+number of features, the number of classes and the number of samples, 
+respectively. 
+For a fair comparison, all data are normalized, and all compared 
+algorithms use a uniform filter approach (the top 3 % of genes are 
+selected by using ReliefF) for a fair comparison. 
+Considering that KNN (Dudani, 1976) is a classically and commonly 
+used classifier and is often used in gene selection tasks (Wang, Xue, 
+Liang, & Zhang, 2022; Wang, Gao, Zhang, & Guo, 2022; Wang et al., 
+2022), KNN (K = 10) is used as the evaluation classifier in the wrapper 
+evaluation stage of all the comparison algorithms for a fair comparison. 
+To avoid large biases, 10-fold cross-validation is adopted to evaluate the 
+accuracy of the gene set obtained by each algorithm. In addition, each 
+comparison method is not a deterministic heuristic algorithm, each of 
+them is run independently 30 times on each dataset, and the average 
+results are then compared to further reduce the impact of the variance. 
+4.1.2. Compared algorithms 
+We compare the proposed MMODE algorithm with feature selection 
+algorithms based on evolutionary algorithms. These algorithms include 
+three single-objective algorithms of JADE-NSO (Zeng, Zhang, Chen, & 
+Hong, 2021), HPSO-LS (Moradi & Gholampour, 2016), HLBDA (Too & 
+Mirjalili, 2021), and six multi-objective algorithms of NSGA-II, GR- 
+MOEA (Liu, Chang, & Cheng, 2021), MOBGA-AOS (Xue, Zhu, Liang, & 
+Słowik, 2021), MOFS-BDE (Zhang et al., 2020), CMODE (Pan, Liu, & 
+Chu, 2022), and NMDE (Wang, Xue, Liang, & Zhang, 2022). The brief 
+information on all compared algorithms is as follows. 
+JADE-NSO: JADE-NSO as an improved algorithm of DE, utilizes the 
+idea of deep search to FS. When an individual is at stagnation, the in­
+dividual is reset to the historically optimal solution to continue the 
+search. 
+HPSO-LS: The first stage of HPSO-LS filters out a subset of irrelevant 
+features. Then, the second stage of HPSO-LS utilizes particle swarm 
+optimization (PSO) to search the optimal feature subset from the filtered 
+dataset, in which individuals perform a local search based on feature 
+similarity. 
+HLBDA: HLBDA is a recently proposed algorithm especially for 
+dealing with gene selection problems based on a binary dragonfly al­
+gorithm (BDA). It uses hyper learning strategies to enable BDA to escape 
+local optima and enhance search behavior. 
+NSGA-II: NSGA-II is one of the most classical multi-objective algo­
+rithms and is also used in FS since its efficient performance. Each iter­
+ation produces the next population based on the non-dominated sorting 
+of the parent and offspring populations. 
+GR-MOEA: GR-MOEA is a multi-objective FS algorithm based on the 
+NSGA-II paradigm, which inherits the advantages of NSGA-II. The filter 
+and wrapper populations in the GR-MOEA influence each other during 
+evolution according to guidance and repair strategies. 
+MOBGA-AOS: MOBGA-AOS is one of the variants of NSGA-II for FS, 
+which uses penalty and reward matrices to evolve individuals from 
+adaptive crossover operators during iteration. 
+MOFS-BDE: MOFS-BDE is a novel binary multi-objective differential 
+evolutionary algorithm for FS. It improves the one-bit purifying search 
+operator (OPS) and the probability difference-based binary mutation 
+operator, making DE a strong exploration and exploitation capability. 
+CMODE: CMODE as a pareto-dominance-based multi-objective DE 
+for FS, focuses on ensuring diversity of solutions. CMODE selects elite 
+individuals based on the competition mechanism and elite individuals to 
+guide the evolution of other individuals through a novel mutation 
+operator. 
+NMDE: NMDE is a multi-objective FS algorithm based on the niche 
+theories. In the framework of evolutionary multi-objective optimization, 
+NMDE uses a mutation operator that combines local and global infor­
+mation of individual nearest neighbor, which effectively speeds up the 
+convergence of the algorithm. 
+The latter 6 algorithms are all multi-objective algorithms. All of them 
+use efficient non-dominated sorting (Zhang, Tian, Cheng, & Jin, 2015) 
+for multi-objective comparison for the sake of fairness. 
+4.1.3. Parameter settings 
+All comparison algorithms use the recommended parameter values 
+suggested in their original papers. The parameter values of MMODE and 
+all compared algorithms are listed in Table 2. 
+There are two task populations in MMODE and GR-MOEA, the 
+number of individuals in each task population is 70. To fair comparison, 
+in all other eight compared evolutionary algorithms, the population size 
+m is set to 140, which makes all 10 algorithms use the same number of 
+individuals for searching feature subsets. In addition, the maximum 
+number of iterations maxIterate is set to 100 for all algorithms. In 
+MMODE, scale factor F is set to 0.5 and the crossover rate (CR) is 0.9. 
+4.2. Results and analysis 
+4.2.1. Compared with state-of-the-art algorithms 
+This section focuses on comparing the MMODE with nine feature se­
+lection methods listed in section 4.1.2. Table 3 demonstrates the com­
+parison of all compared algorithms on 13 datasets concerning the Mean 
+Time, Mean Size (the number of selected features), Best Accuracy, and 
+Mean Accuracy (std). The bolded values indicate the best results. The 
+Wilcoxon signed rank test (K. Chen et al., 2021) at the significance level of 
+0.05 is used to statistically analyze the Mean Accuracy difference between 
+of MMODE and other compared algorithms. In Table 3, the symbols “ + ”, 
+“≈” and “−” respectively indicate that the results of MMODE are better, 
+similar, and worse than the corresponding comparison algorithm. 
+Table 1 
+Description of microarray gene expression datasets.  
+Dataset 
+Instances 
+Feature 
+Classes 
+Arcane (Li et al., 2018) 
+200 
+10,000 
+2 
+BreastCancer1 (Zhu et al., 2007) 
+97 
+24,481 
+2 
+BreastCancer2 (Chowdary et al., 2006) 
+104 
+22,283 
+2 
+CLLSUB (Li et al., 2018) 
+111 
+11,340 
+3 
+CrohnDisease (Burczynski et al., 2006) 
+127 
+22,283 
+3 
+GLI (Li et al., 2018) 
+85 
+22,283 
+2 
+Leukemia (Zhu et al., 2007) 
+72 
+7129 
+2 
+Lung Cancer (Zhu et al., 2007) 
+181 
+12,533 
+2 
+Ovarian (Zhu et al., 2007) 
+253 
+15,154 
+2 
+Prostate (Li et al., 2018) 
+102 
+12,600 
+2 
+SMKCAN (Li et al., 2018) 
+187 
+19,993 
+2 
+Brain_Tumor (K. Chen et al., 2021) 
+199 
+10,367 
+4 
+11_Tumor (K. Chen et al., 2021) 
+174 
+12,533 
+11  
+Table 2 
+Parameter settings in all comparison algorithms.  
+Algorithm 
+Parameter values 
+JADE-NSO 
+best individual rate : p = 0.3; stagnation tolerance:T1 = 8,T2 = 4.
+HPSO-LS 
+learning rate:c1 = c2 = 2; velocity:vmax = 4,vmin = −4 
+HLBDA 
+personal learning rate : pl = 0.4; global learning rate : gl = 0.7.
+NSGA-II 
+CR = 0.9; MR = 1/featureNum.
+GR-MOEA 
+CR = 0.9; MR = 1/featureNum; strategy execution coefficient : l =
+10.
+MOBGA- 
+AOS 
+CR = 0.9; MR = 1/featureNum; number of repeated : LP = 5.
+MOFS-BDE 
+F = 0.5*rand(); CR = 0.3; frequency : Tloc = 5; turbulence coefficient 
+: σ = 0.01.
+CMODE 
+F = 0.5; CR = 0.5; size of leader set:α = 5.
+NMDE 
+F = 0.5; CR = 0.5; threshold : θ = 0.6; parameter : ψ = 1/
+featureNum.
+MMODE 
+F = 0.5,CR = 0.9; p = 0.3; ep = 0.2; L = 0.01; maxage = 3.
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 11 =====
+Expert Systems With Applications 241 (2024) 122701
+11
+Table 3 
+Comparison between MMODE and state-of-the-art algorithms on 13 datasets.  
+Data Sets 
+Method 
+Mean 
+Time 
+Mean 
+Size 
+Best 
+Accuracy 
+Mean 
+Accuracy (std) 
+W 
+Arcane 
+JADE-NSO  
+530.69  
+98.60  
+96.49 
+95.90 (0.20) 
++
+HPSO-LS  
+935.47  
+180.80  
+93.00 
+92.00 (0.95) 
++
+HLBDA  
+1078.32  
+68.40  
+92.60 
+91.28 (1.27) 
++
+GR-MOEA  
+715.67  
+63.40  
+96.50 
+94.50 (0.55) 
++
+MOFS-BDE  
+621.34  
+63.80  
+97.00 
+95.60 (0.37) 
++
+MOBGA-AOS  
+604.98  
+45.80  
+96.50 
+95.60 (1.07) 
++
+CMODE  
+551.54  
+38.00  
+97.00 
+96.10 (0.58) 
++
+NSGA-II  
+463.63  
+56.00  
+96.49 
+95.00 (0.71) 
++
+NMDE  
+678.25  
+16.00  
+95.59 
+94.60 (0.32) 
++
+MMODE  
+898.11  
+16.40  
+98.00 
+97.05 (0.93)  
+BreastCancer1 
+JADE-NSO  
+540.69  
+271.40  
+95.89 
+94.18 (1.40) 
++
+HPSO-LS  
+909.95  
+375.60  
+91.89 
+90.69 (0.75) 
++
+HLBDA  
+1007.49  
+202.30  
+93.88 
+92.46 (1.02) 
++
+GR-MOEA  
+606.13  
+107.60  
+95.00 
+94.40 (1.05) 
++
+MOFS-BDE  
+655.31  
+229.80  
+93.88 
+93.19 (0.49) 
++
+MOBGA-AOS  
+466.62  
+154.40  
+94.89 
+93.89 (0.63) 
++
+CMODE  
+438.80  
+124.60  
+94.88 
+93.78 (0.94) 
++
+NSGA-II  
+439.85  
+123.40  
+94.88 
+93.89 (1.26) 
++
+NMDE  
+915.15  
+45.00  
+93.89 
+92.51 (0.69) 
++
+MMODE  
+902.35  
+32.47  
+97.00 
+96.10 (0.90)  
+BreastCancer2 
+JADE-NSO  
+555.32  
+270.20  
+100.00 
+98.09 (0.54) 
+≈
+HPSO-LS  
+886.24  
+582.00  
+100.00 
+99.39 (0.43) 
+≈
+HLBDA  
+943.56  
+178.40  
+100.00 
+99.03 (0.61) 
+≈
+GR-MOEA  
+593.90  
+65.00  
+100.00 
+99.40 (0.49) 
+≈
+MOFS-BDE  
+553.07  
+54.40  
+99.09 
+98.67 (0.47) 
++
+MOBGA-AOS  
+458.37  
+68.00  
+99.09 
+98.29 (0.40) 
++
+CMODE  
+425.50  
+46.20  
+100.00 
+99.44 (0.46) 
+≈
+NSGA-II  
+451.91  
+22.60  
+99.09 
+98.85 (0.38) 
++
+NMDE  
+966.13  
+16.60  
+100.00 
+99.64 (0.45) 
+≈
+MMODE  
+815.75  
+3.00  
+100.00 
+100.00 (0.00)  
+CLLSUB 
+JADE-NSO  
+529.38  
+113.00  
+92.80 
+90.10 (1.80) 
+≈
+HPSO-LS  
+766.61  
+75.67  
+76.67 
+75.10 (1.17) 
++
+HLBDA  
+882.32  
+98.60  
+77.56 
+76.18 (1.77) 
++
+GR-MOEA  
+583.17  
+75.40  
+91.89 
+88.58 (3.09) 
+≈
+MOFS-BDE  
+657.65  
+107.60  
+87.43 
+83.09 (1.01) 
++
+MOBGA-AOS  
+515.89  
+71.40  
+90.07 
+87.55 (1.03) 
++
+CMODE  
+497.55  
+80.40  
+86.51 
+84.67 (1.53) 
++
+NSGA-II  
+491.17  
+106.60  
+89.17 
+87.03 (0.93) 
++
+NMDE  
+669.87  
+15.40  
+88.65 
+87.26 (1.41) 
++
+MMODE  
+762.96  
+14.10  
+93.72 
+91.66 (0.75)  
+CrohnDisease 
+JADE-NSO  
+562.23  
+238.20  
+99.23 
+98.46 (0.49) 
+≈
+HPSO-LS  
+1065.38  
+426.33  
+95.67 
+95.16 (0.31) 
++
+HLBDA  
+1009.65  
+187.30  
+95.11 
+93.64 (1.72) 
++
+GR-MOEA  
+635.93  
+82.60  
+98.43 
+96.32 (1.22) 
++
+MOFS-BDE  
+592.38  
+232.20  
+96.89 
+95.66 (0.61) 
++
+MOBGA-AOS  
+469.33  
+184.00  
+96.32 
+95.67 (1.17) 
+≈
+CMODE  
+451.89  
+189.80  
+97.63 
+96.59 (0.76) 
+≈
+NSGA-II  
+445.06  
+168.40  
+96.86 
+95.17 (0.75) 
++
+NMDE  
+739.47  
+78.40  
+93.88 
+93.53 (0.03) 
++
+MMODE  
+992.06  
+40.80  
+99.20 
+97.48 (0.82)  
+GLI 
+JADE-NSO  
+522.06  
+215.40  
+98.89 
+98.89 (0.54) 
++
+HPSO-LS  
+886.04  
+138.67  
+95.43 
+94.58 (0.60) 
++
+HLBDA  
+887.54  
+198.30  
+95.88 
+94.26 (0.89) 
++
+GR-MOEA  
+574.21  
+63.80  
+98.89 
+98.09 (0.54) 
++
+MOFS-BDE  
+550.55  
+175.00  
+97.65 
+96.92 (0.59) 
++
+MOBGA-AOS  
+452.96  
+128.20  
+97.64 
+96.42 (0.79) 
++
+CMODE  
+424.10  
+96.80  
+98.89 
+97.92 (0.50) 
++
+NSGA-II  
+426.98  
+75.40  
+97.78 
+97.22 (0.63) 
++
+NMDE  
+659.14  
+28.60  
+99.01 
+98.79 (0.05) 
++
+MMODE  
+860.09  
+6.10  
+100.00 
+100.00 (0.00)  
+Leukemia 
+JADE-NSO  
+484.59  
+87.30  
+100.00 
+100.00 (0.00) 
+≈
+HPSO-LS  
+604.34  
+102.67  
+100.00 
+100.00 (0.00) 
+≈
+HLBDA  
+659.89  
+60.40  
+100.00 
+99.82 (0.39) 
+≈
+GR-MOEA  
+624.73  
+59.60  
+100.00 
+100.00 (0.00) 
+≈
+MOFS-BDE  
+513.54  
+3.40  
+100.00 
+100.00 (0.00) 
+≈
+MOBGA-AOS  
+436.27  
+4.80  
+100.00 
+100.00 (0.00) 
+≈
+CMODE  
+426.85  
+4.30  
+100.00 
+100.00 (0.00) 
+≈
+NSGA-II  
+425.36  
+6.40  
+100.00 
+100.00 (0.00) 
+≈
+NMDE  
+586.54  
+5.80  
+100.00 
+100.00 (0.00) 
+≈
+MMODE  
+651.36  
+3.00  
+100.00 
+100.00 (0.00)  
+Lung Cancer 
+JADE-NSO  
+594.85  
+120.40  
+100.00 
+100.00 (0.00) 
+≈
+HPSO-LS  
+874.99  
+38.33  
+100.00 
+99.64 (0.51) 
+≈
+HLBDA  
+907.82  
+69.30  
+99.01 
+98.56 (0.99) 
++
+(continued on next page) 
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 12 =====
+Expert Systems With Applications 241 (2024) 122701
+12
+Among all the compared methods, JADE-NSO, HPSO-LS, and HLBDA 
+are single-objective evolutionary algorithms, which regard low classi­
+fication error rate (high classification accuracy) as the only search 
+objective. Table 3 shows that the three algorithms selected hundreds of 
+gene features for almost every dataset. In contrast, MMODE selects a 
+much smaller number of gene features for each dataset. 
+Of all the compared methods NSGA-II, GR-MOEA, MOBGA-AOS, 
+MOFS-BDE, CMODE, and NMDE are multi-objective evolutionary algo­
+rithms. These algorithms aim to find a set of solutions that tradeoff 
+classification accuracy and the number of features selected. Since many 
+redundant features are excluded, the solution of the multi-objective 
+feature selection algorithm tends to have better performance for 
+classification. 
+As shown in Table 3, MMODE obtains the highest Best Accuracy on 
+all datasets except for the CrohnDisease and 11_Tumor datasets, obtains 
+the highest Mean Accuracy on all datasets except for the CrohnDisease, 
+SMKCAN, and 11_Tumor, and outperforms all compared methods in 
+terms of the minimum number of selected features on all datasets except 
+the Arcane dataset. In addition, the Mean Accuracy of MMODE reaches 
+100 % on GLI, Lung cancer, and Ovarian datasets, which has obvious 
+advantages compared with other algorithms, indicating the stability of 
+MMODE. These results prove that MMODE can accurately find key gene 
+subsets for tumor identification. 
+AUC(Area under the Receiver Operating Characteristics) (Alosaimy 
+et al., 2021) and BACC (Balanced Accuracy) (Li et al., 2020) are two 
+good indicators for evaluating a classifier performance regardless of the 
+severity of class imbalance. To further evaluate the performance of 
+MMODE algorithm on gene selection, the objective function (f1(•)) is 
+Table 3 (continued) 
+Data Sets 
+Method 
+Mean 
+Time 
+Mean 
+Size 
+Best 
+Accuracy 
+Mean 
+Accuracy (std) 
+W 
+GR-MOEA  
+853.77  
+56.00  
+100.00 
+99.98 (0.08) 
+≈
+MOFS-BDE  
+617.69  
+35.60  
+100.00 
+100.00 (0.00) 
+≈
+MOBGA-AOS  
+501.86  
+20.00  
+100.00 
+99.89 (0.21) 
+≈
+CMODE  
+472.60  
+11.80  
+100.00 
+100.00 (0.00) 
+≈
+NSGA-II  
+470.96  
+8.80  
+100.00 
+99.79 (0.26) 
+≈
+NMDE  
+789.22  
+5.00  
+100.00 
+100.00 (0.00) 
+≈
+MMODE  
+860.80  
+3.00  
+100.00 
+100.00 (0.00)  
+Ovarian 
+JADE-NSO  
+660.21  
+156.60  
+100.00 
+99.68 (0.16) 
+≈
+HPSO-LS  
+1339.24  
+238.00  
+100.00 
+99.73 (0.38) 
+≈
+HLBDA  
+1208.65  
+132.50  
+100.00 
+99.13 (0.79) 
+≈
+GR-MOEA  
+765.03  
+56.00  
+100.00 
+99.76 (0.19) 
+≈
+MOFS-BDE  
+747.87  
+35.60  
+100.00 
+100.00 (0.00) 
+≈
+MOBGA-AOS  
+572.91  
+32.60  
+100.00 
+99.87 (0.80) 
+≈
+CMODE  
+517.88  
+8.60  
+100.00 
+100.00 (0.00) 
+≈
+NSGA-II  
+527.22  
+5.40  
+100.00 
+100.00 (0.00) 
+≈
+NMDE  
+707.90  
+3.40  
+100.00 
+100.00 (0.00) 
+≈
+MMODE  
+958.89  
+2.46  
+100.00 
+100.00 (0.00)  
+Prostate 
+JADE-NSO  
+475.14  
+116.40  
+98.00 
+98.20 (0.40) 
++
+HPSO-LS  
+845.53  
+133.33  
+97.00 
+96.67 (0.47) 
++
+HLBDA  
+888.65  
+59.20  
+97.00 
+96.43 (0.21) 
++
+GR-MOEA  
+637.50  
+77.00  
+99.00 
+97.96 (0.39) 
++
+MOFS-BDE  
+543.25  
+54.60  
+98.00 
+98.00 (0.10) 
++
+MOBGA-AOS  
+548.19  
+26.00  
+98.00 
+97.80 (0.40) 
++
+CMODE  
+422.35  
+22.80  
+99.00 
+98.00 (0.40) 
++
+NSGA-II  
+426.06  
+17.60  
+99.00 
+98.02 (0.04) 
++
+NMDE  
+670.35  
+17.60  
+99.00 
+98.40 (0.49) 
+≈
+MMODE  
+730.88  
+6.20  
+100.00 
+99.71 (0.37)  
+SMKCAN 
+JADE-NSO  
+582.70  
+208.60  
+89.77 
+88.72 (0.03) 
++
+HPSO-LS  
+1084.42  
+209.33  
+80.15 
+79.73 (0.53) 
++
+HLBDA  
+1009.74  
+124.50  
+78.99 
+77.32 (0.76) 
++
+GR-MOEA  
+784.20  
+78.00  
+90.79 
+89.75 (1.03) 
+≈
+MOFS-BDE  
+743.18  
+220.00  
+85.43 
+83.76 (0.64) 
++
+MOBGA-AOS  
+557.41  
+190.20  
+87.13 
+85.15 (0.97) 
++
+CMODE  
+531.54  
+143.00  
+87.13 
+86.79 (1.99) 
+≈
+NSGA-II  
+510.46  
+153.60  
+87.08 
+85.33 (0.73) 
++
+NMDE  
+746.73  
+29.20  
+86.78 
+84.65 (1.58) 
++
+MMODE  
+989.19  
+27.60  
+90.36 
+89.23 (1.18)  
+Brain_Tumor 
+JADE-NSO  
+335.64  
+120.43  
+96.00 
+92.68 (1.38) 
++
+HPSO-LS  
+416.32  
+133.22  
+90.00 
+91.67 (0.87) 
++
+HLBDA  
+425.32  
+55.98  
+90.00 
+91.48 (0.98) 
++
+GR-MOEA  
+367.45  
+56.30  
+96.00 
+94.19 (1.66) 
+≈
+MOFS-BDE  
+342.45  
+60.32  
+96.00 
+93.13 (1.33) 
++
+MOBGA-AOS  
+296.43  
+50.40  
+96.00 
+94.40 (1.40) 
+≈
+CMODE  
+278.34  
+46.00  
+96.00 
+93.20 (1.27) 
++
+NSGA-II  
+332.76  
+67.90  
+92.00 
+91.27 (1.44) 
++
+NMDE  
+416.23  
+20.43  
+94.00 
+92.93 (1.32) 
++
+MMODE  
+404.23  
+18.21  
+98.00 
+97.23 (0.71)  
+11_Tumor 
+JADE-NSO  
+304.21  
+196.47  
+92.54 
+91.69 (1.29) 
+≈
+HPSO-LS  
+694.22  
+233.12  
+88.71 
+85.94 (1.32) 
++
+HLBDA  
+702.32  
+112.42  
+88.45 
+86.77 (1.52) 
++
+GR-MOEA  
+500.32  
+104.00  
+91.23 
+90.84 (0.63) 
+≈
+MOFS-BDE  
+521.34  
+112.56  
+92.23 
+90.78 (0.66) 
+≈
+MOBGA-AOS  
+232.42  
+111.60  
+92.69 
+91.44 (0.60) 
+≈
+CMODE  
+209.45  
+85.30  
+93.09 
+91.82 (1.10) 
+≈
+NSGA-II  
+489.23  
+98.20  
+92.12 
+91.01 (0.91) 
+≈
+NMDE  
+423.44  
+20.34  
+91.68 
+90.87 (1.03) 
+≈
+MMODE  
+598.23  
+18.23  
+93.00 
+91.45 (1.20)   
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 13 =====
+Expert Systems With Applications 241 (2024) 122701
+13
+changed as shown in Eq.21 and Eq.22 respectively. 
+f′
+1(Xi) = 1 −AUC(Xi)
+(21)  
+f″
+1(Xi) = 1 −BACC(Xi)
+(22)  
+where AUC(Xi) and BACC(Xi) respectively represent the AUC value and 
+the BACC value obtained by individual Xi. Table 4 demonstrates the 
+comparison of MMODE and other algorithms on 13 datasets concerning 
+the Best AUC, mean AUC (std), Best BACC, and mean BACC (std). 
+As shown in Table 4, MMODE achieves the highest Mean AUC on all 
+datasets except the 11_Tumor and CrohnDisease datasets, and obtains 
+the highest Best AUC on all datasets except the BreastCancer1 and 
+11_Tumor datasets. In addition, MMDOE achieves the highest Best BACC 
+and Mean BACC on all datasets except the CrohnDisease and the 
+11_Tumor datasets. According to the Wilcoxon signed rank test results of 
+Mean AUC (std) and Mean BACC (std), MMODE is superior to other 
+compared algorithms in most cases, which means that MMODE has 
+better performance compared with other algorithms. 
+Table 5 provides the relative rankings of all the compared algorithms 
+across the eight evaluation criteria. MMODE outperforms the other al­
+gorithms in terms of accuracy as well as the number of features relative 
+to each other. MMODE ranks relatively low for Mean Time but achieves 
+a significant advantage in the relative ranking of Mean Times, Mean 
+Size, Best Accuracy, Mean Accuracy, Best AUC, Mean AUC, Best BACC, 
+and Mean BACC. The last row of Table 5 shows the average of the 
+relative rankings for Mean Time, Mean Size, Best Accuracy, Mean Ac­
+curacy, Best AUC, Mean AUC, Best BACC, and Mean BACC. MMODE has 
+a great advantage over the other algorithms. 
+The excellent performance of MMODE is also demonstrated by its 
+ability to achieve better Pareto solutions. Fig. 7 depicts the Pareto front 
+(PF) of 7 multi-objective algorithms on 8 datasets. It is evident from 
+Fig. 7 that the PF of MMODE can dominate the PF of other algorithms. 
+Therefore, MMODE can obtain better non-dominated solutions 
+compared to GR-MOEA, MOFS-BDE, MOBGA-AOS, NSGA-II, CMODE, 
+and NMDE. 
+4.2.2. Analysis of strategy effectiveness 
+In this section, we verify the effectiveness of the Elite Strategy and 
+Guidance Strategy used in MMODE in detail. Specifically, we compare 
+MMODE with MMODE-A, MMODE-B, and MMODE-C, which are all 
+variants of the original MMODE. 
+MMODE-A: The variant retains the overall framework of MMODE 
+but discards the Elite Strategy and the Guidance Strategy. 
+MMODE-B: The variant retains the overall framework of MMODE 
+but does not adopt the Elite Strategy. 
+MMODE-C: The variant retains the overall framework of MMODE 
+but does not adopt the Guidance Strategy. 
+The three MMODE variants above generate offspring populations 
+through multitasking population evolution. Table 6 shows the compar­
+ison of experimental results between MMODE and its three variants on 
+13 datasets concerning the Mean Time (s), Mean Size (the number of 
+selected features), Best Accuracy, and Mean Accuracy. 
+As can be seen from Table 6, the MMODE-A variant has the worst 
+performance on all datasets in terms of Best Accuracy and Mean Accu­
+racy, except for the Leukemia, Lung cancer, and Ovarian datasets, where 
+the MMODE-A variant performs as well as the other algorithms. In 
+addition, the MMODE-A variant obtains the worst Mean Size (the 
+average number of selected features per dataset is the highest) of the 
+gene subset. Note that the MMODE-A variant does not use the Elite 
+Strategy and the Guidance Strategy, while the effectiveness of the 
+proposed Elite Strategy and the Guidance Strategy is verified on all 
+datasets. 
+Note that the MMODE-C variant uses the Elite Strategy but does not 
+use the Guidance Strategy, and the MMODE-B variant uses the Guid­
+ance Elite Strategy but does not use the Elite Strategy. The comparison 
+of the experimental results between the MMODE-B variant and the 
+MMODE-C variant allows the analysis of the roles and differences be­
+tween the Guidance Strategy and the Elite Strategy. Table 6 shows 
+that compared with MMODE-B, the MMODE-C variant has the better 
+performance on all datasets in terms of Best Accuracy and Mean Accu­
+racy, except for the Leukemia, Lung cancer, and Ovarian datasets, where 
+the MMODE-B variant performs as well as the MMODE-C. In addition, 
+the MMODE-C variant obtains the better Mean Size (the average 
+numbers of selected features for almost datasets are shorter) of the gene 
+subset than MMODE-B. This result indicates that Elite Strategy is more 
+effective than the Guidance Strategy. 
+Compared with the Guidance Strategy (MMODE-B), although Elite 
+Strategy (MMODE-C) achieves better results both in the classification 
+accuracy and the number of selected features, the role of the Elite 
+Strategy cannot replace the Guidance Strategy. As described in Section 
+3.4, the Guidance Strategy plays a key role in helping the stagnant 
+individuals jump out of the local optima, removing redundant features, 
+and improving the performance of the algorithm. Compared with three 
+variants of MMODE-A, MMODE-B, and MMODE-C, the proposed 
+MMODE combines Elite Strategy and Guidance Strategy, so it has the 
+advantages of both the Elite Strategy and the Guidance Strategy. 
+According to Table 6, MMODE obtains the best results both in the 
+classification accuracy and the number of selected features compared 
+with the three variants. 
+To further show the difference between MMODE and its three vari­
+ants in the feature selection process, Fig. 8 shows the Pareto front sub­
+sets obtained by them on 8 datasets. As shown in Fig. 8, the subset of 
+Pareto fronts obtained by MMODE locates in the bottom left corner of 
+each sub-figure, which means that MMODE selects the least number of 
+features and has the lowest classification error rate. In addition, Fig. 8 
+intuitively shows that MMODE is better than MMODE-C and MMODE-B, 
+and MMODE-C and MMODE-B are better than MMODE-A. In short, 
+MMODE obtains the smallest gene subset and the best classification 
+performance by using the Elite Strategy and the Guidance Strategy, 
+which fully proves the effectiveness of the Elite Strategy and the 
+Guidance Strategy. 
+4.2.3. Sensitivity analysis of parameters in MMODE 
+There are three important parameters in the proposed algorithm 
+MMODE, which are ep (the elite rate) and L(the probability of weakly 
+correlated features being selected) for controlling the Elite Strategy, 
+and maxAge (the upper limit of the age at which individuals stagnate) for 
+controlling the Guidance Strategy. We empirically investigate the ef­
+fect of parameters ep, L and maxAge on the MMODE. 
+To obtain the appropriate parameters, we implemented Taguchi’s 
+experimental design (Altland, 2006). Taguchi’s experimental design is a 
+technique that uses orthogonal arrays to create testing cases that assist 
+in determining the parameters with minimal effort (Gao et al., 2019). 
+The value of the parameter ep is chosen from the array [0.02, 0.08, 0.1,
+0.2, 0.3], the value of the parameter L is chosen from the array 
+[0.003, 0.005, 0.01, 0.05, 0.1] and the value of the parameter maxAge is 
+chosen from the array [3, 6, 9, 12, 15]. Therefore, an orthogonal array 
+L25(53) was used for experiments to represent the combination of 
+parameter values. The 25 parameter sets are listed in Table 7. To 
+demonstrate the average classification accuracy and the average number 
+of selected features of MMODE with different parameter sets, they are 
+ranked according to Score (Eq.15), and the top 5 parameter sets are 
+shown in Table 8. The optimal parameter sets are shown in bold. As can 
+be seen from Table 8, the parameter sets (ep = 0.2, L = 0.01, maxAge =
+3) has a Score ranking of No.1 for datasets Arcane, BreastCancer1, 
+CLLSUB, and SMKCAN, the score ranking on dataset CrohnDisease is 
+No.2. According to the results of the parameter discussion, different 
+parameter sets have different effects on the classification performance of 
+MMODE. Therefore, the parameter sets of ep = 0.2, L = 0.01 and 
+maxAge = 3 were adopted by MMODE in our experiments. 
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 14 =====
+Expert Systems With Applications 241 (2024) 122701
+14
+Table 4 
+Comparison of all algorithms under criteria AUC and BACC.  
+Data Sets 
+Method 
+Best 
+AUC 
+Mean 
+AUC (std) 
+W 
+Best 
+BACC 
+Mean 
+BACC (std) 
+W 
+Arcane 
+JADE-NSO  
+97.01 
+95.71 (0.91) 
++
+95.71 
+95.12 (0.31) 
++
+HPSO-LS  
+95.23 
+94.73 (0.34) 
++
+92.67 
+91.87 (0.79) 
++
+HLBDA  
+94.92 
+94.15 (0.41) 
++
+92.94 
+91.91 (0.94) 
++
+GR-MOEA  
+99.11 
+98.83 (0.19) 
+≈
+94.57 
+93.79 (0.66) 
++
+MOFS-BDE  
+98.07 
+97.91 (0.19) 
++
+95.32 
+94.91 (0.39) 
++
+MOBGA-AOS  
+99.01 
+98.74 (0.25) 
+≈
+96.71 
+95.71 (0.97) 
+≈
+CMODE  
+97.55 
+97.02 (0.21) 
++
+96.52 
+95.92 (0.62) 
++
+NSGA-II  
+98.62 
+98.49 (0.18) 
++
+95.84 
+94.65 (1.20) 
++
+NMDE  
+96.26 
+95.50 (0.63) 
++
+94.79 
+94.30 (0.22) 
++
+MMODE  
+100.00 
+99.23 (0.03)   
+97.88 
+97.39 (0.51)  
+BreastCancer1 
+JADE-NSO  
+98.62 
+98.08 (0.41) 
++
+95.22 
+94.41 (0.78) 
++
+HPSO-LS  
+99.51 
+99.16 (0.36) 
+≈
+93.62 
+92.91 (0.61) 
++
+HLBDA  
+93.50 
+93.21 (0.31) 
++
+95.54 
+94.01 (1.31) 
++
+GR-MOEA  
+95.37 
+94.40 (1.05) 
++
+95.61 
+95.09 (0.49) 
++
+MOFS-BDE  
+97.73 
+97.19 (0.59) 
++
+94.83 
+94.58 (0.28) 
++
+MOBGA-AOS  
+97.28 
+96.63 (0.53) 
++
+93.76 
+93.18 (0.49) 
++
+CMODE  
+95.26 
+94.56 (0.44) 
++
+92.65 
+92.18 (0.48) 
++
+NSGA-II  
+96.61 
+95.59 (1.14) 
++
+94.81 
+94.03 (0.72) 
++
+NMDE  
+95.03 
+93.51 (0.92) 
++
+93.65 
+93.12 (0.34) 
++
+MMODE  
+99.47 
+99.29 (0.12)   
+97.66 
+96.85 (0.61)  
+BreastCancer2 
+JADE-NSO  
+100.00 
+99.90 (0.13) 
+≈
+100.00 
+98.01 (0.41) 
+≈
+HPSO-LS  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+99.13 (0.39) 
+≈
+HLBDA  
+99.75 
+99.63 (0.09) 
+≈
+100.00 
+98.56 (0.54) 
+≈
+GR-MOEA  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+98.81 (0.51) 
+≈
+MOFS-BDE  
+100.00 
+100.00 (0.00) 
+≈
+95.85 
+95.58 (0.27) 
++
+MOBGA-AOS  
+100.00 
+100.00 (0.00) 
+≈
+98.34 
+98.12 (0.03) 
++
+CMODE  
+99.93 
+99.50 (0.24) 
+≈
+98.93 
+98.72 (0.06) 
+≈
+NSGA-II  
+100.00 
+99.85 (0.20) 
+≈
+98.92 
+98.13 (0.48) 
++
+NMDE  
+100.00 
+99.73 (0.21) 
+≈
+100.00 
+99.23 (0.51) 
+≈
+MMODE  
+100.00 
+100.00 (0.00)   
+100.00 
+100.00 (0.00)  
+CLLSUB 
+JADE-NSO  
+95.32 
+94.22 (1.03) 
++
+90.27 
+89.12 (0.79) 
+≈
+HPSO-LS  
+85.21 
+83.10 (1.77) 
++
+77.13 
+76.23 (0.81) 
++
+HLBDA  
+84.21 
+82.88 (1.11) 
++
+76.10 
+75.01 (0.90) 
++
+GR-MOEA  
+97.16 
+96.54 (0.96) 
+≈
+92.12 
+87.94 (2.27) 
+≈
+MOFS-BDE  
+94.71 
+94.23 (0.23) 
++
+83.44 
+82.79 (0.71) 
++
+MOBGA-AOS  
+96.62 
+96.43 (0.15) 
+≈
+87.62 
+86.91 (0.63) 
++
+CMODE  
+86.02 
+85.47 (0.42) 
++
+85.31 
+84.86 (0.59) 
++
+NSGA-II  
+94.71 
+93.41 (1.23) 
++
+85.84 
+85.03 (0.77) 
++
+NMDE  
+94.32 
+94.03 (0.18) 
++
+88.93 
+87.96 (0.91) 
++
+MMODE  
+97.34 
+96.78 (0.26)   
+93.67 
+91.98 (0.98)  
+CrohnDisease 
+JADE-NSO  
+97.34 
+96.57 (0.75) 
++
+98.84 
+97.95 (0.61) 
+≈
+HPSO-LS  
+97.21 
+96.13 (1.01) 
++
+94.23 
+92.95 (1.23) 
++
+HLBDA  
+97.19 
+96.21 (0.92) 
++
+94.97 
+93.82 (1.09) 
++
+GR-MOEA  
+100.00 
+99.93 (0.06) 
+≈
+97.33 
+95.77 (1.52) 
++
+MOFS-BDE  
+98.25 
+98.18 (0.06) 
++
+95.89 
+95.58 (0.27) 
++
+MOBGA-AOS  
+98.35 
+97.84 (0.37) 
++
+96.35 
+94.85 (1.57) 
++
+CMODE  
+97.42 
+96.59 (0.76) 
++
+94.69 
+94.05 (0.63) 
++
+NSGA-II  
+100.00 
+99.61 (0.17) 
+≈
+94.91 
+93.97 (1.01) 
++
+NMDE  
+94.38 
+94.03 (0.18) 
++
+93.33 
+92.98 (0.41) 
++
+MMODE  
+100.00 
+99.72 (0.24)   
+98.31 
+97.87 (0.48)  
+GLI 
+JADE-NSO  
+97.01 
+96.19 (0.74) 
++
+99.87 
+98.91 (0.92) 
+≈
+HPSO-LS  
+96.78 
+96.31 (0.52) 
++
+95.47 
+94.69 (0.77) 
++
+HLBDA  
+96.41 
+95.96 (0.42) 
++
+96.25 
+94.91 (1.02) 
++
+GR-MOEA  
+99.77 
+99.63 (0.13) 
++
+98.58 
+97.30 (1.48) 
++
+MOFS-BDE  
+99.19 
+98.37 (0.73) 
++
+97.69 
+96.93 (0.82) 
++
+MOBGA-AOS  
+98.11 
+97.87 (0.19) 
++
+95.42 
+93.56 (1.47) 
++
+CMODE  
+97.95 
+97.76 (0.17) 
++
+98.29 
+97.57 (0.80) 
++
+NSGA-II  
+98.31 
+97.22 (0.63) 
++
+98.13 
+97.62 (0.26) 
++
+NMDE  
+100.00 
+99.63 (0.67) 
+≈
+99.64 
+98.81 (0.39) 
+≈
+MMODE  
+100.00 
+100.00 (0.00)   
+100.00 
+99.02 (0.04)  
+Leukemia 
+JADE-NSO  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+HPSO-LS  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+HLBDA  
+99.92 
+99.85 (0.03) 
++
+100.00 
+99.81 (0.23) 
+≈
+GR-MOEA  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+MOFS-BDE  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+MOBGA-AOS  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+CMODE  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+NSGA-II  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+NMDE  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+MMODE  
+100.00 
+100.00 (0.00)   
+100.00 
+100.00 (0.00)  
+Lung Cancer 
+JADE-NSO  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+HPSO-LS  
+100.00 
+99.94 (0.04) 
+≈
+100.00 
+98.94 (0.49) 
+≈
+HLBDA  
+99.93 
+99.81 (0.09) 
++
+100.00 
+99.05 (0.79) 
+≈
+(continued on next page) 
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 15 =====
+Expert Systems With Applications 241 (2024) 122701
+15
+Table 4 (continued) 
+Data Sets 
+Method 
+Best 
+AUC 
+Mean 
+AUC (std) 
+W 
+Best 
+BACC 
+Mean 
+BACC (std) 
+W 
+GR-MOEA  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+MOFS-BDE  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+MOBGA-AOS  
+100.00 
+99.91 (0.09) 
+≈
+100.00 
+99.31 (0.32) 
+≈
+CMODE  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+99.24 (0.82) 
+≈
+NSGA-II  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+99.14 (0.31) 
+≈
+NMDE  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+MMODE  
+100.00 
+100.00 (0.00)   
+100.00 
+100.00 (0.00)  
+Ovarian 
+JADE-NSO  
+100.00 
+99.93 (0.16) 
+≈
+100.00 
+99.71 (0.09) 
+≈
+HPSO-LS  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+99.68 (0.25) 
+≈
+HLBDA  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+99.16 (0.47) 
+≈
+GR-MOEA  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+99.18 (0.17) 
+≈
+MOFS-BDE  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+MOBGA-AOS  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+99.44 (0.35) 
+≈
+CMODE  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+NSGA-II  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+NMDE  
+100.00 
+100.00 (0.00) 
+≈
+100.00 
+100.00 (0.00) 
+≈
+MMODE  
+100.00 
+100.00 (0.00)   
+100.00 
+100.00 (0.00)  
+Prostate 
+JADE-NSO  
+97.24 
+96.45 (0.62) 
++
+98.00 
+97.90 (0.16) 
++
+HPSO-LS  
+98.19 
+97.27 (0.81) 
++
+96.00 
+95.92 (0.09) 
++
+HLBDA  
+97.78 
+97.19 (0.49) 
++
+97.00 
+95.97 (0.43) 
++
+GR-MOEA  
+99.47 
+99.00 (0.51) 
+≈
+98.00 
+97.65 (0.60) 
++
+MOFS-BDE  
+99.94 
+99.25 (0.38) 
+≈
+98.00 
+97.20 (0.40) 
++
+MOBGA-AOS  
+98.93 
+98.41 (0.40) 
++
+98.00 
+96.71 (0.74) 
++
+CMODE  
+97.97 
+97.73 (0.24) 
++
+98.00 
+97.18 (0.04) 
++
+NSGA-II  
+100.00 
+99.24 (0.48) 
+≈
+99.00 
+97.62 (0.96) 
+≈
+NMDE  
+100.00 
+99.25 (0.51) 
+≈
+98.00 
+97.78 (0.51) 
++
+MMODE  
+100.00 
+99.91 (0.07)   
+100.00 
+99.03 (0.41)  
+SMKCAN 
+JADE-NSO  
+94.56 
+93.64 (1.05) 
++
+89.23 
+87.62 (0.33) 
++
+HPSO-LS  
+87.29 
+86.18 (0.81) 
++
+79.01 
+77.89 (0.66) 
++
+HLBDA  
+85.52 
+84.61 (0.91) 
++
+79.38 
+78.02 (0.61) 
++
+GR-MOEA  
+96.53 
+95.71 (1.01) 
+≈
+90.22 
+88.65 (1.41) 
+≈
+MOFS-BDE  
+93.88 
+93.53 (0.53) 
++
+82.40 
+81.71 (0.41) 
++
+MOBGA-AOS  
+94.44 
+94.29 (0.31) 
++
+83.39 
+82.61 (0.53) 
++
+CMODE  
+88.17 
+87.86 (0.39) 
++
+87.23 
+86.97 (0.41) 
++
+NSGA-II  
+92.59 
+92.21 (0.53) 
++
+86.26 
+83.28 (0.61) 
++
+NMDE  
+92.41 
+91.66 (1.05) 
++
+87.13 
+84.68 (1.24) 
++
+MMODE  
+96.57 
+96.06 (0.45)   
+90.41 
+88.91 (0.71)  
+Brain_Tumor 
+JADE-NSO  
+99.51 
+99.23 (0.12) 
+≈
+93.00 
+92.38 (0.92) 
++
+HPSO-LS  
+99.33 
+99.06 (0.20) 
+≈
+91.00 
+90.99 (0.65) 
++
+HLBDA  
+99.49 
+99.18 (0.18) 
+≈
+92.00 
+90.78 (1.21) 
++
+GR-MOEA  
+100.00 
+99.72 (0.26) 
+≈
+96.00 
+94.06 (1.29) 
+≈
+MOFS-BDE  
+99.79 
+99.53 (0.11) 
+≈
+93.00 
+92.83 (0.41) 
++
+MOBGA-AOS  
+99.83 
+99.41 (0.21) 
+≈
+94.00 
+92.00 (1.79) 
++
+CMODE  
+100.00 
+100.00 (0.00) 
+≈
+93.00 
+92.17 (0.82) 
++
+NSGA-II  
+99.53 
+99.11 (0.24) 
+≈
+92.00 
+91.02 (0.53) 
++
+NMDE  
+100.00 
+100.00 (0.00) 
+≈
+95.00 
+92.03 (1.22) 
++
+MMODE  
+100.00 
+100.00 (0.00)   
+97.00 
+95.94 (1.01)  
+11_Tumor 
+JADE-NSO  
+100.00 
+99.69 (0.24) 
+≈
+91.03 
+90.09 (0.72) 
+≈
+HPSO-LS  
+88.52 
+87.35 (0.12) 
++
+86.64 
+85.92 (0.83) 
++
+HLBDA  
+88.21 
+87.46 (1.05) 
++
+87.96 
+86.89 (1.21) 
++
+GR-MOEA  
+99.88 
+99.71 (0.09) 
+≈
+91.32 
+90.24 (1.18) 
+≈
+MOFS-BDE  
+99.53 
+99.49 (0.05) 
+≈
+90.96 
+90.58 (0.28) 
+≈
+MOBGA-AOS  
+99.61 
+99.43 (0.15) 
+≈
+92.49 
+91.58 (0.97) 
+≈
+CMODE  
+100.00 
+100.00 (0.00) 
+≈
+91.26 
+90.16 (0.93) 
+≈
+NSGA-II  
+99.40 
+99.09 (0.35) 
+≈
+91.33 
+90.71 (0.69) 
+≈
+NMDE  
+99.29 
+99.08 (0.13) 
+≈
+91.49 
+90.91 (0.81) 
+≈
+MMODE  
+99.36 
+99.23 (0.15)   
+92.42 
+91.55 (0.91)   
+Table 5 
+Relative rank of overall methods on 8 criteria.  
+Criteria 
+JADE-NSO 
+HPSO-LS 
+HLBDA 
+GR-MOEA 
+MOFS-BDE 
+MOBGA-AOS 
+CMODE 
+NSGA-II 
+NMDE 
+MMODE 
+Mean Time  
+3.77  
+9.00  
+9.70  
+6.62  
+5.23  
+3.07  
+1.54  
+1.84  
+6.92  
+7.31 
+Mean Size  
+8.46  
+9.38  
+7.31  
+5.23  
+6.77  
+5.23  
+4.39  
+4.54  
+2.62  
+1.08 
+Best Accuracy  
+4.42  
+8.15  
+8.31  
+4.34  
+6.04  
+5.39  
+4.54  
+5.69  
+5.58  
+2.54 
+Mean Accuracy  
+3.32  
+8.77  
+9.38  
+5.00  
+5.73  
+5.19  
+4.50  
+5.58  
+5.70  
+1.92 
+Best AUC  
+5.50  
+7.00  
+9.42  
+3.73  
+4.85  
+4.62  
+6.12  
+4.92  
+5.77  
+3.08 
+Mean AUC  
+6.15  
+7.31  
+9.08  
+3.50  
+4.19  
+4.85  
+5.77  
+5.69  
+5.92  
+2.54 
+Best BACC  
+4.35  
+8.15  
+7.04  
+4.12  
+6.54  
+5.46  
+6.00  
+5.69  
+5.27  
+2.38 
+Mean BACC  
+4.00  
+8.46  
+8.69  
+4.08  
+5.31  
+6.23  
+5.54  
+5.85  
+5.08  
+1.77 
+Average  
+5.00  
+8.28  
+8.62  
+4.58  
+5.58  
+5.01  
+4.80  
+4.98  
+5.36  
+2.83  
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 16 =====
+Expert Systems With Applications 241 (2024) 122701
+16
+4.2.4. Time analysis 
+This section compares the running time of MMODE with nine feature 
+selections based on evolutionary algorithms listed in section 4.1.2 and 
+three variants of MMODE listed in 4.2.2. 
+As can be seen from Table 3, MMODE has shorter running time than 
+single-objective algorithms (JADE-NSO, HPSO-LS and HLBDA) in most 
+cases. In the wrapper evaluation stage, the feature subset should be 
+evaluated by cross validation mode. The computation time of KNN is 
+Fig. 7. The Pareto fronts obtained by applying CMODE, NSGA-II, MOBGA-AOS, 
+MOFS-BDE, NMDE, GR-MOEA, and MMODE. F1 denotes the classification error 
+rate, F2 denotes the proportion of the number of selected features. 
+Table 6 
+Comparison between MMODE and its three variants.  
+Data Sets 
+Method 
+Mean 
+Time 
+Mean 
+Size 
+Best 
+Accuracy 
+Mean 
+Accuracy 
+(Std) 
+W 
+Arcane 
+MMODE- 
+A  
+544.24  
+38.60  
+94.00 
+93.30 
+(0.60) 
++
+MMODE- 
+B  
+611.10  
+31.40  
+96.00 
+94.90 
+(0.37) 
++
+MMODE- 
+C  
+764.20  
+23.40  
+97.50 
+96.80 
+(0.81) 
++
+MMODE  
+898.11  
+16.40  
+98.00 
+97.05 
+(0.93)  
+BreastCancer1 
+MMODE- 
+A  
+553.70  
+146.40  
+92.74 
+91.59 
+(0.40) 
++
+MMODE- 
+B  
+622.55  
+53.40  
+94.89 
+94.04 
+(1.49) 
++
+MMODE- 
+C  
+758.15  
+54.20  
+97.89 
+95.28 
+(1.02) 
+≈
+MMODE  
+902.35  
+32.47  
+97.00 
+96.10 
+(0.94)  
+BreastCancer2 
+MMODE- 
+A  
+463.90  
+37.80  
+100.00 
+99.43 
+(0.47) 
+≈
+MMODE- 
+B  
+531.31  
+11.00  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE- 
+C  
+642.24  
+11.20  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE  
+815.75  
+3.00  
+100.00 
+100.00 
+(0.00)  
+CLLSUB 
+MMODE- 
+A  
+393.69  
+40.20  
+80.16 
+80.81 
+(1.44) 
++
+MMODE- 
+B  
+462.06  
+33.80  
+87.39 
+85.26 
+(0.88) 
++
+MMODE- 
+C  
+532.50  
+18.20  
+92.80 
+90.49 
+(1.06) 
+≈
+MMODE  
+762.96  
+14.10  
+93.72 
+91.66 
+(0.75)  
+CrohnDisease 
+MMODE- 
+A  
+497.17  
+128.20  
+91.38 
+89.66 
+(0.93) 
++
+MMODE- 
+B  
+655.28  
+103.00  
+94.49 
+93.14 
+(0.90) 
++
+MMODE- 
+C  
+811.42  
+74.00  
+98.43 
+96.59 
+(0.79) 
+≈
+MMODE  
+992.06  
+40.80  
+99.20 
+97.48 
+(0.82)  
+GLI 
+MMODE- 
+A  
+419.67  
+69.80  
+98.82 
+97.41 
+(0.88) 
++
+MMODE- 
+B  
+608.25  
+28.00  
+100.00 
+98.35 
+(0.58) 
++
+MMODE- 
+C  
+645.43  
+20.20  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE  
+860.09  
+6.10  
+100.00 
+100.00 
+(0.00)  
+Leukemia 
+MMODE- 
+A  
+365.25  
+29.20  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE- 
+B  
+427.36  
+25.60  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE- 
+C  
+507.65  
+4.00  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE  
+651.36  
+3.00  
+100.00 
+100.00 
+(0.00)  
+Lung Cancer 
+MMODE- 
+A  
+434.17  
+18.60  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE- 
+B  
+631.33  
+11.20  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE- 
+C  
+750.69  
+3.40  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE  
+860.80  
+3.00  
+100.00 
+100.00 
+(0.00)  
+Ovarian 
+MMODE- 
+A  
+510.78  
+9.20  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE- 
+B  
+671.79  
+5.20  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE- 
+C  
+816.52  
+3.00  
+100.00 
+100.00 
+(0.00) 
+≈
+MMODE  
+958.89  
+2.46  
+100.00 
+100.00 
+(0.00)  
+(continued on next page) 
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 17 =====
+Expert Systems With Applications 241 (2024) 122701
+17
+larger if the selected feature subset includes more features (KNN needs 
+to calculate the distance between samples). Obviously, MMODE is more 
+likely to select a smaller feature subset compared to the single objective 
+algorithm. 
+As shown in Tables 3 and Table 5, MMODE takes slightly longer to 
+run compared with the multi-objective algorithms. MMODE focuses on 
+selecting a few of genes to achieve high classification accuracies, it 
+adopts a new elite strategy to calculate feature relevance and uses a new 
+guidance strategy that requires repeated evaluation of the classification 
+performance of feature subsets. Therefore, MMODE requires more 
+computational resources. However, the running time of all comparison 
+algorithms is in the same order of magnitude. On the whole, the 
+calculation time of MMODE does not increase significantly compared 
+with that of competitors, but it achieves the best classification perfor­
+mance and the smallest gene subset. 
+5. Conclusion 
+In the classification of microarray gene expression profile data, 
+existing multi-objective evolutionary algorithms are prone to local 
+optimality in feature (gene) selection. In this study, a new gene selection 
+algorithm MMODE is proposed, aiming to select a few genes in tumor 
+classification and achieve higher accuracy. The main contributions of 
+the proposed MMODE include the following aspects. (1) An efficient 
+initialization strategy is proposed to effectively differentiate between 
+task populations. The strategy enables specifying the search direction of 
+the different task populations. (2) The final feature subset with higher 
+quality is obtained based on the knowledge transfer of the two task 
+populations. (3) MMODE uses a new elite strategy and a new guidance 
+strategy to reduce the search space and avoid falling into local optima. 
+The effectiveness of MMODE is validated by comparing it with state- 
+of-the-art algorithms on a 13-gene microarray dataset. The experimental 
+results demonstrate that MMODE is a promising approach for solving 
+gene selection problems. Because MMODE shows better or at least 
+competitive performance in terms of classification accuracy and number 
+of selected genes compared with other algorithms. Moreover, based on 
+their reported results, MMODE also shows superiority over other 
+evolutionary algorithms from the literature. All these suggest that the 
+proposed elite and guiding strategies can optimize the search space of 
+the population, improve the quality of individuals in the population, and 
+help the algorithm to escape from local optima. 
+Some further studies related to MMODE will be carried out. First, we 
+will extend MMODE to solve other real-world problems in domains with 
+multiple optimal solution requirements. Second, we continue to opti­
+mize and improve the time consumption and data space occupation of 
+MMODE. Finally, this study confirms that the method of co-evolution of 
+two differentiated task populations can help to find a better solution to 
+Table 6 (continued) 
+Data Sets 
+Method 
+Mean 
+Time 
+Mean 
+Size 
+Best 
+Accuracy 
+Mean 
+Accuracy 
+(Std) 
+W 
+Prostate 
+MMODE- 
+A  
+354.85  
+34.00  
+98.00 
+97.63 
+(0.46) 
++
+MMODE- 
+B  
+448.04  
+13.80  
+99.00 
+98.00 
+(0.40) 
++
+MMODE- 
+C  
+580.32  
+12.60  
+100.00 
+99.61 
+(0.48) 
+≈
+MMODE  
+730.88  
+6.20  
+100.00 
+99.71 
+(0.37)  
+SMKCAN 
+MMODE- 
+A  
+412.87  
+67.80  
+80.74 
+79.55 
+(0.38) 
++
+MMODE- 
+B  
+634.84  
+53.60  
+84.43 
+84.28 
+(0.97) 
++
+MMODE- 
+C  
+827.54  
+30.60  
+88.80 
+87.88 
+(1.11) 
++
+MMODE  
+989.19  
+27.60  
+90.12 
+89.23 
+(1.18)   
+Fig. 8. The Pareto front subsets obtained by MMODE-A, MMODE-C, MMODE- 
+B, and MMODE. F1 denotes the classification error rate, F2 denotes the pro­
+portion of the number of selected features. 
+Table 7 
+Parameter settings of experiments.  
+No. 
+ep 
+L 
+maxAge 
+No. 
+ep 
+L 
+maxAge 
+1  
+0.02  
+0.003 
+3 
+14  
+0.1  
+0.05 
+3 
+2  
+0.02  
+0.005 
+6 
+15  
+0.1  
+0.1 
+6 
+3  
+0.02  
+0.01 
+9 
+16  
+0.2  
+0.003 
+12 
+4  
+0.02  
+0.05 
+12 
+17  
+0.2  
+0.005 
+15 
+5  
+0.02  
+0.1 
+15 
+18  
+0.2  
+0.01 
+3 
+6  
+0.08  
+0.003 
+6 
+19  
+0.2  
+0.05 
+6 
+7  
+0.08  
+0.005 
+9 
+20  
+0.2  
+0.1 
+9 
+8  
+0.08  
+0.01 
+12 
+21  
+0.3  
+0.003 
+15 
+9  
+0.08  
+0.05 
+15 
+22  
+0.3  
+0.005 
+3 
+10  
+0.08  
+0.1 
+3 
+23  
+0.3  
+0.01 
+6 
+11  
+0.1  
+0.003 
+9 
+24  
+0.3  
+0.05 
+9 
+12  
+0.1  
+0.005 
+12 
+25  
+0.3  
+0.1 
+12 
+13  
+0.1  
+0.01 
+15      
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 18 =====
+Expert Systems With Applications 241 (2024) 122701
+18
+the feature selection problem, but how to control more populations to 
+search for the optimal solution is also an important research task. One of 
+our next research tasks is to investigate whether using three or more task 
+populations is more beneficial for problem solving. 
+CRediT authorship contribution statement 
+Min Li: Conceptualization, Investigation, Writing – review & editing. 
+Yangfan Zhao: Conceptualization, Methodology, Visualization. Min­
+gzhu Lou: Data curation. Shaobo Deng: Data curation, Software. Lei 
+Wang: Validation. 
+Declaration of competing interest 
+The authors declare that they have no known competing financial 
+interests or personal relationships that could have appeared to influence 
+the work reported in this paper. 
+Data availability 
+Data will be made available on request. 
+Acknowledgements 
+Research on this work is partially supported by the grants from the 
+National Natural Science Foundation of China (No.62166028), and by 
+the funds from Jiangxi Education Department, PR China (No. 
+GJJ211919). 
+References 
+Abd Elaziz, M. E., Ewees, A. A., Oliva, D., Duan, P., & Xiong, S. (2017). A hybrid method 
+of sine cosine algorithm and differential evolution for feature selection. In D. Liu, 
+S. Xie, Y. Li, D. Zhao, & E. S.-M. El-Alfy (Eds.), Neural Information Processing (Vol. 
+10638, pp. 145–155). Springer International Publishing. https://doi.org/10.1007/ 
+978-3-319-70139-4_15.  
+Abdollahzadeh, B., & Gharehchopogh, F. S. (2022). A multi-objective optimization 
+algorithm for feature selection problems. Engineering with Computers, 38(S3), 
+1845–1863. https://doi.org/10.1007/s00366-021-01369-9 
+Alosaimy, S., Murray, K. P., Zasowski, E. J., Morrisette, T., Lagnf, A. M., Lodise, T. P., & 
+Rybak, M. J. (2021). Vancomycin area under the curve to predict timely clinical 
+response in the treatment of methicillin-resistant Staphylococcus aureus complicated 
+skin and soft tissue infections. Clinical Infectious Diseases, 73(11), e4560–e4567. 
+https://doi.org/10.1093/cid/ciaa1039. 
+Altland, H. W. (2006). Computer-based robust engineering: Essentials for DFSS. 
+Technometrics, 48(1), 153–153. https://doi.org/10.1198/tech.2006.s362. 
+Ba, J., Wang, P., Yang, X., Yu, H., & Yu, D. (2023). Glee: A granularity filter for feature 
+selection. Engineering Applications of Artificial Intelligence, 122, Article 106080. 
+https://doi.org/10.1016/j.engappai.2023.106080 
+Bader, J., & Zitzler, E. (2011). HypE: An algorithm for fast hypervolume-based many- 
+objective optimization. Evolutionary Computation, 19(1), 45–76. https://doi.org/ 
+10.1162/EVCO_a_00009 
+Bali, K. K., Gupta, A., Ong, Y.-S., & Tan, P. S. (2021). Cognizant multitasking in 
+multiobjective multifactorial evolution: MO-MFEA-II. IEEE Transactions on 
+Cybernetics, 51(4), 1784–1796. https://doi.org/10.1109/TCYB.2020.2981733 
+Burczynski, M. E., Peterson, R. L., Twine, N. C., Zuberek, K. A., Brodeur, B. J., 
+Casciotti, L., … Dorner, A. J. (2006). Molecular classification of crohn’s disease and 
+ulcerative colitis patients using transcriptional profiles in peripheral blood 
+mononuclear cells. The Journal of Molecular Diagnostics, 8(1), 51–61. https://doi.org/ 
+10.2353/jmoldx.2006.050079 
+Chen, J., Yuan, S., Lv, D., & Xiang, Y. (2021). A novel self-learning feature selection 
+approach based on feature attributions. Expert Systems with Applications, 183, Article 
+115219. https://doi.org/10.1016/j.eswa.2021.115219 
+Chen, K., Xue, B., Zhang, M., & Zhou, F. (2021). An evolutionary multitasking-based 
+feature selection method for high-dimensional classification. IEEE Transactions on 
+Cybernetics, 1–15. https://doi.org/10.1109/TCYB.2020.3042243 
+Chowdary, D., Lathrop, J., Skelton, J., Curtin, K., Briggs, T., Zhang, Y., … Mazumder, A. 
+(2006). Prognostic gene expression signatures can be measured in tissues collected in 
+RNAlater preservative. The Journal of Molecular Diagnostics, 8(1), 31–39. https://doi. 
+org/10.2353/jmoldx.2006.050056 
+Deb, K., Pratap, A., Agarwal, S., & Meyarivan, T. (2002). A fast and elitist multiobjective 
+genetic algorithm: NSGA-II. IEEE Transactions on Evolutionary Computation, 6(2), 
+182–197. https://doi.org/10.1109/4235.996017 
+Deng, X., Li, M., Deng, S., & Wang, L. (2022). Hybrid gene selection approach using 
+XGBoost and multi-objective genetic algorithm for cancer classification. Medical & 
+Biological Engineering & Computing, 60(3), 663–681. https://doi.org/10.1007/ 
+s11517-021-02476-x 
+Dudani, S. A. (1976). The distance-weighted k-nearest-neighbor rule. IEEE Transactions 
+on Systems, Man, and Cybernetics, SMC-6(4), 325–327. https://doi.org/10.1109/ 
+TSMC.1976.5408784 
+Gao, S., Zhou, M., Wang, Y., Cheng, J., Yachi, H., & Wang, J. (2019). Dendritic Neuron 
+model with effective learning algorithms for classification, approximation, and 
+prediction. IEEE Transactions on Neural Networks and Learning Systems, 30(2), 
+601–614. https://doi.org/10.1109/TNNLS.2018.2846646 
+Ghosh, M., Guha, R., Sarkar, R., & Abraham, A. (2020). A wrapper-filter feature selection 
+technique based on ant colony optimization. Neural Computing and Applications, 32 
+(12), 7839–7857. https://doi.org/10.1007/s00521-019-04171-3 
+Got, A., Moussaoui, A., & Zouache, D. (2021). Hybrid filter-wrapper feature selection 
+using whale optimization algorithm: A multi-objective approach. Expert Systems with 
+Applications, 183, Article 115312. https://doi.org/10.1016/j.eswa.2021.115312 
+Guan, B., Zhao, Y., Yin, Y., & Li, Y. (2021). A differential evolution based feature 
+combination selection algorithm for high-dimensional data. Information Sciences, 
+547, 870–886. https://doi.org/10.1016/j.ins.2020.08.081 
+Table 8 
+Result of parameter comparison in MMODE.  
+Data Sets 
+No. 
+ep 
+L 
+maxAge 
+Mean size 
+Mean Accuracy (Std) 
+Score 
+Arcane 
+1  
+0.2  
+0.01 
+3  
+17.40 
+97.03 (0.83)  
+0.0325 
+2  
+0.08  
+0.01 
+3  
+19.34 
+97.02 (0.84)  
+0.0331 
+3  
+0.2  
+0.003 
+12  
+21.27 
+97.07 (0.76)  
+0.0335 
+4  
+0.02  
+0.01 
+9  
+23.23 
+96.98 (0.84)  
+0.0349 
+5  
+0.1  
+0.05 
+3  
+22.72 
+96.49 (0.77)  
+0.0391 
+BreastCancer1 
+1  
+0.2  
+0.01 
+3  
+31.64 
+96.14 (0.84)  
+0.0453 
+2  
+0.1  
+0.1 
+6  
+32.55 
+96.10 (0.94)  
+0.0460 
+3  
+0.1  
+0.05 
+3  
+34.72 
+96.13 (0.92)  
+0.0464 
+4  
+0.08  
+0.003 
+6  
+34.55 
+96.10 (0.67)  
+0.0466 
+5  
+0.2  
+0.05 
+6  
+31.55 
+95.95 (0.89)  
+0.0470 
+CLLSUB 
+1  
+0.2  
+0.01 
+3  
+14.10 
+91.65 (0.75)  
+0.0797 
+2  
+0.1  
+0.05 
+3  
+14.23 
+91.45 (0.46)  
+0.0817 
+3  
+0.08  
+0.003 
+6  
+15.10 
+91.36 (0.73)  
+0.0827 
+4  
+0.02  
+0.005 
+6  
+15.13 
+91.36 (0.77)  
+0.0828 
+5  
+0.1  
+0.05 
+3  
+15.26 
+91.26 (0.69)  
+0.0837 
+CrohnDisease 
+1  
+0.02  
+0.003 
+3  
+40.58 
+97.56 (0.86)  
+0.0355 
+2  
+0.2  
+0.01 
+3  
+40.88 
+97.45 (0.66)  
+0.0365 
+3  
+0.02  
+0.05 
+6  
+41.38 
+97.46 (0.66)  
+0.0366 
+4  
+0.08  
+0.005 
+9  
+41.72 
+97.48 (0.66)  
+0.0366 
+5  
+0.2  
+0.01 
+3  
+41.83 
+97.43 (0.66)  
+0.0370 
+SMKCAN 
+1  
+0.2  
+0.01 
+3  
+27.60 
+89.23 (1.16)  
+0.1061 
+2  
+0.1  
+0.05 
+6  
+27.93 
+89.19 (1.09)  
+0.1066 
+3  
+0.1  
+0.003 
+9  
+27.25 
+89.14 (1.38)  
+0.1068 
+4  
+0.2  
+0.05 
+6  
+28.57 
+89.15 (1.21)  
+0.1071 
+5  
+0.1  
+0.005 
+12  
+26.73 
+89.02 (1.18)  
+0.1077  
+M. Li et al.                                                                                                                                                                                                                                       
+
+
+===== PAGE 19 =====
+Expert Systems With Applications 241 (2024) 122701
+19
+Gupta, A., Ong, Y.-S., & Feng, L. (2016). Multifactorial evolution: Toward evolutionary 
+multitasking. IEEE Transactions on Evolutionary Computation, 20(3), 343–357. 
+https://doi.org/10.1109/TEVC.2015.2458037 
+Gupta, A., Ong, Y.-S., Feng, L., & Tan, K. C. (2017). Multiobjective multifactorial 
+optimization in evolutionary multitasking. IEEE Transactions on Cybernetics, 47(7), 
+1652–1665. https://doi.org/10.1109/TCYB.2016.2554622 
+Han, F., Chen, W.-T., Ling, Q.-H., & Han, H. (2021). Multi-objective particle swarm 
+optimization with adaptive strategies for feature selection. Swarm and Evolutionary 
+Computation, 62, Article 100847. https://doi.org/10.1016/j.swevo.2021.100847 
+Hancer, E., Xue, B., & Zhang, M. (2018). Differential evolution for filter feature selection 
+based on information theory and feature ranking. Knowledge-Based Systems, 140, 
+103–119. https://doi.org/10.1016/j.knosys.2017.10.028 
+Hancer, E., Xue, B., & Zhang, M. (2022). Fuzzy filter cost-sensitive feature selection with 
+differential evolution. Knowledge-Based Systems, 241, Article 108259. https://doi. 
+org/10.1016/j.knosys.2022.108259 
+Hong, W., Tang, K., Zhou, A., Ishibuchi, H., & Yao, X. (2019). A scalable indicator-based 
+evolutionary algorithm for large-scale multiobjective optimization. IEEE Transactions 
+on Evolutionary Computation, 23(3), 525–537. https://doi.org/10.1109/ 
+TEVC.2018.2881153 
+Huang, Z., Yang, C., Zhou, X., & Huang, T. (2019). A hybrid feature selection method 
+based on binary state transition algorithm and ReliefF. IEEE Journal of Biomedical and 
+Health Informatics, 23(5), 1888–1898. https://doi.org/10.1109/JBHI.2018.2872811 
+Zhang, J., & Sanderson, A. C. (2009). JADE: Adaptive differential evolution with optional 
+external archive. IEEE Transactions on Evolutionary Computation, 13(5), 945–958. 
+https://doi.org/10.1109/TEVC.2009.2014613 
+Ke, L., Li, M., Wang, L., Deng, S., Ye, J., & Yu, X. (2022). Improved swarm-optimization- 
+based filter-wrapper gene selection from microarray data for gene expression tumor 
+classification. Pattern Analysis and Applications. https://doi.org/10.1007/s10044- 
+022-01117-9 
+Li, J., Cheng, K., Wang, S., Morstatter, F., Trevino, R. P., Tang, J., & Liu, H. (2018). 
+Feature selection: A data perspective. ACM Computing Surveys, 50(6), 1–45. https:// 
+doi.org/10.1145/3136625 
+Li, M., Ke, L., Wang, L., Deng, S., & Yu, X. (2023). A novel hybrid gene selection for 
+tumor identification by combining multifilter integration and a recursive flower 
+pollination search algorithm. Knowledge-Based Systems, 262, Article 110250. https:// 
+doi.org/10.1016/j.knosys.2022.110250 
+Li, M., Shang, C., Feng, S., & Fan, J. (2014). Quick attribute reduction in inconsistent 
+decision tables. Information Sciences, 254, 155–180. https://doi.org/10.1016/j. 
+ins.2013.08.038 
+Li, M., Xiong, A., Wang, L., Deng, S., & Ye, J. (2020). ACO Resampling: Enhancing the 
+performance of oversampling methods for class imbalance classification. Knowledge- 
+Based Systems, 196, Article 105818. https://doi.org/10.1016/j.knosys.2020.105818 
+Liang, Z., Dong, H., Liu, C., Liang, W., & Zhu, Z. (2022). Evolutionary multitasking for 
+multiobjective optimization with subspace alignment and adaptive differential 
+evolution. IEEE Transactions on Cybernetics, 52(4), 2096–2109. https://doi.org/ 
+10.1109/TCYB.2020.2980888 
+Liao, W., Ishibuchi, H., Meng Pang, L., & Shang, K. (2020). Parallel implementation of 
+MOEA/D with parallel weight vectors for feature selection. 2020 IEEE International 
+Conference on Systems, Man, and Cybernetics (SMC), 1524–1531. https://doi.org/ 
+10.1109/SMC42975.2020.9283272. 
+Liu, X., Zhan, Z.-H., Lin, Y., Chen, W.-N., Gong, Y.-J., Gu, T.-L., … Zhang, J. (2019). 
+Historical and heuristic-based adaptive differential evolution. IEEE Transactions on 
+Systems, Man, and Cybernetics: Systems, 49(12), 2623–2635. https://doi.org/ 
+10.1109/TSMC.2018.2855155 
+Liu, Z., Chang, B., & Cheng, F. (2021). An interactive filter-wrapper multi-objective 
+evolutionary algorithm for feature selection. Swarm and Evolutionary Computation, 
+65, Article 100925. https://doi.org/10.1016/j.swevo.2021.100925 
+Moradi, P., & Gholampour, M. (2016). A hybrid particle swarm optimization for feature 
+subset selection by integrating a novel local search strategy. Applied Soft Computing, 
+43, 117–130. https://doi.org/10.1016/j.asoc.2016.01.044 
+Nguyen, B. H., Xue, B., Andreae, P., Ishibuchi, H., & Zhang, M. (2020). Multiple reference 
+points-based decomposition for multiobjective feature selection in classification: 
+static and dynamic mechanisms. IEEE Transactions on Evolutionary Computation, 24 
+(1), 170–184. https://doi.org/10.1109/TEVC.2019.2913831 
+Nie, F., Wang, Z., Tian, L., Wang, R., & Li, X. (2022). Subspace sparse discriminative 
+feature selection. IEEE Transactions on Cybernetics, 52(6), 4221–4233. https://doi. 
+org/10.1109/TCYB.2020.3025205 
+Palakonda, V., & Mallipeddi, R. (2017). Pareto dominance-based algorithms with 
+ranking methods for many-objective optimization. IEEE Access, 5, 11043–11053. 
+https://doi.org/10.1109/ACCESS.2017.2716779 
+Pan, J.-S., Liu, N., & Chu, S.-C. (2022). A competitive mechanism based multi-objective 
+differential evolution algorithm and its application in feature selection. Knowledge- 
+Based Systems, 245, Article 108582. https://doi.org/10.1016/j.knosys.2022.108582 
+Radovic, M., Ghalwash, M., Filipovic, N., & Obradovic, Z. (2017). Minimum redundancy 
+maximum relevance feature selection approach for temporal gene expression data. 
+BMC Bioinformatics, 18(1), 9. https://doi.org/10.1186/s12859-016-1423-9 
+Ray, P., Reddy, S. S., & Banerjee, T. (2021). Various dimension reduction techniques for 
+high dimensional data analysis: A review. Artificial Intelligence Review, 54(5), 
+3473–3515. https://doi.org/10.1007/s10462-020-09928-0 
+Spolaor, N., Cherman, E. A., Monard, M. C., & Lee, H. D. (2013). ReliefF for multi-label 
+feature selection. Brazilian Conference on Intelligent Systems, 2013, 6–11. https://doi. 
+org/10.1109/BRACIS.2013.10 
+Tian, Y., Cheng, R., Zhang, X., Su, Y., & Jin, Y. (2019). A strengthened dominance 
+relation considering convergence and diversity for evolutionary many-objective 
+optimization. IEEE Transactions on Evolutionary Computation, 23(2), 331–345. 
+https://doi.org/10.1109/TEVC.2018.2866854 
+Tiwari, A., & Chaturvedi, A. (2022). A hybrid feature selection approach based on 
+information theory and dynamic butterfly optimization algorithm for data 
+classification. Expert Systems with Applications, 196, Article 116621. https://doi.org/ 
+10.1016/j.eswa.2022.116621 
+Too, J., & Mirjalili, S. (2021). A hyper learning binary dragonfly algorithm for feature 
+selection: A COVID-19 case study. Knowledge-Based Systems, 212, Article 106553. 
+https://doi.org/10.1016/j.knosys.2020.106553 
+Wang, C., Hu, Q., Wang, X., Chen, D., Qian, Y., & Dong, Z. (2017). Feature selection 
+based on neighborhood discrimination index. IEEE Transactions on Neural Networks 
+and Learning Systems, 1–14. https://doi.org/10.1109/TNNLS.2017.2710422 
+Wang, F., Zhu, L., Li, J., Chen, H., & Zhang, H. (2021). Unsupervised soft-label feature 
+selection. Knowledge-Based Systems, 219, Article 106847. https://doi.org/10.1016/j. 
+knosys.2021.106847 
+Wang, P., Xue, B., Liang, J., & Zhang, M. (2021). Multiobjective differential evolution for 
+feature selection in classification. IEEE Transactions on Cybernetics, 1–15. https://doi. 
+org/10.1109/TCYB.2021.3128540 
+Wang, P., Xue, B., Liang, J., & Zhang, M. (2022). Differential evolution based feature 
+selection: A niching-based multi-objective approach. IEEE Transactions on 
+Evolutionary Computation, 1–1. https://doi.org/10.1109/TEVC.2022.3168052 
+Wang, Y., Cai, Z., & Zhang, Q. (2011). Differential evolution with composite trial vector 
+generation strategies and control parameters. IEEE Transactions on Evolutionary 
+Computation, 15(1), 55–66. https://doi.org/10.1109/TEVC.2010.2087271 
+Wang, Z., Gao, S., Zhang, Y., & Guo, L. (2022). Symmetric uncertainty-incorporated 
+probabilistic sequence-based ant colony optimization for feature selection in 
+classification. Knowledge-Based Systems, 256, Article 109874. https://doi.org/ 
+10.1016/j.knosys.2022.109874 
+Wang, Z., Gao, S., Zhou, M., Sato, S., Cheng, J., & Wang, J. (2022). Information-theory- 
+based nondominated sorting ant colony optimization for multiobjective feature 
+selection in classification. IEEE Transactions on Cybernetics, 1–14. https://doi.org/ 
+10.1109/TCYB.2022.3185554 
+Wang, Z., Li, M., & Li, J. (2015). A multi-objective evolutionary algorithm for feature 
+selection based on mutual information with a new redundancy measure. Information 
+Sciences, 307, 73–88. https://doi.org/10.1016/j.ins.2015.02.031 
+Zhang, X., Tian, Y.e., Cheng, R., & Jin, Y. (2015). An efficient approach to nondominated 
+sorting for evolutionary multiobjective optimization. IEEE Transactions on 
+Evolutionary Computation, 19(2), 201–213. https://doi.org/10.1109/ 
+TEVC.2014.2308305 
+Xue, Y., Zhu, H., Liang, J., & Słowik, A. (2021). Adaptive crossover operator based multi- 
+objective binary genetic algorithm for feature selection in classification. Knowledge- 
+Based Systems, 227, Article 107218. https://doi.org/10.1016/j.knosys.2021.107218 
+Zeng, Z., Zhang, M., Chen, T., & Hong, Z. (2021). A new selection operator for 
+differential evolution algorithm. Knowledge-Based Systems, 226, Article 107150. 
+https://doi.org/10.1016/j.knosys.2021.107150 
+Zhang, F., Mei, Y., Nguyen, S., & Zhang, M. (2021). Evolving scheduling heuristics via 
+genetic programming with feature selection in dynamic flexible job-shop scheduling. 
+IEEE Transactions on Cybernetics, 51(4), 1797–1811. https://doi.org/10.1109/ 
+TCYB.2020.3024849 
+Zhang, Y., Gong, D., Gao, X., Tian, T., & Sun, X. (2020). Binary differential evolution with 
+self-learning for multi-objective feature selection. Information Sciences, 507, 67–85. 
+https://doi.org/10.1016/j.ins.2019.08.040 
+Zhao, Z., Liu, B., Zhang, C., & Liu, H. (2019). An improved adaptive NSGA-II with multi- 
+population algorithm. Applied Intelligence, 49(2), 569–580. https://doi.org/10.1007/ 
+s10489-018-1263-6 
+Zhu, Z., Ong, Y.-S., & Dash, M. (2007). Markov blanket-embedded genetic algorithm for 
+gene selection. Pattern Recognition, 40(11), 3236–3248. https://doi.org/10.1016/j. 
+patcog.2007.02.007 
+Zibakhsh, A., & Abadeh, M. S. (2013). Gene selection for cancer tumor detection using a 
+novel memetic algorithm with a multi-view fitness function. Engineering Applications 
+of Artificial Intelligence, 26(4), 1274–1281. https://doi.org/10.1016/j. 
+engappai.2012.12.009 
+Zitzler, E., & Künzli, S. (2004). Indicator-based selection in multiobjective search. In 
+X. Yao, E. K. Burke, J. Smith, J. J. Merelo-Guerv´os, J. A. Bullinaria, J. E. Rowe, 
+P. Tiˇno, A. Kab´an, … H. P. Schwefel (Eds.), Parallel problem solving from 
+nature—PPSN VIII (Vol. 3242, pp. 832–842). Berlin Heidelberg: Springer. https:// 
+doi.org/10.1007/978-3-540-30217-9_84.  
+M. Li et al.                                                                                                                                                                                                                                       
+
+

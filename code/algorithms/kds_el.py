@@ -1,11 +1,11 @@
 """
 KDS-EL (Proposed)
 ===================
-完整框架：MEL + DRS (EMDO多样性选择) + KER (KGEF精英微调)。
+完整框架：MEL + DRS（多样性选择）+ KER（精英翻转）。
 对应论文提出的 KDS-EL 方法。
 """
 import numpy as np
-from utils import jFitness, pairwise_nhd, emdo_select, kgef_flip, compute_mi_scores
+from utils import jFitness, pairwise_nhd, drs_select, ker_flip, compute_mi_scores
 
 
 def run_KDS_EL(X, y, opts):
@@ -68,14 +68,14 @@ def run_KDS_EL(X, y, opts):
                 prob = vf / sv if sv > 0 else np.full(dim, 0.5)
                 P_new[i] = (np.random.rand(dim) < prob).astype(float)
 
-        # EMDO 选择（联合优化适应度 + 多样性）
+        # DRS 选择（联合优化适应度 + 多样性）
         pool = np.vstack([Pbest, P_new])
         pool_bin = (pool > thres).astype(int)
         pool_fit = np.array([jFitness(X, y, pool_bin[i].astype(bool), opts)
                              for i in range(2 * N)])
         nhd_mat = pairwise_nhd(pool_bin)
 
-        # 权重更新（EMDO选择前，P_new[i] ↔ Pbest[i] 对应正确）
+        # 权重更新（在 DRS 选择前，P_new[i] ↔ Pbest[i] 对应正确）
         for i in range(N):
             fv_n = (P_new[i] > thres)
             fv_o = (Pbest[i] > thres)
@@ -86,8 +86,8 @@ def run_KDS_EL(X, y, opts):
                 weight[change & (fv_n > fv_o)] += inc
                 weight[change & (fv_n < fv_o)] -= inc
 
-        # EMDO 选择（联合优化适应度 + 多样性）
-        sel = emdo_select(pool_fit, nhd_mat, N, alpha_cd)
+        # DRS 选择
+        sel = drs_select(pool_fit, nhd_mat, N, alpha_cd)
 
         # 精英保护：池中纯 fitness 最好的个体必须存活
         elite_n = max(1, N // 4)
@@ -104,10 +104,10 @@ def run_KDS_EL(X, y, opts):
         Pbest = np.where(improved[:, None], P, Pbest)
         fitP = np.minimum(fit_sel, fitP)
 
-        # KGEF 精英微调
+        # KER 精英翻转
         for e in np.argsort(fitP)[:opts["elite_k"]]:
             elite_bin = (Pbest[e] > thres).astype(int)
-            mutant = kgef_flip(weight, elite_bin, flip_count, rand_p)
+            mutant = ker_flip(weight, elite_bin, flip_count, rand_p)
             mfit = jFitness(X, y, mutant.astype(bool), opts)
             if mfit < fitP[e]:
                 Pbest[e] = mutant

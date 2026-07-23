@@ -27,6 +27,7 @@ EXP1_CURVES = PROJ / "output" / "formal_experiment_20260701_094943" / "curves"
 EXP2_CURVES = PROJ / "output" / "formal_experiment_20260628_205157" / "curves"
 EXP3_CURVES = PROJ / "output" / "formal_experiment_20260702_145828" / "curves"
 EXP4_CURVES = PROJ / "output" / "formal_experiment_20260707_142018" / "curves"
+MEL_MI_CURVES = PROJ / "output" / "formal_experiment_mel_mi" / "curves"
 
 # ── 样式 ──
 mpl.rcParams.update({
@@ -44,17 +45,34 @@ mpl.rcParams.update({
 
 # ── 颜色和标签（扩展到15方法）──
 COLORS = {
-    "KDS_EL": "#b71c1c", "KDS_EL_DRS": "#2e7d32",
-    "KDS_EL_KER": "#f57f17", "MEL": "#00838f",
-    "FWPSO": "#1565c0", "BPSO": "#9e9e9e",
-    "SaWDE": "#bdbdbd", "PSO_CSM": "#6a1b9a", "IGPSO": "#e65100",
-    "NSGA_II_FS": "#455a64", "MOPSO_FS": "#78909c",
-    "MOEA_D_FS": "#90a4ae", "fMOPSO_FS": "#00acc1",
-    "VGS_MOEA": "#ff6f00", "W_MOPSO_FS": "#c62828",
+    # === KDS-EL family — Coral/Red (the ONE standout hue) ===
+    "KDS_EL":     "#E8594A",  # Proposed — brightest coral
+    "KDS_EL_KER": "#F09080",  # light coral
+    "KDS_EL_DRS": "#D0685C",  # deep coral
+
+    # === MEL baselines — Steel Blue ===
+    "MEL":        "#6A94B2",  # MEL baseline
+    "MEL_MI":     "#8BB3CC",  # MEL+MI (lighter)
+
+    # === SOTA — Blue-Gray gradient (wide L spread) ===
+    "FWPSO":      "#5D7E99",  # darkest blue-gray
+    "IGPSO":      "#6C8BA3",  # dark blue-gray
+    "PSO_CSM":    "#7F99AE",  # medium blue-gray
+    "SaWDE":      "#94AABD",  # medium-light blue-gray
+    "BPSO":       "#AABBC8",  # lightest blue-gray
+
+    # === MOFS — Cool Gray gradient (wide L spread) ===
+    "VGS_MOEA":   "#6B7B85",  # darkest cool gray
+    "NSGA_II_FS": "#7E8D96",  # dark cool gray
+    "W_MOPSO_FS": "#8F9DA4",  # medium-dark cool gray
+    "fMOPSO_FS":  "#9FABB2",  # medium cool gray
+    "MOEA_D_FS":  "#AEB8BD",  # medium-light cool gray
+    "MOPSO_FS":   "#BCC4C8",  # lightest cool gray
 }
 V_LABELS = {
     "KDS_EL": "KDS-EL (Proposed)", "KDS_EL_DRS": "KDS-EL/DRS",
     "KDS_EL_KER": "KDS-EL/KER", "MEL": "MEL (Baseline)",
+    "MEL_MI": "MEL+MI (w/ reinit)",
     "FWPSO": "FWPSO", "BPSO": "BPSO",
     "SaWDE": "SaWDE", "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
     "NSGA_II_FS": "NSGA-II-FS", "MOPSO_FS": "MOPSO-FS",
@@ -63,7 +81,8 @@ V_LABELS = {
 }
 LINE_STYLES = {
     "KDS_EL": "-", "KDS_EL_DRS": "--", "KDS_EL_KER": "-.",
-    "MEL": ":", "FWPSO": "-", "BPSO": "--",
+    "MEL": ":", "MEL_MI": (0, (3, 1, 1, 1)),
+    "FWPSO": "-", "BPSO": "--",
     "SaWDE": "-.", "PSO_CSM": ":", "IGPSO": "--",
     "NSGA_II_FS": "-", "MOPSO_FS": "--", "MOEA_D_FS": "-.",
     "fMOPSO_FS": "-", "VGS_MOEA": "--", "W_MOPSO_FS": "-.",
@@ -72,7 +91,7 @@ LINE_STYLES = {
 
 def _get_curve_shared_datasets(versions, prefix="curve"):
     """Compute datasets that have curve data for all specified versions."""
-    all_dirs = [EXP3_CURVES, EXP2_CURVES, EXP1_CURVES, EXP4_CURVES]
+    all_dirs = [EXP3_CURVES, EXP2_CURVES, EXP1_CURVES, EXP4_CURVES, MEL_MI_CURVES]
     ds_sets = []
     for v in versions:
         files = set()
@@ -95,12 +114,12 @@ def _auto_grid(n, max_cols=5):
     return rows, cols
 
 
-# F8 算法: KDS-EL family + FWPSO (best SOTA) + MEL + Top MOFS
-F8_VERSIONS = ["FWPSO", "MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL",
+# F8 算法: KDS-EL family + FWPSO (best SOTA) + MEL + MEL_MI + Top MOFS
+F8_VERSIONS = ["FWPSO", "MEL", "MEL_MI", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL",
                "VGS_MOEA", "NSGA_II_FS"]
 
-# F9 算法: NHD curves — only methods with NHD support
-F9_VERSIONS = ["FWPSO", "MEL", "KDS_EL_DRS", "KDS_EL", "VGS_MOEA"]
+# F9 算法: NHD curves — MEL(0) → MEL_MI(0) → DRS(>0) → Full(>0)
+F9_VERSIONS = ["MEL", "MEL_MI", "KDS_EL_DRS", "KDS_EL"]
 
 
 def load_curves(version, dataset, curves_dir, prefix="curve"):
@@ -139,6 +158,8 @@ def load_from_all(version, dataset, prefix="curve"):
         data = load_curves(version, dataset, EXP3_CURVES, prefix)
         if data is None:
             data = load_curves(version, dataset, EXP2_CURVES, prefix)
+    elif version == "MEL_MI":
+        data = load_curves(version, dataset, MEL_MI_CURVES, prefix)
     elif version in MOFS_NAMES:
         data = load_curves(version, dataset, EXP4_CURVES, prefix)
         if data is None:

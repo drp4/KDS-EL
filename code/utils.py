@@ -2,7 +2,7 @@
 KDS-EL 共享工具函数
 ====================
 包括：数据加载、KNN 适应度评估、种群多样性 (NHD)、
-非支配排序 (EMDO/DRS)、精英翻转 (KGEF/KER)、断点续跑辅助。
+非支配排序 (DRS)、精英翻转 (KER)、断点续跑辅助。
 """
 import os, re, csv, warnings
 import numpy as np
@@ -200,7 +200,7 @@ def pairwise_nhd(X_bin):
 
 
 # ════════════════════════════════════════════════════════════════════════
-# 4) EMDO — 基于非支配排序的多样性保持选择 (DRS)
+# 4) DRS — 基于非支配排序的多样性保持选择
 # ════════════════════════════════════════════════════════════════════════
 
 def fast_nds(obj):
@@ -248,9 +248,9 @@ def crowding_dist(obj, front):
     return cd
 
 
-def emdo_select(pool_fit, nhd_matrix, N, alpha_cd):
+def drs_select(pool_fit, nhd_matrix, N, alpha_cd):
     """
-    EMDO 选择：基于非支配排序 + 拥挤距离 + NHD 的混合选择。
+    DRS 选择：基于非支配排序 + 拥挤距离 + NHD 的混合选择。
     alpha_cd 控制拥挤距离 vs NHD 的权重，随时间变化。
     """
     pool_nhd = nhd_matrix.mean(axis=1)
@@ -278,12 +278,12 @@ def emdo_select(pool_fit, nhd_matrix, N, alpha_cd):
 
 
 # ════════════════════════════════════════════════════════════════════════
-# 5) KGEF — 知识引导的精英微调 (KER)
+# 5) KER — 知识引导的精英翻转
 # ════════════════════════════════════════════════════════════════════════
 
-def kgef_flip(weight, elite_bin, flip_count, rand_p):
+def ker_flip(weight, elite_bin, flip_count, rand_p):
     """
-    KGEF 精英翻转：10% 概率随机翻转，90% 概率基于权重得分选择翻转特征。
+    KER 精英翻转：10% 概率随机翻转，90% 概率基于权重得分选择翻转特征。
     """
     mutant = elite_bin.copy()
     dim = len(mutant)

@@ -1,0 +1,51 @@
+\begin{table}[htbp]
+\centering
+\caption{Parameter Settings}
+\label{tab:params}
+\small
+\begin{tabular}{lcl}
+\toprule
+\multicolumn{3}{c}{\textbf{Common Experimental Setup}} \\
+\midrule
+Population size ($N$)         & = & 20 \\
+Maximum iterations ($T$)      & = & 100 \\
+KNN neighbors ($k$)           & = & 3 \\
+Real-to-binary threshold      & = & 0.6 \\
+Cross-validation              & = & 5-fold stratified, shuffle \\
+Number of independent runs    & = & 10 \\
+\bottomrule
+\addlinespace
+\multicolumn{3}{c}{\textbf{KDS-EL / KDS-EL/KER / KDS-EL/DRS}} \\
+\midrule
+Inertia weight ($w$)          & = & 0.9 \\
+Acceleration coefficients     & = & $c_1 = c_2 = c_3 = 2.0$ \\
+Knowledge weight decay        & = & 0.99 \\
+Elite flip fraction           & = & 0.01 \\
+Elite count ($k_e$)           & = & 3 \\
+Random flip probability       & = & 0.10 \\
+Stall patience ($P_s$)        & = & 20 \\
+MI-guided init ratio          & = & 0.5 \\
+DRS schedule $\alpha_{\text{cd}}(t)$ & = & $(t/T)^2$ \\
+\midrule
+\multicolumn{3}{c}{\textbf{MEL}} \\
+\midrule
+Inertia weight ($w$)          & = & 0.9 \\
+Acceleration coefficients     & = & $c_1 = c_2 = c_3 = 2.0$ \\
+\midrule
+\multicolumn{3}{c}{\textbf{MEL\_MI}} \\
+\midrule
+Inertia weight ($w$)          & = & 0.9 \\
+Acceleration coefficients     & = & $c_1 = c_2 = c_3 = 2.0$ \\
+MI-guided init ratio          & = & 0.5 \\
+Stall patience ($P_s$)        & = & 20 \\
+\midrule
+\multicolumn{3}{c}{\textbf{SOTA / MOFS Competitors}} \\
+\midrule
+\multicolumn{3}{l}{All competitor methods (BPSO, FWPSO, IGPSO, PSO-CSM, SaWDE,} \\
+\multicolumn{3}{l}{NSGA-II-FS, MOPSO-FS, MOEA-D-FS, fMOPSO-FS, VGS-MOEA,} \\
+\multicolumn{3}{l}{W-MOPSO-FS) use their original parameter settings from the} \\
+\multicolumn{3}{l}{respective publications, with $N=20$, $T=100$ unless the} \\
+\multicolumn{3}{l}{original paper specifies different defaults.} \\
+\bottomrule
+\end{tabular}
+\end{table}

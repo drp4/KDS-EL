@@ -31,10 +31,11 @@ EXP1_DIR = PROJ / "output" / "formal_experiment_20260701_094943"   # SOTA 对比
 EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"   # 旧消融 V1 (仅 MEL 有效)
 EXP3_DIR = PROJ / "output" / "formal_experiment_20260702_145828"   # 最新消融 V2 (KDS-EL 三变体)
 EXP4_DIR = PROJ / "output" / "formal_experiment_20260707_142018"   # MOFS 对比 (6方法)
+MEL_MI_DIR = PROJ / "output" / "formal_experiment_mel_mi"            # MEL_MI 对照
 
 # ── 全部15个方法（用于 F10 热图、附录等）──
 ALL_VERSIONS = [
-    "BPSO", "SaWDE", "FWPSO", "MEL",
+    "BPSO", "SaWDE", "FWPSO", "MEL", "MEL_MI",
     "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL",
     "PSO_CSM", "IGPSO",
     "NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
@@ -48,11 +49,12 @@ MAIN_VERSIONS = [
     "VGS-MOEA", "W-MOPSO-FS", "NSGA-II-FS",
 ]
 
-ABL_VERSIONS = ["MEL", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
+ABL_VERSIONS = ["MEL", "MEL_MI", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL"]
 
 V_LABELS = {
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "KDS_EL_DRS": "KDS-EL/DRS",
+    "MEL": "MEL", "MEL_MI": "MEL+MI",
+    "KDS_EL_DRS": "KDS-EL/DRS",
     "KDS_EL_KER": "KDS-EL/KER", "KDS_EL": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
     "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
@@ -60,22 +62,40 @@ V_LABELS = {
     "VGS-MOEA": "VGS-MOEA", "W-MOPSO-FS": "W-MOPSO-FS",
 }
 ABL_LABELS = {
-    "MEL": "MEL (Baseline)", "KDS_EL_DRS": "KDS-EL/DRS",
+    "MEL": "MEL (Baseline)", "MEL_MI": "MEL+MI (w/ reinit)",
+    "KDS_EL_DRS": "KDS-EL/DRS",
     "KDS_EL_KER": "KDS-EL/KER", "KDS_EL": "KDS-EL (Proposed)",
 }
 
 COLORS = {
-    "BPSO": "#9e9e9e", "SaWDE": "#bdbdbd", "FWPSO": "#1565c0",
-    "MEL": "#00838f", "KDS_EL_DRS": "#2e7d32",
-    "KDS_EL_KER": "#f57f17", "KDS_EL": "#b71c1c",
-    "PSO_CSM": "#6a1b9a", "IGPSO": "#e65100",
-    "NSGA-II-FS": "#455a64", "MOPSO-FS": "#78909c",
-    "MOEA-D-FS": "#90a4ae", "fMOPSO-FS": "#00acc1",
-    "VGS-MOEA": "#ff6f00", "W-MOPSO-FS": "#c62828",
+    # === KDS-EL family — Coral/Red (the ONE standout hue) ===
+    "KDS_EL":     "#E8594A",  # Proposed — brightest coral
+    "KDS_EL_KER": "#F09080",  # light coral
+    "KDS_EL_DRS": "#D0685C",  # deep coral
+
+    # === MEL baselines — Steel Blue ===
+    "MEL":        "#6A94B2",  # MEL baseline
+    "MEL_MI":     "#8BB3CC",  # MEL+MI (lighter)
+
+    # === SOTA — Blue-Gray gradient (wide L spread) ===
+    "FWPSO":      "#5D7E99",  # darkest blue-gray
+    "IGPSO":      "#6C8BA3",  # dark blue-gray
+    "PSO_CSM":    "#7F99AE",  # medium blue-gray
+    "SaWDE":      "#94AABD",  # medium-light blue-gray
+    "BPSO":       "#AABBC8",  # lightest blue-gray
+
+    # === MOFS — Cool Gray gradient (wide L spread) ===
+    "VGS-MOEA":   "#6B7B85",  # darkest cool gray
+    "NSGA-II-FS": "#7E8D96",  # dark cool gray
+    "W-MOPSO-FS": "#8F9DA4",  # medium-dark cool gray
+    "fMOPSO-FS":  "#9FABB2",  # medium cool gray
+    "MOEA-D-FS":  "#AEB8BD",  # medium-light cool gray
+    "MOPSO-FS":   "#BCC4C8",  # lightest cool gray
 }
 HATCHES = {
     "BPSO": "////", "SaWDE": "\\\\\\\\", "FWPSO": "----",
-    "MEL": "....", "KDS_EL_DRS": "xxxx", "KDS_EL_KER": "++++",
+    "MEL": "....", "MEL_MI": "oo",
+    "KDS_EL_DRS": "xxxx", "KDS_EL_KER": "++++",
     "KDS_EL": "", "PSO_CSM": "oooo", "IGPSO": "****",
     "NSGA-II-FS": "///", "MOPSO-FS": "\\\\\\",
     "MOEA-D-FS": "---", "fMOPSO-FS": "+++",
@@ -95,7 +115,9 @@ PLOT_LABELS = [
     "Leukaemia", "Lymphoma", "Myeloma", "PCMAC", "Prostate",
     "SRBCT", "T1D", "madelon",
 ]
-DS_LABEL_MAP = dict(zip(PLOT_DATASETS, PLOT_LABELS))
+ABL_DATASETS_EXTRA = ["ALL2", "ALL3", "RELATHE", "Stroke", "USPS"]
+DS_LABEL_MAP = dict(zip(PLOT_DATASETS + ABL_DATASETS_EXTRA,
+                        PLOT_LABELS + ABL_DATASETS_EXTRA))
 
 
 def _auto_grid(n, max_cols=5):
@@ -172,6 +194,10 @@ def load_merged_detail():
     df4 = load_detail(EXP4_DIR / "results_detail.csv")
     dfs.append(df4[df4["Version"].isin(MOFS_VERSIONS)])
 
+    # MEL_MI: MI+Reinit 对照
+    df_mel_mi = load_detail(MEL_MI_DIR / "results_detail.csv")
+    dfs.append(df_mel_mi[df_mel_mi["Version"] == "MEL_MI"])
+
     # 取共有列并合并
     common_cols = None
     for d in dfs:
@@ -204,9 +230,8 @@ def make_handles(versions, use_abl=False):
     for v in versions:
         lbl = ABL_LABELS[v] if use_abl else V_LABELS.get(v, v)
         p = mpatches.Patch(
-            facecolor=COLORS[v], hatch=HATCHES[v],
-            edgecolor="k" if HATCHES[v] else COLORS[v],
-            linewidth=0.4, label=lbl)
+            facecolor=COLORS[v], alpha=0.82,
+            edgecolor="none", linewidth=0, label=lbl)
         out.append(p)
     return out
 
@@ -250,12 +275,9 @@ def fig_f4_accuracy(df_detail, out_dir):
         x_pos = np.arange(len(valid_v))
         ax.bar(x_pos, means, 0.65,
                color=[COLORS[v] for v in valid_v],
-               edgecolor="k", linewidth=0.4,
+               alpha=0.82, edgecolor="none",
                yerr=stds,
                error_kw=dict(elinewidth=0.55, capsize=1.5, capthick=0.55, ecolor="0.35"))
-        for bar, v in zip(ax.patches, valid_v):
-            if HATCHES[v]:
-                bar.set_hatch(HATCHES[v])
         ax.set_title(DS_LABEL_MAP.get(ds, ds), fontsize=7, pad=1.5)
         ax.set_xticks([])
         ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
@@ -304,12 +326,9 @@ def fig_f5_features(df_detail, out_dir):
         x_pos = np.arange(len(valid_v))
         ax.bar(x_pos, means, 0.65,
                color=[COLORS[v] for v in valid_v],
-               edgecolor="k", linewidth=0.4,
+               alpha=0.82, edgecolor="none",
                yerr=stds,
                error_kw=dict(elinewidth=0.55, capsize=1.5, capthick=0.55, ecolor="0.35"))
-        for bar, v in zip(ax.patches, valid_v):
-            if HATCHES[v]:
-                bar.set_hatch(HATCHES[v])
         ax.set_title(DS_LABEL_MAP.get(ds, ds), fontsize=7, pad=1.5)
         ax.set_xticks([])
         ax.set_yscale("log")
@@ -332,14 +351,26 @@ def fig_f5_features(df_detail, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F6: 消融实验双面板（4变体 × 20数据集, 不受MOFS影响）
+# F6: 消融实验双面板（5变体 × 25数据集, CNS排除）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f6_ablation(df_detail, out_dir):
-    """F6: Ablation study — dual panel (Accuracy + Features), 20 datasets."""
-    print("F6: Ablation dual panel...")
-    fig, axes = plt.subplots(1, 2, figsize=(8.5, 3.5))
-    ds_list = [d for d in PLOT_DATASETS if d in df_detail.Dataset.unique()]
+    """F6: Ablation study — dual panel (Accuracy + Features), 5 variants × 25 datasets (CNS excluded)."""
+    print("F6: Ablation dual panel (5-layer: MEL → MEL_MI → DRS → KER → Full)...")
+    fig, axes = plt.subplots(1, 2, figsize=(9.5, 3.8))
+    # Compute shared datasets across all 5 ablation variants
+    abl_shared = get_shared_datasets(df_detail)
+    # Filter to only ABL_VERSIONS
+    abl_v_in_data = [v for v in ABL_VERSIONS if v in df_detail.Version.unique()]
+    ds_sets = []
+    for v in abl_v_in_data:
+        ds = set(df_detail[df_detail.Version == v]["Dataset"].unique())
+        if ds:
+            ds_sets.append(ds)
+    ds_list = sorted(set.intersection(*ds_sets)) if ds_sets else []
+    # Exclude CNS if present
+    ds_list = [d for d in ds_list if d != "CNS"]
+    print(f"  Ablation datasets: {len(ds_list)}")
     n_ds = len(ds_list)
     n_v = len(ABL_VERSIONS)
     w = 0.7 / n_v
@@ -353,15 +384,12 @@ def fig_f6_ablation(df_detail, out_dir):
         for v, off in zip(ABL_VERSIONS, offs):
             means = [gm(df_detail, v, ds, metric) for ds in ds_list]
             stds = [np.nanstd(g(df_detail, v, ds, metric)) for ds in ds_list]
-            bars = ax.bar(x + off, means, w, color=COLORS[v],
-                          edgecolor="k", linewidth=0.4,
-                          label=ABL_LABELS[v],
-                          yerr=stds,
-                          error_kw=dict(elinewidth=0.5, capsize=1.2,
-                                        capthick=0.5, ecolor="0.35"))
-            for bar in bars:
-                if HATCHES[v]:
-                    bar.set_hatch(HATCHES[v])
+            ax.bar(x + off, means, w, color=COLORS[v],
+                   alpha=0.82, edgecolor="none",
+                   label=ABL_LABELS[v],
+                   yerr=stds,
+                   error_kw=dict(elinewidth=0.5, capsize=1.2,
+                                 capthick=0.5, ecolor="0.35"))
         ax.set_xticks(x)
         ax.set_xticklabels([DS_LABEL_MAP.get(d, d) for d in ds_list],
                            rotation=40, ha="right", fontsize=6.5)
@@ -371,7 +399,7 @@ def fig_f6_ablation(df_detail, out_dir):
             ax.set_yscale("log")
         if panel_idx == 0:
             handles = make_handles(ABL_VERSIONS, use_abl=True)
-            ax.legend(handles=handles, fontsize=6.5, ncol=2,
+            ax.legend(handles=handles, fontsize=6.0, ncol=3,
                       loc="lower right", frameon=True,
                       handlelength=1.1, handleheight=0.85)
     fig.tight_layout(w_pad=2.2)
@@ -537,12 +565,9 @@ def fig_f11_runtime(df_detail, out_dir):
 
     for v, off in zip(versions, offs):
         means = [gm(df_detail, v, ds, "Time_sec") for ds in ds_list]
-        bars = ax.bar(x + off, means, w, color=COLORS[v],
-                      edgecolor="k", linewidth=0.35,
-                      label=V_LABELS.get(v, v))
-        for bar in bars:
-            if HATCHES[v]:
-                bar.set_hatch(HATCHES[v])
+        ax.bar(x + off, means, w, color=COLORS[v],
+               alpha=0.82, edgecolor="none",
+               label=V_LABELS.get(v, v))
 
     ax.set_xticks(x)
     ax.set_xticklabels([DS_LABEL_MAP.get(d, d) for d in ds_list],
@@ -585,10 +610,12 @@ def fig_f12_bubble(df_detail, out_dir):
                 sizes.append(max(15, np.log1p(t) * 30))
 
         if xs:
+            is_kds = (v == "KDS_EL")
             ax.scatter(xs, ys, s=sizes, c=COLORS[v],
                        label=V_LABELS.get(v, v),
-                       alpha=0.7, edgecolors="black", linewidth=0.3,
-                       zorder=2 if v == "KDS_EL" else 1)
+                       alpha=0.85,
+                       edgecolors="#333333", linewidth=0.8 if is_kds else 0.5,
+                       zorder=3 if is_kds else 1)
 
         # 高亮 KDS_EL
         if v == "KDS_EL" and xs and shared_ds:
@@ -613,6 +640,201 @@ def fig_f12_bubble(df_detail, out_dir):
 
     fig.tight_layout()
     save_fig(fig, "F12_bubble", out_dir)
+    plt.close(fig)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# F4-alt: Performance Profile（替代 F4 柱状图）
+# ══════════════════════════════════════════════════════════════════════════════
+
+def fig_f4_performance_profile(df_detail, out_dir):
+    """F4-alt: Performance profile — cumulative fraction of datasets where each
+    method's mean accuracy reaches at least ratio τ of the best method on that dataset.
+    (Dolan & Moré 2002 style, standard in IEEE TEVC.)"""
+    print("F4-alt: Performance Profile (accuracy ratios)...")
+
+    versions = [v for v in MAIN_VERSIONS if v in df_detail.Version.unique()]
+    shared_ds = get_shared_datasets(df_detail)
+    ds_list = sorted([d for d in PLOT_DATASETS if d in shared_ds])
+
+    if len(ds_list) < 3:
+        print("  [SKIP] too few shared datasets"); return
+
+    # Best accuracy per dataset (max over all methods)
+    best = {}
+    for ds in ds_list:
+        b = -np.inf
+        for v in versions:
+            arr = g(df_detail, v, ds)
+            if len(arr) and not np.isnan(arr).all():
+                m = np.nanmean(arr)
+                if m > b: b = m
+        best[ds] = b
+
+    # Ratios
+    ratios = {v: [] for v in versions}
+    for v in versions:
+        for ds in ds_list:
+            arr = g(df_detail, v, ds)
+            if len(arr) and not np.isnan(arr).all():
+                r = np.nanmean(arr) / best[ds] if best[ds] > 0 else 0
+                ratios[v].append(np.clip(r, 0.0, 1.0))
+
+    fig, ax = plt.subplots(figsize=(7.5, 4.5))
+    tau = np.linspace(0.6, 1.0, 800)
+
+    for v in versions:
+        data = np.sort(ratios[v])
+        prob = [np.mean(data >= t) for t in tau]
+        lw = 2.2 if v == "KDS_EL" else 1.0
+        ls = "-" if v in {"KDS_EL", "KDS_EL_KER", "KDS_EL_DRS", "MEL"} else "--"
+        ax.plot(tau, prob, color=COLORS[v], linewidth=lw, linestyle=ls,
+                label=V_LABELS.get(v, v))
+
+    ax.set_xlabel("Performance Ratio $\\tau$", fontsize=10)
+    ax.set_ylabel("Fraction of Datasets $\\rho(\\tau)$", fontsize=10)
+    ax.set_title("F4-alt: Performance Profile — Accuracy", fontsize=10, pad=5)
+    ax.grid(linestyle="--", alpha=0.30)
+    ax.legend(fontsize=6.5, loc="lower left", ncol=2, frameon=True, framealpha=0.92)
+    ax.set_xlim(0.6, 1.01)
+    ax.set_ylim(0, 1.05)
+    ax.xaxis.set_major_formatter(mticker.FormatStrFormatter("%.1f"))
+    ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.1f"))
+
+    # Annotations
+    for ref_tau in (0.9, 0.95, 0.99):
+        kds_val = np.mean(np.array(ratios["KDS_EL"]) >= ref_tau)
+        ax.annotate(f"{kds_val:.2f}", xy=(ref_tau, kds_val),
+                    xytext=(8, 8), textcoords="offset points",
+                    fontsize=7, color=COLORS["KDS_EL"], fontweight="bold",
+                    arrowprops=dict(arrowstyle="->", color=COLORS["KDS_EL"], lw=0.6))
+
+    fig.tight_layout()
+    save_fig(fig, "F4_accuracy_performance_profile", out_dir)
+    plt.close(fig)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# F6-alt: Waterfall / Delta 贡献图（替代 F6 分组柱状图）
+# ══════════════════════════════════════════════════════════════════════════════
+
+def fig_f6_delta_waterfall(df_detail, out_dir):
+    """F6-alt: Two-panel waterfall showing incremental component contributions.
+    Left: cumulative waterfall — MEL baseline → +MI → +DRS → +KER → Full.
+    Right: per-dataset delta (each variant vs MEL), showing consistency."""
+    print("F6-alt: Waterfall — ablation component contributions...")
+
+    abl_v = [v for v in ABL_VERSIONS if v in df_detail.Version.unique()]
+    if len(abl_v) < 3:
+        print("  [SKIP] too few ablation variants"); return
+
+    # Shared datasets (exclude CNS)
+    ds_sets = [set(df_detail[df_detail.Version == v]["Dataset"].unique()) for v in abl_v]
+    ds_sets = [s for s in ds_sets if s]
+    ds_list = sorted(set.intersection(*ds_sets)) if ds_sets else []
+    ds_list = [d for d in ds_list if d != "CNS"]
+
+    if len(ds_list) < 2:
+        print("  [SKIP] too few shared datasets"); return
+
+    # Per-variant × per-dataset means
+    pds = {}  # pds[variant][dataset] = mean_acc
+    for v in abl_v:
+        pds[v] = {}
+        for ds in ds_list:
+            arr = g(df_detail, v, ds)
+            if len(arr) and not np.isnan(arr).all():
+                pds[v][ds] = np.nanmean(arr)
+
+    # Across-dataset mean per variant
+    means = [np.mean(list(pds[v].values())) for v in abl_v]
+
+    # Deltas from previous variant: MEL (baseline), MEL_MI-MEL, DRS-MEL_MI, KER-DRS, Full-KER
+    deltas = [means[0]] + [means[i] - means[i-1] for i in range(1, len(means))]
+
+    # ── figure ──
+    fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.2),
+                             gridspec_kw={"width_ratios": [1.1, 1]})
+    # ────── Left: Waterfall ──────
+    ax1 = axes[0]
+    n = len(abl_v)
+    x = np.arange(n)
+
+    # Bar bottoms & heights
+    bottoms = [0.0] + means[:-1]          # [0, m0, m1, m2, m3]
+    heights = [means[0]] + deltas[1:]     # [m0, d1, d2, d3, d4]
+
+    bar_colors = [COLORS[v] for v in abl_v]
+    bars = ax1.bar(x, heights, bottom=bottoms, width=0.55,
+                   color=bar_colors, alpha=0.82, edgecolor="none")
+
+    # Connecting lines
+    cum = means[0]
+    for i in range(1, n):
+        ax1.plot([i - 0.275, i + 0.275], [cum, cum],
+                 color="gray", linewidth=0.6, alpha=0.5)
+        cum += deltas[i]
+
+    # Labels inside / on top of bars
+    for i in range(n):
+        if i == 0:
+            ax1.text(0, means[0] / 2, f"{means[0]:.3f}",
+                     ha="center", va="center", fontsize=8, fontweight="bold",
+                     color="white" if means[0] > 0.3 else "black")
+        else:
+            delta = deltas[i]
+            mid = bottoms[i] + delta / 2
+            sign = "+" if delta >= 0 else ""
+            clr = "#2a6b2a" if delta >= 0 else "#cc3333"
+            ax1.text(i, mid, f"{sign}{delta:.4f}",
+                     ha="center", va="center", fontsize=7.5, fontweight="bold", color=clr)
+
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(["MEL\n(Baseline)", "MEL\n+MI", "+DRS", "+KER",
+                         "KDS-EL\n(Full)"], fontsize=7, ha="center")
+    ax1.set_ylabel("Mean Classification Accuracy", fontsize=9)
+    ax1.set_title("Cumulative Ablation Contribution", fontsize=9, pad=5)
+    ax1.grid(axis="y", linestyle="--", alpha=0.35)
+    ax1.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.3f"))
+    ax1.yaxis.set_major_locator(mticker.MaxNLocator(6, prune="lower"))
+
+    # Final value callout
+    ax1.annotate(f"KDS-EL\n{means[-1]:.4f}", xy=(n-1, means[-1]),
+                 xytext=(n-1 + 0.35, means[-1] + 0.01),
+                 fontsize=7.5, color=COLORS["KDS_EL"], fontweight="bold",
+                 ha="left",
+                 arrowprops=dict(arrowstyle="->", color=COLORS["KDS_EL"], lw=0.7))
+
+    # ────── Right: Per-dataset delta strip ──────
+    ax2 = axes[1]
+    mel_vals = pds["MEL"]
+
+    for vi, v in enumerate(abl_v[1:], start=1):
+        ds_deltas = []
+        for ds in ds_list:
+            if ds in pds[v] and ds in mel_vals:
+                ds_deltas.append(pds[v][ds] - mel_vals[ds])
+        jitter = np.random.default_rng(42).uniform(-0.15, 0.15, len(ds_deltas))
+        ax2.scatter(ds_deltas, vi + jitter, s=14, color=COLORS[v],
+                    alpha=0.55, edgecolors="none", zorder=2)
+        # Mean delta marker
+        mean_d = np.mean(ds_deltas)
+        ax2.scatter(mean_d, vi, s=60, color=COLORS[v], edgecolors="#222",
+                    linewidth=0.8, zorder=3, marker="D")
+        ax2.text(mean_d, vi + 0.3, f"{mean_d:+.4f}",
+                 ha="center", fontsize=6.5, color=COLORS[v], fontweight="bold")
+
+    ax2.axvline(0, color="gray", linewidth=0.7, linestyle="--", alpha=0.5)
+    ax2.set_yticks(range(1, len(abl_v)))
+    ax2.set_yticklabels(["+MI", "+DRS", "+KER", "Full"][:len(abl_v)-1], fontsize=7.5)
+    ax2.set_xlabel("Δ Accuracy vs MEL Baseline", fontsize=9)
+    ax2.set_title("Per-Dataset Improvement Consistency", fontsize=9, pad=5)
+    ax2.grid(axis="x", linestyle="--", alpha=0.3)
+    ax2.xaxis.set_major_formatter(mticker.FormatStrFormatter("%+.3f"))
+
+    fig.suptitle("F6-alt: Ablation Component Contribution (Waterfall + Δ Strip)", fontsize=10, y=1.01)
+    fig.tight_layout()
+    save_fig(fig, "F6_ablation_delta_waterfall", out_dir)
     plt.close(fig)
 
 
@@ -645,8 +867,10 @@ def main():
 
     all_figs = {
         "F4": fig_f4_accuracy,
+        "F4_profile": fig_f4_performance_profile,
         "F5": fig_f5_features,
         "F6": fig_f6_ablation,
+        "F6_delta": fig_f6_delta_waterfall,
         "F7": fig_f7_boxplot,
         "F10": fig_f10_wilcoxon,
         "F11": fig_f11_runtime,

@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """
-CRITICAL ANALYSIS: Verify synergy, KER-only vs Full Wilcoxon, ceiling-filtered analysis.
-Addresses C1, C2, C3 from the audit.
+CRITICAL ANALYSIS: Module contribution decomposition, Full vs KER Wilcoxon, ceiling-filtered analysis.
+NOTE: The additive decomposition (ΔFull - (ΔDRS + ΔKER)) is retained here only for documentation
+      purposes. KDS-EL's DRS and KER operate in different spaces (structural vs fitness), so
+      additive decomposition is conceptually inapplicable — see kdsel_memory.md §十二.
+      The paper narrative uses "complementarity" not "synergy".
 """
 import pandas as pd
 import numpy as np
@@ -48,8 +51,8 @@ print("\n" + "=" * 80)
 print("1. SYNERGY VERIFICATION (25 datasets)")
 print("=" * 80)
 
-synergies = []
-positive_syn = 0
+interactions = []
+pos_interaction = 0
 ceiling_ds = []
 all_results = []
 
@@ -67,11 +70,11 @@ for ds in abl_ds:
     delta_drs = drs - base
     delta_ker = ker - base
     delta_full = full - base
-    synergy = delta_full - (delta_drs + delta_ker)
-    synergies.append(synergy)
+    interaction = delta_full - (delta_drs + delta_ker)
+    interactions.append(interaction)
 
-    if synergy > 0.0:
-        positive_syn += 1
+    if interaction > 0.0:
+        pos_interaction += 1
 
     is_ceiling = max(drs, ker, full) > 0.99
     if is_ceiling:
@@ -80,25 +83,25 @@ for ds in abl_ds:
     all_results.append({
         'Dataset': ds, 'MEL': base, 'DRS': drs, 'KER': ker, 'Full': full,
         'dDRS': delta_drs, 'dKER': delta_ker, 'dFull': delta_full,
-        'Synergy': synergy, 'Ceiling': is_ceiling,
+        'Interaction': interaction, 'Ceiling': is_ceiling,
         'DRS_vs_KER': drs - ker,
     })
 
 df_syn = pd.DataFrame(all_results)
 print(f"\n  Mean dDRS  = {df_syn['dDRS'].mean():+.4f}")
 print(f"  Mean dKER  = {df_syn['dKER'].mean():+.4f}")
-print(f"  Mean dFull = {df_syn['dFull'].mean():+.4f}")
-print(f"  Mean Synergy = {df_syn['Synergy'].mean():+.4f}")
-print(f"  Positive synergy: {positive_syn}/{len(synergies)} ({positive_syn/len(synergies)*100:.1f}%)")
-print(f"  Ceiling datasets (Acc>0.99): {len(ceiling_ds)}/{len(synergies)}")
+print(f"\n  Mean dFull = {df_syn['dFull'].mean():+.4f}")
+print(f"  Mean Interaction (ΔFull-ΔDRS-ΔKER) = {df_syn['Interaction'].mean():+.4f}")
+print(f"  Positive interaction: {pos_interaction}/{len(interactions)} ({pos_interaction/len(interactions)*100:.1f}%)")
+print(f"  Ceiling datasets (Acc>0.99): {len(ceiling_ds)}/{len(interactions)}")
 print(f"    -> {ceiling_ds}")
 
-# Per-dataset synergy
-print(f"\n{'Dataset':<15s} {'dDRS':>8s} {'dKER':>8s} {'dFull':>8s} {'Synergy':>8s} {'Ceiling':>8s}")
-print("-" * 60)
-for _, r in df_syn.sort_values('Synergy').iterrows():
+# Per-dataset interaction
+print(f"\n{'Dataset':<15s} {'dDRS':>8s} {'dKER':>8s} {'dFull':>8s} {'Interaction':>8s} {'Ceiling':>8s}")
+print("-" * 68)
+for _, r in df_syn.sort_values('Interaction').iterrows():
     flag = "[CEIL]" if r['Ceiling'] else ""
-    print(f"  {r['Dataset']:<13s} {r['dDRS']:+8.4f} {r['dKER']:+8.4f} {r['dFull']:+8.4f} {r['Synergy']:+8.4f} {flag:>8s}")
+    print(f"  {r['Dataset']:<13s} {r['dDRS']:+8.4f} {r['dKER']:+8.4f} {r['dFull']:+8.4f} {r['Interaction']:+8.4f} {flag:>8s}")
 
 # ======================================================================
 # 2. KER-ONLY vs FULL -- PAIRED WILCOXON (per-dataset, per-run)
@@ -187,9 +190,9 @@ for label, subset in [("ALL (25 DS)", df_syn), ("NON-SATURATED (Acc<0.95)", non_
     print(f"  Mean dDRS  = {subset['dDRS'].mean():+.4f}")
     print(f"  Mean dKER  = {subset['dKER'].mean():+.4f}")
     print(f"  Mean dFull = {subset['dFull'].mean():+.4f}")
-    print(f"  Mean Synergy = {subset['Synergy'].mean():+.4f}")
-    pos = (subset['Synergy'] > 0).sum()
-    print(f"  Positive synergy: {pos}/{len(subset)} ({pos/len(subset)*100:.1f}%)")
+    print(f"  Mean Interaction = {subset['Interaction'].mean():+.4f}")
+    pos = (subset['Interaction'] > 0).sum()
+    print(f"  Positive interaction: {pos}/{len(subset)} ({pos/len(subset)*100:.1f}%)")
 
     # KER vs Full on this subset
     sub_ds = set(subset['Dataset'].values)
@@ -308,7 +311,7 @@ for ds in key_ds:
     print(f"\n  {ds}:")
     print(f"    MEL={row['MEL']:.4f}, DRS={row['DRS']:.4f}, KER={row['KER']:.4f}, Full={row['Full']:.4f}")
     print(f"    dDRS={row['dDRS']:+.4f}, dKER={row['dKER']:+.4f}, dFull={row['dFull']:+.4f}")
-    print(f"    Synergy={row['Synergy']:+.4f}, DRS_vs_KER={row['DRS_vs_KER']:+.4f}")
+    print(f"    Interaction={row['Interaction']:+.4f}, DRS_vs_KER={row['DRS_vs_KER']:+.4f}")
 
     # Check if KER vs Full is significant
     wilc_row = df_wilc[df_wilc['Dataset'] == ds]
@@ -420,10 +423,10 @@ print("9. SUMMARY: KEY FACTS FOR PAPER REVISION")
 print("=" * 80)
 
 print(f"""
-  C1 - SYNERGY:
-    Synergy = {df_syn['Synergy'].mean():+.4f} (negative!)
-    Positive synergy: {positive_syn}/{len(synergies)} ({positive_syn/len(synergies)*100:.1f}%)
-    -> Synergy narrative is FALSE. Must reframe.
+  C1 - INTERACTION (COMPLEMENTARITY):
+    Interaction = {df_syn['Interaction'].mean():+.4f} (negative!)
+    Positive interaction: {pos_interaction}/{len(interactions)} ({pos_interaction/len(interactions)*100:.1f}%)
+    -> Additive synergy narrative is inapplicable. Reframe as complementarity.
 
   C2 - VGS-MOEA DOMINANCE:
     VGS-MOEA Acc = 0.9463 (#1), KDS-EL Acc = 0.9450 (#2), delta = -0.0013
@@ -439,8 +442,8 @@ print(f"""
     -> DRS adds diversity (NHD>0) + compression, not accuracy
 
   NON-SATURATED SUBSET (Acc<0.95, n={len(non_sat)}):
-    Synergy = {non_sat['Synergy'].mean():+.4f}
-    Positive synergy: {(non_sat['Synergy'] > 0).sum()}/{len(non_sat)}
+    Interaction = {non_sat['Interaction'].mean():+.4f}
+    Positive interaction: {(non_sat['Interaction'] > 0).sum()}/{len(non_sat)}
     dFull = {non_sat['dFull'].mean():+.4f}
     dKER = {non_sat['dKER'].mean():+.4f}
 """)

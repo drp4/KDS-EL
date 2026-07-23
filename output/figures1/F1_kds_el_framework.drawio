@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="F1-KDS-EL-Framework">
+    <mxGraphModel dx="1400" dy="660" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- === TITLE === -->
+        <mxCell id="2" value="&lt;b&gt;Figure 1:&lt;/b&gt; Overview of the KDS-EL dual-space framework." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=11;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="8" width="500" height="22" as="geometry" />
+        </mxCell>
+
+        <!-- === INPUT === -->
+        <mxCell id="3" value="&lt;b&gt;High-Dimensional Data&lt;/b&gt; (d &amp;gt;&amp;gt; n)" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#F7F4EF;strokeColor=#8B7D6B;strokeWidth=1.5;fontSize=11;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="500" y="45" width="240" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- === CHALLENGES === -->
+        <mxCell id="4" value="&lt;b&gt;Challenge A:&lt;/b&gt; Population Homogenization" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#F7F4EF;strokeColor=#C4B59A;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#554433;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="320" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="&lt;b&gt;Challenge B:&lt;/b&gt; Improvement Signal Waste" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#F7F4EF;strokeColor=#C4B59A;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#554433;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="780" y="120" width="320" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- Input→Challenges -->
+        <mxCell id="6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#999999;strokeWidth=1;dashed=1;endArrow=block;endFill=1;endSize=4;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="3" target="4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="95" />
+              <mxPoint x="200" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#999999;strokeWidth=1;dashed=1;endArrow=block;endFill=1;endSize=4;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="3" target="5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="95" />
+              <mxPoint x="940" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- === STRUCTURE SPACE — DRS (LEFT) === -->
+        <mxCell id="8" value="" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#EEF2F7;strokeColor=#7A8FA8;strokeWidth=1.5;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="175" width="610" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="&lt;b&gt;Structure Space — DRS&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontFamily=Times New Roman;fontColor=#4A6485;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="178" width="280" height="16" as="geometry" />
+        </mxCell>
+
+        <!-- DRS Step 1 -->
+        <mxCell id="10" value="&lt;b&gt;1. NHD Matrix&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;NHD(i,j) = Hamming(x_i, x_j) / d, symmetric, NHD∈[0,1]&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#8CA3BE;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="218" width="510" height="48" as="geometry" />
+        </mxCell>
+        <!-- DRS Step 2 -->
+        <mxCell id="11" value="&lt;b&gt;2. Crowding Distance&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;CD(i) = (1-α)·CD_fitness(i) + α·MeanNHD(i),  α_cd(t) = (t/T)²&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#8CA3BE;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="286" width="510" height="48" as="geometry" />
+        </mxCell>
+        <!-- DRS Step 3 (highlighted) -->
+        <mxCell id="12" value="&lt;b&gt;3. DRS Pool Construction&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;Sort by CD, select top-k — NHD elevated to 1st-class selection objective&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DCE4EF;strokeColor=#4A6485;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="354" width="510" height="48" as="geometry" />
+        </mxCell>
+        <!-- DRS Step 4 -->
+        <mxCell id="13" value="&lt;b&gt;4. Diverse Candidate Pool&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;N binary vectors with NHD &amp;gt; 0 sustained across iterations&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4A6485;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="422" width="510" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- Prop 1 -->
+        <mxCell id="14" value="&lt;b&gt;Prop. 1&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;E[NHD(pool)] &amp;gt; 0&lt;br&gt;diversity lower bound&lt;/font&gt;" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#EEF2F7;strokeColor=#4A6485;strokeWidth=1;fontSize=9;fontFamily=Times New Roman;fontColor=#4A6485;" vertex="1" parent="1">
+          <mxGeometry x="425" y="218" width="90" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- DRS arrows -->
+        <mxCell id="15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A6485;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="10" target="11" />
+        <mxCell id="16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A6485;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="11" target="12" />
+        <mxCell id="17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A6485;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="12" target="13" />
+
+        <!-- Challenge A → DRS -->
+        <mxCell id="40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#8B7D6B;strokeWidth=1;dashed=1;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="4" target="8" />
+
+        <!-- === FITNESS SPACE — KER (RIGHT) === -->
+        <mxCell id="18" value="" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#EDF2ED;strokeColor=#7A9A7A;strokeWidth=1.5;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="730" y="175" width="610" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="19" value="&lt;b&gt;Fitness Space — KER&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=10;fontFamily=Times New Roman;fontColor=#4A704A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="830" y="178" width="280" height="16" as="geometry" />
+        </mxCell>
+
+        <!-- KER Step 1 -->
+        <mxCell id="20" value="&lt;b&gt;1. Fitness Evaluation&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;Classification accuracy (KNN) — evaluate candidate x'&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#8CA88C;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="780" y="218" width="510" height="48" as="geometry" />
+        </mxCell>
+        <!-- KER Step 2 -->
+        <mxCell id="21" value="&lt;b&gt;2. Improvement Detection&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;f(x') &amp;gt; f(Pbest) → record event, identify flipped features F&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#8CA88C;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="780" y="286" width="510" height="48" as="geometry" />
+        </mxCell>
+        <!-- KER Step 3 (highlighted) -->
+        <mxCell id="22" value="&lt;b&gt;3. KER Weight Update&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;For each j ∈ F: w_j += 1 — weights accumulate across all improvements&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DCE8DC;strokeColor=#4A704A;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="354" width="510" height="48" as="geometry" />
+        </mxCell>
+        <!-- KER Step 4 -->
+        <mxCell id="23" value="&lt;b&gt;4. Feature Importance Vector w&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;P(flip j) ∝ w_j — directed perturbation toward high-impact features&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4A704A;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="422" width="510" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- Prop 2 -->
+        <mxCell id="24" value="&lt;b&gt;Prop. 2&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px&quot;&gt;P(flip j) ≥ (1/N)(w_j/Σw)·p_mut&lt;br&gt;any subset reachable&lt;/font&gt;" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#EDF2ED;strokeColor=#4A704A;strokeWidth=1;fontSize=9;fontFamily=Times New Roman;fontColor=#4A704A;" vertex="1" parent="1">
+          <mxGeometry x="1195" y="218" width="90" height="44" as="geometry" />
+        </mxCell>
+
+        <!-- KER arrows -->
+        <mxCell id="25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="20" target="21" />
+        <mxCell id="26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="21" target="22" />
+        <mxCell id="27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="22" target="23" />
+
+        <!-- KER feedback loop -->
+        <mxCell id="28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A704A;strokeWidth=1;dashed=1;endArrow=block;endFill=1;endSize=4;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="23" target="20">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1355" y="444" />
+              <mxPoint x="1355" y="242" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="29" value="&lt;font style=&quot;font-size:8px&quot;&gt;feedback&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=8;fontFamily=Times New Roman;fontColor=#4A704A;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="330" width="40" height="14" as="geometry" />
+        </mxCell>
+
+        <!-- Challenge B → KER -->
+        <mxCell id="41" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#8B7D6B;strokeWidth=1;dashed=1;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="5" target="18" />
+
+        <!-- === BIDIRECTIONAL EXCHANGE === -->
+        <!-- DRS→KER -->
+        <mxCell id="30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#777777;strokeWidth=1.5;endArrow=block;endFill=1;endSize=6;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="13" target="21">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="660" y="475" />
+              <mxPoint x="660" y="510" />
+              <mxPoint x="700" y="510" />
+              <mxPoint x="700" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- KER→DRS -->
+        <mxCell id="31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#777777;strokeWidth=1.5;endArrow=block;endFill=1;endSize=6;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="23" target="12">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="510" />
+              <mxPoint x="700" y="510" />
+              <mxPoint x="660" y="510" />
+              <mxPoint x="660" y="378" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Exchange labels -->
+        <mxCell id="32" value="&lt;b&gt;Diverse candidates&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=#FFFFFF;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=8;fontFamily=Times New Roman;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="644" y="485" width="65" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="&lt;b&gt;Guided elites&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=#FFFFFF;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=8;fontFamily=Times New Roman;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="644" y="520" width="65" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- === OUTPUT === -->
+        <mxCell id="36" value="&lt;b&gt;Single Optimal Feature Subset&lt;/b&gt;  —  biomarker panel with high accuracy, compact size, and structural diversity" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#F0F0F5;strokeColor=#6A6A80;strokeWidth=1.5;fontSize=10;fontFamily=Times New Roman;fontColor=#333333;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="600" width="900" height="48" as="geometry" />
+        </mxCell>
+
+        <!-- DRS→Output -->
+        <mxCell id="37" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6A6A80;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="13" target="36">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="335" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- KER→Output -->
+        <mxCell id="38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6A6A80;strokeWidth=1.2;endArrow=block;endFill=1;endSize=5;" edge="1" parent="1" source="23" target="36">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1035" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- === COMPLEMENTARITY NOTE === -->
+        <mxCell id="39" value="&lt;font style=&quot;font-size:8px;font-style:italic&quot;&gt;DRS and KER are complementary: KER captures accuracy gains; DRS maintains structural diversity and compresses features. Not synergistic, but mutually enabling.&lt;/font&gt;" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#CCCCCC;strokeWidth=1;fontSize=8;fontFamily=Times New Roman;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="200" y="690" width="900" height="30" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

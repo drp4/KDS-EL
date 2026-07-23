@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="F1-KDS-EL-Blueprint">
+    <mxGraphModel dx="1300" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Background -->
+        <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FDFCF8;strokeColor=#FDFCF8;strokeWidth=0;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="1300" height="700" as="geometry" />
+        </mxCell>
+
+        <!-- === TITLE === -->
+        <mxCell id="3" value="&lt;b&gt;FIGURE 1:&lt;/b&gt; KDS-EL DUAL-SPACE FRAMEWORK" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=11;fontFamily=Times New Roman;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="250" y="10" width="800" height="18" as="geometry" />
+        </mxCell>
+        <!-- Title underline -->
+        <mxCell id="4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#444444;strokeWidth=0.8;" vertex="1" parent="1">
+          <mxGeometry x="300" y="30" width="700" height="1" as="geometry" />
+        </mxCell>
+
+        <!-- === INPUT === -->
+        <mxCell id="5" value="&lt;b&gt;HIGH-DIMENSIONAL DATA&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px;color:#888888;&quot;&gt;d ≫ n&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#444444;strokeWidth=0.8;fontSize=10;fontFamily=Times New Roman;fontColor=#444444;align=center;" vertex="1" parent="1">
+          <mxGeometry x="470" y="45" width="240" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- === CHALLENGES === -->
+        <!-- Challenge A -->
+        <mxCell id="6" value="&lt;b&gt;CHALLENGE A:&lt;/b&gt; Population Homogenization" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#888888;strokeWidth=0.8;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="60" y="105" width="320" height="28" as="geometry" />
+        </mxCell>
+        <!-- Challenge B -->
+        <mxCell id="7" value="&lt;b&gt;CHALLENGE B:&lt;/b&gt; Improvement Signal Waste" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#888888;strokeWidth=0.8;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="780" y="105" width="320" height="28" as="geometry" />
+        </mxCell>
+
+        <!-- Input → Challenge connectors -->
+        <mxCell id="8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#888888;strokeWidth=0.8;dashed=1;endArrow=block;endFill=1;endSize=4;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="5" target="6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="530" y="95" />
+              <mxPoint x="220" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#888888;strokeWidth=0.8;dashed=1;endArrow=block;endFill=1;endSize=4;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="5" target="7">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="650" y="95" />
+              <mxPoint x="940" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- === STRUCTURE SPACE — DRS ZONE === -->
+        <!-- Zone border (corner-bracket style: thin rect with no fill) -->
+        <mxCell id="10" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#5A7A9A;strokeWidth=0.8;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="160" width="560" height="260" as="geometry" />
+        </mxCell>
+        <!-- Zone label -->
+        <mxCell id="11" value="&lt;b&gt;STRUCTURE SPACE — DRS&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px;color:#888888;font-style:italic&quot;&gt;Diversity-Regulated Selection&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontFamily=Times New Roman;fontColor=#5A7A9A;" vertex="1" parent="1">
+          <mxGeometry x="170" y="163" width="300" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- DRS Step 1 -->
+        <mxCell id="12" value="&lt;b&gt;1  NHD MATRIX&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px;color:#888888;&quot;&gt;NHD(i,j) = Hamming(i,j) / d&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F7FA;strokeColor=#5A7A9A;strokeWidth=0.8;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="180" y="195" width="220" height="38" as="geometry" />
+        </mxCell>
+        <!-- DRS Step 2 -->
+        <mxCell id="13" value="&lt;b&gt;2  CROWDING DISTANCE&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px;color:#888888;&quot;&gt;CD with α_cd(t) = (t/T)²&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F7FA;strokeColor=#5A7A9A;strokeWidth=0.8;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="180" y="250" width="220" height="38" as="geometry" />
+        </mxCell>
+        <!-- DRS Step 3 (highlighted) -->
+        <mxCell id="14" value="&lt;b&gt;3  DRS POOL&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px;color:#888888;&quot;&gt;NHD as 1st-class selection objective&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8EDF5;strokeColor=#5A7A9A;strokeWidth=1.2;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="305" width="220" height="38" as="geometry" />
+        </mxCell>
+        <!-- DRS Step 4 -->
+        <mxCell id="15" value="&lt;b&gt;4  DIVERSE CANDIDATE POOL&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F7FA;strokeColor=#5A7A9A;strokeWidth=0.8;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="360" width="220" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- DRS pipeline arrows -->
+        <mxCell id="16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A7A9A;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="12" target="13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A7A9A;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="13" target="14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A7A9A;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="14" target="15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Proposition 1 (blueprint note style) -->
+        <mxCell id="19" value="&lt;b&gt;PROP. 1&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px;color:#888888;&quot;&gt;E[NHD(pool)] &amp;gt; 0&lt;br&gt;diversity guaranteed&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F7FA;strokeColor=#5A7A9A;strokeWidth=0.8;fontSize=8.5;fontFamily=Times New Roman;fontColor=#5A7A9A;" vertex="1" parent="1">
+          <mxGeometry x="65" y="305" width="96" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- === FITNESS SPACE — KER ZONE === -->
+        <!-- Zone border -->
+        <mxCell id="20" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#5A8A5A;strokeWidth=0.8;" vertex="1" parent="1">
+          <mxGeometry x="660" y="160" width="560" height="260" as="geometry" />
+        </mxCell>
+        <!-- Zone label -->
+        <mxCell id="21" value="&lt;b&gt;FITNESS SPACE — KER&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px;color:#888888;font-style:italic&quot;&gt;Knowledge-guided Elite Refinement&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontFamily=Times New Roman;fontColor=#5A8A5A;" vertex="1" parent="1">
+          <mxGeometry x="790" y="163" width="300" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- KER Step 1 -->
+        <mxCell id="22" value="&lt;b&gt;1  FITNESS EVALUATION&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px;color:#888888;&quot;&gt;Classification accuracy (KNN)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5FAF5;strokeColor=#5A8A5A;strokeWidth=0.8;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="800" y="195" width="220" height="38" as="geometry" />
+        </mxCell>
+        <!-- KER Step 2 -->
+        <mxCell id="23" value="&lt;b&gt;2  IMPROVEMENT DETECTION&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px;color:#888888;&quot;&gt;f(x') &amp;gt; f(Pbest) → record event&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5FAF5;strokeColor=#5A8A5A;strokeWidth=0.8;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="800" y="250" width="220" height="38" as="geometry" />
+        </mxCell>
+        <!-- KER Step 3 (highlighted) -->
+        <mxCell id="24" value="&lt;b&gt;3  WEIGHT UPDATE&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px;color:#888888;&quot;&gt;w_j += 1 per flipped feature in improvement&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E5F0E5;strokeColor=#5A8A5A;strokeWidth=1.2;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="305" width="220" height="38" as="geometry" />
+        </mxCell>
+        <!-- KER Step 4 -->
+        <mxCell id="25" value="&lt;b&gt;4  FEATURE IMPORTANCE VECTOR w&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5FAF5;strokeColor=#5A8A5A;strokeWidth=0.8;fontSize=9.5;fontFamily=Times New Roman;fontColor=#444444;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="360" width="220" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- KER pipeline arrows -->
+        <mxCell id="26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A8A5A;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="22" target="23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A8A5A;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="23" target="24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A8A5A;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="24" target="25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- KER feedback loop (blueprint: routed line on right) -->
+        <mxCell id="29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#5A8A5A;strokeWidth=0.8;dashed=1;endArrow=block;endFill=1;endSize=4;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="25" target="22">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1070" y="378" />
+              <mxPoint x="1070" y="214" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="30" value="&lt;font style=&quot;font-size:7.5px;color:#5A8A5A;&quot;&gt;feedback&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=7.5;fontFamily=Times New Roman;fontColor=#5A8A5A;" vertex="1" parent="1">
+          <mxGeometry x="1065" y="280" width="35" height="14" as="geometry" />
+        </mxCell>
+
+        <!-- Proposition 2 (blueprint note style) -->
+        <mxCell id="31" value="&lt;b&gt;PROP. 2&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:7.5px;color:#888888;&quot;&gt;P(flip j) ≥ (1/N)(w_j/Σw)·p_mut&lt;br&gt;any subset reachable&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5FAF5;strokeColor=#5A8A5A;strokeWidth=0.8;fontSize=8.5;fontFamily=Times New Roman;fontColor=#5A8A5A;" vertex="1" parent="1">
+          <mxGeometry x="1055" y="305" width="130" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- === BIDIRECTIONAL EXCHANGE ARROWS === -->
+        <!-- DRS→KER -->
+        <mxCell id="32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#444444;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="15" target="23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="378" />
+              <mxPoint x="620" y="300" />
+              <mxPoint x="680" y="300" />
+              <mxPoint x="720" y="269" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- KER→DRS -->
+        <mxCell id="33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#444444;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="25" target="14">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="420" />
+              <mxPoint x="620" y="420" />
+              <mxPoint x="580" y="380" />
+              <mxPoint x="520" y="380" />
+              <mxPoint x="520" y="324" />
+              <mxPoint x="480" y="324" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Exchange labels -->
+        <mxCell id="34" value="&lt;b&gt;DIVERSE&lt;br&gt;CANDIDATES&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=#FDFCF8;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=7.5;fontFamily=Times New Roman;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="622" y="288" width="55" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="35" value="&lt;b&gt;GUIDED&lt;br&gt;ELITES&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=#FDFCF8;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=7.5;fontFamily=Times New Roman;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="622" y="408" width="55" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- === OUTPUT === -->
+        <mxCell id="36" value="&lt;b&gt;SINGLE OPTIMAL FEATURE SUBSET&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px;color:#888888;&quot;&gt;biomarker panel — high accuracy, compact size, structural diversity&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#444444;strokeWidth=0.8;fontSize=10;fontFamily=Times New Roman;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="260" y="480" width="660" height="38" as="geometry" />
+        </mxCell>
+        <!-- Output annotation -->
+        <mxCell id="37" value="&lt;font style=&quot;font-size:7.5px;color:#888888;&quot;&gt;OUTPUT: 1 × binary vector ∈ {0,1}^d&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;fontSize=7.5;fontFamily=Times New Roman;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="260" y="520" width="660" height="14" as="geometry" />
+        </mxCell>
+
+        <!-- DRS → Output arrow -->
+        <mxCell id="38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#444444;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="15" target="36">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="290" y="435" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- KER → Output arrow -->
+        <mxCell id="39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#444444;strokeWidth=0.8;endArrow=block;endFill=1;endSize=4;" edge="1" parent="1" source="25" target="36">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="910" y="435" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- === BLUEPRINT NOTE === -->
+        <!-- Horizontal rule before note -->
+        <mxCell id="40" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#CCCCCC;strokeWidth=0.8;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="555" width="660" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="41" value="&lt;font style=&quot;font-size:8px;font-style:italic;color:#888888;&quot;&gt;&lt;b&gt;NOTE:&lt;/b&gt; DRS and KER operate in complementary spaces. KER → accuracy. DRS → diversity + compression. NOT synergistic.&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=8;fontFamily=Times New Roman;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="260" y="562" width="660" height="22" as="geometry" />
+        </mxCell>
+
+        <!-- === MEASUREMENT ANNOTATIONS (blueprint detail) === -->
+        <!-- DRS step dimension line -->
+        <mxCell id="42" value="&lt;font style=&quot;font-size:7px;color:#888888;&quot;&gt;4 steps, NHD-weighted selection&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=7;fontFamily=Times New Roman;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="410" y="250" width="130" height="14" as="geometry" />
+        </mxCell>
+        <!-- KER step dimension line -->
+        <mxCell id="43" value="&lt;font style=&quot;font-size:7px;color:#888888;&quot;&gt;4 steps, improvement-feedback cycle&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=7;fontFamily=Times New Roman;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="250" width="130" height="14" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

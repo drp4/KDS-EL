@@ -5,7 +5,7 @@ MEL_MI — MEL + MI 引导初始化 + 自适应重初始化（无 DRS，无 KER�
 在原始 MEL 双子群 PSO 基础上，只加入：
   - MI 引导初始化（一半 MI + 一半随机）
   - 自适应重初始化（stall 时重启下半种群，MI 引导）
-不含 DRS (EMDO) 和 KER (KGEF)。
+不含 DRS 和 KER。
 """
 import numpy as np
 from utils import jFitness, compute_mi_scores

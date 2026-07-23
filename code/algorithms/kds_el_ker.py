@@ -1,11 +1,11 @@
 """
 KDS-EL_KER — KDS-EL with Knowledge-Guided Elite Fine-tuning only (KER)
 =======================================================================
-在 MEL 基础上，加入 KGEF 精英微调模块，但不使用 EMDO 多样性选择。
+在 MEL 基础上，加入 KER 精英翻转模块，但不使用 DRS 多样性选择。
 对应论文中的 KDS-EL/KER。
 """
 import numpy as np
-from utils import jFitness, kgef_flip, compute_mi_scores
+from utils import jFitness, ker_flip, compute_mi_scores
 
 
 def run_KDS_EL_KER(X, y, opts):
@@ -92,10 +92,10 @@ def run_KDS_EL_KER(X, y, opts):
         Pbest = np.where(improved[:, None], P, Pbest)
         fitP = np.minimum(fit_sel, fitP)
 
-        # KGEF 精英微调
+        # KER 精英翻转
         for e in np.argsort(fitP)[:opts["elite_k"]]:
             elite_bin = (Pbest[e] > thres).astype(int)
-            mutant = kgef_flip(weight, elite_bin, flip_count, rand_p)
+            mutant = ker_flip(weight, elite_bin, flip_count, rand_p)
             mfit = jFitness(X, y, mutant.astype(bool), opts)
             if mfit < fitP[e]:
                 Pbest[e] = mutant

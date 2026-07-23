@@ -1,12 +1,11 @@
 """
 KDS_EL_DRS — KDS-EL with Diversity-based Replacement Selection (DRS) only
 ==========================================================================
-在基础 PSO 上，用 EMDO (Elite Multi-objective Diversity Optimization)
-替代贪婪选择，联合优化适应度和种群多样性 (NHD)。
+在基础 PSO 上，用 DRS 替代贪婪选择，联合优化适应度和种群多样性 (NHD)。
 对应论文中的 KDS-EL/DRS（消融实验：仅含 DRS，不含 KER）。
 """
 import numpy as np
-from utils import jFitness, pairwise_nhd, emdo_select, compute_mi_scores
+from utils import jFitness, pairwise_nhd, drs_select, compute_mi_scores
 
 
 def run_KDS_EL_DRS(X, y, opts):
@@ -65,14 +64,14 @@ def run_KDS_EL_DRS(X, y, opts):
                 prob = vf / sv if sv > 0 else np.full(dim, 0.5)
                 P_new[i] = (np.random.rand(dim) < prob).astype(float)
 
-        # EMDO 选择（联合优化适应度 + 多样性）
+        # DRS 选择（联合优化适应度 + 多样性）
         pool = np.vstack([Pbest, P_new])
         pool_bin = (pool > thres).astype(int)
         pool_fit = np.array([jFitness(X, y, pool_bin[i].astype(bool), opts)
                              for i in range(2 * N)])
         nhd_mat = pairwise_nhd(pool_bin)
 
-        sel = emdo_select(pool_fit, nhd_mat, N, alpha_cd)
+        sel = drs_select(pool_fit, nhd_mat, N, alpha_cd)
         P = pool[sel]
         fit_sel = pool_fit[sel]
 

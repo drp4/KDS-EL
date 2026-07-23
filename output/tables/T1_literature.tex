@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+\centering
+\caption{Comparison of Recent PSO-Based Feature Selection Methods (2015--2023)}
+\label{tab:lit_comparison}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{lp{2.5cm}cccc}
+\toprule
+Method (Year) & Encoding & Obj. & Diversity & Knowledge & Key Contribution \\
+\midrule
+BPSO (2008) \cite{kennedy1997} & Binary & Single & — & — & Sigmoid transfer; basic binary PSO \\
+MEL (2015) \cite{lu2015} & Continuous + threshold & Single & Dual sub-swarm & Feature weight accumulation & Bi-subswarm PSO with real-valued search \\
+FWPSO (2018) \cite{gu2018} & Continuous + threshold & Single & Competitive swarm & — & Pairwise competition replaces \textit{gbest/pbest} \\
+PSO-CSM (2020) \cite{song2020} & Continuous + threshold & Single & — & Surrogate model & Composite surrogate reduces fitness evaluations \\
+IGPSO (2021) \cite{gu2021} & Continuous + threshold & Single & — & Mutual information init & Information-guided swarm partitioning \\
+SaWDE (2022) \cite{wang2022} & Continuous & Single & — & Adaptive mutation & Self-adaptive weighting in DE mutation \\
+\midrule
+NSGA-II-FS (2002) \cite{deb2002} & Binary & Multi (Acc, Feat) & Crowding distance & — & NSGA-II nondominated sorting \\
+MOPSO-FS (2004) \cite{coello2004} & Continuous + threshold & Multi (Acc, Feat) & Archive grid & — & External archive with adaptive grid \\
+MOEA-D-FS (2007) \cite{zhang2007} & Continuous + threshold & Multi (Acc, Feat) & Weight vectors & — & Decomposition into scalar subproblems \\
+fMOPSO-FS (2021) \cite{wang2021} & Continuous + threshold & Multi (Acc, Feat) & Fuzzy dominance & — & Fuzzy Pareto dominance ranking \\
+VGS-MOEA (2024) \cite{li2024} & Variable-length & Multi (Acc, Redundancy) & Variable-length crossover & — & Variable-length encoding (Pareto front output) \\
+W-MOPSO-FS (2022) \cite{nguyen2022} & Hybrid (cont+bin) & Multi (Acc, Feat) & Archive diversity & — & Hybrid encoding for FS-specific MOPSO \\
+\midrule
+\textbf{KDS-EL (Proposed)} & Continuous + threshold & Single & DRS (NHD-based Pareto) & KER (weight accumulation + elite flip) & Dual-space complementarity; single optimum output \\
+\bottomrule
+\end{tabular}
+\end{table}
