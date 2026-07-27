@@ -10,7 +10,7 @@ MEL — Multi-task Ensemble Learning (baseline)
 """
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
-from utils import jFitness
+from utils import jFitness, pairwise_nhd
 
 
 # ════════════════════════════════════════════════════════════════════════
@@ -60,6 +60,7 @@ def run_MEL(X, y, opts):
     fitP = fit.copy()
 
     curve = np.zeros(T + 1)
+    nhd_curve = np.zeros(T + 1)
     curve[0] = fitG
 
     for t in range(1, T + 1):
@@ -124,6 +125,10 @@ def run_MEL(X, y, opts):
                 Gbest = Pbest[i].copy()
                 fitG = float(fitP[i])
 
+        # 记录种群 NHD 多样性
+        sb = (Pbest > thres).astype(int)
+        nm = pairwise_nhd(sb)
+        nhd_curve[t] = nm.sum() / (N * (N - 1)) if N > 1 else 0.0
         curve[t] = fitG
 
     mask = (Gbest > thres)
@@ -131,5 +136,5 @@ def run_MEL(X, y, opts):
         "fitG": fitG,
         "nf": int(mask.sum()),
         "curve": curve,
-        "nhd_curve": np.zeros(T + 1),
+        "nhd_curve": nhd_curve,
     }

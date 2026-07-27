@@ -8,7 +8,7 @@ MEL_MI — MEL + MI 引导初始化 + 自适应重初始化（无 DRS，无 KER�
 不含 DRS 和 KER。
 """
 import numpy as np
-from utils import jFitness, compute_mi_scores
+from utils import jFitness, compute_mi_scores, pairwise_nhd
 
 
 def run_MEL_MI(X, y, opts):
@@ -61,6 +61,7 @@ def run_MEL_MI(X, y, opts):
     stall_counter = 0
 
     curve = np.zeros(T + 1)
+    nhd_curve = np.zeros(T + 1)
     curve[0] = fitG
 
     for t in range(1, T + 1):
@@ -148,6 +149,10 @@ def run_MEL_MI(X, y, opts):
                 fitP[idx] = jFitness(X, y, (Pbest[idx] > thres).astype(bool), opts)
             stall_counter = 0
 
+        # 记录种群 NHD 多样性
+        sb = (Pbest > thres).astype(int)
+        nm = pairwise_nhd(sb)
+        nhd_curve[t] = nm.sum() / (N * (N - 1)) if N > 1 else 0.0
         curve[t] = fitG
 
     mask = Gbest > thres
@@ -155,5 +160,5 @@ def run_MEL_MI(X, y, opts):
         "fitG": fitG,
         "nf": int(mask.sum()),
         "curve": curve,
-        "nhd_curve": np.zeros(T + 1),
+        "nhd_curve": nhd_curve,
     }

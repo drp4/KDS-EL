@@ -5,7 +5,7 @@ KDS-EL_KER — KDS-EL with Knowledge-Guided Elite Fine-tuning only (KER)
 对应论文中的 KDS-EL/KER。
 """
 import numpy as np
-from utils import jFitness, ker_flip, compute_mi_scores
+from utils import jFitness, ker_flip, compute_mi_scores, pairwise_nhd
 
 
 def run_KDS_EL_KER(X, y, opts):
@@ -42,6 +42,7 @@ def run_KDS_EL_KER(X, y, opts):
     stall_counter = 0
 
     curve = np.zeros(T + 1)
+    nhd_curve = np.zeros(T + 1)
     curve[0] = fitG
 
     for t in range(1, T + 1):
@@ -120,6 +121,10 @@ def run_KDS_EL_KER(X, y, opts):
                 fitP[idx] = jFitness(X, y, (Pbest[idx] > thres).astype(bool), opts)
             stall_counter = 0
 
+        # 记录种群 NHD 多样性
+        sb = (Pbest > thres).astype(int)
+        nm = pairwise_nhd(sb)
+        nhd_curve[t] = nm.sum() / (N * (N - 1)) if N > 1 else 0.0
         curve[t] = fitG
 
     mask = (Gbest > thres)
@@ -127,5 +132,5 @@ def run_KDS_EL_KER(X, y, opts):
         "fitG": fitG,
         "nf": int(mask.sum()),
         "curve": curve,
-        "nhd_curve": np.zeros(T + 1),
+        "nhd_curve": nhd_curve,
     }
