@@ -10,6 +10,8 @@ from .mel import run_MEL
 from .mel_mi_reinit import run_MEL_MI
 from .kds_el_drs import run_KDS_EL_DRS
 from .kds_el_ker import run_KDS_EL_KER
+from .kds_el_no_pool import run_KDS_EL_NoPool
+from .kds_el_twophase import run_KDS_EL_TwoPhase
 from .kds_el import run_KDS_EL
 from .pso_csm import run_PSO_CSM
 from .igpso import run_IGPSO
@@ -28,6 +30,8 @@ RUNNERS = {
     "MEL_MI":          run_MEL_MI,
     "KDS_EL_DRS":      run_KDS_EL_DRS,
     "KDS_EL_KER":      run_KDS_EL_KER,
+    "KDS_EL_NoPool":   run_KDS_EL_NoPool,
+    "KDS_EL_TwoPhase": run_KDS_EL_TwoPhase,
     "KDS_EL":          run_KDS_EL,
     "PSO_CSM":         run_PSO_CSM,
     "IGPSO":           run_IGPSO,
