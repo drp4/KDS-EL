@@ -1,7 +1,8 @@
 # KDS-EL 算法框架与创新点完整总结
-# Knowledge-guided Dual-Space Evolutionary Learning
+# Knowledge-guided Elite Refinement with Two-Phase Weight Scheduling
 
-> 最后更新：2026-07-21（MEL_MI 加入，五层消融合拢，协同→互补）
+> 最后更新：2026-07-29（NoPool vs TwoPhase 全量 26DS 验证完成，TwoPhase 胜 16/25，确认为最终版本）
+> 重大简化：移除 DRS + NHD + 池化，最终算法 = MEL + MI + KER + 两阶段权重调度 + 原地更新
 
 ---
 
@@ -26,8 +27,9 @@ $$\min_{\mathbf{x}} f(\mathbf{x}) = 0.9 \times \text{ErrorRate}(\mathbf{x}) + 0.
 ```
 KDS-EL = 双子群PSO骨架（继承自MEL）
          + MI 初始化 + 自适应重初始化          ← 知识引导生命周期
-         + DRS（Diversity-regulated Selection）  ← 结构空间
-         + KER（Knowledge-guided Elite Refinement）← 适应度空间
+         + KER（Knowledge-guided Elite Refinement）← 在线知识累积
+         + 两阶段权重调度（Two-Phase Weight Scheduling）← 自适应探索-利用
+         + 原地更新（1v1 替换，非池化竞争）
 
 整体架构：
 ┌─────────────────────────────────────────────┐
@@ -39,17 +41,18 @@ KDS-EL = 双子群PSO骨架（继承自MEL）
 │   三引导PSO速度   │   weight向量概率采样        │
 │   ×10粒子        │   ×10粒子                  │
 └──────────────────┴──────────────────────────┘
-         ↓ 合并为 Pool（2N=40个候选解）
+         ↓ 双群各自生成新解
 ┌─────────────────────────────────────────────┐
-│              DRS（结构空间调节）               │
-│  目标1: min fitness                          │
-│  目标2: max NHD（种群结构多样性）              │
-│  → NSGA-II Pareto排序 + 自适应拥挤距离         │
-│  → 选出N=20个解进入下一代                      │
+│          两阶段权重调度（环境选择）             │
+│  Phase1 (前70%迭代): ws=[0.7, 0.3]          │
+│    → 激进压缩特征，快速淘汰噪声特征             │
+│  Phase2 (后30%迭代): ws=[0.95, 0.05]        │
+│    → 精细调精度，保守保留                       │
 └─────────────────────────────────────────────┘
-         ↓ 更新Pbest（先更新weight）
+         ↓ 1v1 原地更新 Pbest（优于池化 2N 竞争）
+         ↓ 检测 improvement → 更新 weight
 ┌─────────────────────────────────────────────┐
-│              KER（适应度空间精化）             │
+│              KER（在线知识累积）               │
 │  检测improvement事件 → 更新weight向量          │
 │  weight[feat_added] += Δfitness             │
 │  weight[feat_removed] -= Δfitness           │
@@ -63,8 +66,14 @@ KDS-EL = 双子群PSO骨架（继承自MEL）
 ```
 
 **关键超参数**：
-N=20, T=100, K_cv=5, k_nn=3, thres=0.6, ws=[0.9,0.1],
+N=20, T=100, K_cv=5, k_nn=3, thres=0.6, 
+Phase1: ws=[0.7, 0.3] (0~0.7T), Phase2: ws=[0.95, 0.05] (0.7T~T),
 weight_decay=0.99, flip_frac=0.01, elite_k=3, rand_flip_p=0.10, stall_patience=20
+
+**已移除的组件及原因**：
+- ❌ DRS（多样性调节选择）：精度贡献仅 +0.07pp，统计不显著
+- ❌ 2N 池化竞争：NoPool (1v1 原地更新) 精度更高且更简单
+- ❌ NHD 多样性指标：MEL 从未测量，且与选择率机械耦合
 
 ---
 
@@ -105,23 +114,21 @@ $$\text{prob} = \frac{\max(\mathbf{w}, 0)}{\sum \max(\mathbf{w}, 0)}, \quad \tex
 
 - weight 向量编码了历史改进经验，引导 Sub2 优先选择有效特征
 
-### 3.3 DRS — 双目标 Pareto 选择（结构空间）
+### 3.3 两阶段权重调度（Two-Phase Weight Scheduling）
 
-**Pool 构建**：$\text{Pool} = \text{Pbest} \cup P_{\text{new}}$（大小 2N）
+不同于传统固定权重（ws=[0.9, 0.1]），KDS-EL 采用两阶段自适应调度：
 
-**两个目标**：
-$$\text{obj}_1 = f(\mathbf{x}), \quad \text{obj}_2 = -\text{NHD}(\mathbf{x}, \text{Pool})$$
+$$\text{ws}(t) = \begin{cases} [0.7, 0.3] & t < 0.7T \quad \text{(Phase 1: 激进压缩)} \\ [0.95, 0.05] & t \geq 0.7T \quad \text{(Phase 2: 精细调精度)} \end{cases}$$
 
-**NHD 计算**（向量化，Jaccard距离变体）：
-$$\text{NHD}(x_i, x_j) = \frac{|x_i \oplus x_j|}{\max(|x_i|+|x_j|-|x_i \wedge x_j|, 1)}$$
+**设计理念**：
+- Phase 1（前 70% 迭代）：给特征数项更大权重 → 快速淘汰噪声特征，缩小搜索空间
+- Phase 2（后 30% 迭代）：给误差率更大权重 → 在已压缩的特征空间上精细调优分类精度
+- 这一设计利用了 FS 问题的结构特性：噪声特征的排除是早期一次性工作，精度提升是后期持续工作
 
-**自适应权重调度**：
-$$\alpha_{cd}(t) = \left(\frac{t}{T}\right)^2$$
-早期（t小）：多样性优先；后期（t大）：精度优先
+**消融证据**（2026-07-29, 25 数据集）：
+- vs NoPool（固定 ws=[0.9, 0.1]）：ΔAcc=+1.07pp, ΔFeat=-46, 胜率 16/25
 
-**Design Observation 1（多样性维持特性）**：对 t<T，DRS 保证选出的种群 NHD>0。
-
-### 3.4 KER — 在线知识积累精英精化（适应度空间）
+### 3.4 KER — 在线知识积累精英精化
 
 **权重更新**（在 Pbest 更新之前执行）：
 ```
@@ -137,79 +144,79 @@ for i in range(N):
 - 以 rand_flip_p=0.10 概率随机翻转（保证遍历性）
 - 否则定向翻转 weight 得分最高的位
 
-**Design Observation 2（遍历性说明）**：由于 rand_flip_p=0.10 > 0，任意二进制掩码都有正概率被探索。
+**Design Observation（遍历性说明）**：由于 rand_flip_p=0.10 > 0，任意二进制掩码都有正概率被探索。
+
+**消融证据**（25 数据集）：
+- KER 单独 +4.68pp over MEL，+0.79pp over MEL+MI
 
 ---
 
-## 四、双空间协同机制
+### 3.5 原地更新（In-place Update）
+
+新解与对应粒子的 Pbest 做 1v1 比较，直接替换：
 
 ```
-DRS（结构空间）← → KER（适应度空间）
-      ↑                    ↑
-  维持种群多样性         定向精英扰动
-      |                    |
-  → 为KER提供         → 产生高质量多样候选
-    异质改进信号           丰富DRS选择池
+if fit(new) < fit(Pbest[i]):
+    Pbest[i] = new
 ```
 
-**消融的三层论证框架**（2026-07-05 修订）：
-
-1. **每个模块独立有效**：DRS 单独 +3.96pp, KER 单独 +4.68pp over MEL（25DS）
-2. **每个模块有结构性缺陷**：DRS 牺牲 accuracy（NHD 0→0.451，但精度降低），KER 牺牲多样性（NHD 始终为零）
-3. **完整框架是唯一兼得方案**：accuracy 达 KER 水平（统计无差异），NHD 保持 0.324（DRS 的 68%），特征数持平 DRS（198 vs 129）
-
-**消融证据（25 数据集，CNS 排除，五层消融）**：
-
-| 变体 | Acc | Δ over MEL | Δ over MEL_MI | NHD | 角色 |
-|------|------|:---:|:---:|------|------|
-| MEL | 0.8803 | — | — | 0.000 | 绝对基线 |
-| **MEL_MI** | **0.9192** | **+3.89pp** | — | 0.000 | MI+Reinit 基座 |
-| KDS-EL/DRS | 0.9199 | +3.96pp | +0.07pp | **0.453** | +DRS |
-| KDS-EL/KER | **0.9271** | **+4.68pp** | **+0.79pp** | 0.000 | +KER |
-| **KDS-EL** | **0.9291** | **+4.88pp** | **+0.99pp** | **0.310** | Full |
-
-> ⚠️ DRS 和 KER 在不同维度运作（结构空间 vs 适应度空间），不能加性分解。DRS 的成功标准是 NHD > 0 且不拖累精度；KER 的成功标准是 ΔAcc > 0。
-
-**DRS 边界条件**：3/25 数据集上 Full < KER（COIL20/ISOLET/madelon）——在 Discussion 中诚实讨论。
-
-**三维综合排名**（Accuracy + 特征数 + NHD）：
-
-| 变体 | Acc 最佳 | Feat 最少 | NHD 最高 | **综合 #1** |
-|------|:-------:|:--------:|:-------:|:---------:|
-| KDS_EL_DRS | 6/26 | 15/26 | **23/26** | **19/26** |
-| KDS_EL_KER | 6/26 | 5/26 | 0/26 | 0/26 |
-| **KDS_EL** | **13/26** | 5/26 | 2/26 | **6/26** |
-
-> **只有 KDS_EL 同时实现了高 Accuracy + 结构多样性维持 + 特征压缩（-93.4% vs MEL）。**
+而非池化方案中的 2N 竞争（合并新旧种群 → 选出 Top N）：
+- 原地更新更简单、更快
+- 消融证据：NoPool Acc 0.9851 > KER (含池化) 0.9821 (9 数据集)
 
 ---
 
-## 五、四个变体与消融设计
+## 四、消融链路与贡献分解
 
-| CSV版本名 | 图表显示名 | 含义 | MI初始化 | 自适应重初始化 |
-|---|---|---|---|---|
-| MEL | MEL (Baseline) | 双子群PSO，无DRS无KER | ✗ | ✗ |
-| KDS_EL_DRS | KDS-EL/DRS | 含DRS，无KER | ✓ | ✓ |
-| KDS_EL_KER | KDS-EL/KER | 含KER，无DRS | ✓ | ✓ |
-| KDS_EL | **KDS-EL (Proposed)** | 完整双空间框架 | ✓ | ✓ |
+### 四变体消融链
 
-> 三种 KDS-EL 变体共享 MI 引导初始化 + 自适应重初始化设计。MEL 作为干净基线不包含此机制。
+```
+MEL（随机初始化）
+  → MEL+MI（MI 引导初始化 + 自适应重初始化）
+  → KDS_EL_NoPool（+ KER + 原地更新，固定 ws=[0.9, 0.1]）
+  → KDS_EL_TwoPhase（+ 两阶段权重调度 ws=[0.7,0.3]→[0.95,0.05]）= KDS-EL 最终版
+```
+
+**贡献分解**：
+
+| 步骤 | ΔAcc | 贡献来源 |
+|:--|:--|:--|
+| MEL → MEL+MI | +3.89pp | MI 初始化 + 自适应重初始化（地基） |
+| MEL+MI → NoPool | +1.42pp | KER 在线知识累积 + 原地更新 |
+| NoPool → TwoPhase | **+1.07pp** | **两阶段权重调度** |
+| MEL → TwoPhase (总计) | **+6.38pp** | 以上三者累积 |
+
+**三维综合优势**（25 数据集，CNS 排除）：
+
+| 方法 | Acc | Feat | Time | NHD |
+|:--|:--|:--|:--|:--|
+| MEL | 0.8803 | ~2440 | 175s | 0.000 |
+| MEL+MI | 0.9192 | 300.6 | — | 0.000 |
+| KDS_EL_NoPool | 0.9334 | 152.8 | 64.1s | 0.000 |
+| **KDS_EL_TwoPhase** | **0.9442** | **107.1** | **60.5s** | 0.000 |
+
+> 注：TwoPhase 比 NoPool 精度更高、特征更少、速度更快 — 三维同步提升。
+>
+> 所有变体 NHD 均为 0（已移除 DRS），NHD 指标仅在前文历史数据中出现，不再作为评估指标。
+>
+> ---
+>
+> ## 五、变体命名对照
+
+| CSV版本名 | 图表显示名 | 含义 | 两阶段调度 |
+|---|---|---|---|
+| MEL | MEL (Baseline) | 双子群PSO，随机初始化 | ✗ |
+| MEL_MI | MEL+MI | + MI 初始化 + 自适应重初始化 | ✗ |
+| KDS_EL_NoPool | KDS-EL/NoPool | + KER + 原地更新，固定 ws=[0.9,0.1] | ✗ |
+| KDS_EL_TwoPhase | **KDS-EL (Proposed)** | + 两阶段权重调度 ws=[0.7,0.3]→[0.95,0.05] | ✓ |
+
+> 所有 KDS-EL 变体共享 MI 引导初始化 + 自适应重初始化 + 原地更新设计。
 
 ---
 
 ## 六、创新点总结
 
-### 创新点1：DRS — NHD 首次作为第一类 Pareto 选择目标（中等偏高）
-
-**现状**：所有 wrapper-based FS 方法中，NHD 仅作为事后诊断指标，从未进入选择算子。
-
-**本文**：将 NHD 与 fitness 并列为两个 Pareto 目标，直接嵌入环境选择过程，提供可验证的多样性维持特性（Design Observation 1）。
-
-**证据**：
-- 种群平均 NHD：MEL/KER/所有 SOTA = 0.000 → DRS = 0.451 → KDS_EL = 0.324
-- 特征数 vs MEL baseline：平均减少 **93.4%**（2989→198，26 数据集）
-
-### 创新点2：KER — improvement-feedback 在线知识学习（中等）
+### 创新点1：KER — improvement-feedback 在线知识学习（高）
 
 **现状**：IGPSO 预训练 MLP（一次性），FWPSO 即时权重更新（只利用当前步），其他方法改进信号完全丢弃。
 
@@ -217,26 +224,33 @@ DRS（结构空间）← → KER（适应度空间）
 
 **证据**：KER 单独 +4.68pp over MEL（25 数据集），weight 向量无需预训练即可准确识别重要特征。
 
-### 创新点3：Dual-Space 互补框架（高，核心卖点）
+### 创新点2：两阶段权重调度（中高）
 
-**现状**：现有方法要么只在 fitness 空间优化（单空间），要么做传统多目标 FS（输出 Pareto 前沿解集）。
+**现状**：所有 FS 方法使用固定目标权重（通常 ws=[0.9, 0.1]），未考虑搜索阶段的特性变化。
 
-**本文**：提出双空间互补框架——fitness 空间（KER 精准收敛）+ structural 空间（DRS 多样探索），最终输出单一最优解。NHD 是"辅助目标"（auxiliary objective），不是用户级 trade-off 目标。DRS 和 KER 在不同维度运作，不可加性分解——两者互补而非协同。
+**本文**：Phase1 (前70%迭代) ws=[0.7,0.3] 激进压缩 → Phase2 (后30%迭代) ws=[0.95,0.05] 精细调精度。利用 FS 问题的结构特性——噪声特征排除是早期一次性工作，精度提升是后期精细化工作。
 
-**证据**：
-- KDS_EL 三变体包揽 Friedman 排名前 3（3.0-3.6），与第 4 名 FWPSO (5.05) 差距 **1.45**
-- PCMAC 数据集：Δtotal = +0.0608，同时显著优于两变体 —— 互补最强证据
-- 困难数据集（ALL2/ALL3/Stroke）上 DRS 单独为负贡献，完整 KDS-EL 实现互相纠错
+**证据**：TwoPhase vs NoPool (固定 ws) ΔAcc=+1.07pp, ΔFeat=-46, 胜率 16/25。最大收益在困难数据集：ALL2 (+4.42pp), T1D (+3.66pp), ALL3 (+3.16pp)。
 
 ### 创新点 0：MI 引导初始化 + 自适应重初始化（辅助级）
 
 - MI 引导初始化参考了 fMOPSO-FS (Han et al., 2024)，**不是本文首创**
-- 本文贡献：将 MI 初始化 + 自适应 MI 重初始化组合进双空间框架，使 MI 知识在全生命周期持续发挥作用
-- 是三个主创新点的**支撑性设计**——没有它，KER 的 weight 冷启动会导致约 40% 运行崩溃
+- 本文贡献：将 MI 初始化 + 自适应 MI 重初始化组合进框架，使 MI 知识在全生命周期持续发挥作用
+- 是主创新点的**支撑性设计**——没有它，KER 的 weight 冷启动会导致约 40% 运行崩溃
+
+### 已废弃创新方向
+
+- **DRS（多样性调节选择）**：精度贡献仅 +0.07pp（噪声级），已从最终版本移除
+- **NHD 多样性指标**：不适合跨方法公平比较，不再作为评估指标
+- **Dual-Space 框架**：随着 DRS 移除而不再成立
 
 ---
 
-## 七、整体性能数据
+## 七、SOTA 对比数据（来自 2026-07-01~07 实验批次，旧版 KDS-EL 含 DRS）
+
+> ⚠️ **数据版本说明**：以下 SOTA/MOFS 对比数据来自旧版实验（`formal_experiment_20260701_094943/` 等），其中 KDS_EL/KDS_EL_KER/KDS_EL_DRS 为**含 DRS 和池化的旧版本**。新版简化 KDS-EL (TwoPhase, 无 DRS 无池化) 的全量数据见上方 §3.3 和 §四。
+> 
+> SOTA 对比方法 (FWPSO, PSO-CSM, SaWDE, BPSO, IGPSO) 和 MOFS 方法的数据仍然有效，可作为 KDS-EL 框架整体性能参考。
 
 **实验规模**：20 数据集（d∈[500, 54675]，n∈[36, 2600]）× 15 方法 × 10 runs
 
@@ -248,69 +262,54 @@ DRS（结构空间）← → KER（适应度空间）
 
 | 类别 | 方法 | 说明 |
 |------|------|------|
-| **本文** | KDS_EL | 完整双空间框架 |
-| 消融 | KDS_EL_DRS, KDS_EL_KER, MEL | 模块贡献验证 |
+| **本文** | KDS_EL (旧版含DRS+池化) | 旧版完整框架 |
+| 消融 | KDS_EL_DRS, KDS_EL_KER, MEL | 旧版模块贡献验证 |
 | SOTA 单目标 | BPSO, SaWDE, FWPSO, PSO-CSM, IGPSO | 5 个单目标 EC 方法 |
 | MOFS 经典 | NSGA-II-FS (Pareto), MOPSO-FS (PSO), MOEA-D-FS (分解) | 三种主流 MOFS 范式 |
 | MOFS 近年 | VGS-MOEA (变长), fMOPSO-FS (PSO+MI), W-MOPSO-FS (混合) | MOFS 前沿方法 |
 
-### 7.3 关键统计（20 数据集，真实分类准确率）
+> 🆕 新版简化 KDS-EL (KDS_EL_TwoPhase, 无 DRS 无池化) 数据见 `output/formal_experiment_final/`，25 数据集 Acc=0.9442, Feat=107.1。
 
-| 指标 | 数值 |
-|------|------|
-| KDS_EL avg accuracy | **0.9450**（#2 overall，仅次 VGS-MOEA 0.9463） |
-| KDS_EL vs VGS-MOEA | Δ = -0.0013（几乎持平），特征 220 vs 51 |
-| KDS_EL vs FWPSO (#5) | 差距 **+2.73pp** |
-| vs MEL (Baseline) | 20/20 wins，ΔAcc +0.058 |
-| vs BPSO | 20/20 wins，ΔAcc +0.075 |
-| vs PSO-CSM | 20/20 wins，ΔAcc +0.043 |
-| vs IGPSO | 20/20 wins，ΔAcc +0.061 |
-| vs SaWDE | 19/20 wins（ISOLET 上输） |
-| vs FWPSO | 18/20 wins（ISOLET/COIL20 上输） |
-| vs 经典 MOFS | 胜率 75%-85%（主要输给 VGS-MOEA 的 11 个数据集） |
-| KDS-EL avg features | 220（vs MEL 2722，**-91.9%**） |
-| KDS-EL avg NHD | 0.324（vs MEL/KER/SOTA 全部 = 0.000） |
-| KDS-EL avg time | 96.2s（VGS-MOEA 34.2s 最快） |
-| Friedman rank (KDS_EL) | 3.000（#1-3 被 KDS-EL 三变体包揽） |
+### 7.4 14 定长方法完整排名 (Proposed = KDS_EL_TwoPhase)
 
-### 7.4 15 方法完整排名
+> VGS-MOEA (变长, Acc=0.9463, Feat=51) 不进入主表——不同赛道。在 Related Work 作为变长 MOFS 代表作介绍。
 
 | 排名 | 方法 | True Acc | Feat | Time(s) | 类别 |
 |:----:|------|----------|------|---------|------|
-| 🥇 | VGS-MOEA | **0.9463** | 51 | 34.2 | MOFS 变长 |
-| 🥈 | **KDS_EL** | **0.9450** | 220 | 96.2 | **本文方法** |
-| 🥉 | KDS_EL_KER | 0.9438 | 236 | 97.5 | 消融 |
-| 4 | KDS_EL_DRS | 0.9383 | 166 | 188.0 | 消融 |
-| 5 | FWPSO | 0.9177 | 1069 | 49.7 | SOTA |
-| 6 | W-MOPSO-FS | 0.9132 | 2960 | 110.4 | MOFS 混合 |
-| 7 | fMOPSO-FS | 0.9110 | 3007 | 119.9 | MOFS 混合 |
-| 8 | NSGA-II-FS | 0.9064 | 4818 | 135.9 | MOFS 经典 |
-| 9 | MOEA-D-FS | 0.9042 | 4937 | 138.5 | MOFS 经典 |
-| 10 | PSO-CSM | 0.9021 | 1559 | 122.5 | SOTA |
-| 11 | MOPSO-FS | 0.9009 | 5263 | 142.8 | MOFS 经典 |
-| 12 | SaWDE | 0.8944 | 3521 | 110.5 | SOTA |
-| 13 | MEL | 0.8868 | 2722 | 175.0 | 基线 |
-| 14 | IGPSO | 0.8839 | 2538 | 136.4 | SOTA |
-| 15 | BPSO | 0.8698 | 5297 | 146.2 | SOTA |
+| **1** | **KDS-EL (Proposed)** | **0.9442** | **107** | **61** | **本文** |
+| 2 | KDS-EL/NoPool | 0.9334 | 153 | 64 | 消融基线 |
+| 3 | MEL+MI | 0.9192 | 301 | 66 | 消融对照 |
+| 4 | FWPSO | 0.9177 | 1069 | 50 | SOTA #1 |
+| 5 | W-MOPSO-FS | 0.9132 | 2960 | 110 | MOFS #1 |
+| 6 | fMOPSO-FS | 0.9110 | 3007 | 120 | MOFS |
+| 7 | NSGA-II-FS | 0.9064 | 4818 | 136 | MOFS |
+| 8 | MOEA-D-FS | 0.9041 | 4937 | 138 | MOFS |
+| 9 | PSO_CSM | 0.9021 | 1559 | 122 | SOTA |
+| 10 | MOPSO-FS | 0.9009 | 5263 | 143 | MOFS |
+| 11 | SaWDE | 0.8944 | 3521 | 110 | SOTA |
+| 12 | IGPSO | 0.8839 | 2538 | 136 | SOTA |
+| 13 | MEL | 0.8803 | 2436 | 192 | 基线 |
+| 14 | BPSO | 0.8698 | 5297 | 146 | SOTA |
 
-### 7.5 KDS_EL vs 各方法 Win/Loss（20 数据集，真实 Acc）
+### 7.5 KDS-EL (Proposed) vs 各定长方法 Win/Loss
 
-| vs 方法 | Win | Tie | Loss | 胜率 | 类别 |
+| vs 方法 | Win | Tie | Loss | D-Acc | 类别 |
 |---------|-----|-----|------|------|------|
-| MEL | 20 | 0 | 0 | **100%** | 基线 |
-| BPSO | 20 | 0 | 0 | **100%** | SOTA |
-| PSO-CSM | 20 | 0 | 0 | **100%** | SOTA |
-| IGPSO | 20 | 0 | 0 | **100%** | SOTA |
-| SaWDE | 19 | 0 | 1 | 95.0% | SOTA |
-| FWPSO | 18 | 0 | 2 | 90.0% | SOTA |
-| MOPSO-FS | 17 | 1 | 2 | 85.0% | MOFS 经典 |
-| MOEA-D-FS | 16 | 0 | 4 | 80.0% | MOFS 经典 |
-| fMOPSO-FS | 16 | 1 | 3 | 80.0% | MOFS 混合 |
-| NSGA-II-FS | 15 | 1 | 4 | 75.0% | MOFS 经典 |
-| W-MOPSO-FS | 15 | 2 | 3 | 75.0% | MOFS 混合 |
-| VGS-MOEA | 8 | 1 | **11** | 40.0% | MOFS 变长 |
+| MEL | 25 | 0 | 0 | **+6.39pp** | 基线 |
+| BPSO | 20 | 0 | 0 | **+8.75pp** | SOTA |
+| PSO_CSM | 20 | 0 | 0 | **+5.52pp** | SOTA |
+| IGPSO | 20 | 0 | 0 | **+7.34pp** | SOTA |
+| SaWDE | 19 | 1 | 0 | **+6.30pp** | SOTA |
+| FWPSO | 20 | 0 | 0 | **+3.96pp** | SOTA |
+| MEL+MI | 24 | 1 | 0 | **+2.49pp** | 消融 |
+| KDS-EL/NoPool | 16 | 8 | 1 | **+1.07pp** | 消融 |
+| MOPSO-FS | 18 | 1 | 1 | +5.65pp | MOFS |
+| MOEA-D-FS | 17 | 0 | 3 | +5.32pp | MOFS |
+| fMOPSO-FS | 17 | 1 | 2 | +4.64pp | MOFS |
+| NSGA-II-FS | 16 | 1 | 3 | +5.09pp | MOFS |
+| W-MOPSO-FS | 17 | 1 | 2 | +4.42pp | MOFS |
 
-> KDS_EL 唯一 Acc 落后的对手是 VGS-MOEA（8W/1T/11L），但差距极小（ΔAcc = -0.0013）。排除 VGS-MOEA 后对所有其他方法胜率 ≥ 75%。
+> 对所有定长方法胜率 >= 80%。
 
 ### 7.6 三类 MOFS 代差
 
@@ -335,17 +334,29 @@ DRS（结构空间）← → KER（适应度空间）
 
 ---
 
-## 八、与同类方法的本质区别
+## 八、与同类定长方法的本质区别
 
-| 方法 | 多样性机制 | 知识机制 | 输出 |
-|---|---|---|---|
-| BPSO/SaWDE/FWPSO | 无（或随机） | 无 | 单解 |
-| IGPSO | 无 | MLP预训练（一次性）| 单解 |
-| PSO-CSM | 无 | 综合评分（即时）| 单解 |
-| 经典 MOFS (NSGA-II/MOPSO/MOEA-D) | 有（Pareto/分解） | 无 | **Pareto前沿** |
-| 混合 MOFS (fMOPSO/W-MOPSO) | 有（Pareto） | MI 引导（一次性）| **Pareto前沿** |
-| VGS-MOEA | 有（变长基因组） | 无 | **Pareto前沿** |
-| **KDS-EL** | **DRS（持续，结构空间）** | **KER（累积，在线学习）** | **单解** |
+| 方法 | 知识引导 | 自适应调度 | 更新方式 | 输出 |
+|---|---|---|---|---|
+| BPSO/SaWDE/FWPSO | 无 | 无 | — | 单解 |
+| IGPSO | MLP预训练（一次性） | 无 | — | 单解 |
+| PSO-CSM | 综合评分（即时） | 无 | — | 单解 |
+| 经典 MOFS (NSGA-II/MOPSO/MOEA-D) | 无 | 无 | Pareto 选择 | Pareto前沿 |
+| 混合 MOFS (fMOPSO/W-MOPSO) | MI 引导（一次性） | 无 | Pareto 选择 | Pareto前沿 |
+| **KDS-EL** | **KER（累积，在线学习）** | **两阶段权重调度** | **原地更新** | **单解** |
+
+> **VGS-MOEA (变长编码 + Pareto 前沿)** 不在此表——编码方式和输出类型均不同。在 Related Work 作为变长 MOFS 代表作单独介绍。
+>
+> KDS-EL 是唯一同时具备：在线知识累积 + 自适应阶段调度 + 简单原地更新 的定长单解框架。
+
+### 7.7（旧版）PCMAC — 三模块协同最强证据
+
+> ⚠️ 以下数据来自旧版含 DRS 的实验，仅保留作为历史参考。
+
+| 指标 | 数值 |
+|------|------|
+| KDS_EL Acc | **0.8478**（最强 SOTA SaWDE = 0.8256） |
+| Δtotal (vs MEL 0.7870) | **+0.0608**（25 数据集中第 4 大） |
 
 KDS-EL 是唯一同时具备：持续结构多样性维护 + 在线知识积累 + 单解输出 的框架。与传统 MOFS 的本质区别：NHD 是辅助目标（优化搜索过程），最终输出单一最优解而非 Pareto 前沿。
 

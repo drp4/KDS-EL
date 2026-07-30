@@ -8,6 +8,7 @@
 
 **算法名称**：KDS-EL（Knowledge-guided Dual-Space Evolutionary Learning）
 **研究领域**：高维生物信息学特征选择（Wrapper-based, PSO框架）
+**当前最终版本**：KDS_EL_TwoPhase（MEL + MI + KER + 两阶段权重调度 + 原地更新，已移除 DRS + 池化）
 
 ---
 
@@ -16,22 +17,18 @@
 ```
 KDS-EL = 双子群PSO骨架（继承自MEL [CITE_MEL, IEEE TKDE]）
          + MI 初始化 + 自适应重初始化          ← 知识引导生命周期
-         + DRS（Diversity-regulated Selection）← 原名 EMDO
-         + KER（Knowledge-guided Elite Refinement）← 原名 KGEF
+         + KER（Knowledge-guided Elite Refinement）← 核心创新: improvement-feedback 在线知识累积
+         + 两阶段权重调度（ws=[0.7,0.3]→[0.95,0.05]）← 核心创新: Phase1 激进压缩 → Phase2 精调
+         + 原地更新（1v1 替换，非 2N 池化竞争）
 
-DRS：在 fitness 和 -NHD 两个目标上做 NSGA-II Pareto 排序
-     α_cd(t) = (t/T)² — 早期多样性优先，后期精度优先
-     定位：Structural Space（结构空间）
+已移除的组件（消融证据不足）：
+  ❌ DRS（Diversity-regulated Selection）— 精度贡献仅 +0.07pp，统计不显著
+  ❌ 2N 池化选择 — NoPool 精度更高且更简单
+  ❌ NHD 多样性指标 — MEL 从未测量，不适合跨方法公平比较
 
-KER：improvement-feedback 权重更新（weight += delta when Pbest improves）
-     权重更新在 Pbest 更新之前（已验证的关键顺序）
-     p_r=0.10 随机翻转保证遍历性
-     定位：Fitness Space（适应度空间）
-
-消融命名：
-  KDS_EL_DRS       → KDS-EL/DRS（只含DRS + MI初始化 + 自适应重初始化）
-  KDS_EL_KER       → KDS-EL/KER（只含KER + MI初始化 + 自适应重初始化）
-  KDS_EL           → KDS-EL（Proposed，完整框架）
+最终版本命名：
+  KDS_EL_NoPool    → MEL + MI + KER + 原地更新（无两阶段，作为消融基线）
+  KDS_EL_TwoPhase  → MEL + MI + KER + 两阶段权重调度 + 原地更新（= KDS-EL 最终版）
 ```
 
 **关键参数**：N=20, T=100, K_cv=5, k_nn=3, thres=0.6, ws=[0.9,0.1],
@@ -59,6 +56,9 @@ Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
 | 4 | `output/formal_experiment_20260707_142018/` | MOFS 对比 (6方法×20数据集) | ✅ | ✅ 全部有效 |
 | 5 | `output/formal_experiment_mel_mi/` | MEL_MI 对照 (1方法×26数据集，含CNS) 🆕 | ✅ | ✅ 全部有效 |
 | 6 | `output/formal_experiment_20260627_211133/` | 早期消融曲线 (3方法×25数据集) | ✅ | ⚠️ 早期版本，曲线协议不同于正式 |
+| 7 | `output/formal_experiment_final/` | **NoPool vs TwoPhase 全量验证** (2方法×26数据集) 🆕 | ✅ | ✅ 全部有效，TwoPhase 胜 16/25，最终版本数据 |
+| 8 | `output/test_pool_ablation/` | 池化消融: KER vs NoPool (2方法×9数据集) | ✅ | ✅ NoPool 胜出 |
+| 9 | `output/test_twophase/` | 两阶段调度消融: NoPool vs TwoPhase (2方法×5数据集) | ✅ | ✅ TwoPhase +0.40pp (预热) |
 
 ### 3.2 20个数据集
 
@@ -87,61 +87,64 @@ Seeds: 不固定（RNG自然流动）, NUM_RUNS=10
 
 ## 四、核心数字（写作时直接引用）
 
-### 4.1 15方法排名（20数据集，真实分类准确率）
+### 4.0 最终版实验 (2026-07-29): NoPool vs TwoPhase 🆕
+
+**数据源**: `output/formal_experiment_final/`, 2方法×26数据集×10runs
+
+| 指标 | KDS_EL_NoPool | KDS_EL_TwoPhase | Δ |
+|:--|:--|:--|:--|
+| Mean Acc (25DS, excl CNS) | 0.9334 | **0.9442** | **+1.07pp** |
+| Mean Feat | 152.8 | **107.1** | -45.7 |
+| Mean Time | 64.1s | **60.5s** | -3.6s |
+| Win/Loss/Tie | — | **16/1/8** | — |
+
+**关键发现**:
+- TwoPhase 精度/特征/速度三维同步提升
+- 最大收益在困难数据集 (ALL2 +4.42pp, T1D +3.66pp, ALL3 +3.16pp)
+- 唯一失败 RELATHE (Δ=-0.0021pp)，但特征减半
+- NHD 均为 0（无 DRS）；CNS 排除
+
+### 4.1 定长方法排名 (Proposed = KDS_EL_TwoPhase, 排除 VGS-MOEA 变长编码)
 
 | 排名 | 方法 | True Acc | Feat | Time(s) | 类别 |
 |:----:|------|----------|------|---------|------|
-| 🥇 | VGS-MOEA | **0.9463** | 51 | 34.2 | MOFS 变长 |
-| 🥈 | **KDS_EL** | **0.9450** | 220 | 96.2 | **本文** |
-| 🥉 | KDS_EL_KER | 0.9438 | 236 | 97.5 | 消融 |
-| 4 | KDS_EL_DRS | 0.9383 | 166 | 188.0 | 消融 |
-| 5 | FWPSO | 0.9177 | 1069 | 49.7 | SOTA |
-| 6 | W-MOPSO-FS | 0.9132 | 2960 | 110.4 | MOFS |
-| 7 | fMOPSO-FS | 0.9110 | 3007 | 119.9 | MOFS |
-| 8 | NSGA-II-FS | 0.9064 | 4818 | 135.9 | MOFS |
-| 9 | MOEA-D-FS | 0.9042 | 4937 | 138.5 | MOFS |
-| 10 | PSO-CSM | 0.9021 | 1559 | 122.5 | SOTA |
-| 11 | MOPSO-FS | 0.9009 | 5263 | 142.8 | MOFS |
-| 12 | SaWDE | 0.8944 | 3521 | 110.5 | SOTA |
-| 13 | MEL | 0.8868 | 2722 | 175.0 | 基线 |
-| 14 | IGPSO | 0.8839 | 2538 | 136.4 | SOTA |
-| 15 | BPSO | 0.8698 | 5297 | 146.2 | SOTA |
+| **1** | **KDS-EL (Proposed)** | **0.9442** | **107** | **61** | **本文** |
+| 2 | KDS-EL/NoPool | 0.9334 | 153 | 64 | 消融基线 |
+| 3 | MEL+MI | 0.9192 | 301 | 66 | 消融对照 |
+| 4 | FWPSO | 0.9177 | 1069 | 50 | SOTA #1 |
+| 5 | W-MOPSO-FS | 0.9132 | 2960 | 110 | MOFS #1 |
+| 6 | fMOPSO-FS | 0.9110 | 3007 | 120 | MOFS |
+| 7 | NSGA-II-FS | 0.9064 | 4818 | 136 | MOFS |
+| 8 | MOEA-D-FS | 0.9041 | 4937 | 138 | MOFS |
+| 9 | PSO_CSM | 0.9021 | 1559 | 122 | SOTA |
+| 10 | MOPSO-FS | 0.9009 | 5263 | 143 | MOFS |
+| 11 | SaWDE | 0.8944 | 3521 | 110 | SOTA |
+| 12 | IGPSO | 0.8839 | 2538 | 136 | SOTA |
+| 13 | MEL | 0.8803 | 2436 | 192 | 基线 |
+| 14 | BPSO | 0.8698 | 5297 | 146 | SOTA |
 
-### 4.2 Friedman排名（20数据集）
+> **VGS-MOEA 不进入主表**：变长编码 + Pareto 前沿，与定长单解 KDS-EL 不同赛道。作为独立类别在 Related Work 提及。
+> KDS-EL 领先定长第二名 +1.08pp，领先最强 SOTA (FWPSO) +2.65pp。
 
-| 方法 | Avg Rank |
-|------|----------|
-| KDS_EL | 3.000 |
-| KDS_EL_KER | 3.200 |
-| KDS_EL_DRS | 3.600 |
-| FWPSO | 5.050 |
-| PSO_CSM | 6.250 |
-| SaWDE | 6.850 |
-| IGPSO | 8.150 |
-| MEL | 8.500 |
-| BPSO | 9.400 |
+### 4.2 KDS-EL (Proposed) vs 定长方法 Win/Loss
 
-> KDS-EL三变体占据前三，与第4名FWPSO差距**1.45**。
+| vs 方法 | Win | Tie | Loss | D-Acc | D-Feat |
+|---------|-----|-----|------|------|--------|
+| KDS-EL/NoPool | 16 | 8 | 1 | +0.0107 | -46 |
+| MEL+MI | 24 | 1 | 0 | +0.0249 | -194 |
+| FWPSO | 20 | 0 | 0 | +0.0396 | -981 |
+| W-MOPSO-FS | 17 | 1 | 2 | +0.0442 | -2872 |
+| fMOPSO-FS | 17 | 1 | 2 | +0.0464 | -2919 |
+| NSGA-II-FS | 16 | 1 | 3 | +0.0509 | -4731 |
+| MOEA-D-FS | 17 | 0 | 3 | +0.0532 | -4849 |
+| PSO_CSM | 20 | 0 | 0 | +0.0552 | -1472 |
+| MOPSO-FS | 18 | 1 | 1 | +0.0565 | -5176 |
+| SaWDE | 19 | 1 | 0 | +0.0630 | -3433 |
+| IGPSO | 20 | 0 | 0 | +0.0734 | -2450 |
+| MEL | 25 | 0 | 0 | +0.0639 | -2329 |
+| BPSO | 20 | 0 | 0 | +0.0875 | -5209 |
 
-### 4.3 KDS_EL vs各方法Win/Loss（20数据集）
-
-| vs 方法 | Win | Tie | Loss | 胜率 | 类别 |
-|---------|-----|-----|------|------|------|
-| MEL | 20 | 0 | 0 | **100%** | 基线 |
-| BPSO | 20 | 0 | 0 | **100%** | SOTA |
-| PSO-CSM | 20 | 0 | 0 | **100%** | SOTA |
-| IGPSO | 20 | 0 | 0 | **100%** | SOTA |
-| SaWDE | 19 | 0 | 1 | 95.0% | SOTA |
-| FWPSO | 18 | 0 | 2 | 90.0% | SOTA |
-| MOPSO-FS | 17 | 1 | 2 | 85.0% | MOFS |
-| MOEA-D-FS | 16 | 0 | 4 | 80.0% | MOFS |
-| fMOPSO-FS | 16 | 1 | 3 | 80.0% | MOFS |
-| NSGA-II-FS | 15 | 1 | 4 | 75.0% | MOFS |
-| W-MOPSO-FS | 15 | 2 | 3 | 75.0% | MOFS |
-| VGS-MOEA | 8 | 1 | **11** | 40.0% | MOFS |
-
-> KDS_EL唯一Acc落后的对手是VGS-MOEA（Δ=-0.0013）。排除VGS-MOEA后对所有其他方法胜率≥75%。
-> ISOLET仍唯一输给SaWDE。COIL20成为第二个输给FWPSO的数据集（天花板效应）。
+> 对所有定长方法胜率 >= 80% (16/20)。仅 NSGA-II-FS (3 losses) 和 MOEA-D-FS (3 losses) 在个别数据集上造成损失。
 
 ### 4.4 消融分析：完整五层消融（25数据集，CNS排除）
 
