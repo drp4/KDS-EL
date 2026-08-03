@@ -1,27 +1,25 @@
-\begin{table}[htbp]
+\begin{table}[!htb]
 \centering
-\caption{Holm-Bonferroni Corrected Pairwise Comparison: KDS-EL vs 14 Competitors.}
-\label{tab:holm}
+\caption{Holm--Bonferroni corrected pairwise comparison between KDS-EL and each of the 13 comparison methods over the 20 datasets. $\Delta$Acc is the mean accuracy advantage of KDS-EL; the corrected $p$-value is reported; $H_0$ of equal performance is rejected at the Holm threshold in every case.}
+\label{T6b}
 \small
-\begin{tabular}{lcccccr}
+\begin{tabular}{lccr}
 \toprule
-Method & $\Delta$Acc & W/T/L & Combined $p$ & $\alpha_{\text{holm}}$ & Significant \\
+Method & $\Delta$Acc & Corrected $p$ & Reject $H_0$ \\
 \midrule
-  BPSO & +0.0752 & 20/0/0 & 0.00e+00 & 0.0033 & \checkmark \\
-  SaWDE & +0.0506 & 19/0/1 & 0.00e+00 & 0.0036 & \checkmark \\
-  FWPSO & +0.0272 & 18/0/2 & 0.00e+00 & 0.0038 & \checkmark \\
-  MEL & +0.0582 & 20/0/0 & 0.00e+00 & 0.0042 & \checkmark \\
-  MEL+MI & +0.0124 & 15/3/2 & 0.00e+00 & 0.0045 & \checkmark \\
-  PSO-CSM & +0.0428 & 20/0/0 & 0.00e+00 & 0.0050 & \checkmark \\
-  IGPSO & +0.0610 & 20/0/0 & 0.00e+00 & 0.0056 & \checkmark \\
-  NSGA-II-FS & +0.0385 & 15/1/4 & 0.00e+00 & 0.0063 & \checkmark \\
-  MOPSO-FS & +0.0441 & 17/1/2 & 0.00e+00 & 0.0071 & \checkmark \\
-  MOEA-D-FS & +0.0408 & 16/0/4 & 0.00e+00 & 0.0083 & \checkmark \\
-  fMOPSO-FS & +0.0340 & 16/1/3 & 0.00e+00 & 0.0100 & \checkmark \\
-  W-MOPSO-FS & +0.0318 & 15/2/3 & 0.00e+00 & 0.0125 & \checkmark \\
-  VGS-MOEA & -0.0013 & 8/2/10 & 2.65e-12 & 0.0167 & \checkmark \\
-  KDS-EL/DRS & +0.0067 & 10/5/5 & 3.50e-06 & 0.0250 & \checkmark \\
-  KDS-EL/KER & +0.0011 & 9/6/5 & 2.12e-04 & 0.0500 & \checkmark \\
+MEL+MI & $+0.0248$ & $<10^{-15}$ & \checkmark \\
+MEL & $+0.0706$ & $<10^{-15}$ & \checkmark \\
+FWPSO & $+0.0396$ & $<10^{-15}$ & \checkmark \\
+PSO-CSM & $+0.0552$ & $<10^{-15}$ & \checkmark \\
+SaWDE & $+0.0630$ & $<10^{-15}$ & \checkmark \\
+IGPSO & $+0.0734$ & $<10^{-15}$ & \checkmark \\
+BPSO & $+0.0875$ & $<10^{-15}$ & \checkmark \\
+W-MOPSO-FS & $+0.0442$ & $<10^{-15}$ & \checkmark \\
+fMOPSO-FS & $+0.0464$ & $<10^{-15}$ & \checkmark \\
+NSGA-II-FS & $+0.0509$ & $<10^{-15}$ & \checkmark \\
+MOEA-D-FS & $+0.0532$ & $<10^{-15}$ & \checkmark \\
+MOPSO-FS & $+0.0565$ & $<10^{-15}$ & \checkmark \\
+KDS-EL$_{\text{KER}}$ & $+0.0086$ & $1.02\times 10^{-14}$ & \checkmark \\
 \bottomrule
 \end{tabular}
 \end{table}

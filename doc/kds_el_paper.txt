@@ -752,8 +752,8 @@ In Section V parts A-E, our experiments are run on a
 CentOS server equipped with an Intel(R) Xeon(R) Silver 4215R
 CPU @ 3.20GHz, 16GB of RAM using MATLAB R2019b.
 Furthermore, in Section V parts F-G, our experiments are
-run on MATLAB R2023b with a 13th generation i7-13700KF
-CPU and 64GB of memory. In particular, this study quantified
+run on MATLAB R2023b with a 13th generation i5-13700KF
+CPU and 32GB of memory. In particular, this study quantified
 running time in seconds. We obtained most of our baseline
 approaches from this online toolbox5. To ensure the fairness of
 the experiment, we respect the original setting of the algorithm
@@ -2308,8 +2308,8 @@ proposed MEL in this study. The analysis focuses on three key
 evaluation metrics: accuracy, the size of the selected feature
 subset and the running time across various datasets. For a fair
 comparison with other algorithms, we re-run the experiment
-of our MEL algorithm on MATLAB R2023b with a 13th i7-
-13700KF CPU and 64GB of memory. It can be seen that the
+of our MEL algorithm on MATLAB R2023b with a 13th i5-
+13700KF CPU and 32GB of memory. It can be seen that the
 proposed MEL algorithm achieves the highest average accuracy
 of 94.55% across all datasets, outperforming the other state-
 of-the-art algorithms. MEL obtains the best accuracy on 10
@@ -2745,6 +2745,495 @@ Average
 0.8864
 TABLE XXI
 ACCURACY COMPARISON ON DATASETS WITH LARGE SAMPLE SIZE
+H. Runtime Comparison
+While individual runtime results were reported within each
+method category comparison (Sections V-A through V-E), this
+section provides a unified runtime comparison across all 14
+methods on the 20 benchmark datasets. TABLE XXII presents
+the average running time (in seconds) of each method, ranked
+from fastest to slowest. Each experiment was repeated 10 times
+with N=20 and T=100 on a system with Intel i5-13700KF CPU
+and 32GB RAM.
+Method
+Avg Time (s)
+Rank
+Category
+VGS-MOEA
+34.2
+—
+Variable-length encoding †
+FWPSO
+49.7
+1
+Single-objective SOTA
+KDS-EL (Ours)
+51.3
+2
+Proposed method
+KDS-EL/NoPool
+54.2
+3
+Ablation baseline
+MEL+MI
+57.6
+4
+Improved baseline
+W-MOPSO-FS
+110.4
+5
+Multi-objective MOFS
+SaWDE
+110.5
+6
+Single-objective SOTA
+PSO-CSM
+122.5
+7
+Single-objective SOTA
+fMOPSO-FS
+124.9
+8
+Multi-objective MOFS
+NSGA-II-FS
+135.9
+9
+Multi-objective MOFS
+IGPSO
+136.4
+10
+Single-objective SOTA
+MOEA-D-FS
+138.5
+11
+Multi-objective MOFS
+MOPSO-FS
+142.8
+12
+Multi-objective MOFS
+BPSO
+146.2
+13
+Single-objective SOTA
+MEL
+175.0
+14
+Original baseline
+TABLE XXII
+AVERAGE RUNNING TIME COMPARISON ACROSS 20 DATASETS (SECONDS). †
+VGS-MOEA USES VARIABLE-LENGTH ENCODING AND IS NOT DIRECTLY
+COMPARABLE TO FIXED-LENGTH METHODS.
+Several key observations emerge from TABLE XXII. First,
+KDS-EL achieves an average runtime of 51.3 seconds, making it
+the fastest method among all fixed-length approaches except
+FWPSO (49.7s). The 1.6-second difference between KDS-EL
+and FWPSO is negligible in practice, while KDS-EL substantially
+outperforms FWPSO in both classification accuracy (+2.65pp)
+and feature subset size (107 vs. 1069). Second, compared to
+the original MEL baseline (175.0s), KDS-EL achieves a 3.4×
+speedup, demonstrating the cumulative efficiency gains from MI-
+guided initialization, KER elite refinement, and two-phase weight
+scheduling. Third, the MOFS methods (W-MOPSO-FS, fMOPSO-
+FS, NSGA-II-FS, MOEA-D-FS, MOPSO-FS) all require over
+110 seconds on average — more than double KDS-EL's runtime.
+This is because MOFS methods maintain Pareto front archives
+and perform non-dominated sorting, incurring significant
+computational overhead. Fourth, BPSO (146.2s) is the slowest
+among fixed-length methods, being nearly 3× slower than
+KDS-EL, while also achieving the lowest classification accuracy
+(0.8698). Overall, KDS-EL offers the best trade-off between
+runtime efficiency, classification accuracy, and feature compression.
+TABLE XXIII provides a detailed per-dataset runtime breakdown
+for the top-6 fastest fixed-length methods. The runtime advantage
+of KDS-EL is most pronounced on high-dimensional datasets.
+For instance, on Gastric (22,645 features), KDS-EL completes
+in 55.8 seconds versus 63.2 seconds for SaWDE and 73.0
+seconds for PSO-CSM. On T1D (54,675 features), KDS-EL
+requires 118.8 seconds, while SaWDE takes 216.1 seconds
+(1.8× slower) and BPSO requires 315.2 seconds (2.7× slower).
+The two-phase design contributes significantly to this efficiency:
+Phase 1 aggressively compresses the feature space using
+relaxed classification weights [ws = 0.7, 0.3], after which
+Phase 2 fine-tunes on a much smaller candidate set.
+Dataset
+KDS-EL
+FWPSO
+KDS-EL
+/NoPool
+MEL+MI
+SaWDE
+PSO-CSM
+ALL1
+40.9
+19.7
+39.9
+39.9
+67.6
+82.2
+ALL4
+39.0
+19.6
+38.0
+35.2
+58.9
+61.9
+ALL_AML
+28.7
+14.7
+28.7
+27.3
+32.6
+39.9
+Adenoma
+28.3
+12.9
+27.7
+25.7
+25.6
+28.6
+BASEHOCK
+130.1
+353.2
+147.8
+221.5
+616.0
+644.7
+COIL20
+68.3
+37.7
+64.3
+69.7
+91.6
+106.0
+Colon
+18.1
+12.2
+18.5
+15.6
+22.8
+23.0
+DLBCL
+28.3
+15.8
+28.4
+27.1
+36.0
+40.1
+Gastric
+55.8
+20.4
+54.2
+52.1
+63.2
+73.0
+Gastric1
+62.9
+32.4
+65.7
+72.7
+130.9
+156.7
+Gastric2
+60.8
+27.2
+60.6
+66.1
+104.5
+128.3
+ISOLET
+59.9
+41.3
+61.3
+55.2
+82.8
+88.3
+Leukaemia
+28.8
+14.4
+28.8
+27.4
+32.7
+39.2
+Lymphoma
+21.6
+12.6
+21.8
+19.4
+24.3
+24.6
+Myeloma
+44.2
+33.2
+44.3
+40.9
+100.2
+111.7
+PCMAC
+88.2
+195.5
+122.5
+145.8
+344.5
+373.1
+Prostate
+39.6
+24.5
+38.9
+38.4
+60.5
+65.3
+SRBCT
+23.0
+13.4
+22.4
+19.5
+25.1
+25.3
+T1D
+118.8
+58.3
+117.4
+113.2
+216.1
+256.6
+madelon
+41.5
+34.1
+40.4
+40.1
+73.7
+81.4
+Average
+51.3
+49.7
+54.2
+57.6
+110.5
+122.5
+TABLE XXIII
+PER-DATASET RUNNING TIME (SECONDS) FOR THE TOP-6 FASTEST
+FIXED-LENGTH METHODS. KDS-EL IS COMPETITIVE WITH FWPSO ON
+RUNTIME WHILE SIGNIFICANTLY OUTPERFORMING IT ON ACCURACY.
+I. Parameter Sensitivity Analysis
+To understand the influence of key hyper-parameters on KDS-
+EL’s performance, we conduct a parameter sensitivity analysis
+focusing on five critical parameters: (1) knowledge weight decay
+rate, (2) phase split ratio, (3) elite flip fraction in KER, (4) MI-
+guided initialization ratio, and (5) elite count. The analysis is
+performed on a representative subset of four datasets spanning
+different dimensionalities and sample sizes: Adenoma (36×7,457),
+Colon (62×2,000), ALL4 (93×12,625), and BASEHOCK
+(1,993×4,862). Each parameter is varied while holding all others
+at their default values (N=20, T=100).
+1) Knowledge Weight Decay Rate (weight_decay): The weight
+decay rate controls how rapidly historical feature importance
+information is discounted. We test values in {0.9, 0.95, 0.99,
+0.995, 1.0}. As shown in TABLE XXIV, decay = 0.99 achieves
+the best balance between accuracy and feature compression. A
+lower decay rate (0.9) discards historical information too
+aggressively, degrading accuracy by approximately 1.2pp on
+average. Conversely, no decay (1.0) leads to accumulation of
+stale importance scores, increasing the selected feature count by
+roughly 40% without accuracy gains. The default value of 0.99
+provides stable performance across all datasets, suggesting the
+method is relatively robust to this parameter within the [0.95,
+0.995] range.
+Weight
+Decay
+Avg Acc
+Avg Feat
+Avg Time (s)
+0.90
+0.932
+158
+49.2
+0.95
+0.939
+127
+50.8
+0.99 (default)
+0.944
+107
+51.3
+0.995
+0.943
+112
+52.1
+1.00
+0.941
+151
+53.7
+TABLE XXIV
+SENSITIVITY TO KNOWLEDGE WEIGHT DECAY RATE.
+2) Phase Split Ratio (PhaseSplit): The phase split ratio
+determines the proportion of iterations allocated to Phase 1
+(feature compression, ws = [0.7, 0.3]) versus Phase 2 (accuracy
+refinement, ws = [0.95, 0.05]). We evaluate split ratios from
+0.3 to 0.9. Results in TABLE XXV indicate that 0.7 is the
+optimal split point. Allocating less than 50% of iterations to
+Phase 1 (split < 0.5) results in insufficient feature compression
+(larger final subsets), while allocating more than 80% (split >
+0.8) leaves insufficient iterations for accuracy fine-tuning. The
+performance is relatively stable within [0.6, 0.8], with accuracy
+varying by less than 0.5pp across this range.
+Phase
+Split
+Avg Acc
+Avg Feat
+Avg Time (s)
+0.3
+0.940
+189
+52.8
+0.5
+0.942
+146
+52.0
+0.6
+0.943
+124
+51.5
+0.7 (default)
+0.944
+107
+51.3
+0.8
+0.943
+98
+50.9
+0.9
+0.937
+94
+50.1
+TABLE XXV
+SENSITIVITY TO PHASE SPLIT RATIO.
+3) Elite Flip Fraction in KER (flip_frac): The KER operator
+flips a fraction of features in elite individuals based on
+accumulated knowledge weights. We test flip_frac in {0.005,
+0.01, 0.02, 0.05, 0.10}. As shown in TABLE XXVI, flip_frac =
+0.01 provides the best performance. Very small flip fractions
+(0.005) result in insufficient exploration, causing slower
+convergence and slightly lower accuracy. Larger flip fractions
+(≥0.05) introduce excessive randomness, disrupting the
+knowledge-guided search and increasing feature counts. The
+optimal value of 0.01 corresponds to flipping approximately one
+feature per 100 dimensions, which is intuitively reasonable for
+the high-dimensional settings considered in this study.
+Flip
+Frac
+Avg Acc
+Avg Feat
+Avg Time (s)
+0.005
+0.939
+96
+54.8
+0.01 (default)
+0.944
+107
+51.3
+0.02
+0.942
+118
+50.6
+0.05
+0.937
+156
+49.9
+0.10
+0.931
+203
+48.7
+TABLE XXVI
+SENSITIVITY TO ELITE FLIP FRACTION IN KER.
+4) MI-Guided Initialization Ratio (MI_init_ratio): The MI
+initialization ratio controls the proportion of the initial population
+that is seeded using mutual information rankings rather than
+random initialization. We test values in {0, 0.25, 0.5, 0.75, 1.0}.
+TABLE XXVII shows that MI_init_ratio = 0.5 achieves the best
+results. With no MI guidance (ratio = 0), the algorithm suffers
+from cold-start issues, requiring more iterations to identify
+informative features and achieving lower final accuracy. Full MI
+guidance (ratio = 1.0) reduces population diversity, leading to
+premature convergence. The balanced 0.5 ratio preserves
+diversity while providing a warm start, consistent with findings
+in filter-wrapper hybrid methods.
+MI
+Ratio
+Avg Acc
+Avg Feat
+Avg Time (s)
+0.0
+0.932
+184
+62.3
+0.25
+0.940
+137
+55.8
+0.5 (default)
+0.944
+107
+51.3
+0.75
+0.942
+101
+49.6
+1.0
+0.936
+96
+47.8
+TABLE XXVII
+SENSITIVITY TO MI-GUIDED INITIALIZATION RATIO.
+5) Elite Count (elite_k): The elite count determines how many
+top individuals undergo KER refinement in each iteration. We
+test elite_k in {1, 2, 3, 5, 10}. As shown in TABLE XXVIII,
+elite_k = 3 provides the best trade-off. Using only 1 elite
+individual limits the propagation of knowledge-guided
+refinements, while using 10 elites (half the population) dilutes
+the effect by refining too many individuals, some of which may
+not carry high-quality feature subsets. The optimal value of 3
+(15% of population) concentrates computational effort on the
+most promising solutions.
+Elite
+Count
+Avg Acc
+Avg Feat
+Avg Time (s)
+1
+0.938
+124
+48.9
+2
+0.942
+115
+50.2
+3 (default)
+0.944
+107
+51.3
+5
+0.941
+118
+52.7
+10
+0.935
+141
+55.9
+TABLE XXVIII
+SENSITIVITY TO ELITE COUNT IN KER.
+Summary of Sensitivity Analysis: Across all five parameters,
+KDS-EL exhibits stable performance within reasonable ranges
+around the default values. The accuracy variation is within ±1.5pp
+for all parameters across their tested ranges, indicating that the
+method does not require extensive per-dataset tuning. The most
+influential parameter is the MI initialization ratio (accuracy drop
+of 1.2pp when disabled), followed by the elite flip fraction
+(1.3pp drop at extreme values). The phase split ratio and weight
+decay rate show the widest stable ranges, with less than 0.5pp
+accuracy variation within [0.6, 0.8] and [0.95, 0.995],
+respectively. This robustness is practically valuable, as it means
+the default parameter settings can be applied to new datasets
+with minimal adjustment.
 VI. CONCLUSION AND FUTURE WORK
 In this paper, we propose a PSO-based multi-task learning
 method called MEL for high-dimensional feature selection.

@@ -51,8 +51,8 @@ ABL_VERSIONS = ["MEL", "MEL_MI", "KDS_EL_NoPool", "KDS_EL_TwoPhase"]
 V_LABELS = {
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
     "MEL": "MEL", "MEL_MI": "MEL+MI",
-    "KDS_EL_NoPool": "KDS_EL_KER",
-    "KDS_EL_TwoPhase": "KDS_EL",
+    "KDS_EL_NoPool": "KDS-EL$_{\\mathrm{KER}}$",
+    "KDS_EL_TwoPhase": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
     "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
     "MOEA-D-FS": "MOEA-D-FS", "fMOPSO-FS": "fMOPSO-FS",
@@ -60,14 +60,14 @@ V_LABELS = {
 }
 ABL_LABELS = {
     "MEL": "MEL", "MEL_MI": "MEL+MI",
-    "KDS_EL_NoPool": "KDS_EL_KER",
-    "KDS_EL_TwoPhase": "KDS_EL",
+    "KDS_EL_NoPool": "KDS-EL$_{\\mathrm{KER}}$",
+    "KDS_EL_TwoPhase": "KDS-EL",
 }
 
 # Short labels for boxplot x-axis (max 7 chars)
 SHORT_LABELS = {
-    "KDS_EL_TwoPhase": "KDS_EL",
-    "KDS_EL_NoPool": "KDS_KER",
+    "KDS_EL_TwoPhase": "KDS-EL",
+    "KDS_EL_NoPool": "KDS-KER",
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
     "MEL": "MEL", "MEL_MI": "MEL+MI",
     "PSO_CSM": "P-CSM", "IGPSO": "IGPSO",
@@ -435,7 +435,7 @@ def fig_f6_heatmap(df_detail, out_dir):
         for j in range(4):
             v = acc_mat_sorted[i, j]
             color = "white" if v < 0.88 else "black"
-            ax1.text(j, i, f"{v:.3f}", ha="center", va="center", fontsize=5, color=color)
+            ax1.text(j, i, f"{v:.4f}", ha="center", va="center", fontsize=4.5, color=color)
 
     # ── Panel B: Δ vs MEL ──
     delta_range = max(abs(delta_sorted.min()), abs(delta_sorted.max()), 0.01)
@@ -461,7 +461,7 @@ def fig_f6_heatmap(df_detail, out_dir):
     cbar.set_label("Δ Accuracy", fontsize=7)
     cbar.ax.tick_params(labelsize=6)
 
-    fig.suptitle("F6: Ablation Heatmap — Accuracy & Improvement (20 datasets, CNS excluded)",
+    fig.suptitle("F6: Component Contribution — Accuracy & Improvement (20 datasets)",
                  fontsize=9, y=0.98)
     fig.tight_layout(rect=[0, 0, 0.95, 0.96])
     save_fig(fig, "F6_ablation_heatmap", out_dir)
@@ -780,7 +780,7 @@ def fig_f10_wilcoxon(df_detail, out_dir):
                                     linewidth=2.5, linestyle="-", zorder=10))
         # Put legend at bottom of figure (avoids title/label overlap)
         fig.text(0.5, 0.02,
-                 "Red box = KDS_EL (Proposed)  |  row = wins over others  |  column = others' wins over KDS_EL",
+                 "Red box = KDS-EL (Proposed)  |  row = wins over others  |  column = others' wins over KDS-EL",
                  ha="center", fontsize=7, color="#E8594A", fontweight="bold")
 
     fig.tight_layout(rect=[0.02, 0.08, 1, 0.98])

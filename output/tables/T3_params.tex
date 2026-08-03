@@ -1,51 +1,50 @@
-\begin{table}[htbp]
+\begin{table*}[!htb]
 \centering
 \caption{Parameter Settings}
-\label{tab:params}
-\small
-\begin{tabular}{lcl}
+\label{T3}
+\footnotesize
+\begin{tabular}{@{}lcl@{}}
 \toprule
-\multicolumn{3}{c}{\textbf{Common Experimental Setup}} \\
+\multicolumn{3}{@{}c}{\textbf{Common Experimental Setup}} \\
 \midrule
-Population size ($N$)         & = & 20 \\
-Maximum iterations ($T$)      & = & 100 \\
-KNN neighbors ($k$)           & = & 3 \\
-Real-to-binary threshold      & = & 0.6 \\
-Cross-validation              & = & 5-fold stratified, shuffle \\
-Number of independent runs    & = & 10 \\
-\bottomrule
-\addlinespace
-\multicolumn{3}{c}{\textbf{KDS-EL / KDS-EL/KER / KDS-EL/DRS}} \\
+Population size ($N$)              & = & 20 \\
+Maximum iterations ($T$)           & = & 100 \\
+KNN neighbors ($k$)                & = & 3 \\
+Real-to-binary threshold ($\theta$) & = & 0.6 \\
+Cross-validation                  & = & 5-fold stratified, shuffled \\
+Number of independent runs        & = & 10 \\
 \midrule
-Inertia weight ($w$)          & = & 0.9 \\
-Acceleration coefficients     & = & $c_1 = c_2 = c_3 = 2.0$ \\
-Knowledge weight decay        & = & 0.99 \\
-Elite flip fraction           & = & 0.01 \\
-Elite count ($k_e$)           & = & 3 \\
-Random flip probability       & = & 0.10 \\
-Stall patience ($P_s$)        & = & 20 \\
-MI-guided init ratio          & = & 0.5 \\
-DRS schedule $\alpha_{\text{cd}}(t)$ & = & $(t/T)^2$ \\
+\multicolumn{3}{c}{\textbf{KDS-EL (full framework)}} \\
 \midrule
-\multicolumn{3}{c}{\textbf{MEL}} \\
+Inertia weight ($w$)              & = & 0.9 \\
+Acceleration coefficients         & = & $c_1 = c_2 = c_3 = 2.0$ \\
+Knowledge weight decay            & = & 0.99 \\
+Elite flip fraction               & = & 0.01 \\
+Elite count ($k_e$)               & = & 3 \\
+Random flip probability           & = & 0.10 \\
+MI-guided init ratio              & = & 0.5 \\
+Stall patience ($P_s$)            & = & 20 \\
+Phase split ratio                 & = & 0.7 \\
+Phase-1 objective weights         & = & $\mathbf{w}_s = [0.7,\,0.3]$ \\
+Phase-2 objective weights         & = & $\mathbf{w}_s = [0.95,\,0.05]$ \\
 \midrule
-Inertia weight ($w$)          & = & 0.9 \\
-Acceleration coefficients     & = & $c_1 = c_2 = c_3 = 2.0$ \\
+\multicolumn{3}{c}{\textbf{KDS-EL$_{\text{KER}}$ (no two-phase scheduling)}} \\
 \midrule
-\multicolumn{3}{c}{\textbf{MEL\_MI}} \\
+Fixed objective weights           & = & $\mathbf{w}_s = [0.9,\,0.1]$ \\
 \midrule
-Inertia weight ($w$)          & = & 0.9 \\
-Acceleration coefficients     & = & $c_1 = c_2 = c_3 = 2.0$ \\
-MI-guided init ratio          & = & 0.5 \\
-Stall patience ($P_s$)        & = & 20 \\
+\multicolumn{3}{c}{\textbf{MEL and MEL+MI}} \\
 \midrule
-\multicolumn{3}{c}{\textbf{SOTA / MOFS Competitors}} \\
+Inertia weight ($w$)              & = & 0.9 \\
+Acceleration coefficients         & = & $c_1 = c_2 = c_3 = 2.0$ \\
+MI-guided init ratio (MEL+MI)     & = & 0.5 \\
+Stall patience (MEL+MI)           & = & 20 \\
 \midrule
-\multicolumn{3}{l}{All competitor methods (BPSO, FWPSO, IGPSO, PSO-CSM, SaWDE,} \\
-\multicolumn{3}{l}{NSGA-II-FS, MOPSO-FS, MOEA-D-FS, fMOPSO-FS, VGS-MOEA,} \\
-\multicolumn{3}{l}{W-MOPSO-FS) use their original parameter settings from the} \\
-\multicolumn{3}{l}{respective publications, with $N=20$, $T=100$ unless the} \\
-\multicolumn{3}{l}{original paper specifies different defaults.} \\
+\multicolumn{3}{c}{\textbf{Competitor Methods}} \\
+\midrule
+\multicolumn{3}{l}{Competitors (BPSO, FWPSO, IGPSO, PSO-CSM, SaWDE, NSGA-II-FS,} \\
+\multicolumn{3}{l}{MOPSO-FS, MOEA-D-FS, fMOPSO-FS, W-MOPSO-FS) use the} \\
+\multicolumn{3}{l}{hyper-parameters recommended in their original publications, with} \\
+\multicolumn{3}{l}{$N=20$ and $T=100$ unless the original paper specifies otherwise.} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}

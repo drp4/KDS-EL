@@ -1,0 +1,25 @@
+\section{Component Contribution Analysis}\label{sec:ablation}
+
+\subsection{Aggregate Contributions}
+
+The ablation chain follows an add-in-sequence paradigm to isolate each component's independent contribution. Table~\ref{T7} summarizes the four variants averaged over the 20-dataset suite. Starting from the MEL backbone~\cite{mel2024} (0.8868 accuracy, 2722 features on average), each design element is cumulatively activated.
+
+MI-guided initialization, together with adaptive re-initialization (MEL+MI), produces the largest single accuracy step: +4.58pp, raising the mean accuracy to 0.9325. Simultaneously, the feature count collapses from 2722 to 291, a reduction of 89\%. This dual benefit stems from informed starting positions and stagnation-triggered re-initialization: the MI-informed half provides a high-quality search origin, while adaptive re-initialization counters premature convergence.
+
+The Knowledge-guided Elite Refinement (KER) strategy contributes a further +1.63pp over MEL+MI (+6.20pp cumulatively over MEL), raising accuracy to 0.9488 and compressing features to 122. This gain comes at zero additional evaluation cost, as KER acts purely through elite-flip refinement driven by the accumulated weight matrix.
+
+The Two-Phase Weight Scheduling strategy adds +0.86pp over KDS-EL$_{\text{KER}}$, yielding the final accuracy of 0.9574 (+7.06pp over MEL) and further reducing features to 88. Runtime also decreases from 54.2\,s to 51.3\,s during this transition.
+
+Each component contributes along a distinct dimension of the search process. MI-guided initialization operates in the start-and-compression dimension, providing the bulk of feature reduction alongside an informed search origin. The KER strategy occupies the accuracy dimension, refining elite solutions through cross-iteration accumulated knowledge at zero additional evaluation cost. The Two-Phase strategy delivers simultaneous gains across all three axes---accuracy, sparsity, and efficiency---by aligning objective weights with the structural phases of the search. The mechanisms are complementary and independent---none subsumes another, and each is verifiable in isolation.
+
+\subsection{Per-Dataset Component Contribution}
+
+Representative rows of Table~\ref{T7} and the per-dataset accuracy and improvement breakdown in Fig.~\ref{F6} reveal two characteristic patterns across the 20 datasets.
+
+On the eight ceiling datasets---where classification accuracy saturates above 0.998---the MI and KER components rapidly approach the accuracy upper bound, after which the ablative variants differentiate through feature counts alone. On ALL1, MEL selects 4248 features at 0.9664 accuracy; MEL+MI reduces this to 55 features at 0.9996; KDS-EL$_{\text{KER}}$ holds at 55 features; and KDS-EL further compresses to 39 features at 0.9998. On Adenoma, features drop from 2483 (MEL) to 120 (MEL+MI) and further to 33 (KDS-EL$_{\text{KER}}$), with KDS-EL selecting 66 features at identical saturated accuracy of 0.9996. DLBCL, Leukaemia, Lymphoma, and SRBCT follow the same trajectory: accuracy saturates early, and subsequent variants deliver increasingly compact feature subsets with no accuracy penalty.
+
+On medium-difficulty datasets, accuracy gains accumulate in a stair-step progression across all four variants. On BASEHOCK, the accuracy sequence reads 0.8518 (MEL), 0.8597 (MEL+MI), 0.8997 (KDS-EL$_{\text{KER}}$), and 0.9113 (KDS-EL). On madelon, a comparable trajectory emerges: 0.7521, 0.7679, 0.8659, and 0.8822. The sharpest feature compression uniformly occurs at the MEL-to-MEL+MI transition, where the dual mechanism of MI-guided initialization and adaptive re-initialization reduces feature counts by roughly an order of magnitude across nearly all datasets. On Gastric1, features plunge from 7393 to 678; on T1D, from 6715 to 174; on Prostate, from 5058 to 27. These patterns confirm that the initial investment in MI-informed initialization delivers both the dominant accuracy leap and the foundational compression on which subsequent components build.
+
+\subsection{Two-Phase Scheduling and In-place Update Verification}
+
+The Two-Phase Weight Scheduling strategy is isolated by comparing KDS-EL against its fixed-weight counterpart (KDS-EL$_{\text{KER}}$, fixed ws=$[0.9,0.1]$ with in-place update) on the same 20-dataset batch. Accuracy rises from 0.9488 to 0.9574 (+0.86pp), average features fall from 122 to 88, and runtime decreases from 54.2\,s to 51.3\,s. Following the Phase-2 weight switch, accuracy continues to rise while features undergo further compression, confirming that the coarse-then-fine schedule outperforms a fixed-weight regime. On a per-dataset basis (Table~\ref{T7}), KDS-EL is not inferior to the fixed-weight variant on the overwhelming majority of datasets.

@@ -1,0 +1,22 @@
+\section{Preliminaries}\label{sec:preliminaries}
+
+Particle swarm optimization (PSO), introduced by Kennedy and Eberhart~\cite{kennedy1995}, maintains a population of candidate solutions that traverse the search space guided by personal and collective historical experience. Each particle $i$ holds a position $\mathbf{x}_i \in \mathbb{R}^D$ and a velocity $\mathbf{v}_i \in \mathbb{R}^D$, updated at iteration $t$ according to
+\begin{equation}
+\mathbf{v}_i^{(t+1)} = \omega \mathbf{v}_i^{(t)} + c_1 r_1 (\mathbf{p}_{\text{best},i} - \mathbf{x}_i^{(t)}) + c_2 r_2 (\mathbf{g}_{\text{best}} - \mathbf{x}_i^{(t)}),
+\label{eq:pso_velocity}
+\end{equation}
+where $\omega$ is the inertia weight introduced by Shi and Eberhart~\cite{shi1998}, $c_1, c_2$ are acceleration coefficients, $r_1, r_2 \sim \mathcal{U}(0,1)$ are independent random scalars, and $\mathbf{p}_{\text{best},i}$ and $\mathbf{g}_{\text{best}}$ denote the personal and global best positions, respectively. For binary feature selection, the continuous-valued position is mapped to a binary mask through a sigmoid transfer function \cite{kennedy1997}:
+\begin{equation}
+S(v_{i,d}) = \frac{1}{1 + e^{-v_{i,d}}}, \qquad
+x_{i,d} = \begin{cases} 1 & \text{if } \mathrm{rand}() < S(v_{i,d}), \\ 0 & \text{otherwise},
+\end{cases}
+\label{eq:bpsosigmoid}
+\end{equation}
+with a threshold of 0.6, as adopted throughout this paper. In the $p \gg n$ regime, standard BPSO converges slowly and tends toward premature stagnation, as the velocity update provides no domain-grounded gradient toward sparse, high-accuracy regions.
+
+MEL (Multi-task Evolutionary Learning) \cite{mel2024} recasts high-dimensional FS as a dual-task problem solved by two co-evolving PSO swarms: one operates on binary feature-subset vectors $\mathbf{x} \in \{0,1\}^D$ encoding hard selection decisions, the other on continuous feature-weight vectors $\mathbf{w} \in [0,1]^D$ encoding importance scores. The swarms exchange knowledge through periodic elite migration---the best individuals of each swarm replace the weakest of the other---coupling discrete cardinality control with continuous importance refinement. Readers are referred to \cite{mel2024} for full details. KDS-EL builds on three interfaces exposed by this framework: the $D$-dimensional binary position encoding shared by all components of Section~\ref{sec:proposed}; the per-generation selection of $k$ elite particles by scalar fitness, which the KER strategy extends with knowledge-guided perturbation; and the fitness function, a weighted sum of classification error and subset sparsity:
+\begin{equation}
+f(\mathbf{x}) = w_s^{(0)} \cdot \bigl(1 - \mathrm{Acc}(\mathbf{x})\bigr) + w_s^{(1)} \cdot \frac{\|\mathbf{x}\|_0}{D},
+\label{eq:fitness_mel}
+\end{equation}
+where $\mathrm{Acc}(\mathbf{x})$ is the $k$-nearest neighbor accuracy on the selected features, $\|\mathbf{x}\|_0$ is the number of selected features, and $\mathbf{w}_s = (w_s^{(0)}, w_s^{(1)})$ is a static weight vector. In MEL, $\mathbf{w}_s$ remains constant throughout search---a design Section~\ref{sec:proposed} replaces with Two-Phase Weight Scheduling. MEL's per-generation cost is dominated by both swarms' fitness evaluations, each requiring classifier training and cross-validation, giving overall complexity $O(T \cdot N \cdot T_{\mathrm{eval}})$.

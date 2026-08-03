@@ -62,7 +62,7 @@ COLORS = {
     "MOPSO_FS":   "#BCC4C8",
 }
 V_LABELS = {
-    "KDS_EL_TwoPhase": "KDS_EL", "KDS_EL_NoPool": "KDS_EL_KER",
+    "KDS_EL_TwoPhase": "KDS-EL", "KDS_EL_NoPool": "KDS-EL$_{\\mathrm{KER}}$",
     "MEL": "MEL", "MEL_MI": "MEL+MI",
     "FWPSO": "FWPSO", "BPSO": "BPSO",
     "SaWDE": "SaWDE", "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",

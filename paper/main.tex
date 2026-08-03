@@ -1,0 +1,145 @@
+% -----------------------------------------------------------------------------
+% KDS-EL — main.tex
+% Target journal: Applied Soft Computing (Elsevier), double-blind submission
+%
+% Compile sequence (pdflatex):
+%   pdflatex main  &&  bibtex main  &&  pdflatex main  &&  pdflatex main
+% (or simply: latexmk -pdf main)
+%
+% Double-blind note: the author/affiliation block below is MASKED for review.
+% Restore the real author list (and delete this note) upon acceptance.
+% -----------------------------------------------------------------------------
+\documentclass[final,5p,times]{elsarticle}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{rotating}
+\setlength{\emergencystretch}{3em}
+
+% Locate figures (paper/ -> ../../output/figures is ../output/figures)
+\graphicspath{{../output/figures/}}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{KDS-EL: A Knowledge-Guided Evolutionary Learning Method for High-Dimensional Feature Selection}
+
+%%% MASKED AUTHOR BLOCK (double-blind review) — replace upon acceptance %%%
+\author[au]{Anonymous Author}
+\ead{corresponding.author@example.com}
+\affiliation[au]{organization={Anonymous Institution (masked for double-blind review)}}
+%%% END MASKED AUTHOR BLOCK %%%
+
+\begin{abstract}
+Feature selection in high-dimensional data, where the number of features vastly exceeds the number of samples, remains a central challenge for evolutionary computation. Generic particle swarm optimization (PSO) suffers from three structural deficiencies in this setting: random initialization wastes search budget in sparse solution spaces, uniform mutation discards cross-iteration feature-importance signals, and fixed objective weights are misaligned with the distinct phases of the search. This paper proposes KDS-EL, a knowledge-guided evolutionary learning method that builds upon a multi-task PSO backbone and integrates three complementary mechanisms. Mutual-information-guided initialization with adaptive re-initialization supplies informed starting points and escapes local optima on stagnation. A Knowledge-guided Elite Refinement (KER) strategy accumulates a cross-iteration feature-weight matrix governed by exponential decay and flips elite solutions toward historically effective features at zero additional classifier evaluations. A Two-Phase Weight Scheduling strategy partitions the search into an aggressive compression phase followed by an accuracy-refinement phase. On 20 high-dimensional benchmark datasets spanning gene expression, text, image, and speech domains, KDS-EL is compared against 13 competitors, including five single-objective PSO variants and five multi-objective feature selection methods. KDS-EL ranks first with a mean accuracy of 0.9574 and only 87.8 selected features on average, outperforming the strongest single-objective and multi-objective competitors by +3.97 and +4.42 percentage points, respectively, while delivering a 3.4$\times$ speedup over the MEL backbone. Wilcoxon signed-rank tests confirm superiority over MEL on 20/20 datasets, and Holm--Bonferroni correction establishes statistical significance against all 13 competitors. The component contribution analysis shows that the three mechanisms yield cumulative gains of +7.06 percentage points in accuracy and compress the feature count from 2{,}722 to 88.
+\end{abstract}
+
+\begin{keyword}
+high-dimensional feature selection \sep particle swarm optimization \sep mutual information \sep knowledge-guided search \sep multi-task evolutionary learning \sep two-phase weight scheduling
+\end{keyword}
+
+\end{frontmatter}
+
+% --------------------------- 1. Introduction ---------------------------
+\input{sections/01_introduction}
+
+% --------------------------- 2. Related work ---------------------------
+\input{sections/02_related_work}
+
+% --------------------------- 3. Preliminaries --------------------------
+\input{sections/03_preliminaries}
+
+% --------------------------- 4. Proposed algorithm ---------------------
+\input{sections/04_kds_el}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.95\linewidth]{F1_kds_el_framework.drawio.pdf}
+\caption{Overall framework of KDS-EL: raw high-dimensional data is transformed into a compact feature subset through mutual-information-guided initialization, the two-phase weighted main loop with cumulative feature-weight accumulation, and the Knowledge-guided Elite Refinement (KER) strategy.}
+\label{F1}
+\end{figure*}
+
+% --------------------------- 5. Experimental setup ---------------------
+\input{sections/05_experimental_setup}
+
+\input{../output/tables/T1_methods}
+\input{../output/tables/T2_datasets}
+\input{../output/tables/T3_params}
+
+% --------------------------- 6. Results and discussion ----------------
+\input{sections/06_results_and_discussion}
+
+\input{../output/tables/T6b_holm_bonferroni}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.72\linewidth]{F5_features_all.pdf}
+\caption{Selection ratio (mean over 10 runs) of the 14 fixed-length methods across the 20 benchmark datasets; the log-scale ordinate highlights the compactness of KDS-EL relative to all competitors.}
+\label{F5}
+\end{figure*}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{F8_convergence.pdf}
+\caption{Mean convergence trajectories of MEL, MEL+MI, KDS-EL$_{\text{KER}}$, and KDS-EL averaged over the 20 benchmark datasets.}
+\label{F8}
+\end{figure*}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.5\linewidth]{F10_wilcoxon_heatmap.pdf}
+\caption{Pairwise Wilcoxon signed-rank test win rates ($p<0.05$) among the 14 methods: each entry reports the fraction of 20 datasets on which the row method significantly outperforms the column method.}
+\label{F10}
+\end{figure*}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.78\linewidth]{F11_runtime_scatter.pdf}
+\caption{Accuracy--runtime trade-off of the 14 methods (mean over 20 datasets); KDS-EL occupies the high-accuracy, low-runtime corner.}
+\label{F11}
+\end{figure*}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.72\linewidth]{F13_friedman_rank.pdf}
+\caption{Friedman average ranks of the 14 methods over the 20-dataset accuracy matrix (lower is better); KDS-EL ranks first.}
+\label{F13}
+\end{figure*}
+
+% --------------------------- 7. Component contribution analysis --------
+\input{sections/07_component_contribution_analysis}
+
+\input{../output/tables/T7_ablation}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.6\linewidth]{F6_ablation_heatmap.pdf}
+\caption{Per-dataset component contribution analysis of the four ablation variants (MEL, MEL+MI, KDS-EL$_{\text{KER}}$, KDS-EL): classification accuracy (left) and improvement relative to MEL (right).}
+\label{F6}
+\end{figure*}
+
+% --------------------------- 8. Parameter sensitivity -----------------
+\input{sections/08_parameter_sensitivity}
+
+% --------------------------- 9. Conclusion ----------------------------
+\input{sections/09_conclusion}
+
+\input{../output/tables/T4_accuracy}
+
+% --------------------------- Statements -------------------------------
+\section*{Declaration of Competing Interest}
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Data Availability}
+The 20 benchmark datasets analyzed in this study are publicly available and widely used in the feature selection literature. The source code of KDS-EL will be made available upon publication. Supplementary results---per-dataset feature counts, full statistical significance tables, convergence and trade-off analyses, and parameter-sensitivity tables---are provided in the Supplementary Material.
+
+% --------------------------- References -------------------------------
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+
+\end{document}
