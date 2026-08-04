@@ -1,7 +1,7 @@
 Highlights
 
-- KDS-EL is a knowledge-guided PSO method for high-dimensional feature selection.
-- MI-guided initialization and adaptive re-initialization reduce search waste.
-- KER refinement flips elites toward effective features at zero extra cost.
-- Two-Phase Weight Scheduling aligns objective weights with the search's phases.
-- KDS-EL ranks first on 20 benchmarks and is 3.4x faster than the MEL baseline.
+- KDS-EL: closed-loop knowledge-guided swarm learning for feature selection.
+- MI and KER keep feature-importance knowledge inside the search loop.
+- KER re-deploys accumulated feature knowledge with a bounded refinement budget.
+- Two-Phase Weight Scheduling aligns knowledge deployment with search stages.
+- KDS-EL ranks first on 20 benchmarks with 0.9574 accuracy and 87.8 features.

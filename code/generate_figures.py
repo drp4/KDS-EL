@@ -46,12 +46,12 @@ ALL_VERSIONS = [
 
 MAIN_VERSIONS = ALL_VERSIONS
 
-ABL_VERSIONS = ["MEL", "MEL_MI", "KDS_EL_NoPool", "KDS_EL_TwoPhase"]
+ABL_VERSIONS = ["KDS_EL_TwoPhase", "KDS_EL_NoPool", "MEL_MI", "MEL"]
 
 V_LABELS = {
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "MEL_MI": "MEL+MI",
-    "KDS_EL_NoPool": "KDS-EL$_{\\mathrm{KER}}$",
+    "MEL": "MEL", "MEL_MI": "MI variant",
+    "KDS_EL_NoPool": "MI+KER variant",
     "KDS_EL_TwoPhase": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
     "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
@@ -59,17 +59,18 @@ V_LABELS = {
     "W-MOPSO-FS": "W-MOPSO-FS",
 }
 ABL_LABELS = {
-    "MEL": "MEL", "MEL_MI": "MEL+MI",
-    "KDS_EL_NoPool": "KDS-EL$_{\\mathrm{KER}}$",
     "KDS_EL_TwoPhase": "KDS-EL",
+    "KDS_EL_NoPool": "w/o Two-Phase",
+    "MEL_MI": "w/o Two-Phase & KER",
+    "MEL": "MEL backbone",
 }
 
 # Short labels for boxplot x-axis (max 7 chars)
 SHORT_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
-    "KDS_EL_NoPool": "KDS-KER",
+    "KDS_EL_NoPool": "MI+KER",
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "MEL_MI": "MEL+MI",
+    "MEL": "MEL", "MEL_MI": "MI var",
     "PSO_CSM": "P-CSM", "IGPSO": "IGPSO",
     "NSGA-II-FS": "NSGA2", "MOPSO-FS": "MOPSO",
     "MOEA-D-FS": "MOEAD", "fMOPSO-FS": "fMPSO",
@@ -396,11 +397,11 @@ def fig_f6_heatmap(df_detail, out_dir):
                 acc_matrix[i, j] = sub["Accuracy"].mean()
                 feat_matrix[i, j] = sub["Num_Features"].mean()
 
-    # Delta vs MEL
-    delta_matrix = acc_matrix - acc_matrix[:, 0:1]
+    # Delta vs MEL (MEL is the last ablation column)
+    delta_matrix = acc_matrix - acc_matrix[:, 3:4]
 
-    # Sort datasets by TwoPhase accuracy (descending)
-    sort_idx = np.argsort(-acc_matrix[:, 3])
+    # Sort datasets by KDS-EL accuracy (descending)
+    sort_idx = np.argsort(-acc_matrix[:, 0])
     ds_sorted = [ds_list[i] for i in sort_idx]
     acc_mat_sorted = acc_matrix[sort_idx]
     delta_sorted = delta_matrix[sort_idx]
@@ -449,7 +450,7 @@ def fig_f6_heatmap(df_detail, out_dir):
     # Highlight KDS_EL column
     for spine in ax2.spines.values():
         spine.set_visible(False)
-    ax2.axvline(x=3.5, color="#333", linewidth=1.2, alpha=0.7)
+    ax2.axvline(x=0.5, color="#333", linewidth=1.2, alpha=0.7)
     for i in range(n_ds):
         for j in range(4):
             d = delta_sorted[i, j]
@@ -1004,131 +1005,6 @@ def fig_f4_performance_profile(df_detail, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F6-alt: Waterfall / Delta 贡献图（替代 F6 分组柱状图）
-# ══════════════════════════════════════════════════════════════════════════════
-
-def fig_f6_delta_waterfall(df_detail, out_dir):
-    """F6-alt: Two-panel waterfall showing incremental component contributions.
-    Left: cumulative waterfall — MEL baseline → +MI → +DRS → +KER → Full.
-    Right: per-dataset delta (each variant vs MEL), showing consistency."""
-    print("F6-alt: Waterfall — ablation component contributions...")
-
-    abl_v = [v for v in ABL_VERSIONS if v in df_detail.Version.unique()]
-    if len(abl_v) < 3:
-        print("  [SKIP] too few ablation variants"); return
-
-    # Shared datasets (exclude CNS) — same 20 DS as main table
-    ds_sets = [set(df_detail[df_detail.Version == v]["Dataset"].unique()) for v in abl_v]
-    ds_sets = [s for s in ds_sets if s]
-    all_ds = sorted(set.intersection(*ds_sets) - {"CNS"}) if ds_sets else []
-    ds_list = [d for d in PLOT_DATASETS if d in all_ds]
-
-    if len(ds_list) < 2:
-        print("  [SKIP] too few shared datasets"); return
-
-    # Per-variant × per-dataset means
-    pds = {}  # pds[variant][dataset] = mean_acc
-    for v in abl_v:
-        pds[v] = {}
-        for ds in ds_list:
-            arr = g(df_detail, v, ds)
-            if len(arr) and not np.isnan(arr).all():
-                pds[v][ds] = np.nanmean(arr)
-
-    # Across-dataset mean per variant
-    means = [np.mean(list(pds[v].values())) for v in abl_v]
-
-    # Deltas from previous variant: MEL (baseline), MEL_MI-MEL, NoPool-MEL_MI, TwoPhase-NoPool
-    deltas = [means[0]] + [means[i] - means[i-1] for i in range(1, len(means))]
-
-    # ── figure ──
-    fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.2),
-                             gridspec_kw={"width_ratios": [1.1, 1]})
-    # ────── Left: Waterfall ──────
-    ax1 = axes[0]
-    n = len(abl_v)
-    x = np.arange(n)
-
-    # Bar bottoms & heights
-    bottoms = [0.0] + means[:-1]          # [0, m0, m1, m2, m3]
-    heights = [means[0]] + deltas[1:]     # [m0, d1, d2, d3, d4]
-
-    bar_colors = [COLORS[v] for v in abl_v]
-    bars = ax1.bar(x, heights, bottom=bottoms, width=0.55,
-                   color=bar_colors, alpha=0.82, edgecolor="none")
-
-    # Connecting lines
-    cum = means[0]
-    for i in range(1, n):
-        ax1.plot([i - 0.275, i + 0.275], [cum, cum],
-                 color="gray", linewidth=0.6, alpha=0.5)
-        cum += deltas[i]
-
-    # Labels inside / on top of bars
-    for i in range(n):
-        if i == 0:
-            ax1.text(0, means[0] / 2, f"{means[0]:.3f}",
-                     ha="center", va="center", fontsize=8, fontweight="bold",
-                     color="white" if means[0] > 0.3 else "black")
-        else:
-            delta = deltas[i]
-            mid = bottoms[i] + delta / 2
-            sign = "+" if delta >= 0 else ""
-            clr = "#2a6b2a" if delta >= 0 else "#cc3333"
-            ax1.text(i, mid, f"{sign}{delta:.4f}",
-                     ha="center", va="center", fontsize=7.5, fontweight="bold", color=clr)
-
-    ax1.set_xticks(x)
-    ax1.set_xticklabels(["MEL\n(Baseline)", "MEL\n+MI", "+KER", "KDS_EL"],
-                         fontsize=7, ha="center")
-    ax1.set_ylabel("Mean Classification Accuracy", fontsize=9)
-    ax1.set_title("Cumulative Ablation Contribution", fontsize=9, pad=5)
-    ax1.grid(axis="y", linestyle="--", alpha=0.35)
-    ax1.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.3f"))
-    ax1.yaxis.set_major_locator(mticker.MaxNLocator(6, prune="lower"))
-
-    # Final value callout
-    ax1.annotate(f"KDS_EL\n{means[-1]:.4f}", xy=(n-1, means[-1]),
-                 xytext=(n-1 + 0.35, means[-1] + 0.02),
-                 fontsize=7.5, color=COLORS["KDS_EL_TwoPhase"], fontweight="bold",
-                 ha="left",
-                 arrowprops=dict(arrowstyle="->", color=COLORS["KDS_EL_TwoPhase"], lw=0.7))
-
-    # ────── Right: Per-dataset delta strip ──────
-    ax2 = axes[1]
-    mel_vals = pds["MEL"]
-
-    for vi, v in enumerate(abl_v[1:], start=1):
-        ds_deltas = []
-        for ds in ds_list:
-            if ds in pds[v] and ds in mel_vals:
-                ds_deltas.append(pds[v][ds] - mel_vals[ds])
-        jitter = np.random.default_rng(42).uniform(-0.15, 0.15, len(ds_deltas))
-        ax2.scatter(ds_deltas, vi + jitter, s=14, color=COLORS[v],
-                    alpha=0.55, edgecolors="none", zorder=2)
-        # Mean delta marker
-        mean_d = np.mean(ds_deltas)
-        ax2.scatter(mean_d, vi, s=60, color=COLORS[v], edgecolors="#222",
-                    linewidth=0.8, zorder=3, marker="D")
-        ax2.text(mean_d, vi + 0.3, f"{mean_d:+.4f}",
-                 ha="center", fontsize=6.5, color=COLORS[v], fontweight="bold")
-
-    ax2.axvline(0, color="gray", linewidth=0.7, linestyle="--", alpha=0.5)
-    ax2.set_yticks(range(1, len(abl_v)))
-    ax2.set_yticklabels(["+MI", "+KER", "+TwoPhase"][:len(abl_v)-1], fontsize=7.5)
-    ax2.set_xlabel("Δ Accuracy vs MEL Baseline", fontsize=9)
-    ax2.set_title("Per-Dataset Improvement Consistency", fontsize=9, pad=5)
-    ax2.set_ylim(0.3, len(abl_v) - 0.3)
-    ax2.grid(axis="x", linestyle="--", alpha=0.3)
-    ax2.xaxis.set_major_formatter(mticker.FormatStrFormatter("%+.3f"))
-
-    fig.suptitle("F6-alt: Ablation Component Contribution (Waterfall + Δ Strip)", fontsize=10, y=1.01)
-    fig.tight_layout()
-    save_fig(fig, "F6_ablation_delta_waterfall", out_dir)
-    plt.close(fig)
-
-
-# ══════════════════════════════════════════════════════════════════════════════
 # F13: Friedman 平均排名条形图
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -1215,7 +1091,6 @@ def main():
         "F6": fig_f6_ablation,
         "F6_heatmap": fig_f6_heatmap,
         "F6_radar": fig_f6_radar,
-        "F6_delta": fig_f6_delta_waterfall,
         "F7": fig_f7_boxplot,
         "F10": fig_f10_wilcoxon,
         "F11": fig_f11_runtime,

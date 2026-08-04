@@ -62,8 +62,8 @@ COLORS = {
     "MOPSO_FS":   "#BCC4C8",
 }
 V_LABELS = {
-    "KDS_EL_TwoPhase": "KDS-EL", "KDS_EL_NoPool": "KDS-EL$_{\\mathrm{KER}}$",
-    "MEL": "MEL", "MEL_MI": "MEL+MI",
+    "KDS_EL_TwoPhase": "KDS-EL", "KDS_EL_NoPool": "w/o Two-Phase",
+    "MEL": "MEL backbone", "MEL_MI": "w/o Two-Phase & KER",
     "FWPSO": "FWPSO", "BPSO": "BPSO",
     "SaWDE": "SaWDE", "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
     "NSGA_II_FS": "NSGA-II-FS", "MOPSO_FS": "MOPSO-FS",
@@ -106,7 +106,7 @@ def _auto_grid(n, max_cols=5):
 
 
 # F8: 消融链均值收敛 — 单面板，4 变体在 20 数据集上的平均
-F8_ABL_VERSIONS = ["MEL", "MEL_MI", "KDS_EL_NoPool", "KDS_EL_TwoPhase"]
+F8_ABL_VERSIONS = ["KDS_EL_TwoPhase", "KDS_EL_NoPool", "MEL_MI", "MEL"]
 CORE_20 = ["ALL1", "ALL4", "ALL_AML", "Adenoma", "BASEHOCK", "COIL20",
            "Colon", "DLBCL", "Gastric", "Gastric1", "Gastric2", "ISOLET",
            "Leukaemia", "Lymphoma", "Myeloma", "PCMAC", "Prostate",

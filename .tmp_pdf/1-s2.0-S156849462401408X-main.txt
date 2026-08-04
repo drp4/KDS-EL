@@ -1,0 +1,297 @@
+----- page 1 -----
+Applied Soft Computing Journal 169 (2025) 112634
+ContentslistsavailableatScienceDirect
+Applied Soft Computing
+journalhomepage:www.elsevier.com/locate/asoc
+Dynamic multi-swarm whale optimization algorithm based on elite tuning
+for high-dimensional feature selection classification problems
+Fahui Miaoa, Yong Wub, Guanjie Yanc,* , Xiaomeng Sid
+aCollegeofInformationEngineering,ShanghaiMaritimeUniversity,Shanghai201306,China
+bUniversityofMacauZhuhaiUMScienceandTechnologyResearchInstitute,Zhuhai519000,China
+cTheDepartmentofBasicEducation,ShanghaiUrbanConstructionVocationalCollege,Shanghai201415,China
+dSchoolofComputerandInformationEngineering,InstituteforArtificialIntelligence,ShanghaiPolytechnicUniversity,Shanghai201209,China
+H I G H L I G H T S
+•Proposedadynamicmulti-swarmconstructionmechanismbasedoncentroiddistance.
+•Anelitetuningstrategytoaddressinvalidprobabilityflipsisproposed.
+•Dynamicmulti-swarmwhaleoptimizationalgorithmbasedonelitetuningisproposed.
+•Theproposedalgorithmisusedforhigh-dimensionalfeatureselectionproblems.
+•Asuperiorperformanceoftheproposedalgorithminfeatureselectionisproved.
+A R T I C L E I N F O A B S T R A C T
+Keywords: Featureselectionalgorithmsarecrucialtechnologiesforreducingthedimensionalityofhigh-dimensionaldata.
+Whaleoptimizationalgorithm However, theexponential expansionof thedecision spaceduetohigh-dimensional datamakes mostfeature
+Featureselection selectionalgorithmshighlysusceptibletolocaloptima.Toincreasethequalityoffeatureselection,weproposea
+Swarmintelligence
+dynamicmulti-swarmwhaleoptimizationalgorithmbasedonelitetuning(EMSWOA).First,weproposeady-
+Centroiddistancemetric
+namic multiple swarm construction mechanism based on the centroid distance metric, which enhances the
+Elitetuningstrategy
+exploitationandexplorationabilitiesofthealgorithmbyimprovingtheconnectivitybetweensub-population
+topologies and preventing the algorithm from falling into precocious convergence. Secondly, to address the
+issueofinvalidprobabilityflipscausedbyrandomthresholdsduringfeaturespacetransformation,wedesigna
+novelelitetuningmechanism.Thismechanismusesthehigh-qualityinformationintheelitesolutiontoassess
+andcorrecttheprobabilityoffeatureflipping;iteffectivelyimprovesthealgorithm’srecognitionofimportant
+featuresandreducestheinterferenceofinvalidprobabilityflipsintheoptimizationsearch.Finally,wevalidated
+the EMSWOA against six comparison algorithms on 19 datasets. The experimental results demonstrate that,
+comparedwiththemosteffectivebenchmarkalgorithms,theEMSWOAyieldsanaverageaccuracyincreaseof
+2.91%andanaveragereductioninthenumberoffeaturesbyafactorof3.58.
+1. Introduction problemssuchasover-fitting[1].FeatureSelection(FS)isaneffective
+dimensionality reduction method that reduces the complexity of fea-
+WiththeadventoftheBigDataera,anincreasingamountofhigh- tures, decreases computational overhead, and enhances accuracy by
+dimensional data are appearing in everyday life. However, the high- selecting the optimal subset from high-dimensional feature data,
+dimensional data collected contain considerable redundant or irrele- thereby eliminating redundant and irrelevant features [2]. As a key
+vantinformation,whichnotonlyincreasesthecomputationaloverhead technique for data preprocessing, feature selection algorithms are
+ofthemodel,butalsocausesdegradationinmodelperformancedueto widelyusedinnumerouspracticalproblemssuchasneuraldataanalysis
+* Correspondence to: The Department of Basic Education, Shanghai Urban Construction Vocational College, No. 2080, Nanting Highway, Fengxian District,
+Shanghai200438,China.
+E-mailaddresses:miaofahui@126.com(F.Miao),zumri.ywu@um.edu.mo(Y.Wu),yanguanjiesucc@163.com(G.Yan),sixm@sspu.edu.cn(X.Si).
+https://doi.org/10.1016/j.asoc.2024.112634
+Received6January2024;Receivedinrevisedform8August2024;Accepted9December2024
+Available online 18 December 2024
+1568-4946/© 2024 Elsevier B.V. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+----- page 2 -----
+F.Miaoetal. Applied Soft Computing 169 (2025) 112634
+[3]. single-populationWOAtypicallyexploresonlyasmallpartofthede-
+Feature selection algorithms include filter-based approaches, cisionspace,whichsignificantlyrestrictstheacquisitionoftheoptimal
+wrapper-basedapproachesandembeddedapproaches[4].Filter-based subsetandadverselyimpactsthequalityofthefinalfeatureselection.
+algorithmsusuallyfilterasubsetbytherelevancecriterionofthefea- Therefore,itiscrucialtoimprovethesearchcapabilityofWOAalgo-
+tures, and therefore have a low computational overhead [5]. As the rithms in high-dimensional feature spaces. Multi-swarm optimization
+evaluation criteria of filter-based algorithms are not related to the algorithmscandividetheentirepopulationintomultiplesub-swarms,
+learning process of the algorithm, the accuracy of the selected subset which learn and update in their own search spaces. This helps to
+performspoorly.Wrapper-basedfeatureselectionalgorithms,however, improvethediversityofthepopulation,increasetheexplorationability,
+generallytreatthefeatureselectionprocessasasearchproblem.They and can effectively avoid premature convergence. For example, Yang
+identify candidate feature subsets using methods such as heuristic et al. [19] proposed an evolutionary state-driven multi-population
+searchesanddirectlyemployclassifierperformancemetricstoevaluate cooperative particle swarm optimization algorithm for complex opti-
+the merits ofthesesubsets. The optimalfeature subsetis obtainedby mizationproblems.
+integratingsearchalgorithmswithclassifierstrainedduringtheprocess. Inaddition,noneoftheabovefeatureselectionalgorithmshavebeen
+This type of method, taking into account the correlations among fea- improvedfortheinvalidprobabilityflippingproblem.Thisisbecause
+tures,imposeshigherdemandsontheglobaloptimizationcapabilitiesof existing metaheuristic feature selection algorithms employ trans-
+search algorithms [6]. Additionally, embedded feature selection formationfunctionsthatareusuallyoftwotypes,S-typeorV-type[3].
+methodsintegratethefeatureselectionprocessintothemodeltraining, Byapplyingthetransformationfunctiontotheupdatestepsizeineach
+leveragingthemodel’sinherentmechanismstoautomaticallyperform iterationcycle,thecorrespondingprobabilityvalueforeachdimension
+featureselectionthroughmodelparametersorstructures.However,the is obtained. This probability is also used as a measure of feature
+effectivenessoffeatureselectionisdirectlydependentonthechoiceof importance,andthefeatureisflippedorselectedbasedonacomparison
+model,potentiallyconstrainedbythemodel’sownperformance[7]. of the probability value with a threshold. Therefore, setting the
+Although feature selection algorithms are continuously evolving, thresholdiscrucialfordeterminingwhichfeaturesareselected.There
+mostmethodsstillfacenumerouschallengeswhenperformingclassifi- are two existing methods for setting the threshold: a fixed threshold
+cationtasksonhigh-dimensionaldatasets[8].Consequently,thetaskof basedonaconstantvalueandadynamicthresholdbasedonrandom
+high-dimensionalfeatureselectionremainsafocalpointofresearch.The values. Using a constant value as the threshold is not only make it
+FS problem is essentially a combinatorial optimization issue [9]. The difficult to determine the optimal setting but also results in a lack
+goaloftheFSistoeffectivelyremoveredundantandirrelevantfeatures generalizability for different datasets. For example, Yousri et al. [20]
+toobtainahigherclassificationaccuracywithaminimumnumberof usedafixedthresholdintheirmarinepredatorfeatureselectionalgo-
+features.Metaheuristicalgorithmshaveshownoutstandingcapabilities rithm.Usingadynamicthresholdforfeatureimportancemeasurement
+for addressing combinatorial optimization issues and have been suc- canincreasethealgorithm’sperturbation,butthereisalsoaproblemof
+cessfulinrecentyearsforcombinatorialoptimizationproblemssuchas invalid probability flipping due to the randomness of the dynamic
+dataclustering[10,11].Benefitingfromtheglobaloptimizationcapa- threshold; for example, in Abualigah et al.’s [21] used a random
+bilities of the meta-heuristic algorithm, it has also gained significant threshold for feature measurement. Invalid probability flipping can
+attention.Incontrasttoapproachessuchasexhaustivesearching[12], reduce the selection probability of high-quality features, thereby
+metaheuristics do not rely on a priori knowledge of the domain or affectingthesearchspeedandqualityofthebestsubset.
+specificassumptionsaboutthesearchspace,makingthemmoresuitable ToovercometheinsufficientdetectionabilityoftheWOAalgorithm
+forfeatureselectiontasks[13]. inhigh-dimensionalcomplexsolutionspaceandtheproblemofinvalid
+The whale optimizationalgorithm(WOA)[14]hasreceivedmuch probabilityflippingwhenfeaturesaremappeddiscretely,weproposea
+attentionasarepresentativealgorithminthefieldofmetaheuristical- dynamicmulti-swarmWOAbasedonelitetuning(EMSWOA).Building
+gorithms in recent years. The WOA is suitable for solving complex onthefoundationoftheWOAalgorithm,weintroduceanelitecorrec-
+feature selection problems in the search space because of its strong tionstrategytoalleviatetheproblemofinvalidprobabilityflippingand
+globaloptimizationcapability[15]andflexiblesearchdirectioncontrol devise a dynamic multi-swarm construction mechanism based on
+mechanism.Specifically,thevectorrepresentationofindividualwhales centroid distance to enhance the global optimization ability of the
+inthepopulationisconsistentwiththesizeofthefeaturesubsetofthe EMSWOAandimprovethequalityoffeaturesubsets.Ourinnovations
+selected features. In the WOA, the feeding process of whales is the areasfollows:
+random search process of constructing a subset of features in feature
+selection. Individual whales with better fitness values during WOA • A dynamic multi-swarm strategy based on centroid distance was
+predation were considered more important for the selected traits. A proposed,whichusescentroidmeasurementstodirectionallyguide
+subsetofthemoreoptimalfeatureswasobtainedthroughtheflexible the dynamic formation of subpopulations, enhancing their exploi-
+foragingprocessofthewhales.Inaddition,moreimportantly,duetothe tationcapabilities.
+shrinking encircling mechanism and spiral updating position of the • A dynamic population recombination mechanism with a linearly
+WOA algorithm,theWOAalgorithmcanmore flexibly controlsearch decreasingnumberofsubpopulationswasdevelopedtoincreasethe
+direction in complexspace; thus, it canbe better realized incomplex algorithm’sindependenceinearlysearchstageswithinthefeature
+space spatial exploitation and exploration. Therefore, the WOA algo- space and enhance information exchange and global exploration
+rithmmaybemoresuitableforsolvingthefeatureselectionproblem. capabilitiesinlateriterations.
+WOAalgorithmshavebeentestedonhigh-dimensionalandlarge-scale • A local sparsity metric mechanism was introduced, utilizing a
+optimization problems. For example, Zhang et al. [16] proposed a comprehensive assessmentofindividualcongestion anddispersion
+hybrid WOA based on aggregation strategies for high-dimensional inthefeaturespacetomaintainthediversityofcandidatesolutions,
+problems. therebyincreasingtheprobabilityofidentifyingtheoptimalfeature
+However, the above WOA-based feature algorithms, which are subset.
+dominatedbysinglepopulations[17],arestillunabletoovercomethe • Anelitetuningstrategyisproposedtousetwogenerationsofelite
+problem of insufficient exploration capability of high-dimensional individualstocorrecttheprobabilisticinvalidflipproblemcausedby
+complex solution spaces [18]. Due to the computational time con- randomthresholdsandtoavoidtheperformancedrainanddistur-
+straints inherent in the single-swarm Whale Optimization Algorithm bancecausedbyinvalidprobabilisticflips.
+(WOA) for feature selection, it is challenging to conduct unlimited
+searches and iterations over feature subsets. Consequently, the
+2
+
+----- page 3 -----
+F.Miaoetal. Applied Soft Computing 169 (2025) 112634
+• The EMSWOA is proposed and compared with other prominent approximating the current best solution and encircling the prey. The
+feature selection algorithms on high-dimensional datasets, demon- encirclingandfeedingphaseisrepresentedasfollows[14]:
+stratingthesuperiorityoftheEMSWOAalgorithm. D=|C⋅X ∗(t)(cid:0) X(t)| (3)
+Theorganizationisasfollows.Section2reviewstherelevantliter- C=2⋅r (4)
+ature, including the principles of feature selection and the WOA. The
+EMSWOAalgorithmisdescribedindetailinSection3.Section4pre- whereDdenotestheswimstepinapproximationtotheoptimalsolution
+sentstheexperimentalresultsanddiscussion,whichverifyandanalyse andtindicatesthecurrentnumberofiterations.Cindicatestheoscil-
+theperformanceoftheproposedalgorithm.Section5summarizesthe lationfactor,rdenotesastochasticnumberin[0,1],andX(t)denotesthe
+paperandprovidesavisionoffutureresearchtrends. locationofthecurrentindividualwhaleinthet-thgeneration.
+Awhaleinaswarmislocation-modifiedbytryingtoapproximatethe
+2. Relatedwork optimalindividual,whichiscomputedviathefollowingmodel[14]:
+X(t+1)=X ∗(t)(cid:0) A⋅D (5)
+2.1. Featureselection
+A=2a⋅r(cid:0) a (6)
+The essence of the FS problem lies in a problem of compositional
+optimization[3].Thegeneralformofthedefinitionofasingle-objective
+whereAdenotestheconvergencefactor,adecreaseslinearlyfrom2to0,
+optimizationproblemisasfollows:
+andrdenotesastochasticnumberin[0,1].
+min f(x)
+s.t. X=(x1 ,x2 ,⋯,xN ) (1) 2.2.2. Bubble-netattackmethod(exploitationphase)
+Duringthisfeedingphase,whalesattacktheirpreyinspiralbubbles
+where f(x)denotes theobjectivefunction tobe optimizedand xN de- through both a shrinking encircling mechanism (SEM) and a spiral
+notestheNthdimensionofthecandidatesolution. updatingposition(SUP)[14].SEMsimulatesthegradualreductionin
+Thepurposeoffeatureselectionistoselectthebestsubsetoffeatures theencirclingcircleasthewhalefeeds.Theformulaforcalculatingthe
+from a dataset containing N features to improve the accuracy of the SEM is the same as Eq. (6), where the range of whale encircling
+algorithm.Therefore,theobjectivefunctionofthemodelforthefeature contractionisinfluencedbytheconvergencefactorA.ThesizeofAis
+selectionproblemisdefinedsuchthatitisdesirabletominimizeboth proportional to the search range of the individual whale and is pro-
+the classification error and minimize the number of features in the portionaltoa.Thevalueofadecreaseslinearlyfrom2to0,sotherange
+featuresubset.Wecanrepresentthefeatureselectionproblemviathe ofvaluesofAis[-a,a].
+followingformula[8]: TheSUPsimulatesthespiralswimmingofawhaleasitfeeds,andthe
+#Selected formulafortheSUPisshownbelow[14]:
+min f(x)=α∗ErrorRate+β∗ #All X (cid:0) t+1 ) =D ʹ⋅ebl⋅cos (cid:0) 2πl ) +X ∗(t) (7)
+s.t. X xi = ∈ ( { x 0 1 , , 1 x } 2 , , ∀ ⋯ i , ∈ xN { ) 1,2,3,⋯,N} (2) D ʹ=|X ∗(t)(cid:0) X(t)| (8)
+whereErrorRatedenotestheclassificationerror,#Selecteddenotesthe w
+pr
+h
+o
+e
+a
+r
+c
+e
+he
+D
+s
+d
+t
+e
+h
+n
+e
+ot
+o
+e
+p
+s
+ti
+t
+m
+he
+al
+s
+s
+w
+o
+i
+l
+m
+uti
+s
+o
+t
+n
+ep
+X
+o
+∗(
+f
+t)
+t
+,
+h
+b
+e
+i
+c
+s
+u
+a
+rr
+c
+e
+o
+n
+n
+t
+s
+i
+t
+n
+a
+d
+n
+i
+t
+v
+u
+id
+s
+u
+e
+a
+d
+l
+t
+X
+o
+(
+c
+t)
+on
+a
+t
+s
+ro
+it
+lt
+a
+h
+p
+e
+-
+numberoffeaturesinthefeaturesubset,and#Alldenotesthenumberof
+allfeaturescontainedintheoriginalfeature.Thesumofαandβis1, shapeofthespiral,andldenotesastochasticvaluebetween[-1,1].
+Duringthebubbleattackphase,boththeSEMandtheSUPwillbe
+which is the coupling factor for achieving both objectives simulta-
+present, and assuming a 50% probability of performing one of these
+neously. X represents the set containing all the features, Nrepresents
+mechanisms, the position updating equation for this phase is shown
+featuredimensions,and0and1areusedtoindicatewhetherthei-th
+featureisselected.f(x)representsthefeatureevaluationfunction,which below[14]:
+( ) {
+i t s he typ q i u c a a l l i l t y y r o ep f r t e h s e en s t e e l d ec b t y ed th s e u c b l s a e s t s . ifi B c y at u io si n n e g rr f o (x r ) an to di g s u u i s d e e d t t h o e m f e e a a s t u u r r e e X t+1 = D X ʹ ∗ ⋅ ( e t b ) l⋅ (cid:0) co A s (cid:0)⋅D 2πl ) +X ∗(t) i i f f p p < ≥ 0 0 . . 5 5 (9)
+selection,weobtainthebestsubsetwiththeminimumerror.
+wherepisastochasticnumberbetween[0,1],indicatingtheprobability
+ofchoosingaparticularbehaviour.
+2.2. Whaleoptimizationalgorithm(WOA)
+2.2.3. Searchforprey(explorationphase)
+The WOA is a novel swarm intelligence algorithm proposed by
+The whale feeding process also includes a random search phase,
+Mirjalili et al. and inspired by the unique hunting process of whales whichsimulatesthewhale’ssearchforpreyinalargerspace.Thein-
+[14].Duringthehuntingprocess,whalessurroundtheirpreybyforming
+dividualisnotlearningfromthecurrentbestindividual,butratherfrom
+acylindricalortubularbubblenetwithspirallingbubbles,continuously astochasticone.Theextentofthewhale’ssearchisinfluencedbythe
+forcingthepreytowardsthecentreandmakingfinalcaptureeasier.This
+convergence factor A. The search range of the solution space is
+processisalsoreferredtoasbubble-nethunting.TheWOAisbasedon controlledbyA.When|A|>1,theWOAperformsalargerglobalsearch,
+this hunting process and is abstracted into three predation stages,
+thusenhancingtheglobalsearchpower.Thecomputationalmodelfor
+namely, encircling prey, bubble-net attacking and random searching.
+therandomsearchphaseisshownbelow[14]:
+TheformulafortheWOAisasfollows:
+X(t+1)=Xrand (t)(cid:0) A⋅D (10)
+2.2.1. Encirclingprey
+Duringtheencirclingpreyphaseofwhalefeeding,thewhales’main D=|C⋅Xrand (t)(cid:0) X(t)| (11)
+objective is to observe the location of their prey and encircle it for
+predation. Information ispassed betweenwhales throughthe popula-
+whereXranddenotesarandomlychosenagent,Cistheoscillationfactor,
+tion,thepositionofthenearestwhaletothepreyissetastheglobalbest
+andDdenotesthedistancebetweentheselectedrandomwhaleXrand (t)
+solution X∗of the current whale, and the search area is narrowed by
+andthecurrentwhaleX(t).
+3

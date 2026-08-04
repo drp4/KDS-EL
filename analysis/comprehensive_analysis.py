@@ -587,7 +587,7 @@ print("=" * 80)
 summary = f"""
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                    COMPREHENSIVE EXPERIMENTAL ANALYSIS                        ║
-║                 KDS-EL: Kernel Density Search - Ensemble Learning             ║
+║        KDS-EL: Knowledge-Guided Dual-Phase Swarm Evolutionary Learning        ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 
 EXPERIMENTAL SETUP:

@@ -28,7 +28,7 @@ $$\min_{\mathbf{x}} f(\mathbf{x}) = 0.9 \times \text{ErrorRate}(\mathbf{x}) + 0.
 KDS-EL = 双子群PSO骨架（继承自MEL）
          + MI 初始化 + 自适应重初始化          ← 知识引导生命周期
          + KER（Knowledge-guided Elite Refinement）← 在线知识累积
-         + 两阶段权重调度（Two-Phase Weight Scheduling）← 自适应探索-利用
+         + 两阶段权重调度（Two-Phase Weight Scheduling）← 探索-利用
          + 原地更新（1v1 替换，非池化竞争）
 
 整体架构：
@@ -116,7 +116,7 @@ $$\text{prob} = \frac{\max(\mathbf{w}, 0)}{\sum \max(\mathbf{w}, 0)}, \quad \tex
 
 ### 3.3 两阶段权重调度（Two-Phase Weight Scheduling）
 
-不同于传统固定权重（ws=[0.9, 0.1]），KDS-EL 采用两阶段自适应调度：
+不同于传统固定权重（ws=[0.9, 0.1]），KDS-EL 采用两阶段权重调度：
 
 $$\text{ws}(t) = \begin{cases} [0.7, 0.3] & t < 0.7T \quad \text{(Phase 1: 激进压缩)} \\ [0.95, 0.05] & t \geq 0.7T \quad \text{(Phase 2: 精细调精度)} \end{cases}$$
 
@@ -336,7 +336,7 @@ MEL（随机初始化）
 
 ## 八、与同类定长方法的本质区别
 
-| 方法 | 知识引导 | 自适应调度 | 更新方式 | 输出 |
+| 方法 | 知识引导 | 权重调度 | 更新方式 | 输出 |
 |---|---|---|---|---|
 | BPSO/SaWDE/FWPSO | 无 | 无 | — | 单解 |
 | IGPSO | MLP预训练（一次性） | 无 | — | 单解 |

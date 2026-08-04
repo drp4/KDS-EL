@@ -1,6 +1,6 @@
 # KDS-EL 参考文献库（Master Reference List）
 
-- 用途：为期刊论文（目标 Applied Soft Computing）《KDS-EL: Knowledge-guided Dual-Space Evolutionary Learning for High-Dimensional Feature Selection》建立合并参考文献库。
+- 用途：为期刊论文（目标 Applied Soft Computing）《KDS-EL: Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection》建立合并参考文献库。
 - 生成日期：2026-08-01
 - 文献核实方式：已有 68 条 MEL 论文文献**原样保留**（来自 `doc/kds_el_paper.txt` 第 3285-3491 行，IEEE 编号格式）；其余条目均经 WebSearch 逐一核实存在。
 - 说明：`output/tables/T1_literature.tex` 中原有的引用键（lu2015 / gu2018 / song2020 / gu2021 / wang2021 / li2024 / nguyen2022）经核实与代码实现不符，本文档给出修正后的引用。

@@ -1,0 +1,245 @@
+----- page 1 -----
+Expert Systems With Applications 260 (2025) 125404
+ContentslistsavailableatScienceDirect
+ExpertSystemsWithApplications
+journalhomepage:www.elsevier.com/locate/eswa
+Multi-populationdifferentialevolutionapproachforfeatureselectionwith
+mutualinformationranking
+FeiYua,b,∗,JianGuana,b,HongrunWua,b,HuiWanga,BiyangMac
+aSchoolofPhysicsandInformationEngineering,MinnanNormalUniversity,Zhangzhou,363000,China
+bKeyLabofIntelligentOptimizationandInformationProcessing,MinnanNormalUniversity,Zhangzhou,363000,China
+cSchoolofComputerScience,MinnanNormalUniversity,Zhangzhou,363000,China
+A R T I C L E I N F O A B S T R A C T
+Keywords: Featureselectionisacrucialaspectofdatapreprocessingbecauseofthesignificanteffectofredundantfeatures
+Featureselection(FS) on classification performance and the extensive computational resources required. Evolutionary algorithm-
+Evolutionarycomputation(EC) basedfeature-selectionmethodshaveshownremarkableresultsindeterminingtheoptimalfeaturesubset.To
+Differentialevolution(DE) furtherenhanceclassificationperformance,thispaperproposesanovelmulti-populationdifferentialevolution
+Opposition-basedlearning(OBL)
+approachforfeatureselectionwithmutualinformationranking(MI-MPODE).Firstly,populationpreprocessing
+Mutualinformation(MI)
+guided by mutual information is employed to reduce the dimensionality of the initial feature space. Then,
+the feature subset obtained from mutual information serves as the initial population for MI-MPODE. MI-
+MPODEincorporatesanovelmulti-populationinformation-sharingmechanism,withcommonindividualsfrom
+threelayerscontributingtointer-subpopulationinformationsharing.Additionally,anindividualenhancement
+strategyisproposedtohandlethevariationsofindividualsinthepopulation,andaLensimagingopposition-
+basedlearningmethodisadoptedtoimprovethealgorithm’soptimizationcapability.MI-MPODEiscompared
+with several state-of-the-art evolutionary algorithm-based feature selection methods through experimental
+comparisons.TheresultsshowthatMI-MPODEoutperformsallcomparisonalgorithmsonmorethanhalfof
+thedatasets,withasignificantreductioninthenumberoffeaturesused,demonstratingasignificantadvantage
+overcompetitors.
+1. Introduction Based on evaluation metrics, FS methods can be categorized into
+filter, wrapper, and embedded methods. Filters primarily utilize rel-
+Classification problems have been widely investigated and are evant evaluation metrics to conduct statistical or correlation anal-
+prevalentacrossvariousdomains,suchasproductrecommendationsys- yses of features to select the optimal feature subset. Typical filter
+tems(Linetal.,2022),medicaldiagnosis(Alweshahetal.,2022),spam methods include variance analysis, information theory, and correla-
+and information detection (Jalal Mussa & M. Jameel, 2019), and re- tion coefficients (Thabtah et al., 2020). In contrast to filter methods,
+motesensingimageclassification(Zhangetal.,2018).However,rapid wrapper-basedmethodsembedFSintomachine-learningclassification
+advancementsindigitaltechnologyhavegeneratedsignificantamounts algorithmssuchasK-nearestneighbors(KNN)(Sunetal.,2022),sup-
+ofhigh-dimensionaldata.Hence,datamanagementhasbecomeexcep-
+port vector machines (SVMs) (Tao et al., 2019), and decision trees
+tionally challenging when using classical classification algorithms, as
+(DT)(Liu&Zhao,2012).EmbeddedmethodscombineFSwithclassifier
+it results in increased computational costs and storage requirements.
+training(Lu,2019),thusallowingfeatureimportanceandmodelper-
+In this regard, feature selection (FS) is key in solving classification
+formancetobeconsideredsimultaneously.However,differentmethods
+problems. FS not only assists in reducing the dimensionality of the
+may yield distinct classification performances for different datasets
+feature space but also enhances the accuracy and robustness of clas-
+and problems. Therefore, integrating different FS methods can lever-
+sificationmodels.Additionally,itallowsonetobetterunderstandthe
+characteristics and structure of the data, as well as provides valuable age the advantages of each method to further enhance classification
+insightsfordataanalysisandmodelinterpretation. performance.
+∗ Correspondingauthor.
+E-mailaddresses: yufei@whu.edu.cn(F.Yu),g2021091016@stu.mnnu.edu.cn(J.Guan),wuhongrun@whu.edu.cn(H.Wu),wh1953@mnnu.edu.cn
+(H.Wang),mby@mnnu.edu.cn(B.Ma).
+https://doi.org/10.1016/j.eswa.2024.125404
+Received8May2024;Receivedinrevisedform23August2024;Accepted14September2024
+Available online 20 September 2024
+0957-4174/© 2024 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+----- page 2 -----
+F.Yuetal. Expert Systems With Applications 260 (2025) 125404
+Classical FS methods present certain limitations as they typically FS. Xue et al. (2014) first applied multi-objective DE to FS,
+feature strict requirements for feature-evaluation metrics or model wheretheyregardedFSasabi-objectiveoptimizationproblem.
+selection.FS,whichaimstoselectthefewestfeatureswhileachieving Meanwhile, Nguyen et al. (2017) introduced a new FS decom-
+good classification performance, can be considered an optimization positionstrategy(basedonthedecompositionofmulti-objective
+problem.Hence,FSmethodsbasedonevolutionarycomputation(EC) evolutionaryalgorithms),whichimprovedclassificationperfor-
+have garnered widespread attention (Xue et al., 2016). Various EC mance. Agrawal et al. (2023) employed a multi-objective mul-
+techniques have been applied to FS, e.g., particle swarm optimization timodalDEtoselecttheoptimalfeaturesubsets.Consequently,
+(PSO)anddifferentialevolution(DE),whichusevectorrepresentations; DuetoEC’sglobalsearchcapabilities,EC-basedwrappermeth-
+ant colony optimization (ACO) with a graph structure (Chen et al., ods effectively enhance the performance of machine learning
+2020); genetic programming (GP) with a tree structure (Nag & Pal,
+models.However,thismethodiscomputationallyintensive,re-
+2016);andsparsematriceswithmatrixrepresentations(Lietal.,2022).
+quiringmultiplemodeltrainingsandsignificantdependencyon
+Moreover,ECtechniqueshavebeencombinedwithfilter,wrapper,and
+algorithmparameters.
+hybridmethodstodevelopinnovativeFSapproaches.
+(3). EC-basedhybridmethods:Asfiltersaremoreeffectiveinmanag-
+ingredundantfeaturesandwrappersexhibitbetterclassification
+(1). EC-basedfiltermethods:Filtermethodstypicallyrelyonstatis-
+performance,mostresearchershavecombinedthesetwometh-
+tical or information-theoretical measures to gauge the optimal
+feature subset. Compared with other approaches, these evalua- ods with EC to further enhance classification performance. For
+tionmethodsaremoreintuitiveandeasiertounderstand.Inthe example,toaddressthechallengesofhyperspectralimageclassi-
+information-theory domain, Hancer et al. (2018) used mutual fication,Ghoshetal.(2013)developedafeaturesubset-selection
+information (MI) to measure the correlation between features methodbasedonadaptivedifferentialevolution.Theyemployed
+and class labels. They developed an MI-based FS method that areliefalgorithmtorankthefeaturesandeliminateduplicates.
+focusedonthemaximumrelevanceandminimumredundancy. Theperformanceofthefinalselectedfeaturesubsetwasevalu-
+ThismethodwasintegratedintotheDEforFS.Similarly,Usman atedusingtheKNNalgorithm.Determiningtheoptimalnumber
+et al. (2020) utilized a binary cuckoo search algorithm and of features in a subset is challenging in cases involving high-
+introducedtwodistinctmulti-objectivefilterFSframeworksthat dimensionaldata.Tranetal.(2019)proposedavariable-length
+utilized nondominated sorting genetic algorithms. In terms of representation method for FS based on PSO. Before employing
+distancemeasurement,Yangetal.(2012)performedneighbor- PSO, they ranked the features based on distance metrics to
+hoodcomponentanalysis(NCA)toaddresshigh-dimensionalFS achieveasmootherfitnesslandscape.Theoptimalfeaturesubset
+problems. They verified that their algorithm was insensitive to for FS is not unique and selecting an appropriate number of
+irrelevantfeatures.TofurtherevaluatetheNCAmethod,Hancer features is crucial for achieving high classification accuracy.
+et al. (2023) incorporated NCA into the objective function of Therefore,Wangetal.(2023)usedfeatureclusteringtofacilitate
+DE,therebyintroducinganevolutionaryfilterFSmethodthatis evolutionary FS. During feature clustering, they employed the
+applicable to both single- and multi-objective scenarios. Mean- maximum information coefficient to classify the features and
+while, Xue et al. (2019) enhanced the performance of PSO evaluated the classification accuracy using the KNN algorithm.
+in FS by employing a population initialization based on the
+Comparedtotheprevioustwomethods,EC-basedhybridmeth-
+relief method. Regarding other filter methods, Li et al. (2009)
+ods exhibit significant advantages by integrating the strengths
+proposedamulti-populationagentgeneticalgorithmforfeature
+ofothermethodstoadapttovariousproblems.However,while
+selection to address the FS problem, where they used corre-
+this method enhances performance, it also increases computa-
+lation measures to evaluate the relationship between features
+tionalcomplexity.Itrequiresathoughtfulintegrationofvarious
+andlabels.Chakraborty(2008)positedthattheselectionofan
+methodsandparameterstoleverageitsadvantageseffectively.
+optimalfeaturesubsetdependsontheobjectivefunctionusedfor
+evaluatingthefeaturesubset.Hence,theyintroducedafeature-
+Based on the above issues, since DE is a structurally simple and
+selectionoptimizationalgorithmbasedonPSOandthefuzzyset
+powerfuloptimizationalgorithm,itsmutationandcrossoveroperations
+theory.DespitethegoodadaptabilityofEC-basedfiltermethods,
+helpmaintaingooddiversitywithinthepopulation,therebyenhancing
+theystillfacechallengeswhendealingwithhighcomputational
+featurediversityinfeatureselection.Meanwhile,tofurtherinvestigate
+complexity data. Furthermore, this approach requires specific
+multi-populationmechanismsandexpandtheresearchofDEinfeature
+problemanddataconsiderations,alongwithparametersetting,
+selection.Therefore,thispaperproposesanovelalgorithmnamedMI-
+toachieveoptimaleffectiveness.
+MPODE, which incorporates a multi-population information-sharing
+(2). EC-based wrapper methods: The most-investigated approach
+mechanism. First, this paper uses MI techniques to preprocess the
+combines the global search capability of EC with classifiers to
+feature space before executing MI-MPODE, thus eliminating redun-
+achievetheoptimalfeaturesubset.However,insingle-objective
+dant and weakly correlated features to enhance the efficiency and
+optimization, no method is suitable for all scenarios. Hence,
+interpretabilityoftheselectedfeaturesubsets.Second,theinformation-
+Fengetal.(Tanetal.,2008)proposedaGA-basedfeaturesubset-
+sharing mechanism among the subpopulations allows the algorithm
+selection method that integrates multiple FS approaches. Zo-
+rarpacıandÖzel(2016)combinedthebinaryDEwiththeartifi- to escape from local optima during optimization. To further improve
+cialbeecolonyalgorithmtodeviseanewbinarymutationstrat- the performance, this paper categorizes individuals in each subpop-
+egyforDE.Additionally,theyintroducedanenhancedonlooker- ulation into three layers using an individual enhancement strategy
+beeprocesstoaddresstheFSproblem.Toenhancetheoptimiza- to enhance optimization. Additionally, this paper integrates a lens
+tion performance of algorithms in FS, Ouadfel and Abd Elaziz imagingopposition-basedlearning(LensOBL)strategytostrengthenthe
+(2020) improved the local and global search capabilities dur- diversityofthefeaturesubsets.
+ing FS using an adaptive perceptual balance crow search al- Themaincontributionsofthisstudyareasfollows:
+gorithm. Qiu and Liu (2021) allocated PSO particles to three
+layers and employed a random-sample selection strategy and ∙ Anovelmulti-populationinformation-sharingmechanismispro-
+Gaussian-based elite strategy to maintain the exploration and posedtoreducetheprobabilityofthealgorithmfallingintolocal
+exploitation of the feature search space. Owing to its dual ob- optima.
+jective of reducing feature count while enhancing classifica- ∙ TheutilizationofMItechnologytooptimizetheinitialpopulation
+tionaccuracy,multi-objectiveoptimizationismoresuitablefor ofthealgorithmeffectivelyreducestheinitialfeaturespace.
+2
+
+----- page 3 -----
+F.Yuetal. Expert Systems With Applications 260 (2025) 125404
+∙ Theproposalofathree-layerindividualenhancementstrategyto 2.2. MI
+improve solution accuracy. Additionally, a LensOBL strategy is
+employedtoenhancethediversityofthefeaturesubsets. MI (Shannon, 2001), which is a concept from Information theory,
+∙ TheperformanceofMI-MPODEisevaluatedcomprehensivelyby is used to quantify the relationship between two random variables
+testingitonmultipleFSdatasets.Theevaluationassessesnotonly andindicatestheamountofinformationthatonevariablecanprovide
+itseffectivenessinsolvingFSproblemsbutalsotheperformance regarding the other. MI can be regarded as the shared uncertainty
+ofthenewlyintroducedstrategies. between two random variables. If the mutual information 𝐼(𝑋;𝑌)
+between two vectors 𝑋 and 𝑌 is 0, then one can infer that these two
+The remainder of this paper is organized as follows: Section 2 variablesdonotprovideanyinformationregardingeachother.MIcan
+presentstherelevantbackgroundinformation,includingtheDEframe- beappliedinmanyfields,suchasFS,patternrecognition,andimage
+work,opposition-basedlearning(OBL)strategy,andMI.Theproposed registration.InthecontextofFS,ahigherMIvalueindicatesastronger
+MI-MPODE method is described in detail in Section 3. Section 4 dis- correlationbetweenthefeaturevectorandclasslabel.
+cusses the experimental results and analyses of different algorithms (1). Entropy (H): Entropy measures the uncertainty of a random
+for solving the FS problem, where the effectiveness of the newly variable. Therefore, for a discrete variable 𝑋, its entropy 𝐻(𝑋) is
+introducedstrategiesisconfirmedviatheablationexperiment.Finally, definedas.
+Section5providestheconclusionsandsomeperspectivespertainingto ∑
+𝐻(𝑋)=− 𝑃(𝑥)𝑙𝑜𝑔𝑃(𝑥) (5)
+thecurrentstudy.
+𝑥∈𝑋
+where 𝑃(𝑥) is the probability of variable 𝑋. In other words, entropy
+2. Background
+can be regarded as the average amount of information for a random
+variable.Anuncertaineventwithagreaterprobabilitycontainsmore
+2.1. DE
+information. In a two-dimensional space, the MI value between two
+random variables is obtained from their joint and conditional mutual
+DE is a simple yet effective evolutionary algorithm introduced by
+information,whichcanbedefinedas.
+Storn and Price (Storn & Price, 1997); furthermore, it is well known
+for its simplicity and minimal parameter requirements. DE primarily 𝐻(𝑋,𝑌)=− ∑ 𝑃(𝑥,𝑦)𝑙𝑜𝑔𝑃(𝑥,𝑦) (6)
+comprisesinitialization,mutation,crossover,andselectionoperations. 𝑥∈𝑋,𝑦∈𝑌
+Thedetailedstructureoftheassociatedalgorithmisasfollows. ∑
+(1).Initialization:InclassicDE,apopulationcomprisesindividuals
+𝐻(𝑋|𝑌)=− 𝑃(𝑥,𝑦)𝑙𝑜𝑔𝑃(𝑥|𝑦) (7)
+𝑥∈𝑋,𝑦∈𝑌
+randomly generated from continuous values between the maximum
+and minimum boundaries. Herein, 𝑟𝑎𝑛𝑑 represents a random number (2). MI: MI measures the dependence or correlation between two
+between(0,1). randomvariables.TheMIfortwodiscreterandomvariables𝑋 and𝑌
+canbedefinedas.
+𝑋 𝑖 0=𝐿 𝑏 +𝑟𝑎𝑛𝑑⋅(𝑈 𝑏 −𝐿 𝑏 ) (1) ∑∑ 𝑃(𝑥,𝑦)
+𝐼(𝑋;𝑌)= 𝑃(𝑥,𝑦)𝑙𝑜𝑔( ) (8)
+where 𝐿 𝑏 and 𝑈 𝑏 are the minimum and maximum boundary values 𝑥∈𝑋𝑦∈𝑌 𝑃(𝑥)𝑃(𝑦)
+of the initial search space, respectively, and 𝑋0 represents the 𝑖th
+𝑖 when MI is combined with entropy, it can be represented as the
+individual in the initial population 𝑁𝑃, which is the total number of
+entropies of 𝑋 and 𝑌. Consequently, Eqs. (6) and (7) can be written
+individualsinthepopulation.
+as 𝐼(𝑋;𝑌) = 𝐻(𝑋)+𝐻(𝑌)−𝐻(𝑋,𝑌) and 𝐼(𝑋;𝑌) = 𝐻(𝑋)−𝐻(𝑋|𝑌),
+(2).Mutation:Forthetargetvector𝑉𝑡,threevectorsdistinctfrom
+𝑖 respectively,whenexpressedintermsofentropy.
+the target vector are randomly selected within the population, thus
+resultinginthegenerationofamutantvector𝑉𝑡+1.
+𝑖 2.3. OBL
+𝑉𝑡+1=𝑋𝑡 +𝐹⋅(𝑋𝑡 −𝑋𝑡 ) (2)
+𝑖 𝑟1 𝑟2 𝑟3 OBL, which is introduced by Tizhoosh (2005), is an effective op-
+where 𝑟1, 𝑟2, and 𝑟3 are distinct random integers within the interval timization strategy that aims to select both the target point and its
+[1,NP]; and 𝐹 ∈(0,1) is a mutation factor. The mutation strategy oppositepoint.IntegratingOBLwithECallowsthefitnessofboththe
+‘‘𝐷𝐸∕𝑟𝑎𝑛𝑑∕1’’isusedinEq.(2). target vector and its opposite vector to be evaluated simultaneously.
+(3).Crossover:Foreachdimensionoftheindividual,thecrossover This integration not only enhances the population diversity of the
+operator𝐶𝑅isusedtodecidewhethertoselectthetargetvector𝑋𝑡 algorithmbutalsoacceleratesitsconvergencespeed.Moreover,owing
+𝑖,𝑗
+ormutantvector𝑉𝑡+1,thusultimatelyformingatrialvector𝑈𝑡+1. totheincreaseinstudiespertainingtoOBLoverthepasttwodecades,
+𝑖,𝑗 𝑖,𝑗
+many improved methods related to OBL have been proposed and the
+{
+𝑉𝑡+1, if𝑟𝑎𝑛𝑑(0,1)≤CR∥𝑗=𝑟𝑎𝑛𝑑𝑖(1,𝐷) theoreticaleffectivenessofOBLhasbeendemonstrated(Mahdavietal.,
+𝑈𝑡+1= 𝑖,𝑗 (3)
+𝑖,𝑗 𝑋𝑡 , otherwise 2018).TheclassicOBLisexpressedasfollows:
+𝑖,𝑗
+where𝑟𝑎𝑛𝑑(0,1)isarandomnumberbetween(0,1);and𝑟𝑎𝑛𝑑𝑖(1,𝐷)is 𝑥′ 𝑖,𝑗 =𝑎 𝑖,𝑗 +𝑏 𝑖,𝑗 −𝑥 𝑖,𝑗 (9)
+a random integer within the interval [1,D], with 𝐷 representing the
+where 𝑥 is the 𝑗th dimension of the 𝑖th target vector and 𝑥′ is
+populationdimension. 𝑖,𝑗 𝑖,𝑗
+its opposite vector; meanwhile, 𝑎 and 𝑏 are the maximum and
+(4). Selection: Based on the objective function, the fitness of the 𝑖,𝑗 𝑖,𝑗
+minimum values of the 𝑗th dimension for all vectors, respectively. In
+trialvector𝑈𝑡+1 andtargetvector𝑋𝑡 isevaluated,andanewgenera-
+𝑖 𝑖 EC,thevectorclosesttotheoptimalsolutionisretainedbasedonthe
+tionofindividuals𝑋𝑡+1 isobtainedviagreedyselection.
+𝑖 fitnessofthetargetvectoranditsoppositevector.
+{
+𝑈𝑡+1, if𝑓(𝑈𝑡+1)≤𝑓(𝑋𝑡)
+𝑋 𝑖 𝑡+1= 𝑋 𝑖 𝑡, otherw 𝑖 ise 𝑖 (4) 3. Proposedalgorithm
+𝑖
+where𝑓(∗)isthefitnessvalueofthecurrentvector.Duringthemini- 3.1. PopulationinitializationbasedonMI
+mizationprocess,ifthefitnessvalueofthetrialvectorislessthanthat
+ofthetargetvector,thenthetargetvectorisreplaced;otherwise,the ThisstudyevaluatedtheMIvaluesbetweeneachfeatureandclass
+targetvectorisretained. label. A higher MI value indicates a strong correlation between the
+3

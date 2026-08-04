@@ -1,4 +1,4 @@
-\begin{table*}[!htb]
+\begin{table}[!htb]
 \centering
 \caption{Parameter Settings}
 \label{T3}
@@ -28,23 +28,25 @@ Phase split ratio                 & = & 0.7 \\
 Phase-1 objective weights         & = & $\mathbf{w}_s = [0.7,\,0.3]$ \\
 Phase-2 objective weights         & = & $\mathbf{w}_s = [0.95,\,0.05]$ \\
 \midrule
-\multicolumn{3}{c}{\textbf{KDS-EL$_{\text{KER}}$ (no two-phase scheduling)}} \\
+\multicolumn{3}{c}{\textbf{MI+KER variant (no two-phase scheduling)}} \\
 \midrule
 Fixed objective weights           & = & $\mathbf{w}_s = [0.9,\,0.1]$ \\
 \midrule
-\multicolumn{3}{c}{\textbf{MEL and MEL+MI}} \\
+\multicolumn{3}{c}{\textbf{MEL and MI variant}} \\
 \midrule
 Inertia weight ($w$)              & = & 0.9 \\
 Acceleration coefficients         & = & $c_1 = c_2 = c_3 = 2.0$ \\
-MI-guided init ratio (MEL+MI)     & = & 0.5 \\
-Stall patience (MEL+MI)           & = & 20 \\
+MI-guided init ratio (MI variant)     & = & 0.5 \\
+Stall patience (MI variant)           & = & 20 \\
 \midrule
 \multicolumn{3}{c}{\textbf{Competitor Methods}} \\
 \midrule
-\multicolumn{3}{l}{Competitors (BPSO, FWPSO, IGPSO, PSO-CSM, SaWDE, NSGA-II-FS,} \\
-\multicolumn{3}{l}{MOPSO-FS, MOEA-D-FS, fMOPSO-FS, W-MOPSO-FS) use the} \\
-\multicolumn{3}{l}{hyper-parameters recommended in their original publications, with} \\
-\multicolumn{3}{l}{$N=20$ and $T=100$ unless the original paper specifies otherwise.} \\
+\multicolumn{3}{l}{Competitors (BPSO, FWPSO, IGPSO, PSO-CSM,} \\
+\multicolumn{3}{l}{SaWDE, NSGA-II-FS, MOPSO-FS, MOEA-D-FS,} \\
+\multicolumn{3}{l}{fMOPSO-FS, W-MOPSO-FS) use the hyper-parameters} \\
+\multicolumn{3}{l}{recommended in their original publications, with} \\
+\multicolumn{3}{l}{$N=20$ and $T=100$ unless the original paper} \\
+\multicolumn{3}{l}{specifies otherwise.} \\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}

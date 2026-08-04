@@ -27,7 +27,7 @@
 
 \begin{frontmatter}
 
-\title{KDS-EL: A Knowledge-Guided Evolutionary Learning Method for High-Dimensional Feature Selection}
+\title{KDS-EL: Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}
 
 %%% MASKED AUTHOR BLOCK (double-blind review) — replace upon acceptance %%%
 \author[au]{Anonymous Author}
@@ -36,7 +36,7 @@
 %%% END MASKED AUTHOR BLOCK %%%
 
 \begin{abstract}
-Feature selection in high-dimensional data, where the number of features vastly exceeds the number of samples, remains a central challenge for evolutionary computation. Generic particle swarm optimization (PSO) suffers from three structural deficiencies in this setting: random initialization wastes search budget in sparse solution spaces, uniform mutation discards cross-iteration feature-importance signals, and fixed objective weights are misaligned with the distinct phases of the search. This paper proposes KDS-EL, a knowledge-guided evolutionary learning method that builds upon a multi-task PSO backbone and integrates three complementary mechanisms. Mutual-information-guided initialization with adaptive re-initialization supplies informed starting points and escapes local optima on stagnation. A Knowledge-guided Elite Refinement (KER) strategy accumulates a cross-iteration feature-weight matrix governed by exponential decay and flips elite solutions toward historically effective features at zero additional classifier evaluations. A Two-Phase Weight Scheduling strategy partitions the search into an aggressive compression phase followed by an accuracy-refinement phase. On 20 high-dimensional benchmark datasets spanning gene expression, text, image, and speech domains, KDS-EL is compared against 13 competitors, including five single-objective PSO variants and five multi-objective feature selection methods. KDS-EL ranks first with a mean accuracy of 0.9574 and only 87.8 selected features on average, outperforming the strongest single-objective and multi-objective competitors by +3.97 and +4.42 percentage points, respectively, while delivering a 3.4$\times$ speedup over the MEL backbone. Wilcoxon signed-rank tests confirm superiority over MEL on 20/20 datasets, and Holm--Bonferroni correction establishes statistical significance against all 13 competitors. The component contribution analysis shows that the three mechanisms yield cumulative gains of +7.06 percentage points in accuracy and compress the feature count from 2{,}722 to 88.
+Feature selection in high-dimensional data remains a central challenge for evolutionary computation. Particle swarm optimization suffers from three structural deficiencies: random initialization wastes budget in sparse spaces, uniform mutation discards cross-iteration feature-importance signals, and fixed objective weights misalign with search phases. To address them, we propose KDS-EL (Knowledge-Guided Dual-Phase Swarm Evolutionary Learning), a closed-loop knowledge-guided evolutionary method. First, to overcome cold-start inefficiency, we propose mutual-information-guided initialization with adaptive re-initialization, injecting prior knowledge and restarting stagnated individuals. Second, to exploit the discarded cross-iteration feature-importance signals, we propose a knowledge-guided elite refinement strategy that accumulates feature-importance knowledge and flips elites toward effective features. Third, to align objective weights with search phases, we propose two-phase weight scheduling with aggressive early compression and late accuracy refinement. On 20 high-dimensional benchmarks, KDS-EL ranks first with 0.9574 mean accuracy and 87.8 selected features, outperforming the strongest single- and multi-objective competitors by +3.97 and +4.42 percentage points; Wilcoxon and Holm--Bonferroni tests confirm significance over all 13 competitors.
 \end{abstract}
 
 \begin{keyword}
@@ -44,6 +44,14 @@ high-dimensional feature selection \sep particle swarm optimization \sep mutual 
 \end{keyword}
 
 \end{frontmatter}
+
+\begin{highlights}
+\item KDS-EL: closed-loop knowledge-guided swarm learning for feature selection
+\item MI and KER keep feature-importance knowledge inside the search loop
+\item KER re-deploys accumulated feature knowledge with a bounded refinement budget
+\item Two-Phase Weight Scheduling aligns knowledge deployment with search stages
+\item KDS-EL ranks first on 20 benchmarks with 0.9574 accuracy and 87.8 features
+\end{highlights}
 
 % --------------------------- 1. Introduction ---------------------------
 \input{sections/01_introduction}
@@ -64,17 +72,22 @@ high-dimensional feature selection \sep particle swarm optimization \sep mutual 
 \label{F1}
 \end{figure*}
 
-% --------------------------- 5. Experimental setup ---------------------
+% ------------ 5. Experimental Results and Analysis (原 5-8 节合并) -------
+\section{Experimental Results and Analysis}\label{sec:results}
+
+This section reports the experimental outcomes across six complementary perspectives: overall classification accuracy, feature-selection compactness, statistical significance, ceiling-effect behavior, convergence dynamics, and computational efficiency. All aggregate numbers are computed over the 20 benchmark datasets described in Section~\ref{sec:setup}. We then quantify the contribution of each mechanism (Section~\ref{sec:ablation}) and assess the sensitivity of KDS-EL to its hyper-parameters (Section~\ref{sec:parametric}).
+
 \input{sections/05_experimental_setup}
 
 \input{../output/tables/T1_methods}
 \input{../output/tables/T2_datasets}
 \input{../output/tables/T3_params}
 
-% --------------------------- 6. Results and discussion ----------------
 \input{sections/06_results_and_discussion}
 
-\input{../output/tables/T6b_holm_bonferroni}
+\input{../output/tables/T4_accuracy}
+
+\input{../output/tables/T5_features}
 
 \begin{figure*}[!htb]
 \centering
@@ -83,55 +96,33 @@ high-dimensional feature selection \sep particle swarm optimization \sep mutual 
 \label{F5}
 \end{figure*}
 
+\input{../output/tables/T6_wilcoxon}
+\input{../output/tables/T6b_holm_bonferroni}
+
 \begin{figure*}[!htb]
 \centering
 \includegraphics[width=0.85\linewidth]{F8_convergence.pdf}
-\caption{Mean convergence trajectories of MEL, MEL+MI, KDS-EL$_{\text{KER}}$, and KDS-EL averaged over the 20 benchmark datasets.}
+\caption{Mean convergence trajectories of KDS-EL, KDS-EL w/o Two-Phase, KDS-EL w/o Two-Phase \& KER, and the MEL backbone averaged over the 20 benchmark datasets.}
 \label{F8}
 \end{figure*}
 
-\begin{figure*}[!htb]
-\centering
-\includegraphics[width=0.5\linewidth]{F10_wilcoxon_heatmap.pdf}
-\caption{Pairwise Wilcoxon signed-rank test win rates ($p<0.05$) among the 14 methods: each entry reports the fraction of 20 datasets on which the row method significantly outperforms the column method.}
-\label{F10}
-\end{figure*}
-
-\begin{figure*}[!htb]
-\centering
-\includegraphics[width=0.78\linewidth]{F11_runtime_scatter.pdf}
-\caption{Accuracy--runtime trade-off of the 14 methods (mean over 20 datasets); KDS-EL occupies the high-accuracy, low-runtime corner.}
-\label{F11}
-\end{figure*}
-
-\begin{figure*}[!htb]
-\centering
-\includegraphics[width=0.72\linewidth]{F13_friedman_rank.pdf}
-\caption{Friedman average ranks of the 14 methods over the 20-dataset accuracy matrix (lower is better); KDS-EL ranks first.}
-\label{F13}
-\end{figure*}
-
-% --------------------------- 7. Component contribution analysis --------
 \input{sections/07_component_contribution_analysis}
 
 \input{../output/tables/T7_ablation}
 
-\begin{figure*}[!htb]
-\centering
-\includegraphics[width=0.6\linewidth]{F6_ablation_heatmap.pdf}
-\caption{Per-dataset component contribution analysis of the four ablation variants (MEL, MEL+MI, KDS-EL$_{\text{KER}}$, KDS-EL): classification accuracy (left) and improvement relative to MEL (right).}
-\label{F6}
-\end{figure*}
-
-% --------------------------- 8. Parameter sensitivity -----------------
 \input{sections/08_parameter_sensitivity}
 
-% --------------------------- 9. Conclusion ----------------------------
+\input{../output/tables/T8_parameter_sensitivity}
+
+% --------------------------- 6. Conclusion ----------------------------
+\section{Conclusion}\label{sec:conclusion}
+
 \input{sections/09_conclusion}
 
-\input{../output/tables/T4_accuracy}
-
 % --------------------------- Statements -------------------------------
+\section*{CRediT Author Statement}
+\textbf{Anonymous Author}: Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Writing -- original draft, Writing -- review \& editing, Visualization.
+
 \section*{Declaration of Competing Interest}
 The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
 

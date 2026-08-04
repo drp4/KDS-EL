@@ -6,14 +6,14 @@ KDS-EL is a single-stream evolutionary algorithm integrating three complementary
 
 The algorithm takes as input a dataset with \(D\) features and \(C\) classes. In the preprocessing stage, mutual information between each feature and the class label is computed to produce a quality ranking over all \(D\) dimensions (Section~\ref{sec:mi}). An initial population of \(N\) fixed-length binary individuals is then constructed by mixing MI-ranked seeds with randomly initialized individuals at a controlled ratio \(\text{MI\_init\_ratio}=0.5\), followed by sigmoid binarization at threshold \(\theta=0.6\). This hybrid scheme supplies a quality-informed starting point while preserving the diversity necessary for effective exploration.
 
-The population enters the main iterative loop. Each generation opens with dual-objective fitness evaluation under the Two-Phase Weight Scheduling weights (Section~\ref{sec:twophase}). Observed improvements update the cumulative feature-weight matrix \(W \in \mathbb{R}^D\) with exponential decay \(\gamma=0.99\) (Section~\ref{sec:weight}). The top \(\text{elite\_k}=3\) individuals are refined by the KER strategy (Section~\ref{sec:ker})---a zero-extra-evaluation flip mechanism with a 90\%/10\% knowledge-to-random split---then undergo the standard PSO update and replace their pre-refinement counterparts in-place, avoiding the \(2N\)-candidate pool of earlier designs. On stagnation for \(\text{stall\_patience}=20\) generations, adaptive MI re-initialization refreshes the lower-performing half of the population. After \(T\) generations, the best individual is decoded as the final feature subset.
+The population enters the main iterative loop. Each generation opens with dual-objective fitness evaluation under the Two-Phase Weight Scheduling weights (Section~\ref{sec:twophase}). Observed improvements update the cumulative feature-weight matrix \(W \in \mathbb{R}^D\) with exponential decay \(\gamma=0.99\) (Section~\ref{sec:weight}). The top \(\text{elite\_k}=3\) individuals are refined by the KER strategy (Section~\ref{sec:ker})---a knowledge-guided flip mechanism with a 90\%/10\% knowledge-to-random split---then undergo the standard PSO update and replace their pre-refinement counterparts in-place when fitness improves, avoiding the \(2N\)-candidate pool of earlier designs. On stagnation for \(\text{stall\_patience}=20\) generations, adaptive MI re-initialization refreshes the lower-performing half of the population. After \(T\) generations, the best individual is decoded as the final feature subset.
 
 KDS-EL builds upon the multi-task evolutionary learning framework of~\cite{mel2024}, inheriting its fixed-length binary encoding and co-evolution mechanism while adding three knowledge-driven components. These operate at independent layers---feature-quality input (Section~\ref{sec:mi}), knowledge accumulation and exploitation (Sections~\ref{sec:weight} and~\ref{sec:ker}), and objective scheduling (Section~\ref{sec:twophase})---so each contribution is independently verifiable.
 
 \subsection{MI-guided Initialization and Adaptive Re-initialization}
 \label{sec:mi}
 
-Random initialization in high-dimensional binary search spaces typically produces individuals with approximately half of the features active, far from the sparse configurations that characterize effective feature subsets. This wastes a substantial fraction of the fixed evaluation budget on low-quality regions. KDS-EL addresses this cold-start problem by seeding the initial population with feature-quality information derived from mutual information.
+To overcome the cold-start inefficiency of random initialization in sparse high-dimensional search spaces, we propose an MI-guided initialization with adaptive re-initialization that seeds the initial population with feature-quality information derived from mutual information. Random initialization typically produces individuals with approximately half of the features active, far from the sparse configurations that characterize effective feature subsets, wasting a substantial fraction of the fixed evaluation budget on low-quality regions; the adaptive re-initialization restarts stagnated individuals with informed seeds.
 
 For a discrete feature \(f_j\) and the class label \(Y\), the mutual information quantifies the reduction in label uncertainty given knowledge of the feature:
 \begin{equation}
@@ -22,14 +22,14 @@ I(f_j; Y) = \sum_{b \in \{0,1\}} \sum_{c \in \mathcal{C}} p(f_j = b, Y = c) \; \
 \end{equation}
 All \(D\) features are ranked by descending MI score. For each individual in the initial population, with probability \(\text{MI\_init\_ratio}=0.5\), a quality-informed seed individual is constructed by selecting a subset of the top MI-ranked features and zeroing the remaining bits; with probability \(1 - \text{MI\_init\_ratio}\), the individual is initialized entirely at random. The resulting continuous position values are binarized via the sigmoid function \(S(v) = 1/(1 + e^{-v})\) with threshold \(\theta=0.6\). This balanced design ensures that half the population inherits prior feature-quality knowledge while the other half maintains the exploratory coverage of random seeding.
 
-To further guard against premature convergence, KDS-EL incorporates an adaptive MI re-initialization loop. When the global-best fitness stagnates for \(\text{stall\_patience}=20\) consecutive generations, the lower-performing half of the population is re-seeded with MI-informed positions---the precomputed feature-quality scores perturbed by small Gaussian noise---and re-evaluated under the current objective weights. This restores diversity with feature-quality guidance, allowing the population to escape local optima that trap static-initialization algorithms.
+To further guard against premature convergence, KDS-EL incorporates an adaptive MI re-initialization loop. When the global-best fitness stagnates for \(\text{stall\_patience}=20\) consecutive generations, the lower-performing half of the population is re-seeded with MI-informed positions---the precomputed feature-quality scores perturbed by small Gaussian noise---and re-evaluated under the current objective weights. This restores diversity with feature-quality guidance, allowing the population to escape local optima that trap static-initialization algorithms. Algorithm~\ref{alg:mi_reinit} summarizes this procedure.
 
-MI-guided initialization is a well-established filter-wrapper operation in the feature selection literature~\cite{cover1991,peng2005}. It provides the foundational quality layer upon which the subsequent knowledge-accumulation and scheduling mechanisms build.
+MI-guided initialization is a well-established filter-wrapper technique in the feature selection literature~\cite{cover1991,peng2005}. It provides the foundational quality layer upon which the subsequent knowledge-accumulation and scheduling mechanisms build.
 
 \subsection{Cumulative Feature-Weight Matrix with Exponential Decay}
 \label{sec:weight}
 
-A central element of KDS-EL is a cumulative feature-weight matrix \(W \in \mathbb{R}^D\), initialized to the zero vector, that aggregates cross-iteration feature importance signals. This matrix serves as the knowledge substrate for the KER strategy described in Section~\ref{sec:ker}.
+To preserve the cross-iteration feature-importance signals discarded by uniform mutation, KDS-EL maintains a cumulative feature-weight matrix \(W \in \mathbb{R}^D\), initialized to the zero vector, that aggregates these signals across iterations. This matrix serves as the knowledge substrate for the KER strategy described in Section~\ref{sec:ker}.
 
 After each generation's fitness evaluation, the weight matrix is updated as follows. For every individual \(i\) that achieves a Pbest improvement (i.e., its current fitness strictly exceeds its personal-best fitness), the \(j\)-th weight entry is adjusted by a fixed increment according to whether feature \(j\) was selected:
 \begin{equation}
@@ -47,7 +47,7 @@ The decay factor \(\gamma < 1\) serves two purposes: it prevents indefinite accu
 \subsection{Knowledge-guided Elite Refinement (KER) Strategy}
 \label{sec:ker}
 
-The Knowledge-guided Elite Refinement (KER) strategy is a zero-extra-evaluation mechanism that injects population-accumulated feature importance into elite solutions. It operates once per generation, after fitness evaluation and weight-matrix update, and targets only the top \(\text{elite\_k}=3\) individuals selected by fitness rank.
+To exploit the cross-iteration feature-importance signals discarded by uniform mutation, we propose the Knowledge-guided Elite Refinement (KER) strategy, which injects population-accumulated feature importance into elite solutions through a bounded, knowledge-guided perturbation. It operates once per generation, after fitness evaluation and weight-matrix update, and targets only the top \(\text{elite\_k}=3\) individuals selected by fitness rank; each refined elite is re-evaluated immediately and retained only if it improves fitness.
 
 For each elite individual \(\mathbf{x} \in \{0,1\}^D\), a probabilistic branching decision is made. With probability \(\text{rand\_flip\_p}=0.10\), the individual enters a pure random exploration branch: \(\lfloor \phi D \rfloor\) randomly selected features are toggled, where \(\phi = \text{flip\_frac}=0.01\). This branch guarantees ergodicity and prevents the search from locking onto stale or misleading weight accumulations. With probability \(1 - \text{rand\_flip\_p}=0.90\), the individual enters the knowledge-driven refinement branch. All \(D\) features are sorted by descending weight \(W_j\), producing an ordered list \(j_1, j_2, \ldots, j_D\). Let \(\mathcal{H} = \{j_1, \ldots, j_{\lfloor \phi D \rfloor}\}\) denote the high-weight feature set and \(\mathcal{L} = \{j_{D-\lfloor \phi D \rfloor+1}, \ldots, j_D\}\) the low-weight feature set. The refined binary vector \(\mathbf{x}'\) is then:
 \begin{equation}
@@ -59,12 +59,12 @@ x_j, & \text{otherwise}.
 \label{eq:ker_flip}
 \end{equation}
 
-The intuition behind~\eqref{eq:ker_flip} is straightforward: the cumulative weight matrix \(W\) encodes which features have been consistently correlated with fitness improvements. High-weight features absent from an elite are candidates for inclusion; low-weight features still present are candidates for removal. The flip fraction \(\phi = 0.01\) is deliberately small---roughly one feature per hundred dimensions---so KER performs targeted local refinement rather than disruptive mutation. Crucially, KER adds no KNN evaluations: it only modifies the binary vectors of three elites, which are evaluated during the next generation's normal cycle. This reuse of accumulated feature-level knowledge at zero additional evaluation cost distinguishes KER from recent knowledge-guided meta-heuristics~\cite{ye2026}; the full refinement procedure is consolidated in Algorithm~1.
+The intuition behind~\eqref{eq:ker_flip} is straightforward: the cumulative weight matrix \(W\) encodes which features have been consistently correlated with fitness improvements. High-weight features absent from an elite are candidates for inclusion; low-weight features still present are candidates for removal. The flip fraction \(\phi = 0.01\) is deliberately small---roughly one feature per hundred dimensions---so KER performs targeted local refinement rather than disruptive mutation. Crucially, acquiring the knowledge itself adds no classifier evaluations: the weight matrix is updated from the fitness comparisons already computed for the population. KER spends only a bounded refinement budget---re-evaluating the top \(\text{elite\_k}=3\) elites per generation---which does not alter the dominant per-iteration complexity, since KNN cross-validation dominates and \(\text{elite\_k} \ll N\). This reuse of accumulated feature-level knowledge at bounded cost distinguishes KER from recent knowledge-guided meta-heuristics~\cite{ye2026}; the full refinement procedure is consolidated in Algorithm~\ref{alg:ker}.
 
 \subsection{Two-Phase Weight Scheduling Strategy}
 \label{sec:twophase}
 
-Conventional PSO-based feature selection methods employ fixed objective weights throughout the entire search, typically balancing classification error and feature ratio with a static weighting such as \(\mathbf{w} = [0.9, 0.1]\). This rigid scheduling fails to exploit a structural property of the feature selection problem: noise-feature elimination is a one-time cost best handled aggressively at the outset, whereas accuracy refinement benefits from sustained fine-tuning over a compact, already-pruned feature set. A single fixed weight vector must compromise between these two temporally distinct demands.
+To align objective weights with the temporal structure of feature selection, we propose a Two-Phase Weight Scheduling strategy that replaces fixed objective weights with an early compression phase and a late accuracy-refinement phase. Conventional PSO-based feature selection methods employ fixed objective weights throughout the entire search, typically balancing classification error and feature ratio with a static weighting such as \(\mathbf{w} = [0.9, 0.1]\). This rigid scheduling fails to exploit a structural property of the feature selection problem: noise-feature elimination is a one-time cost best handled aggressively at the outset, whereas accuracy refinement benefits from sustained fine-tuning over a compact, already-pruned feature set. A single fixed weight vector must compromise between these two temporally distinct demands.
 
 KDS-EL resolves this tension through a Two-Phase Weight Scheduling strategy. The total \(T\) iterations are partitioned by a split point at \(\alpha T\), where \(\alpha = \text{PhaseSplit}=0.7\). The dual-objective weight vector \(\mathbf{w}(t) = [w_a(t), w_f(t)]\) follows a step schedule:
 \begin{equation}
@@ -83,15 +83,15 @@ f(\mathbf{x}, t) = w_a(t) \cdot \bigl(1 - \text{Acc}(\mathbf{x})\bigr) + w_f(t) 
 \end{equation}
 where \(\text{Acc}(\mathbf{x})\) is the KNN-based classification accuracy and \(\|\mathbf{x}\|_0\) counts the selected features.
 
-In Phase~1 (\(t < 0.7T\)), the heavier feature-ratio penalty \(w_f = 0.3\) drives rapid elimination of irrelevant and redundant features, compressing the search from thousands of dimensions to dozens. In Phase~2 (\(t \ge 0.7T\)), the weight prioritizes classification accuracy (\(w_a = 0.95\)), enabling fine-grained refinement over the surviving compact subset. This coarse-to-fine design contrasts with the fixed \(\mathbf{w} = [0.9, 0.1]\) of the KDS-EL$_{\text{KER}}$ variant: a constant weight cannot simultaneously deliver aggressive early compression and precise late-stage accuracy tuning. Time-varying search parameters are a general PSO principle, most notably the linearly decreasing inertia weight of~\cite{shi1998}~\cite{kennedy1995}.
+In Phase~1 (\(t < 0.7T\)), the heavier feature-ratio penalty \(w_f = 0.3\) drives rapid elimination of irrelevant and redundant features, compressing the search from thousands of dimensions to dozens. In Phase~2 (\(t \ge 0.7T\)), the weight prioritizes classification accuracy (\(w_a = 0.95\)), enabling fine-grained refinement over the surviving compact subset. This coarse-to-fine design contrasts with the fixed \(\mathbf{w} = [0.9, 0.1]\) of the MI+KER variant: a constant weight cannot simultaneously deliver aggressive early compression and precise late-stage accuracy tuning. Time-varying search parameters are a general PSO principle, most notably the linearly decreasing inertia weight of~\cite{shi1998}~\cite{kennedy1995}.
 
-KDS-EL employs an in-place update: after KER refinement, each elite's refined vector overwrites its original within the single population; no auxiliary pool is maintained, so the candidate set never expands to \(2N\). This simplifies the architecture and yields a measurable speed improvement (Section~\ref{sec:complexity}) without sacrificing quality---KDS-EL$_{\text{KER}}$ already surpasses the MEL baseline by +6.20~pp.
+KDS-EL employs an in-place update: after KER refinement, each elite's refined vector overwrites its original within the single population when it improves fitness; no auxiliary pool is maintained, so the candidate set never expands to \(2N\). This simplifies the architecture and yields a measurable speed improvement (Section~\ref{sec:complexity}) without sacrificing quality---the MI+KER variant already surpasses the MEL baseline by +6.20~pp.
 
 \subsection{Main Algorithm and Pseudocode}
 
-Algorithm~1 presents the complete KDS-EL procedure, consolidating the initialization, main loop, and all component interactions described above.
+Algorithm~1 presents the complete KDS-EL procedure, consolidating the initialization and main loop; Algorithms~\ref{alg:ker} and~\ref{alg:mi_reinit} detail the two sub-procedures it invokes.
 
-\begin{algorithm}[htbp]
+\begin{algorithm*}[t]
 \caption{KDS-EL}
 \label{alg:kds_el}
 \begin{algorithmic}[1]
@@ -114,30 +114,61 @@ Algorithm~1 presents the complete KDS-EL procedure, consolidating the initializa
   \State Evaluate fitness of all individuals
   \State Update weight matrix from Pbest-improving individuals \Comment{\eqref{eq:weight_update}--\eqref{eq:decay}}
   \State Apply decay $W\leftarrow\gamma\,W$
-  \State Select top $\mathrm{elite\_k}$ individuals by fitness
-  \For{each elite individual $\mathbf{x}_e$}
-    \State $\mathbf{x}_e\leftarrow\mathrm{KER\_Refine}(\mathbf{x}_e,W,\mathrm{flip\_frac},\mathrm{rand\_flip\_p})$ \Comment{\eqref{eq:ker_flip}}
-    \State Replace original individual in population with $\mathbf{x}_e$ (in-place)
-  \EndFor
+  \State Apply KER refinement to the top $\mathrm{elite\_k}$ individuals \Comment{Algorithm~\ref{alg:ker}}
   \State PSO velocity-position update for all individuals
   \If{global best stagnates for $\mathrm{stall\_patience}$ generations}
-    \State Re-seed lower-performing half with MI-informed positions
-    \State Re-evaluate re-seeded individuals
+    \State Apply adaptive MI re-initialization to the lower-performing half \Comment{Algorithm~\ref{alg:mi_reinit}}
   \EndIf
 \EndFor
 \State \Return best binary individual as feature subset $S_{\mathrm{best}}$
 \end{algorithmic}
+\end{algorithm*}
+
+\begin{algorithm}[H]
+\caption{Knowledge-guided Elite Refinement (KER)}
+\label{alg:ker}
+\begin{algorithmic}[1]
+\Require Elite solution $\mathbf{x}_e$, feature-weight matrix $W$, flip fraction $\phi=\mathrm{flip\_frac}$, random-flip probability $p=\mathrm{rand\_flip\_p}$, fitness function $f$
+\Ensure Refined elite $\mathbf{x}_e^{\star}$ with $f(\mathbf{x}_e^{\star})\le f(\mathbf{x}_e)$
+\If{$\mathrm{rand}()<p$}
+  \State Select $\lfloor\phi D\rfloor$ features uniformly at random
+  \State $\mathbf{x}'\leftarrow$ flip the selected bits of $\mathbf{x}_e$
+\Else
+  \State Assign each feature $j$ the score $\sigma_j=W_j$ if $x_{e,j}=0$, else $\sigma_j=-W_j$
+  \State Select the $\lfloor\phi D\rfloor$ highest-scoring features
+  \State $\mathbf{x}'\leftarrow$ flip the selected bits of $\mathbf{x}_e$
+\EndIf
+\State Evaluate $f(\mathbf{x}')$ under current weights \Comment{\eqref{eq:fitness}}
+\If{$f(\mathbf{x}')<f(\mathbf{x}_e)$} \State $\mathbf{x}_e^{\star}\leftarrow\mathbf{x}'$ \Else{} \State $\mathbf{x}_e^{\star}\leftarrow\mathbf{x}_e$ \EndIf
+\State \Return $\mathbf{x}_e^{\star}$
+\end{algorithmic}
 \end{algorithm}
 
-The algorithm computes MI scores, generates a hybrid initial population (lines~1--11), then runs \(T=100\) generations (lines~12--33): phase-dependent fitness evaluation, weight-matrix update with decay, KER refinement of the top three elites, and the standard PSO update. Stagnation triggers adaptive MI re-initialization, and the best encoding is returned as the feature subset.
+\begin{algorithm}[H]
+\caption{Adaptive MI Re-initialization}
+\label{alg:mi_reinit}
+\begin{algorithmic}[1]
+\Require Population $\{P_i,\mathrm{Pbest}_i\}_{i=1}^N$ with personal-best fitness values, MI scores $\mathbf{m}$, half size $H=N/2$, threshold $\theta$, noise scale $\sigma=0.1$
+\Ensure Refreshed lower-performing half of the population
+\State Sort individuals by personal-best fitness in ascending order
+\For{each individual $i$ in the lower-performing half}
+  \State $\mathrm{Pbest}_i\leftarrow \mathrm{clip}\bigl(\mathbf{m}+\mathcal{N}(0,\sigma^2 I),\,0,\,1\bigr)$
+  \State $P_i\leftarrow\mathrm{Pbest}_i$
+  \State Binarize via threshold $\theta$ and re-evaluate fitness of $P_i$ under current weights
+\EndFor
+\State Reset the stagnation counter
+\end{algorithmic}
+\end{algorithm}
+
+The algorithm computes MI scores and generates a hybrid initial population, then runs \(T=100\) generations of phase-dependent fitness evaluation, weight-matrix update with decay, KER refinement of the top three elites (Algorithm~\ref{alg:ker}), and the standard PSO update. Stagnation triggers adaptive MI re-initialization (Algorithm~\ref{alg:mi_reinit}), and the best encoding is returned as the feature subset.
 
 \subsection{Complexity Analysis}
 \label{sec:complexity}
 
-The computational cost of KDS-EL decomposes into a one-time initialization cost and per-iteration costs. The initial MI ranking requires computing \(I(f_j;Y)\) for all \(D\) features and sorting the scores, costing \(O(D \log D)\). Each generation incurs: (a)~fitness evaluation over \(N\) individuals with KNN classification, \(O(N \cdot T_{\text{eval}})\), where \(T_{\text{eval}}\) dominates all other per-iteration operations; (b)~weight-matrix update across Pbest-improving individuals, \(O(N \cdot D)\); (c)~elite selection and KER refinement (sorting \(D\) weights plus flipping \(\phi D\) features for \(\text{elite\_k}\) individuals), \(O(\text{elite\_k} \cdot D)\). The adaptive MI re-initialization executes only on stagnation, contributing an amortized \(O(D)\) per iteration. Collecting terms, the total complexity is:
+The computational cost of KDS-EL decomposes into a one-time initialization cost and per-iteration costs. The initial MI ranking requires computing \(I(f_j;Y)\) for all \(D\) features and sorting the scores, costing \(O(D \log D)\). Each generation incurs: (a)~fitness evaluation over \(N\) individuals with KNN classification, \(O(N \cdot T_{\text{eval}})\), where \(T_{\text{eval}}\) dominates all other per-iteration operations; (b)~weight-matrix update across Pbest-improving individuals, \(O(N \cdot D)\); (c)~elite selection and KER refinement (sorting \(D\) weights, flipping \(\phi D\) features, and re-evaluating the \(\text{elite\_k}\) refined elites), \(O(\text{elite\_k} \cdot (D + T_{\text{eval}}))\). The adaptive MI re-initialization executes only on stagnation, contributing an amortized \(O(D)\) per iteration. Collecting terms, the total complexity is:
 \begin{equation}
-O\bigl(D \log D + T \cdot (N \cdot T_{\text{eval}} + N \cdot D + \text{elite\_k} \cdot D)\bigr).
+O\bigl(D \log D + T \cdot (N \cdot T_{\text{eval}} + N \cdot D + \text{elite\_k} \cdot (D + T_{\text{eval}}))\bigr).
 \label{eq:complexity}
 \end{equation}
 
-The baseline MEL~\cite{mel2024} has complexity \(O(T \cdot N \cdot T_{\text{eval}})\). The added \(O(N \cdot D + \text{elite\_k} \cdot D)\) per generation is negligible relative to \(O(N \cdot T_{\text{eval}})\), since KNN cross-validation \(T_{\text{eval}}\) is orders of magnitude larger than \(D\). Empirically, KDS-EL completes in 51.3~s versus 175.0~s for MEL (3.4\(\times\) speedup), confirming that informed initialization and faster convergence more than offset the marginal overhead.
+The baseline MEL~\cite{mel2024} has complexity \(O(T \cdot N \cdot T_{\text{eval}})\). The added \(O(N \cdot D + \text{elite\_k} \cdot (D + T_{\text{eval}}))\) per generation is bounded relative to \(O(N \cdot T_{\text{eval}})\), since \(\text{elite\_k}=3 \ll N=20\) and KNN cross-validation \(T_{\text{eval}}\) dominates. Empirically, KDS-EL completes in 51.3~s versus 175.0~s for MEL (3.4\(\times\) speedup), confirming that the sparser subsets promoted by the knowledge-guided mechanisms shorten each evaluation and more than offset the marginal overhead.

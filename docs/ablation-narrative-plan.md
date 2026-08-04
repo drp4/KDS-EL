@@ -98,7 +98,7 @@ Q4: DRS 有没有副作用？→ 3/25 反例，Discussion 中讨论 boundary con
 | 3.3 | §5.4 Ablation（Phase 1 产物） | — |
 | 3.4 | §5.5 MOFS Comparison（基于 T8） | 2h |
 | 3.5 | §5.6-5.10 各分析小节 | 各 1-2h |
-| 3.6 | §5.11 Discussion（VGS-MOEA, ISOLET, COIL20, 天花板效应） | 2h |
+| 3.6 | §5.11 Discussion（ISOLET, COIL20, 天花板效应） | 2h |
 | 3.7 | §2 Related Work（~1200 词） | 3h |
 | 3.8 | §1 Introduction 更新数值 | 2h |
 | 3.9 | §6 Conclusion | 1h |

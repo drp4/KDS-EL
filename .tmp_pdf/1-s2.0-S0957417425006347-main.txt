@@ -1,0 +1,103 @@
+----- page 1 -----
+Expert Systems With Applications 274 (2025) 127012
+Contents lists available at ScienceDirect
+Expert Systems With Applications
+journal homepage: www.elsevier.com/locate/eswa
+Elite neighborhood search and dynamic feature probability-guided crow
+search algorithm for high-dimensional feature selection
+Shaobo Deng* , Hangyu Liu , Weihu Zhu, Kexing Li , Min Li
+School of Information Engineering, Nanchang Institute of Technology, No. 289 Tianxiang Road, Nanchang, Jiangxi, PR China
+A R T I C L E I N F O A B S T R A C T
+Keywords: Crow search algorithm (CSA) is a metaheuristic algorithm inspired by the collective behavior of crows. It has
+Feature selection been applied in various fields because of its fewer parameters and easy implementation. However, it has some
+Crow search algorithm (CSA) drawbacks: (1) It is difficult to balance global search and local search, which leads to premature convergence. (2)
+Time varying dynamic awareness probability
+Local search and global search are too random, leading to the possibility of more invalid solutions. To address
+Elite neighborhood search
+such problems, this paper proposes the Elite Neighborhood Search and Dynamic Feature Probability-Guided
+Feature probability
+Crow Search Algorithm (NNS-DFPG-CSA) for feature selection. To address the difficulty of balancing global
+search and local search, we propose a dynamic awareness probability based on time-varying to balance global
+search and local search. To address the randomness of local search, we use the elite neighborhood search strategy
+to guide the local search of crows. To address the randomness and low search efficiency of global search, we use
+the feature probability to guide the global search of the algorithm. During the experiments, this paper uses 16
+high-dimensional datasets and three evaluation metrics to evaluate NNS-DFPG-CSA. Experimental results show
+that NNS-DFPG-CSA has satisfactory classification accuracy and feature subset length.
+1. Introduction the performance of candidate feature subsets. Consequently, wrapper-
+based methods incur higher computational costs. Conversely, filter-
+In the era of big data, datasets in diverse domains exhibit exponential based methods do not necessitate a classifier for evaluation, which
+growth in both scale and complexity. Consequently, effective extraction leads to reduced costs and expedited execution but often at the expense
+of valuable information from raw datasets has emerged as a formidable of reduced accuracy.
+challenge. A pivotal role in addressing this challenge is played by feature Recognizing the constraints of both filter and wrapper methods, Lu
+selection, a critical component of data preprocessing (Seijo-Pardo et al., et al. (2017) introduced a hybrid approach that combines the advan-
+2018; Dash, 2018). It involves selecting a subset of the most informative tages of both methodologies. The hybrid method comprises two
+features from the original dataset, reducing computational costs, and sequential steps. Initially, a filter method is applied to eliminate the
+improving the performance of machine learning algorithms, thus majority of redundant and irrelevant features, leaving behind only the
+enabling more accurate and efficient data analysis (M. Dash & Liu, pivotal ones. Subsequently, a wrapper-based method is employed to
+1997). select the optimal feature subset from the retained features (Das et al.,
+Feature selection methods are mainly categorized into three groups: 2017). This hybrid methodology effectively harnesses the advantages of
+Filter, Wrapper, and Hybrid algorithms (GuyonIsabelle & Eli- both filter and wrapper methods, resulting in superior classification
+sseeffAndr´e, 2003; Hancer et al., 2017; Li et al., 2013; Deng et al., 2022; accuracy and simultaneously reducing time costs.
+Ke et al., 2022). Filter-based methods seek feature subsets based on Although numerous feature selection (FS) techniques have been
+specific feature characteristics such as similarity and relevance (M. Dash proposed over the past two decades, the problem remains inherently
+& Liu, 2003; Demˇsar, 2006; Kira & Rendell, 1992; Cover & Thomas, challenging. For an N-dimensional dataset, the number of possible
+2005). In contrast, wrapper-based methods leverage classifier models to feature subsets is 2N(cid:0) 1, making FS an NP-hard combinatorial problem
+assess feature subsets through cross-validation, ultimately determining (Unler et al., 2010). Both exhaustive and greedy search methods face
+* Corresponding author.
+E-mail addresses: houjiyuan@nit.edu.cn(S. Deng), hangyuliu@nit.edu.cn(H. Liu), weihuzhu@nit.edu.cn(W. Zhu), kexingli@nit.edu.cn(K. Li), liminghuadi@nit.
+edu.cn(M. Li).
+https://doi.org/10.1016/j.eswa.2025.127012
+Received 8 August 2024; Received in revised form 6 December 2024; Accepted 25 January 2025
+Available online 24 February 2025
+0957-4174/© 2025 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+----- page 2 -----
+S. Deng et al. E x p e r t S y s t e m s W i t h A p p li c a t i o n s 274 (2025) 127012
+Fig. 1. Flowchart of NNS-DFPG-CSA.
+significant computational costs and are unable to identify the optimal introduces a dynamic mechanism to adaptively change the number of
+subset in a reasonable timeframe (Dong et al., 1999; Faris et al., 2018). leaders, enabling the algorithm to continuously adjust its exploration
+While random search can alleviate some of these challenges, it can still capability. Sindhu et al. (2017) proposed an improved version of the
+revert to exhaustive search in the worst case, evaluating all possible Sine Cosine Algorithm (ISCA), which incorporates an elite strategy and a
+feature combinations (Taradeh et al., 2019). novel best solution updating mechanism. This modified algorithm aims
+Recently, metaheuristic optimization algorithms have gained to select the optimal features/attributes and improve the classification
+increasing attention in FS due to their high computational efficiency and accuracy of feature selection. Mohammad Tubishat et al. (2019) pro-
+strong global search capabilities (Hancer, Xue, Zhang, et al., 2017). posed an improved salp swarm algorithm. This algorithm’s main
+Multiple algorithms have been developed based on this approach. Faris contribution lies in improving the population diversity during the
+et al. (2019)proposed a novel approach called the time-varying binary initialization phase and introducing a new local search algorithm.
+Salp Swarm Algorithm (TVBSSA) for feature selection. This algorithm Abdel-Basset et al. (2019)proposed a grey wolf optimization algorithm
+2
+
+----- page 3 -----
+S. Deng et al. E x p e r t S y s t e m s W i t h A p p li c a t i o n s 274 (2025) 127012
+Fig. 2. Calculate all feature score.
+(TMGWO) that combines two-stage mutation to address the feature se- and utilization. Exploration involves searching for new regions in the
+lection problem. Of course, there are also some classic algorithms, such solution space, while exploitation focuses on refining the solution near
+as Genetic Algorithm (GA) (Holland, 1975; S. Deng et al., 2023), Particle previously visited regions. To obtain optimal results, algorithms must
+Swarm Optimization (PSO) (Tran et al., 2016; Mafarja & Sabar, 2018) strike a balance between exploration and exploitation. Many researchers
+and Differential Evolution (DE) (Moradi & Gholampour, 2016; Storn & believe that a proper balance between these two operations is critical to
+Price, 1997; Chattopadhyay et al., 2016; Gong & Cai, 2013). the effectiveness of an algorithm. However, an improper balance often
+The Crow Search Algorithm (CSA) is an emerging optimization al- leads the algorithm to a local optimum. As the results in Section 4.4.1
+gorithm, which was initially introduced by Askarzadeh (2016). This show, existing CSA and its improved algorithms are unable to effectively
+algorithm addresses optimization problems by simulating the behavior balance exploration and exploitation while improving search capabil-
+of crows hiding food. CSA’s evaluation results indicate that it exhibits ities when faced with high-dimensional feature selection. Therefore, the
+exceptional performance in optimization problems, particularly those motivation for the research in this paper is to propose an improvement
+posing challenges in scientific and engineering domains. Additionally, program to address this problem.
+the algorithm offers the advantages of straightforward implementation In this paper, we put forth a novel high-dimensional feature selection
+and requiring only a small number of parameters. It can be seen that CSA method, the Elite Neighborhood Search and Dynamic Feature
+is a promising technology. However, it also presents challenges, such as Probability-Guided Crow Search Algorithm (NNS-DFPG-CSA), as a po-
+the difficulty in fine-tuning the AP parameter to balance local and global tential solution to the aforementioned challenges. The NNS-DFPG-CSA is
+search, which can result in convergence to local optima. Additionally, a hybrid feature selection method, comprises two stages. Initially, the
+CSA relies on a stochastic approach for global search, which may affect mutual information is employed to filter out a significant portion of
+optimization efficiency due to the high level of randomness. features, retaining the top k % of features. Subsequently, in the second
+Chaudhuri and Sahu (2020) proposed a binary crow search algo- stage, NNS-DFPG-CSA utilizes CSA to further evaluate the feature subset
+rithm with time-varying flight lengths (BCSA-TVFL). This algorithm after mutual information filtering. The crow positions generated by
+enhances CSA by replacing the fixed crow flight lengths, and allows the NNS-DFPG-CSA use binary encoding, as opposed to the floating-point
+crows’ flight lengths to continuously change during the algorithm’s it- encoding in CSA. This enables the algorithm to directly assess the
+erations “while” searching. Ouadfel and Elaziz (2020) introduced an fitness of each crow position without the need for converting floating-
+enhanced version of CSA called ECSA for searching for the optimal point numbers to binary, thus that saves computational costs. The
+feature subset. The algorithm proposes a dynamic perceptual probability main contributions of this article are shown as follows:
+to further enhance the exploration capability of the algorithm. It also
+uses dynamic local neighborhoods to guide the local search instead of (1) This paper proposes a method that uses dynamic feature proba-
+crows following randomly. bilities to guide the initialization of the crow’s position.
+As mentioned above, CSA relies on two key operations: exploration
+3

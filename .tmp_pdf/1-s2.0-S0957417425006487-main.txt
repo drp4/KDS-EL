@@ -1,0 +1,217 @@
+----- page 1 -----
+Expert Systems With Applications 275 (2025) 127026
+ContentslistsavailableatScienceDirect
+ExpertSystemsWithApplications
+journalhomepage:www.elsevier.com/locate/eswa
+Time-varyingelitesandcatoptimizationalgorithmsforengineeringdesign
+andfeatureselection
+LiZhang ∗
+CollegeofComputerEngineering,JiangsuUniversityofTechnology,Jiangsu,Changzhou,213001,PRChina
+KeyLaboratoryofSymbolicComputationandKnowledgeEngineeringofMinistryofEducation,JilinUniversity,Changchun,130012,PRChina
+KeyLaboratoryOfDataScienceAndIntelligenceEducation(HainanNormalUniversity),MinistryofEducation,Hainan,Haikou,571158,PRChina
+A R T I C L E I N F O A B S T R A C T
+Datasetlink:https://ckzixf.github.io/dataset.ht The Sand Cat Optimization Algorithm (SCSO) is well known for its efficient search capability. However,
+ml,http://archive.ics.uci.edu/,https://jundon SCSOhaslimitationsinsolvingcomplex,high-dimensionalproblems,particularlyinbalancingexplorationand
+gl.github.io/scikit-feature/datasets.html exploitationandmaintainingpopulationdiversity.Itispronetofallingintolocaloptimalsolutions.Thispaper
+addressestheselimitationsbyimprovingSCSO’ssearchstrategies,enhancingitsabilitytosolvecomplexhigh-
+Keywords:
+dimensionalproblemsandavoidinglocaloptima.Here,weproposeaTime-VaryingEliteSandCatOptimization
+SandCatOptimizationAlgorithm
+Time-varyingelites Algorithm(TVESCSO).Thisalgorithmachievesamulti-strategysearchbydividingthesandcatpopulationinto
+Explorationandexploitation anewandtraditionalpopulationandfurtherdynamicallydividingthetraditionalpopulationintoanoptimal
+Populationdiversity and free population. The optimal population focuses on global exploration and local exploitation guided by
+Featureselection improvedadaptivefactorsandeliteindividuals.Incontrast,thefreepopulationconductsextensivesearches
+guidedbytheelitepool,expandingthesearchscopeandbalancingexplorationandexploitationdynamically.
+Thenewpopulation’sdiversityisfurtherimprovedbymergingthetwosub-populations,informationexchange
+andnewpopulationordering.Finally,theeliteindividualsinthenewpopulationaremutatedusingtheLogistic
+Chaosmethod,acceleratingthealgorithm’sconvergenceandhelpingtojumpoutoflocaloptimalsolutions.
+ExperimentalresultsshowthatTVESCSOexhibitsfasterconvergenceandhigheraccuracyinthebenchmark
+functionsoftheCongressonEvolutionaryComputation(CEC2017andCEC2022),outperformingawiderange
+ofstate-of-the-artandwell-knownoptimizationalgorithms.TheFriedmanTest,theNemenyiandWilcoxon
+Rank-Sum tests further validates the effectiveness and robustness of TVESCSO. The application of TVESCSO
+to four real-world engineering problems and twelve feature selection datasets further confirms its excellent
+performance.TVESCSOsignificantlyimprovesSCSOperformanceanddemonstratessignificantadvantagesin
+complexnumericaloptimization,engineeringoptimization,andhigh-dimensionalfeatureselectionproblems.
+ThisimprovementaddressestheissueofSCSObeingpronetolocaloptimaandprovidesnewinsightsforSCSO
+algorithmresearch,advancingthefieldfurther.
+1. Introduction into local optima in large-scale, complex optimization problems (Abdel-
+Basset et al., 2023). In contrast, meta-heuristic algorithms search by
+In real life, design problems in different engineering domains can simulating natural phenomena and biological behaviors, such as Grey
+be transformed into optimization problems. As the complexity of en- Wolf Optimizer (Mirjalili et al.,2014), Sine Cosine Algorithm (Mirjalili,
+gineering increases, these optimization problems face more and more 2016), and Equilibrium optimizer (Faramarzi et al.,2020), these algo-
+challenges, mainly in terms of large scale, high dimensionality, and
+rithms do not depend on initial conditions and apply to a broader range
+multimodality (Cheng & Sholeh,2023). Optimization methods (Rostami
+of problem types. Thus, they have become a hot topic of research and
+et al., 2021) mainly include deterministic and meta-heuristic algo-
+application in the past decades due to their advantages in dealing with
+rithms. Deterministic methods are based on rigorous mathematical
+complex problems (Deng & Liu,2024;Fu et al.,2024).
+analysis theory, such as the Lagrange multiplier, conjugate gradient,
+Meta-heuristic algorithms (MA), such as Partial Reinforcement Op-
+and interior point linear programming methods. Although these meth-
+ods are effective in dealing with small-scale, superficial problems, they
+timizer (Taheri et al.,2024) and Newton Raphson Optimizer (Sowmya
+face the challenges of high computational cost and a tendency to fall
+et al.,2024), rely on the evolutionary information of elite individuals to
+∗ Correspondence to: College of Computer Engineering, Jiangsu University of Technology, Jiangsu, Changzhou, 213001, PR China.
+E-mail address: zhangli@jstu.edu.cn.
+https://doi.org/10.1016/j.eswa.2025.127026
+Received 30 November 2024; Received in revised form 4 February 2025; Accepted 21 February 2025
+Available online 3 March 2025
+0957-4174/© 2025 Elsevier Ltd. All rights are reserved, including those for text and data mining, AI training, and similar technologies.
+
+----- page 2 -----
+L. Zhang Expert Systems With Applications 275 (2025) 127026
+guide the in-depth exploration of improving the quality of the solution. • Increase the diversity of new populations through information
+These algorithms generate new solutions based on the current solution interaction mechanisms and sorting.
+state and predefined evolutionary rules and continuously optimize • Adopt the elite grouping mechanism of Logistic Chaos Learning
+them through an iterative process to approximate the global optimal to enhance the diversity of local exploitation, avoid the algorithm
+solution (Mohammadi & Sheikholeslam,2023). However, in the face of falling into the local optimum, and provide a broader search space
+complex problems, MA often requires a large number of iterations to and higher global optimization capability.
+reach a satisfactory solution set, which challenges the efficiency of the • The robustness and stability of the TVESCSO algorithm are ver-
+algorithms (Jia et al.,2024). In MA, the balance between exploitation ified on the CEC2017 and CEC2022 benchmark functions, four
+and exploration is critical to understanding their core (Zhang & Chen, real-world engineering problems, and 12 feature selection
+2025). Precisely finding the optimal balance between these two and datasets.
+dynamically adjusting this ratio according to the algorithm’s progress • The superiority of the TVESCSO algorithm in terms of efficiency
+is a central issue in optimizing the performance of metaheuristic algo- and robustness is further confirmed by Friedman’s sequencing
+rithms (Ahmadianfar et al.,2021). Therefore, designing algorithms that test, Nemenyi’s test and Wilcoxon’s rank sum test.
+adjust the exploration-to-exploitation ratio in response to the problem’s
+complexity and the algorithm’s evolutionary state is a hot topic in The paper is organized as follows. Section 2 provides an in-depth
+current research (Hussien, Gharehchopogh et al., 2024; Zhao et al., discussion of strategies for balanced exploration and exploitation of
+2023). swarm intelligence algorithms and their variants. Section3presents the
+On the one hand, existing MA mostly use the whole population mathematical model of SCSO. Section4concentrates on the TVESCSO
+(Civicioglu & Besdok,2024) or a fixed population (Deng & Liu,2023) algorithm proposed in this study. In Section5, we systematically eval-
+as the evolutionary unit, relying on elite individuals to guide the uate the stability of the TVESCSO algorithm on the CEC2017 and
+evolutionary direction and improve the performance of the population. CEC2022 benchmark functions and provide a comprehensive perfor-
+However, this reliance on elite individuals may lead to the population mance comparison with the current leading optimization algorithms,
+being too homogeneous and lacking diversity during the iteration thus validating its superiority on theoretical benchmarks. Section6ex-
+process, thus limiting the algorithm’s exploration capability. Especially tends the study to practical applications by evaluating the effectiveness
+when dealing with high-dimensional complex optimization problems, of TVESCSO on four engineering problems and comparing its per-
+highly homogeneous populations need help performing effective global formance with well-known optimization algorithms, demonstrating its
+searches and are prone to falling into local optimal solutions, thus potential for real-world problem-solving. Section7further explores the
+making it difficult to find the global optimal solution (Zhao et al., high-dimensional optimization performance of TVESCSO on 12 feature
+2024). According to the ’no free lunch’ theorem (Wolpert & Macready, selection datasets and comprehensively validates the high-dimensional
+1997), no algorithm can perform best on all problems. Therefore, to optimization capabilities of TVESCSO through exhaustive comparisons
+solve specific optimization problems more efficiently, algorithms for with SCSO variants and other well-known algorithms. Finally, Sec-
+these problems need to be developed to improve their performance and tion8summarizes this study’s key findings and suggests future research
+competitiveness. directions.
+In 2023, Seyyedabbasi et al. proposed Sand Cat Swarm Optimization
+(SCSO) (Seyyedabbasi & Kiani, 2023), which effectively balances ex- 2. Related work
+ploration and exploitation by simulating the survival behavior of sand
+cats, thus avoiding falling into the local optimal solution. However, In MA, exploration and exploitation are two key concepts (Yang
+SCSO, as a single-population elite-guided intelligent algorithm, is prone et al., 2021) that affect the algorithm’s performance and efficiency.
+to triggering a high degree of intra-population similarity when deal- Exploration searches for new, under-examined regions in the solution
+ing with high-dimensional complex optimization tasks, which hinders
+space by Increasing the diversity of solutions, avoiding local optima,
+the exploration of global optimal solutions. Time-varying Elite Sand
+exploiting deeper searches in the vicinity of known solutions and
+Cat Swarm Optimization (TVESCSO) is introduced in this study to
+improving the quality of the solutions. In summary, MA increases the
+overcome this limitation. TVESCSO avoids population homogeniza-
+likelihood of finding a globally optimal solution by finding a balance
+tion by dynamically adjusting the population diversity and adopting a
+between exploring new regions and exploiting known regions. Common
+multi-strategy search approach. Moreover, it improves the exploration
+approaches to balance exploration and exploitation (Ma et al., 2023)
+and exploitation of the algorithm. At the beginning of the iteration,
+are population diversity, multi-strategy fusion and hybrid algorithms.
+TVESCSO uses global elite individuals and elite pools to expand the
+exploration of the solution space and dynamically balances global
+2.1. Population diversity
+exploration and local exploitation. In the late iteration, through the
+elite grouping mechanism and Logistic Chaotic Learning, TVESCSO
+Zhang et al. proposed an improved Group Teaching Optimization
+can effectively avoid falling into local optima. This strategy combines
+global and local optimization information, significantly improves the
+Algorithm (GTOA) called ISGTOA (Zhang & Chi,2023) (to enhance per-
+efficiency of the evolutionary process, and gives full play to the advan-
+formance. ISGTOA effectively facilitates the exchange of information
+tages of each unit, thus improving the algorithm’s overall performance.
+between the excellent and average groups by reusing two population
+The main innovations of this study are as follows.
+individuals in the archive, thus enhancing the algorithm’s global search
+capability. Experimental results show that ISGTOA exhibits significant
+• TVESCSO dynamically divides traditional populations into op- advantages in dealing with high-dimensional expensive optimization
+timal and free populations through an adaptive time-varying problems, especially in avoiding local optima and enhancing conver-
+method and adjusts the ratio and composition of the two to adapt gence efficiency. Since ISGTOA does not introduce additional control
+to the optimization needs of different iteration stages. parameters, its population size and termination conditions still need
+• Nonlinear adaptive factors 𝑟 and optimal elite individuals are to be adjusted according to the specific problems, which increases the
+𝐺
+introduced into the optimal population to enhance the depth of complexity in practical applications. Turgut et al. proposed a Diversity-
+global exploration and local exploitation. Meanwhile, the free Enhanced Equilibrium Optimisation Algorithm (DEQUIL) (Turgut &
+population uses the elite pool and the dynamic exponential term Turgut,2024), designed for unconstrained optimization problems. The
+parameter 𝐶 𝐹 to adaptively regulate the effectiveness of global algorithm integrates the operational equations of tangent search opti-
+exploration and local exploitation and improve the exploration mization with the symbiotic phase of the symbiotic search algorithm
+capability of the solution space. to enhance the diversity of the individual solutions in the population.
+2
+
+----- page 3 -----
+L. Zhang Expert Systems With Applications 275 (2025) 127026
+However, as the dimensionality of the optimization problem increases, complexity issues may affect the algorithm’s overall performance. Xu
+it becomes more difficult to maintain diversity and ensure efficient proposed a multi-strategy improved multi-objective particle swarm
+exploration. Yang proposed a dual-population cooperative algorithm optimization algorithm (CMOPSO-MSI) (Xu et al.,2024). The algorithm
+(DPDCA) (Yang et al., 2024), which maintains two populations and ensures the uniformity and diversity of the population by introducing
+an archive and can dynamically adjust the search strategy according an adaptive grid congestion distance, a roulette wheel selection strat-
+to the evolutionary stage. In the early stage of evolution, the two egy, and an improved dynamic nonlinear weighting strategy, enhancing
+populations are responsible for different tasks, promote fast conver- the algorithm’s global search capability and convergence performance.
+gence by exchanging solutions, and save promising solutions in the However, the adaptive grid congestion distance parameter sensitivity
+archive. Different local search strategies are used in the later stages and roulette wheel selection strategy may affect the balance between
+of evolution to obtain a high-quality set of feasible solutions, depend- exploration and exploitation. Xiao et al. (2024) improved the effi-
+ing on the diversity and convergence of the central populations. To ciency of the SAO algorithm through a good point set initialization
+prevent the algorithm from falling into local optimums in the later strategy, a greedy selection method, a differential evolution strategy,
+stages, the archive is utilized to enhance the population diversity and a dynamic lens opposition learning strategy. However, uncer-
+and to explore the significant populations in depth to finally obtain tainty arises in the dynamic adjustment of the k-value in the DLOBL
+a set of solutions located in the frontiers of the Pareto. However, strategy concerning the fitness of the optimization stage. This lack
+the archive update strategy directly affects the algorithm’s diversity of fitness interferes with the algorithm’s exploration and development
+and global search capability in later iterations. Suppose the archive balance and prevents it from jumping out of the local optimum. Zamani
+is not properly managed or updated with a lag. In that case, the proposed an Evolutionary Crow Search Algorithm (ECSA) (Zamani &
+quality of the new solutions will be negatively affected, which in turn Nadimi-Shahraki, 2024) for optimizing the hyperparameters of Mul-
+weakens the algorithm’s ability to find globally optimal solutions. Liang tilayer Perceptron (MLP). ECSA incorporates an evolutionary search
+proposed a GSK framework for enhanced population diversity (EPD- strategy, adaptive flight length, and interactive memory mechanisms to
+GSK) (Liang & Wang,2024). The algorithm utilizes a low-discrete Sobol overcome the limitations of standard Crow search algorithms. However,
+sequence for population initialization, which helps to promote diversity it remains a challenge to dynamically adjust the balance between
+among the initial solutions. A Cauchy mutation strategy is employed adaptive flight length and interactive memory mechanisms at different
+during the primary stage to perturb individuals and expand the search stages. Hu proposed an enhanced differential evolutionary algorithm
+space. Moreover, the framework incorporates oppositional learning to named DHRDE (Hu et al., 2024), which combines a two-population
+improve convergence. Nevertheless, a potential issue with decreasing hybrid update and a random population replacement strategy. Before
+population diversity could limit the algorithm’s effectiveness. Wang the update phase, DHRDE constructs an elite rival population based
+proposed a co-evolutionary algorithm (CdEA-SCPD) (Wang et al.,2024) on the initial population to explore more potential search regions. The
+aimed at exploring interpretable constrained optimization problems. algorithm also integrates a perturbation mechanism into the DE/rand/2
+The dynamic archiving strategy and a shared replacement mechanism method, significantly improving search efficiency. Two updating mod-
+enhance the diversity of the population. Meanwhile, weights are as- els are established through the co-guidance of random and locally
+signed to different constraints according to the severity of constraint optimal individuals, and a two-population hybrid updating strategy is
+violation to accelerate the convergence to the global optimal solution. adopted to achieve a comprehensive and multi-angle search. Although
+However, the CdEA-SCPD algorithm needs to adjust the search strategy this strategy aids in multi-perspective exploration, the collaboration
+at different evolutionary stages dynamically. Otherwise, it may lead to and updating methods between the populations need dynamic adjust-
+insufficient search efficiency or premature convergence. ment at different stages of the algorithm. If not properly adjusted, it
+may result in an imbalance between exploration and exploitation.
+2.2. Multi-strategy fusion
+2.3. Hybrid algorithms
+Zhou et al. proposed the Random Follower Ant Colony Optimization
+(RFACO) (Zhou et al., 2023) to address the limitations of ACO algo- Braik et al. proposed an improved hybrid chameleon swarm algo-
+rithms in high-dimensional optimization problems. The core innovation rithm (HMICSA) (Braik et al., 2023), which precisely balances global
+of this algorithm is introducing a random following strategy, which search and local development needs through adaptive parameters and
+enhances information exchange between search agents. However, in fuzzy adaptive inertia weights. On this basis, HMICSA incorporates
+complex optimization problems, adaptive adjustment mechanisms can the individual memory mechanism of the AFT algorithm, which sig-
+lead to under-exploration, potentially hindering the convergence speed. nificantly improves the search’s depth and accuracy, enhances the
+Xu proposed a diversity-driven opposites fusion strategy (SQOBL) (Xu algorithm’s efficiency in utilizing the past valuable information, and im-
+et al.,2023), which constructs extended opposites and quasi-opposites proves the performance of the feature selection. However, over-reliance
+variants by exploiting the principle of refractive imaging to balance on historical information may fall into a local optimum, limiting the
+the population’s exploratory and exploitative capabilities. However, exploration of a broader solution space, thus negatively affecting the
+at a later stage, the exploration capability may weaken, causing the balance between exploration and exploitation, especially when deal-
+algorithm to fall into local optimal solutions. Xu proposed an improved ing with high-dimensional complex problems. Duan and Yu (2023)
+artificial bee colony algorithm (ABC-MES) (Xu et al., 2024). The em- significantly enhanced the exploration capabilities of the Grey Wolf
+ployed bee stage introduces a multi-strategy evolutionary approach optimization algorithm by integrating the Social Class Model and the
+to improving the population’s quality. A decision support database is Trigonometric Function Transformation of the Sine Cosine Algorithm
+constructed in the learning stage. The UCB algorithm is used in the (SCA). However, introducing SCA and its multiple control parameters
+bystander bee stage to combine prior and new knowledge to evaluate increases the computational complexity, which may lead to higher
+and screen evolutionary strategies, ensuring efficient evolution. Updat- computational costs when dealing with complex and high-dimensional
+ing old nectar sources through T-distribution and oppositional learn- optimization problems. Ouyang proposes a hybrid cuckoo search algo-
+ing mechanisms in the scout bee stage prevents prematurely falling rithm based on linearly decreasing populations (LHCS) (Ouyang et al.,
+into local optimal solutions. This staged strategy design enhances the 2024), which aims to optimize the local search and accelerate the
+global search capability and comprehensively explores and exploits convergence speed. The algorithm incorporates the solution update
+high-quality solutions. However, the conflict between diversity and strategy of the Grey Wolf Optimiser. It uses a linearly decreasing
+convergence may weaken exploration ability, thus increasing the risk rule to dynamically adjust the proportion of calls to the strategy to
+of falling into local optimal solutions. Additionally, computational balance exploration and exploitation. However, the linear reduction
+3

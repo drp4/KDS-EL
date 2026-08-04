@@ -95,7 +95,23 @@
       "PowerShell(New-Item -ItemType Directory -Force -Path \"$env:USERPROFILE\\\\.claude\\\\skills\")",
       "Bash(dir \"C:\\\\Users\\\\86185\\\\.claude\\\\skills\")",
       "Bash(dir \"C:\\\\Users\\\\86185\\\\.claude\\\\skills\\\\academic-paper\")",
-      "Bash(dir \"C:\\\\Users\\\\86185\\\\.claude\\\\skills\\\\brainstorming\")"
+      "Bash(dir \"C:\\\\Users\\\\86185\\\\.claude\\\\skills\\\\brainstorming\")",
+      "Read(//c/Users/86185/AppData/Local/Temp/**)",
+      "Bash(echo \"p1=$?\")",
+      "Bash(echo \"p2=$?\")",
+      "Read(//e/tmp/**)",
+      "Bash(grep -oE \"[A-Z]+-?M[A-Z]+ODE[^ ]{0,12}\" 1-s2.0-S0957417424022711-main.txt)",
+      "Bash(python code/generate_figures.py --fig F4 F5 F6_heatmap F7 F10 F11 F13 --out output/figures)",
+      "Bash(python code/plot_convergence.py --fig F8 --out output/figures)",
+      "Bash(python -m py_compile code/generate_figures.py)",
+      "Bash(python -m py_compile code/generate_figures.py code/plot_convergence.py)",
+      "Bash(python code/generate_figures.py --fig F6_heatmap --out output/figures)",
+      "Bash(python -W error -c \"import ast; ast.parse\\(open\\('code/generate_figures.py', encoding='utf-8'\\).read\\(\\)\\)\")",
+      "Bash(python -W error -c \"import ast; ast.parse\\(open\\('code/plot_convergence.py', encoding='utf-8'\\).read\\(\\)\\)\")",
+      "Bash(where pdflatex *)",
+      "Bash(where latexmk *)",
+      "Bash(pdflatex -interaction=nonstopmode main)",
+      "Bash(bibtex main *)"
     ],
     "additionalDirectories": [
       "F:\\zym\\KDS-EL\\output\\formal_experiment_20260702_145828\\curves"

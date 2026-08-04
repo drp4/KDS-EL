@@ -10,7 +10,7 @@
 
 | 项目 | 内容 |
 |------|------|
-| 标题 | KDS-EL: Knowledge-guided Dual-Space Evolutionary Learning for High-dimensional Feature Selection |
+| 标题 | KDS-EL: Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection |
 | 领域 | 进化计算 / 特征选择 / 生物信息学 |
 | 方法 | 双子群 PSO 骨架 + DRS（多样性 Pareto 选择）+ KER（在线知识精化） |
 | 实验规模 | 15 对比方法 × 20 数据集 × 10 次独立运行 = 3000+ 次 |
