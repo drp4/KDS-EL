@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | 1 | Introduction | 1000 | 无 | 无 |
 | 2 | Related Work | 1250 | 无 | 无 |
-| 3 | Preliminaries | 450 | 无 | 无 |
+| 3 | Preliminaries | 650 | Algorithm 1 | 无 |
 | 4 | Proposed KDS-EL | 1700 | F1, F2(可选) | 无 |
 | 5 | Experimental Setup | 800 | 无 | T1, T2, T3 |
 | 6 | Results and Discussion | 1700 | F4, F5, F7, F8, F10, F13 | T4, T5, T6, T6b |
@@ -69,7 +69,7 @@
   - 高维专用: 变粒度搜索 VGS-MOEA [66 Cheng et al.], 多目标进化过滤 Hancer [67]。
   - 收尾: MOFS 保持 Pareto 前沿开销大（本实验 >110s），且固定编码高维下收敛慢。
 - **P4 进化多任务学习 (200w)**: MTL 综述 [24 Zhang & Yang], 进化多任务 FS [42 Zhang Minions, 43 Chen, 44 Chen], 多任务蜂群波段选择 [40], 大尺度多目标多任务 [39]。
-  - 重点介绍 **MEL 基线** (Wang TKDE 2024): 双子群多任务进化学习，D→F 双空间协同; 说明为何选它做基线（定长编码、高维高效、可增量式增强），并诚实指出其随机初始化/无知识利用/固定权重的三个局限。
+  - 重点介绍 **MEL 基线** (Wang TKDE 2024): PSO 种群划分为两个等规模子群 Sub1/Sub2，共享特征权重矩阵并跨任务迁移知识；说明为何选它做基线（定长编码、高维高效），三个搜索缺口统一在 2.7 定位段引出。
 - **P5 高维基因数据特征选择 (200w)**: 基因表达/微阵列场景专述。
   - 引用: [2] genomic prediction, [8] SNP selection, [9][10] 癌症分期/阿尔茨海默, [17] biomarker genes, [46] ILRC, [18] 多癌风险模块。
   - 点出: 该场景典型 "N 小 D 大"、强冗余、方法间在天花板数据集上难分伯仲 → **需同时看特征数**。
@@ -79,14 +79,15 @@
 
 ---
 
-# 3. Preliminaries (~450 words, 2 段)
+# 3. Preliminaries (~650 words, 3 小节)
 
 **段落结构**
 
-- **P1 离散 PSO / BPSO 回顾 (150w)**: 位置-速度更新公式 (Shi & Eberhart 1998 [51], Kennedy & Eberhart 1995 [25], BPSO [Kennedy 1997]), 二进制映射与 sigmoid 阈值 (thres=0.6)。一句话点出其在高维 FS 的普遍问题。
-- **P2 MEL 基线概述 (300w)**: 精炼描述 MEL 双子群多任务进化学习核心机制 —— 双种群协同、特征子集/权重双表示、多任务间知识迁移; 给出其总体复杂度一行的量级 O(·); **明确说明读者可参考原论文 (Wang TKDE 2024) 获取细节**，本文只重述与后续增强相关的接口（权重表示、精英选择、目标函数定义）。给出 FS 目标函数: fitness = ws[0]·(1-Acc) + ws[1]·(Dsel/D)，为 Section 4 的两阶段调度做铺垫。
+- **3.1 PSO 与二进制适配 (150w)**: 位置-速度更新公式 (Shi & Eberhart 1998 [51], Kennedy & Eberhart 1995 [25], BPSO [Kennedy 1997]), 二进制映射与 sigmoid 阈值 0.6。一句话点出其在高维 FS 的普遍问题。
+- **3.2 基于互信息的特征过滤 (200w + Algorithm 1)**: 给出 MI 公式；Algorithm 1 按保留比例 k 取 top-k 特征，参照 NNS-DFPG-CSA (deng2025nns)；说明 KDS-EL 不做硬剪枝，只用 MI 排序做初始化种子，衔接 §4.2。
+- **3.3 MEL 基线概述 (300w)**: 精炼描述 MEL 核心机制 —— 种群均分为 Sub1/Sub2 两个子群，Sub1 在标准 PSO 更新中引入 Sub2 最优解作为额外吸引项，Sub2 依据共享特征权重矩阵按权重概率选特征；权重矩阵由每代精度变化更新，初值为 0。给出适应度函数 f = α·(1−Acc) + β·(Dsel/D)，α=0.9、β=0.1 固定，为两阶段调度做铺垫；复杂度量级 O(T·N·T_eval)。
 
-**引用需求**: [51][25][Kennedy 1997][MEL][4]。
+**引用需求**: [51][25][Kennedy 1997][MEL][4][cover1991][peng2005][deng2025nns]。
 
 ---
 
@@ -96,24 +97,24 @@
 
 **段落结构**
 
-- **4.1 总体框架 (250w)**: 引导读者看 **F1** (框架图, 主文第 1 图)。用文字走一遍数据流: 原始 D 维数据 → MI 排序得分 → 初始化混合种群 (MI_init_ratio=0.5) → 迭代循环 {双目标评估 → 权重矩阵累积(KER_decay) → 精英选择(elite_k=3) → KER 翻转(90% 知识 / 10% 随机) → 两阶段权重调度 → 原地更新 → 自适应 MI 重初始化} → 输出最优子集。指出 KDS-EL 是**单流程无池化**设计（与旧版对比，强调简洁）。图: F1 (main)。
-- **4.2 MI 引导初始化 (250w)**: 算法动机（随机初始化高维稀疏解浪费预算）+ 实现（互信息排序每个特征与类别标签 → 前 top-k 构建高质量起点; MI_init_ratio=0.5 混合随机个体保多样性; 二进制阈值化 thres）。给出 MI 公式。**自适应 MI 重初始化**: 停滞 stall_patience=20 代时，用最新 MI 得分重置部分个体（reinit interval=10, rounds=10），增强早熟逃逸。伪代码片段 A。引用: 信息论 MI (Cover & Thomas), [7]。
-- **4.3 累积特征权重矩阵 + 权重衰减 (250w)**: 定义累积权重矩阵 W∈R^D，每次评估后按贡献更新（入选特征 +δ，未入选 -δ 或按权重），并用**指数衰减 decay=0.99** 折扣历史（防止陈旧信息累积与特征膨胀）。给出 W 更新公式与衰减公式。这是 KER 的知识底座。引用: 指数遗忘/折扣学习的一般概念 [21 相关]。
+- **4.1 总体框架 (250w)**: 引导读者看 **F1** (框架图, 主文第 1 图)。用文字走一遍数据流: 原始 D 维数据 → MI 排序得分 → 初始化混合种群 (MI_init_ratio=0.5, Sub1 MI 种子 / Sub2 随机) → 迭代循环 {双目标评估 → 权重矩阵累积(KER_decay) → 精英选择(elite_k=3) → KER 翻转(90% 知识 / 10% 随机) → Sub1 PSO 更新(含 Sub2 best 吸引项) + Sub2 知识加权采样 → 两阶段权重调度 → 原地更新 → 自适应 MI 重初始化} → 输出最优子集。指出 KDS-EL 沿用 MEL 的 Sub1/Sub2 双子群骨架、但**无池化**（与旧版 2N 池化对比，强调简洁）。图: F1 (main)。
+- **4.2 MI 引导初始化 (250w)**: 算法动机（随机初始化高维稀疏解浪费预算）+ 实现（互信息排序每个特征与类别标签 → 前 top-k 构建高质量起点; MI_init_ratio=0.5 混合随机个体保多样性; 二进制阈值化 thres）。给出 MI 公式。Algorithm 2 (MI 引导初始化)。**自适应 MI 重初始化**: 停滞 stall_patience=20 代时，用最新 MI 得分重置部分个体（reinit interval=10, rounds=10），增强早熟逃逸。Algorithm 3 (自适应 MI 重初始化)。引用: 信息论 MI (Cover & Thomas), [7]。
+- **4.3 累积特征权重矩阵 + 权重衰减 (250w)**: 定义累积权重矩阵 W∈R^D，按 MEL 式双向更新——对每个评估候选，按适应度变化量 Δf 更新状态发生变化的特征（改善时新选中 +Δf、丢弃 −Δf，恶化时反向），并用**指数衰减 decay=0.99** 折扣历史（防止陈旧信息累积与特征膨胀）。给出 W 更新公式与衰减公式。这是 KER 的知识底座。引用: 指数遗忘/折扣学习的一般概念 [21 相关]。
 - **4.4 KER 知识引导精英翻转 (300w)**: 核心算子。
   - 选 top elite_k=3 精英个体;
   - 以 rand_flip_p=0.10 概率走"纯随机探索"分支，否则走"知识翻转"分支;
   - 知识翻转: 依 W 排序，高分特征当前=0 → 翻为 1，低分特征当前=1 → 翻为 0（翻转比例 flip_frac=0.01）;
-  - 直觉解释: 把"种群累积学到的特征重要性"注入精英解，实现知识引导的局部精炼与高阶项利用。给出翻转规则公式。图: 可选 F2 (机制示意, 附录)。伪代码片段 B。
+  - 直觉解释: 把"种群累积学到的特征重要性"注入精英解，实现知识引导的局部精炼与高阶项利用。给出翻转规则公式。Algorithm 4 (权重矩阵更新) + Algorithm 5 (KER)。图: 可选 F2 (机制示意, 附录)。
 - **4.5 两阶段权重调度 (300w)**: 动机（固定权重无法同时保证"先压缩后精调"）。
   - 定义 Phase 划分: 前 70% 迭代 (PhaseSplit=0.7) 用 ws=[0.7, 0.3] 激进压缩特征; 后 30% 用 ws=[0.95, 0.05] 聚焦精度。
-  - 论证为何"先粗后精"优于固定/线性衰减（对比固定 ws=[0.9,0.1] 的 NoPool 变体，见 Ablation）。给出权重切换公式。**原地更新 (in-place, 非池化)** 说明: 精英个体直接被 KER 翻转后的版本替换，省去 2N 池化选择 → 更简单、更快、精度不降反升（见 7.1）。伪代码片段 C。
-- **4.6 算法主流程与伪代码 (250w)**: 给出 Algorithm 1 完整伪代码（输入参数、初始化、主循环、各组件调用、输出最优子集）。图上: 伪代码 Algorithm 1 (main)。
+  - 论证为何"先粗后精"优于固定/线性衰减（对比固定 ws=[0.9,0.1] 的 NoPool 变体，见 Ablation）。给出权重切换公式。Algorithm 6 (两阶段权重调度)。**原地更新 (in-place, 非池化)** 说明: 精英个体直接被 KER 翻转后的版本替换，省去 2N 池化选择 → 更简单、更快、精度不降反升（见 7.1）。
+- **4.6 算法主流程与伪代码 (250w)**: 给出 Algorithm 7 完整伪代码（Algorithm 1 已在 §3.2 给出 MI 过滤；Algorithm 2-6 为五个子过程）。图上: 伪代码 Algorithm 7 (main)。
 - **4.7 复杂度分析 (100w)**: 逐组件给出复杂度并汇总为一行:
   - 初始化: MI 排序 O(D log D)（或近似 O(D)）;
   - 每代: 评估 O(N·T_eval)（T_eval = KNN 评估开销, 与所选特征相关）; 权重矩阵更新 O(N·D); KER O(elite_k·flip_frac·D); MI 重初始化（仅停滞时）O(D)。
   - 总: O(T·(N·T_eval + D·N + elite_k·D))，并对比 MEL 的 O(T·N·T_eval) 说明增量开销可忽略（用实验运行时间佐证: 51.3s vs MEL 175s，KDS-EL 反而更快因早收敛+MI起点好）。可选 T9 复杂度表 (main) 或纯文字。
 
-**图表**: F1 (main), Algorithm 1 (main), 可选 F2 机制图 (appendix); T9 复杂度表 (main, 可选)。
+**图表**: F1 (main), Algorithm 7 (main), 可选 F2 机制图 (appendix); T9 复杂度表 (main, 可选)。
 
 **引用需求**: MI [7]/Cover & Thomas; 折扣学习 [21]; 精英策略 [12 wrapper 传统]; PSO [51][25]; MEL 基线对照 [MEL]。
 
@@ -146,8 +147,8 @@
   - KDS-EL 平均特征 88（选择率 ~2-3%），远低于 MEL 2722 与 MOFS 的 3000-5300;
   - 强调"同等/更高精度下压缩 20-50×"的 Pareto 意义; 用 F12 气泡图（精度 vs 特征 vs 时间，main）直观展示 KDS-EL 位于左上（高精度、低特征）。图: F5 (main), F12 (main)。
 - **6.3 统计显著性 (300w)**: **T6 (main, KDS-EL vs 13 方法胜场表)**、**T6b (main, Holm-Bonferroni 表)**、**F10** (Wilcoxon 热图, main)、**F13** (Friedman 平均排名, main)。
-  - Wilcoxon: KDS-EL 20/20 优于 MEL, 19/20 优于 MEL+MI, 19/20 优于 FWPSO, 14-16/20 优于 MOFS 系;
-  - Holm-Bonferroni: 13 个对手全部拒绝 H0 (p<1e-15 到 1.02e-14);
+  - One-sided Wilcoxon: KDS-EL 20/20 优于 MEL, 19/20 优于 MEL+MI, 19/20 优于 FWPSO, 13/20 优于 NoPool, 14-18/20 优于 MOFS 系;
+  - Holm-Bonferroni: 13 个对手全部拒绝 H0 (Combined/Holm p 均 p<1e-15);
   - Friedman 排名第 1。点出"对 MOFS 胜场数较低(14/20)但 ΔAcc 显著 +3~5pp"的解读（天花板数据集上精度打平、靠特征数取胜）。图: F10 (main), F13 (main)。
 - **6.4 天花板效应分析 (250w)**: 专节讨论 8 个 Acc≥0.998 数据集（ALL1, ALL_AML, Adenoma, DLBCL, Gastric2, Leukaemia, Lymphoma, SRBCT）。
   - 精度已饱和（差 <0.002, 仅 1-2 个样本），此时**特征数是唯一有意义的区分指标**;
@@ -180,7 +181,7 @@
   - 分组讨论: (a) 天花板数据集——MI/KER 快速打满精度、特征数显著下降（如 ALL1: 4248→39, Adenoma: 2483→66）; (b) 中等难度——各组件的精度增益逐级累加（如 BASEHOCK 0.8518→0.9113, madelon 0.7521→0.8822）;
   - 指出全剥 MI 初始化 + 自适应重初始化（MI→MEL）特征数骤增（291→2722），证实 MI 的"起点+逃逸"双重作用被移除后的影响。
 - **7.3 两阶段调度与原地更新验证 (150w)**: KDS_EL_NoPool(固定 ws=[0.9,0.1] + 原地更新) vs KDS-EL(两阶段)。
-  - 精度 0.9488→0.9574 (+0.86pp), 特征 122→88, 时间 54.2→51.3s（20-DS 同批对比）;
+  - 精度 0.9488→0.9574 (+0.86pp), 特征 122→88, 时间 53.6→51.3s（20-DS 同批对比）;
   - 逐数据集: 以 T7 (20-DS) 为准，KDS-EL 在绝大多数数据集不劣于 NoPool;
   - **F9** (两阶段收敛对比, main): Phase2 权重切换后精度再提升、特征进一步压缩的可视化证据。同时一句话回应旧版池化/DRS 已弃用（附录或脚注），保持方法叙事简洁。
 
@@ -220,7 +221,7 @@
 
 # 0. Abstract (~250 words)
 
-- 背景一句 → 问题（三大不适配）一句 → 方法三组件各一句 → 结果三句（精度/特征/统计/效率）→ 意义一句。附 5-6 个关键词（Feature selection, High-dimensional data, Particle swarm optimization, Mutual information, Knowledge-guided search, Two-phase weight scheduling）。
+- 背景一句 → 问题（三大不适配）一句 → 方法三组件各一句 → 结果三句（精度/特征/统计/效率）→ 意义一句。关键词固定 5 个短语：Feature selection, Particle swarm optimization, Mutual information, Knowledge-guided elite refinement, Two-phase weight scheduling。
 
 ---
 
@@ -240,7 +241,7 @@
 
 # 主文 vs 附录 图表清单汇总
 
-**主文 (Figures)**: F1 (框架), F4 (精度), F5 (特征), F7 (箱线图), F8 (收敛), F10 (Wilcoxon 热图), F11 (时间散点), F12 (气泡), F13 (Friedman 排名), F9 (两阶段收敛), F6 (消融热图/瀑布, 选 1-2 张)。Algorithm 1 伪代码。
+**主文 (Figures)**: F1 (框架), F4 (精度), F5 (特征), F7 (箱线图), F8 (收敛), F10 (Wilcoxon 热图), F11 (时间散点), F12 (气泡), F13 (Friedman 排名), F9 (两阶段收敛), F6 (消融热图/瀑布, 选 1-2 张)。Algorithm 7 主流程伪代码；Algorithm 2/3/4/5/6 为五个子过程；§3.2 另有 Algorithm 1 MI 过滤。
 **附录 (Figures)**: F6_radar, F4_performance_profile, F2 (KER 机制示意, 可选), F9_nhd_diversity (建议删除——NHD 指标已弃用)。
 
 **主文 (Tables)**: T1 (方法-文献), T2 (数据集), T3 (参数), T4 (精度), T5 (特征, 可下放附录), T6 (Wilcoxon), T6b (Holm), T7 (消融汇总), T8 (参数敏感性汇总), T9 (复杂度, 可选)。

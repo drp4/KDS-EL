@@ -9,7 +9,7 @@ import csv, math, os
 TAB = r"E:\多目标优化\KDS-EL\output\tables"
 MD = r"E:\多目标优化\KDS-EL\output\实验数据汇总.md"
 
-METHODS_14 = ["KDS-EL","KDS-EL/KER","MEL+MI","MEL","FWPSO","PSO-CSM","SaWDE","IGPSO",
+METHODS_14 = ["KDS-EL","KDS-EL w/o TPS","KDS-EL w/o TPS\\&KER","MEL","FWPSO","PSO-CSM","SaWDE","IGPSO",
               "BPSO","W-MOPSO-FS","fMOPSO-FS","NSGA-II-FS","MOEA-D-FS","MOPSO-FS"]
 # CSV header names for the 14 methods
 CSV_METHODS = ["KDS_EL","KDS_EL_KER","MEL+MI","MEL","FWPSO","PSO-CSM","SaWDE","IGPSO",
@@ -27,8 +27,7 @@ def tex_join(out):
     return "\n".join(out) + "\n"
 
 def header14():
-    hdr = [m.replace("KDS-EL/KER", "KDS-EL$_{\\text{KER}}$") for m in METHODS_14]
-    return " & ".join(["Dataset"] + hdr)
+    return " & ".join(["Dataset"] + METHODS_14)
 
 def p_tex(p):
     pv = float(p)
@@ -41,13 +40,16 @@ def p_tex(p):
 # ---------- T4 accuracy ----------
 def gen_T4():
     rows = read_csv("T4_accuracy.csv")
-    out = [r"\begin{table}[htbp]", r"\centering",
-           r"\caption{Classification accuracy (mean $\pm$ std) of 14 fixed-length methods on 20 benchmark datasets. Bold indicates the best per dataset.}",
-           r"\label{T4}", r"\small",
+    out = [r"\begin{sidewaystable}", r"\centering",
+           r"\caption{Classification accuracy (mean $\pm$ std) of 14 fixed-length methods on 20 benchmark datasets. Bold indicates the best per dataset; the Average row reports the mean across the 20 datasets.}",
+           r"\label{T4}", r"\tiny",
+           r"\setlength{\tabcolsep}{2pt}",
+           r"\resizebox{\dimexpr\textheight-2cm}{!}{%",
            r"\begin{tabular}{l" + "c"*14 + "}", r"\toprule",
            header14() + r" \\", r"\midrule"]
+    all_vals = []
     for r in rows:
-        ds = r["Dataset"]
+        ds = r["Dataset"].replace("_", "\\_")
         vals = []
         best = max(float(r[m].split("±")[0]) for m in CSV_METHODS)
         for m in CSV_METHODS:
@@ -57,8 +59,13 @@ def gen_T4():
             if abs(num - best) < 1e-9:
                 v = "\\textbf{" + v + "}"
             vals.append(v)
+        all_vals.append([float(r[m].split("±")[0]) for m in CSV_METHODS])
         out.append(ds + " & " + " & ".join(vals) + r" \\")
-    out += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    avgs = [sum(col) / len(col) for col in zip(*all_vals)]
+    best_avg = max(avgs)
+    avg_cells = ["\\textbf{%.4f}" % a if abs(a - best_avg) < 1e-9 else "%.4f" % a for a in avgs]
+    out += [r"\midrule", "Average & " + " & ".join(avg_cells) + r" \\",
+            r"\bottomrule", r"\end{tabular}}", r"\end{sidewaystable}"]
     with open(os.path.join(TAB, "T4_accuracy.tex"), "w", encoding="utf-8") as f:
         f.write(tex_join(out))
     print("T4_accuracy.tex written (%d datasets)" % len(rows))
@@ -66,20 +73,22 @@ def gen_T4():
 # ---------- T5 features ----------
 def gen_T5():
     rows = read_csv("T5_features.csv")
-    out = [r"\begin{table}[htbp]", r"\centering",
+    out = [r"\begin{sidewaystable}", r"\centering",
            r"\caption{Average number of selected features (over 10 runs) of 14 methods on 20 datasets. Bold indicates the minimum per dataset.}",
-           r"\label{T5}", r"\small",
+           r"\label{T5}", r"\scriptsize",
+           r"\setlength{\tabcolsep}{3pt}",
+           r"\resizebox{\dimexpr\textheight-2cm}{!}{%",
            r"\begin{tabular}{l" + "c"*14 + "}", r"\toprule",
            header14() + r" \\", r"\midrule"]
     for r in rows:
-        ds = r["Dataset"]
+        ds = r["Dataset"].replace("_", "\\_")
         vals = []
         best = min(int(r[m].split()[0]) for m in CSV_METHODS)
         for m in CSV_METHODS:
             v = int(r[m].split()[0])
             vals.append("\\textbf{%d}" % v if v == best else "%d" % v)
         out.append(ds + " & " + " & ".join(vals) + r" \\")
-    out += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    out += [r"\bottomrule", r"\end{tabular}}", r"\end{sidewaystable}"]
     with open(os.path.join(TAB, "T5_features.tex"), "w", encoding="utf-8") as f:
         f.write(tex_join(out))
     print("T5_features.tex written (%d datasets)" % len(rows))
@@ -87,9 +96,11 @@ def gen_T5():
 # ---------- T6 Wilcoxon matrix ----------
 def gen_T6():
     mat = read_csv_matrix("T6_wilcoxon.csv")
-    out = [r"\begin{table}[htbp]", r"\centering",
-           r"\caption{Two-sided Wilcoxon signed-rank test results ($p<0.05$): entries report the number of datasets out of 20 on which the row method significantly outperforms the column method.}",
-           r"\label{T6}", r"\small",
+    out = [r"\begin{sidewaystable}", r"\centering",
+           r"\caption{One-sided Wilcoxon signed-rank test results ($p<0.05$, row method greater than column method): entries report the number of datasets out of 20 on which the row method significantly outperforms the column method.}",
+           r"\label{T6}", r"\scriptsize",
+           r"\setlength{\tabcolsep}{3pt}",
+           r"\resizebox{\dimexpr\textheight-2cm}{!}{%",
            r"\begin{tabular}{l" + "c"*14 + "}", r"\toprule",
            " & ".join(["Method"] + METHODS_14) + r" \\", r"\midrule"]
     for row in mat[1:]:
@@ -104,9 +115,9 @@ def gen_T6():
                 disp.append("\\textbf{" + c + "}")
             else:
                 disp.append(c)
-        disp_name = name.replace("KDS_EL_KER", "KDS-EL$_{\\text{KER}}$")
+        disp_name = name.replace("KDS_EL_KER", "KDS-EL w/o TPS").replace("MEL+MI", "KDS-EL w/o TPS\\&KER").replace("_", "\\_")
         out.append(disp_name + " & " + " & ".join(disp) + r" \\")
-    out += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    out += [r"\bottomrule", r"\end{tabular}}", r"\end{sidewaystable}"]
     with open(os.path.join(TAB, "T6_wilcoxon.tex"), "w", encoding="utf-8") as f:
         f.write(tex_join(out))
     print("T6_wilcoxon.tex written (%d methods)" % (len(mat)-1))
@@ -115,16 +126,17 @@ def gen_T6():
 def gen_T6b():
     rows = read_csv("T6b_holm_bonferroni.csv")
     rows.sort(key=lambda r: float(r["Holm_alpha"]))
-    out = [r"\begin{table}[htbp]", r"\centering",
-           r"\caption{Holm--Bonferroni corrected pairwise comparison between KDS-EL and each of the 13 comparison methods over the 20 datasets. $\Delta$Acc is the mean accuracy advantage of KDS-EL; the corrected $p$-value is reported; $H_0$ of equal performance is rejected at the Holm threshold in every case.}",
-           r"\label{T6b}", r"\small",
-           r"\begin{tabular}{lccr}", r"\toprule",
-           r"Method & $\Delta$Acc & Corrected $p$ & Reject $H_0$ \\", r"\midrule"]
+    out = [r"\begin{table}[!htb]", r"\centering",
+           r"\caption{Holm--Bonferroni corrected pairwise comparison between KDS-EL and each of the 13 comparison methods over the 20 datasets. $\Delta$Acc is the mean accuracy advantage of KDS-EL; Combined $p$ is the unadjusted Fisher combined one-sided Wilcoxon $p$-value and Holm $p$ is its Holm--Bonferroni adjustment; $H_0$ of no superiority is rejected at the Holm threshold in every case.}",
+           r"\label{T6b}", r"\footnotesize",
+           r"\setlength{\tabcolsep}{3pt}",
+           r"\begin{tabular}{lcccc}", r"\toprule",
+           r"Method & $\Delta$Acc & Combined $p$ & Holm $p$ & Reject $H_0$ \\", r"\midrule"]
     for r in rows:
-        m = r["Method"].replace("KDS_EL_KER", "KDS-EL$_{\\text{KER}}$")
+        m = r["Method"].replace("KDS_EL_KER", "KDS-EL w/o TPS").replace("MEL+MI", "KDS-EL w/o TPS\\&KER")
         d = float(r["Mean_ΔAcc"])
         rej = "\\checkmark" if r["Reject_H0"].strip().lower().startswith("y") else "---"
-        out.append(m + f" & $+{d:.4f}$ & " + p_tex(r["Combined_p"]) + " & " + rej + r" \\")
+        out.append(m + f" & $+{d:.4f}$ & " + p_tex(r["Combined_p"]) + " & " + p_tex(r["Adjusted_p"]) + " & " + rej + r" \\")
     out += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
     with open(os.path.join(TAB, "T6b_holm_bonferroni.tex"), "w", encoding="utf-8") as f:
         f.write(tex_join(out))
@@ -132,20 +144,20 @@ def gen_T6b():
 
 # ---------- T7 ablation summary (4 variants: Acc, Feat, dAcc) ----------
 def gen_T7():
-    data = [("MEL", 0.8868, 2722, "--"),
-            ("MEL+MI", 0.9325, 291, "+4.58"),
-            ("KDS-EL$_{\\text{KER}}$", 0.9488, 122, "+1.63"),
-            ("KDS-EL (Ours)", 0.9574, 88, "+0.86")]
+    data = [("KDS-EL", 0.9574, 87.8, "--"),
+            ("KDS-EL w/o TPS", 0.9488, 122, "-0.86"),
+            ("KDS-EL w/o TPS\\&KER", 0.9325, 291, "-1.63"),
+            ("MEL", 0.8868, 2722, "-4.58")]
     out = [r"\begin{table}[htbp]", r"\centering",
-           r"\caption{Component contribution analysis: cumulative effect of the three knowledge-guided mechanisms over the 20-dataset suite. Feature counts are dataset means.}",
+           r"\caption{Component contribution analysis: each row strips one mechanism from the complete KDS-EL, and $\Delta$Acc reports the resulting accuracy loss relative to the row above. ``MEL'' denotes the framework stripped of all three mechanisms---the residual that remains once every component has been removed, corresponding to MEL~\cite{mel2024}. Feature counts are dataset means.}",
            r"\label{T7}", r"\small",
            r"\begin{tabular}{lccc}", r"\toprule",
            r"Variant & Accuracy & Features & $\Delta$Acc (pp) \\", r"\midrule"]
     for name, acc, feat, d in data:
-        bold = "KDS-EL (Ours)" in name
+        bold = name == "KDS-EL"
         if bold:
             row = (name + r" & \textbf{" + f"{acc:.4f}" + r"} & \textbf{"
-                   + str(feat) + r"} & \textbf{" + d + r"} \\")
+                   + str(feat) + r"} & " + d + r" \\")
         else:
             row = name + f" & {acc:.4f} & {feat} & {d}" + r" \\"
         out.append(row)

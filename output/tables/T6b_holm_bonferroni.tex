@@ -1,25 +1,26 @@
 \begin{table}[!htb]
 \centering
-\caption{Holm--Bonferroni corrected pairwise comparison between KDS-EL and each of the 13 comparison methods over the 20 datasets. $\Delta$Acc is the mean accuracy advantage of KDS-EL; the corrected $p$-value is reported; $H_0$ of equal performance is rejected at the Holm threshold in every case.}
+\caption{Holm--Bonferroni corrected pairwise comparison between KDS-EL and each of the 13 comparison methods over the 20 datasets. $\Delta$Acc is the mean accuracy advantage of KDS-EL; Combined $p$ is the unadjusted Fisher combined one-sided Wilcoxon $p$-value and Holm $p$ is its Holm--Bonferroni adjustment; $H_0$ of no superiority is rejected at the Holm threshold in every case.}
 \label{T6b}
-\small
-\begin{tabular}{lccr}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccc}
 \toprule
-Method & $\Delta$Acc & Corrected $p$ & Reject $H_0$ \\
+Method & $\Delta$Acc & Combined $p$ & Holm $p$ & Reject $H_0$ \\
 \midrule
-MI variant & $+0.0248$ & $<10^{-15}$ & \checkmark \\
-MEL & $+0.0706$ & $<10^{-15}$ & \checkmark \\
-FWPSO & $+0.0396$ & $<10^{-15}$ & \checkmark \\
-PSO-CSM & $+0.0552$ & $<10^{-15}$ & \checkmark \\
-SaWDE & $+0.0630$ & $<10^{-15}$ & \checkmark \\
-IGPSO & $+0.0734$ & $<10^{-15}$ & \checkmark \\
-BPSO & $+0.0875$ & $<10^{-15}$ & \checkmark \\
-W-MOPSO-FS & $+0.0442$ & $<10^{-15}$ & \checkmark \\
-fMOPSO-FS & $+0.0464$ & $<10^{-15}$ & \checkmark \\
-NSGA-II-FS & $+0.0509$ & $<10^{-15}$ & \checkmark \\
-MOEA-D-FS & $+0.0532$ & $<10^{-15}$ & \checkmark \\
-MOPSO-FS & $+0.0565$ & $<10^{-15}$ & \checkmark \\
-MI+KER variant & $+0.0086$ & $1.02\times 10^{-14}$ & \checkmark \\
+KDS-EL w/o TPS & $+0.0086$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+KDS-EL w/o TPS\&KER & $+0.0248$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+MEL & $+0.0706$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+FWPSO & $+0.0396$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+PSO-CSM & $+0.0552$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+SaWDE & $+0.0630$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+IGPSO & $+0.0734$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+BPSO & $+0.0875$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+W-MOPSO-FS & $+0.0442$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+fMOPSO-FS & $+0.0464$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+NSGA-II-FS & $+0.0509$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+MOEA-D-FS & $+0.0532$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+MOPSO-FS & $+0.0565$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
 \bottomrule
 \end{tabular}
 \end{table}

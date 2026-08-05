@@ -3,6 +3,7 @@
 \caption{Parameter Settings}
 \label{T3}
 \footnotesize
+\setlength{\tabcolsep}{2pt}
 \begin{tabular}{@{}lcl@{}}
 \toprule
 \multicolumn{3}{@{}c}{\textbf{Common Experimental Setup}} \\
@@ -28,16 +29,16 @@ Phase split ratio                 & = & 0.7 \\
 Phase-1 objective weights         & = & $\mathbf{w}_s = [0.7,\,0.3]$ \\
 Phase-2 objective weights         & = & $\mathbf{w}_s = [0.95,\,0.05]$ \\
 \midrule
-\multicolumn{3}{c}{\textbf{MI+KER variant (no two-phase scheduling)}} \\
+\multicolumn{3}{c}{\textbf{KDS-EL w/o TPS (no two-phase scheduling)}} \\
 \midrule
 Fixed objective weights           & = & $\mathbf{w}_s = [0.9,\,0.1]$ \\
 \midrule
-\multicolumn{3}{c}{\textbf{MEL and MI variant}} \\
+\multicolumn{3}{c}{\textbf{MEL and KDS-EL w/o TPS\&KER}} \\
 \midrule
 Inertia weight ($w$)              & = & 0.9 \\
 Acceleration coefficients         & = & $c_1 = c_2 = c_3 = 2.0$ \\
-MI-guided init ratio (MI variant)     & = & 0.5 \\
-Stall patience (MI variant)           & = & 20 \\
+MI-guided init ratio (KDS-EL w/o TPS\&KER) & = & 0.5 \\
+Stall patience (KDS-EL w/o TPS\&KER)       & = & 20 \\
 \midrule
 \multicolumn{3}{c}{\textbf{Competitor Methods}} \\
 \midrule

@@ -39,10 +39,10 @@
       ]
     }
   ],
-  "latex-workshop.latex.recipe.default": "first",
+  "latex-workshop.latex.recipe.default": "pdflatex -> bibtex -> pdflatex x2",
   "latex-workshop.view.pdf.viewer": "tab",
   "latex-workshop.latex.outDir": "%DIR%",
-  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.autoBuild.run": "never",
   "python.defaultInterpreterPath": "C:\\Program Files\\Python313\\python.exe",
   "python.terminal.activateEnvironment": false
 }

@@ -22,7 +22,7 @@
   → 两阶段权重调度（Phase1 激进压缩 / Phase2 精细调精度）
 ```
 
-**论证基调**（法则 2, 6）：永远说 "KDS-EL incorporates / addresses / resolves"，不说 "We add X to MEL" / "improved" / "operator"。MEL 是 backbone，不单独成节。
+**论证基调**（法则 2, 6）：永远说 "KDS-EL incorporates / addresses / resolves"，不说 "We add X to MEL" / "improved" / "operator"。MEL 是基线，不单独成节。
 
 ## 三、主张-证据链 (Claim-Evidence Chains)
 
@@ -33,12 +33,12 @@
 
 ### 主张 B: KER 解决知识浪费（核心创新 #1，知识层）
 - 证据（w/o 减法读法）: 再去掉 KER → MI variant，**−1.63pp**，特征 122→291
-- 关键卖点: KER 是**零评估开销**的机制（仅精英翻转，不新增 KNN 评估）
+- 关键卖点: KER 是**有界精化预算**的机制（仅额外评估 elite_k=3 个精英，不改变主导复杂度）
 - 机制: 跨迭代累积 improvement-feedback 权重 W + 指数衰减(0.99) 防陈旧；90% 知识翻转 / 10% 随机保证遍历性
 - 参数佐证: flip_frac 最优 0.01（每 100 维翻 1 个特征）
 
 ### 主张 C: 两阶段调度解决刚性权重（核心创新 #2，调度层）
-- 证据（w/o 减法读法）: 去掉两阶段调度 → MI+KER variant，**−0.86pp**，特征 88→122，时间 51.3→54.2s，同批直接对比
+- 证据（w/o 减法读法）: 去掉两阶段调度 → MI+KER variant，**−0.86pp**，特征 88→122，时间 51.3→53.6s，同批直接对比
 - 机制依据: FS 问题的结构特性 — 噪声排除早期一次性，精度提升后期持续；"先粗后精"优于固定权重
 - 参数佐证: PhaseSplit 最优 0.7，稳定 [0.6, 0.8]
 
@@ -67,7 +67,7 @@
 - ✅ TwoPhase → **Two-Phase Weight Scheduling strategy**
 - ❌ 禁用自己的组件叫 "operator"（baseline 的才叫 operator）
 - ✅ addresses/resolves/incorporates/employs  |  ❌ improved/enhanced/add
-- ✅ building upon the multi-task PSO backbone  |  ❌ based on MEL
+- ✅ building upon the multi-task PSO framework  |  ❌ based on MEL
 - ✅ complementary/independent  |  ❌ synergy/synergistic（旧版教训）
 - ✅ Component Contribution Analysis  |  ❌ Ablation Study（章节标题）
 - ✅ 14 fixed-length methods  |  ❌ 15 methods
@@ -83,7 +83,7 @@
 ## 七、消融叙事（法则 4, w/o 减法读法, 三层次）
 
 1. 每个组件都配得上存在（去掉哪个都掉）：去 TwoPhase −0.86pp, 再剥 KER −1.63pp, 再剥 MI −4.58pp
-2. 各贡献在不同维度: MI=起点+压缩, KER=精度(零评估开销), TwoPhase=三维提升
+2. 各贡献在不同维度: MI=起点+压缩, KER=精度(有界精化预算), TwoPhase=三维提升
 3. 全剥（MEL 残骸）: 累计 −7.06pp, 特征 88→2722 膨胀 ~30×
 - 标题用 "Component Contribution Analysis"，**w/o 减法读法（2026-08-04 决定）**
 - 对比表方法名保留 "MI variant / MI+KER variant"，§7 开头加映射句

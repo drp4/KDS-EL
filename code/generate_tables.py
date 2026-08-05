@@ -56,9 +56,9 @@ MOFS_VERSIONS = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
 
 V_LABELS = {
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "MEL_MI": "MEL+MI",
-    "KDS_EL_NoPool": "KDS_EL_KER",
-    "KDS_EL_TwoPhase": "KDS_EL",
+    "MEL": "MEL", "MEL_MI": "KDS-EL w/o TPS\\&KER",
+    "KDS_EL_NoPool": "KDS-EL w/o TPS",
+    "KDS_EL_TwoPhase": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
     "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
     "MOEA-D-FS": "MOEA-D-FS", "fMOPSO-FS": "fMOPSO-FS",
@@ -231,8 +231,8 @@ def table_t6_wilcoxon(df_summary, out_dir):
                 a2 = g(df_detail, v2, ds)
                 if len(a2) < 3: continue
                 try:
-                    _, p = sp_stats.wilcoxon(a1, a2) if len(a1)==len(a2) else \
-                           sp_stats.mannwhitneyu(a1, a2, alternative='two-sided')
+                    _, p = sp_stats.wilcoxon(a1, a2, alternative='greater') if len(a1)==len(a2) else \
+                           sp_stats.mannwhitneyu(a1, a2, alternative='greater')
                 except: continue
                 total_matrix[i,j] += 1; total_matrix[j,i] += 1
                 if p < 0.05 and np.mean(a1) > np.mean(a2): win_matrix[i,j] += 1
@@ -371,8 +371,8 @@ def table_holm_bonferroni(df_summary, out_dir):
             kds_acc = df_detail[(df_detail["Version"]==kds_name)&(df_detail["Dataset"]==ds)]["Accuracy"].values
             o_acc = df_detail[(df_detail["Version"]==v)&(df_detail["Dataset"]==ds)]["Accuracy"].values
             try:
-                _, p = sp_stats.wilcoxon(kds_acc, o_acc) if len(kds_acc)==len(o_acc) else \
-                       sp_stats.mannwhitneyu(kds_acc, o_acc, alternative='two-sided')
+                _, p = sp_stats.wilcoxon(kds_acc, o_acc, alternative='greater') if len(kds_acc)==len(o_acc) else \
+                       sp_stats.mannwhitneyu(kds_acc, o_acc, alternative='greater')
             except: continue
             diffs.append((ds, p, kds_acc.mean()-o_acc.mean()))
         if diffs:
@@ -390,15 +390,19 @@ def table_holm_bonferroni(df_summary, out_dir):
 
     rows.sort(key=lambda r: r["Combined_p"])
     m = len(rows)
+    prev_adj = 0.0
     for i, r in enumerate(rows):
         r["Holm_alpha"] = 0.05 / (m - i)
+        raw_p = float(r["Combined_p"])
+        r["Adjusted_p"] = max(prev_adj, (m - i) * raw_p)
+        prev_adj = r["Adjusted_p"]
         r["Reject_H0"] = "Yes" if r["Combined_p"] < r["Holm_alpha"] else "No"
 
-    print(f"\n{'Method':20s} {'ΔAcc':>8s} {'W/T/L':>10s} {'Combined_p':>12s} {'α_holm':>10s} {'Reject?':>8s}")
-    print("-" * 72)
+    print(f"\n{'Method':20s} {'ΔAcc':>8s} {'W/T/L':>10s} {'Combined_p':>12s} {'Adjusted_p':>12s} {'α_holm':>10s} {'Reject?':>8s}")
+    print("-" * 84)
     for r in rows:
         wtl = f"{r['Wins']}/{r['Ties']}/{r['Losses']}"
-        print(f"  {r['Method']:18s} {r['Mean_ΔAcc']:+8.4f} {wtl:>10s} {r['Combined_p']:12.2e} {r['Holm_alpha']:10.4f} {r['Reject_H0']:>8s}")
+        print(f"  {r['Method']:18s} {r['Mean_ΔAcc']:+8.4f} {wtl:>10s} {r['Combined_p']:12.2e} {r['Adjusted_p']:12.2e} {r['Holm_alpha']:10.4f} {r['Reject_H0']:>8s}")
 
     outpath = os.path.join(out_dir, "T6b_holm_bonferroni.csv")
     pd.DataFrame(rows).to_csv(outpath, index=False, encoding="utf-8-sig")

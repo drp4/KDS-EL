@@ -19,6 +19,9 @@
 \usepackage{algpseudocode}
 \usepackage{rotating}
 \setlength{\emergencystretch}{3em}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\renewcommand{\bibfont}{\footnotesize}
+\setlength{\bibsep}{0pt}
 
 % Locate figures (paper/ -> ../../output/figures is ../output/figures)
 \graphicspath{{../output/figures/}}
@@ -27,7 +30,7 @@
 
 \begin{frontmatter}
 
-\title{KDS-EL: Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}
+\title{Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}
 
 %%% MASKED AUTHOR BLOCK (double-blind review) — replace upon acceptance %%%
 \author[au]{Anonymous Author}
@@ -40,7 +43,7 @@ Feature selection in high-dimensional data remains a central challenge for evolu
 \end{abstract}
 
 \begin{keyword}
-high-dimensional feature selection \sep particle swarm optimization \sep mutual information \sep knowledge-guided search \sep multi-task evolutionary learning \sep two-phase weight scheduling
+feature selection \sep particle swarm optimization \sep mutual information \sep knowledge-guided elite refinement \sep two-phase weight scheduling
 \end{keyword}
 
 \end{frontmatter}
@@ -75,7 +78,7 @@ high-dimensional feature selection \sep particle swarm optimization \sep mutual 
 % ------------ 5. Experimental Results and Analysis (原 5-8 节合并) -------
 \section{Experimental Results and Analysis}\label{sec:results}
 
-This section reports the experimental outcomes across six complementary perspectives: overall classification accuracy, feature-selection compactness, statistical significance, ceiling-effect behavior, convergence dynamics, and computational efficiency. All aggregate numbers are computed over the 20 benchmark datasets described in Section~\ref{sec:setup}. We then quantify the contribution of each mechanism (Section~\ref{sec:ablation}) and assess the sensitivity of KDS-EL to its hyper-parameters (Section~\ref{sec:parametric}).
+This section reports the experimental outcomes across six complementary perspectives: overall classification accuracy, feature-selection compactness, statistical significance, ceiling-effect behavior, convergence dynamics, and computational efficiency. All aggregate numbers are computed over the 20 benchmark datasets described in Section~\ref{sec:setup}. We then quantify the contribution of each mechanism in Section~\ref{sec:ablation} and assess the sensitivity of KDS-EL to its hyper-parameters in Section~\ref{sec:parametric}.
 
 \input{sections/05_experimental_setup}
 
@@ -102,7 +105,7 @@ This section reports the experimental outcomes across six complementary perspect
 \begin{figure*}[!htb]
 \centering
 \includegraphics[width=0.85\linewidth]{F8_convergence.pdf}
-\caption{Mean convergence trajectories of KDS-EL, KDS-EL w/o Two-Phase, KDS-EL w/o Two-Phase \& KER, and the MEL backbone averaged over the 20 benchmark datasets.}
+\caption{Mean convergence trajectories of KDS-EL, KDS-EL w/o TPS, KDS-EL w/o TPS\&KER, and MEL averaged over the 20 benchmark datasets.}
 \label{F8}
 \end{figure*}
 

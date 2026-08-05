@@ -56,7 +56,7 @@
 - 运行: KDS-EL 51.3s (第2), MEL 175s, 3.4× 加速; MOFS >110s
 - Wilcoxon: 20/20 vs MEL, 19/20 vs MEL+MI; Holm: 全部 13 对手显著
 - 天花板数据集 (8): ALL1, ALL_AML, Adenoma, DLBCL, Gastric2, Leukaemia, Lymphoma, SRBCT
-- 消融逐组件: MI+Reinit +4.58pp(特征2722→291), KER +1.63pp(→122), TwoPhase +0.86pp(→88, 时间54.2→51.3s)
+- 消融逐组件: MI+Reinit +4.58pp(特征2722→291), KER +1.63pp(→122), TwoPhase +0.86pp(→88, 时间53.6→51.3s)
 - 参数敏感性: 5 参数波动 ≤1.5pp, MI_init_ratio 最敏感
 
 ## 4. 命名纪律

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  4 AUG 2026 19:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  5 AUG 2026 20:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -86,7 +86,7 @@ File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 \@enLab=\toks19
 \@sep=\skip51
 \@@sep=\skip52
-
+ (main.spl)
 (E:\MiKTeX\tex/latex/natbib\natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip53
@@ -584,7 +584,129 @@ Package: rotating 2025/01/14 v2.16e rotated objects in LaTeX
 \rot@float@box=\box63
 \rot@mess@toks=\toks31
 )
-LaTeX Font Info:    Trying to load font information for T1+txr on input line 26
+(E:\MiKTeX\tex/latex/hyperref\hyperref.sty
+Package: hyperref 2026-04-24 v7.01q Hypertext links for LaTeX
+
+(E:\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)
+(E:\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(E:\MiKTeX\tex/generic/pdfescape\pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+
+(E:\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(E:\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(E:\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+))
+(E:\MiKTeX\tex/latex/hycolor\hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(E:\MiKTeX\tex/latex/hyperref\nameref.sty
+Package: nameref 2026-01-29 v2.58 Cross-referencing by name of section
+
+(E:\MiKTeX\tex/latex/refcount\refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(E:\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+
+(E:\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count321
+)
+(E:\MiKTeX\tex/generic/stringenc\stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+)
+\@linkdim=\dimen188
+\Hy@linkcounter=\count322
+\Hy@pagecounter=\count323
+
+(E:\MiKTeX\tex/latex/hyperref\pd1enc.def
+File: pd1enc.def 2026-04-24 v7.01q Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(E:\MiKTeX\tex/generic/intcalc\intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count324
+
+(E:\MiKTeX\tex/latex/hyperref\puenc.def
+File: puenc.def 2026-04-24 v7.01q Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Option `final' set `true' on input line 4070.
+Package hyperref Info: Option `colorlinks' set `true' on input line 4070.
+Package hyperref Info: Hyper figures OFF on input line 4199.
+Package hyperref Info: Link nesting OFF on input line 4204.
+Package hyperref Info: Hyper index ON on input line 4207.
+Package hyperref Info: Plain pages OFF on input line 4214.
+Package hyperref Info: Backreferencing OFF on input line 4219.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4466.
+\c@Hy@tempcnt=\count325
+ (E:\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4805.
+\XeTeXLinkMargin=\dimen189
+
+(E:\MiKTeX\tex/generic/bitset\bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(E:\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count326
+\Field@Width=\dimen190
+\Fld@charsize=\dimen191
+Package hyperref Info: Hyper figures OFF on input line 6091.
+Package hyperref Info: Link nesting OFF on input line 6096.
+Package hyperref Info: Hyper index ON on input line 6099.
+Package hyperref Info: backreferencing OFF on input line 6106.
+Package hyperref Info: Link coloring ON on input line 6109.
+Package hyperref Info: Link coloring with OCG OFF on input line 6116.
+Package hyperref Info: PDF/A mode OFF on input line 6121.
+\Hy@abspage=\count327
+\c@Item=\count328
+\c@Hfootnote=\count329
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+
+(E:\MiKTeX\tex/latex/hyperref\hpdftex.def
+File: hpdftex.def 2026-04-24 v7.01q Hyperref driver for pdfTeX
+\Fld@listcount=\count330
+\c@bookmark@seq@number=\count331
+
+(E:\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
+Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
+
+(E:\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+84.
+)
+\Hy@SectionHShift=\skip64
+)
+LaTeX Font Info:    Trying to load font information for T1+txr on input line 29
 .
 
 (E:\MiKTeX\tex/latex/txfonts\t1txr.fd
@@ -592,55 +714,59 @@ File: t1txr.fd 2000/12/15 v3.1
 ) (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 26.
+LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 29.
 LaTeX Font Info:    Trying to load font information for OML+txmi on input line 
-26.
+29.
 
 (E:\MiKTeX\tex/latex/txfonts\omltxmi.fd
 File: omltxmi.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 29.
 LaTeX Font Info:    Trying to load font information for OMS+txsy on input line 
-26.
+29.
 
 (E:\MiKTeX\tex/latex/txfonts\omstxsy.fd
 File: omstxsy.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 29.
 LaTeX Font Info:    Trying to load font information for OMX+txex on input line 
-26.
+29.
 
 (E:\MiKTeX\tex/latex/txfonts\omxtxex.fd
 File: omxtxex.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 26.
-LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 29.
 LaTeX Font Info:    Trying to load font information for U+txexa on input line 2
-6.
+9.
  (E:\MiKTeX\tex/latex/txfonts\utxexa.fd
 File: utxexa.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 29.
+LaTeX Font Info:    ... okay on input line 29.
  (E:\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count321
-\scratchdimen=\dimen188
+\scratchcounter=\count332
+\scratchdimen=\dimen192
 \scratchbox=\box64
-\nofMPsegments=\count322
-\nofMParguments=\count323
+\nofMPsegments=\count333
+\nofMParguments=\count334
 \everyMPshowfont=\toks32
-\MPscratchCnt=\count324
-\MPscratchDim=\dimen189
-\MPnumerator=\count325
-\makeMPintoPDFobject=\count326
+\MPscratchCnt=\count335
+\MPscratchDim=\dimen193
+\MPnumerator=\count336
+\makeMPintoPDFobject=\count337
 \everyMPtoPDFconversion=\toks33
 ) (E:\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -687,97 +813,64 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Encoding Info:    Redeclaring text command \k (encoding T1) on input line
- 26.
+ 29.
+(E:\MiKTeX\tex/latex/graphics\color.sty
+Package: color 2025/01/14 v1.3e Standard LaTeX Color (DPC)
+
+(E:\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 149.
+
+(E:\MiKTeX\tex/latex/graphics\mathcolor.ltx))
+Package hyperref Info: Link coloring ON on input line 29.
+ (main.out) (main.out)
+\@outlinefile=\write4
+\openout4 = `main.out'.
+
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <10> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 38.
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 41.
 LaTeX Font Info:    Trying to load font information for OT1+txr on input line 4
-6.
+9.
+
 (E:\MiKTeX\tex/latex/txfonts\ot1txr.fd
 File: ot1txr.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Trying to load font information for U+txmia on input line 4
-6.
+9.
  (E:\MiKTeX\tex/latex/txfonts\utxmia.fd
 File: utxmia.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 46.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 49.
 
 (E:\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 46.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 49.
 
  (E:\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for U+txsyc on input line 4
-6.
+9.
 
 (E:\MiKTeX\tex/latex/txfonts\utxsyc.fd
 File: utxsyc.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Trying to load font information for TS1+txr on input line 4
-9.
+LaTeX Font Info:    Trying to load font information for TS1+txr on input line 5
+2.
  (E:\MiKTeX\tex/latex/txfonts\ts1txr.fd
 File: ts1txr.fd 2000/12/15 v3.1
 ) (sections/01_introduction.tex
-
-Package natbib Warning: Citation `lili2017' on page 1 undefined on input line 3
-.
-
-
-Package natbib Warning: Citation `guyon2003' on page 1 undefined on input line 
-3.
-
-
-Package natbib Warning: Citation `lili2017' on page 1 undefined on input line 3
-.
-
-
-Package natbib Warning: Citation `guyon2003' on page 1 undefined on input line 
-3.
-
-
-Package natbib Warning: Citation `liang2025' on page 1 undefined on input line 
-3.
-
-
 Underfull \hbox (badness 1460) in paragraph at lines 3--4
 \T1/txr/m/n/10 of mea-sured fea-tures rou-tinely reaches tens of thou-sands
  []
 
 
-Underfull \hbox (badness 1983) in paragraph at lines 3--4
-\T1/txr/m/n/10 al-go-rithms over-fit, com-pu-ta-tional over-head es-ca-lates, a
-nd
+Underfull \hbox (badness 3590) in paragraph at lines 3--4
+\T1/txr/m/n/10 com-bi-na-to-rial op-ti-miza-tion prob-lem [[]], while per-va-si
+ve
  []
-
-
-Package natbib Warning: Citation `kohavi1997' on page 1 undefined on input line
- 5.
-
-
-Package natbib Warning: Citation `lili2017' on page 1 undefined on input line 5
-.
-
-
-Package natbib Warning: Citation `liang2025' on page 1 undefined on input line 
-5.
-
-
-Package natbib Warning: Citation `kennedy1995' on page 1 undefined on input lin
-e 7.
-
-
-Package natbib Warning: Citation `shi1998' on page 1 undefined on input line 7.
-
-
-
-Package natbib Warning: Citation `mel2024' on page 1 undefined on input line 7.
-
-
-
-LaTeX Warning: Reference `sec:ablation' on page 1 undefined on input line 7.
 
 
 Underfull \hbox (badness 1394) in paragraph at lines 7--8
@@ -809,11 +902,6 @@ Underfull \hbox (badness 1609) in paragraph at lines 7--8
 \T1/txr/m/n/10 KDS-EL re-moves this rigid-ity with a Two-Phase Weight
  []
 
-
-Underfull \hbox (badness 1681) in paragraph at lines 7--8
-\T1/txr/m/n/10 KDS-EL, strip-ping Two-Phase schedul-ing, then the KER
- []
-
 [1{C:/Users/86185/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{E:/MiKTeX/f
 onts/enc/dvips/base/8r.enc}
 
@@ -824,224 +912,65 @@ Underfull \hbox (badness 3058) in paragraph at lines 9--10
  []
 
 
-LaTeX Warning: Reference `sec:mi' on page 2 undefined on input line 12.
-
-
-LaTeX Warning: Reference `sec:ablation' on page 2 undefined on input line 12.
-
-
 Underfull \hbox (badness 2772) in paragraph at lines 12--13
 []\T1/txr/m/n/10 To over-come the cold-start in-ef-fi-ciency of ran-dom
  []
 
 
-Underfull \hbox (badness 2020) in paragraph at lines 12--13
-\T1/txr/m/n/10 ini-tial-iza-tion in high-dimensional sparse search, we
+Underfull \hbox (badness 1701) in paragraph at lines 12--13
+\T1/txr/m/n/10 ran-dom in-di-vid-u-als, in-ject-ing prior feature-relevance
  []
 
 
-LaTeX Warning: Reference `sec:ker' on page 2 undefined on input line 14.
-
-
-LaTeX Warning: Reference `sec:ablation' on page 2 undefined on input line 14.
-
-
-Underfull \hbox (badness 2452) in paragraph at lines 14--15
-\T1/txr/m/n/10 Knowledge-guided Elite Re-fine-ment (KER) strat-egy
+Underfull \hbox (badness 1603) in paragraph at lines 12--13
+\T1/txr/m/n/10 knowl-edge and restart-ing stag-nated in-di-vid-u-als with
  []
 
 
-Underfull \hbox (badness 5417) in paragraph at lines 14--15
-\T1/txr/m/n/10 (Sec-tion []), which ac-cu-mu-lates a cross-iteration
+Underfull \hbox (badness 10000) in paragraph at lines 14--15
+\T1/txr/m/n/10 Knowledge-guided Elite Re-fine-ment (KER) strat-
  []
 
 
-Underfull \hbox (badness 2626) in paragraph at lines 14--15
-\T1/txr/m/n/10 feature-weight ma-trix from the fit-ness com-par-isons
+Underfull \hbox (badness 2253) in paragraph at lines 16--17
+\T1/txr/m/n/10 Schedul-ing strat-egy, de-scribed in Sec-tion [][]4.5[][], that
  []
 
 
-Underfull \hbox (badness 1975) in paragraph at lines 14--15
-\T1/txr/m/n/10 de-cay to dis-count ob-so-lete ev-i-dence, and per-forms
+Underfull \hbox (badness 1668) in paragraph at lines 16--17
+\T1/txr/m/n/10 re-places static dual-objective weights with an early
  []
-
-
-LaTeX Warning: Reference `sec:twophase' on page 2 undefined on input line 16.
-
-
-LaTeX Warning: Reference `sec:ablation' on page 2 undefined on input line 16.
-
-
-Underfull \hbox (badness 1087) in paragraph at lines 16--17
-\T1/txr/m/n/10 Schedul-ing strat-egy (Sec-tion []) that re-places static
- []
-
-
-Package natbib Warning: Citation `mel2024' on page 2 undefined on input line 18
-.
-
-
-LaTeX Warning: Reference `sec:results' on page 2 undefined on input line 18.
-
-
-Underfull \hbox (badness 6608) in paragraph at lines 18--19
-\T1/txr/m/n/10 14 fixed-length meth-ods cov-er-ing single-objective,
- []
-
-
-Underfull \hbox (badness 2486) in paragraph at lines 18--19
-\OT1/txr/m/n/10 +0\OML/txmi/m/it/10 :\OT1/txr/m/n/10 86$ \T1/txr/m/n/10 pp, the
- strongest single-objective com-peti-tor
- []
-
-
-Underfull \hbox (badness 2326) in paragraph at lines 18--19
-\T1/txr/m/n/10 method W-MOPSO-FS by $\OT1/txr/m/n/10 +4\OML/txmi/m/it/10 :\OT1/
-txr/m/n/10 42$ \T1/txr/m/n/10 pp, with a $\OT1/txr/m/n/10 3\OML/txmi/m/it/10 :\
-OT1/txr/m/n/10 4\OMS/txsy/m/n/10 ^^B$
- []
-
-
-LaTeX Warning: Reference `sec:related' on page 2 undefined on input line 21.
-
-
-LaTeX Warning: Reference `sec:preliminaries' on page 2 undefined on input line 
-21.
-
-
-LaTeX Warning: Reference `sec:proposed' on page 2 undefined on input line 21.
-
-
-LaTeX Warning: Reference `sec:results' on page 2 undefined on input line 21.
-
-
-LaTeX Warning: Reference `sec:conclusion' on page 2 undefined on input line 21.
-
 
 ) (sections/02_related_work.tex
-
-Package natbib Warning: Citation `lili2017' on page 2 undefined on input line 5
-.
-
-
-Package natbib Warning: Citation `guyon2003' on page 2 undefined on input line 
-5.
+Underfull \hbox (badness 1596) in paragraph at lines 7--8
+[]\T1/txr/m/n/10 Filter meth-ods eval-u-ate fea-tures in-de-pen-dently of any
+ []
 
 
-Package natbib Warning: Citation `kramer1991' on page 2 undefined on input line
- 7.
+Underfull \hbox (badness 1960) in paragraph at lines 7--8
+\T1/txr/m/n/10 as vari-ance, cor-re-la-tion, or eigen-vec-tor cen-tral-ity [[],
+ []].
+ []
 
 
-Package natbib Warning: Citation `roffo2016' on page 2 undefined on input line 
-7.
-
-
-Package natbib Warning: Citation `peng2005' on page 2 undefined on input line 7
-.
-
-
-Package natbib Warning: Citation `yu2003' on page 2 undefined on input line 7.
-
-
-Package natbib Warning: Citation `kohavi1997' on page 2 undefined on input line
- 9.
-
-
-Package natbib Warning: Citation `oh2004' on page 2 undefined on input line 9.
-
-
-Package natbib Warning: Citation `bach2008' on page 2 undefined on input line 1
-1.
-
-
-Package natbib Warning: Citation `zhang2021fsgbdt' on page 2 undefined on input
- line 11.
-
-
-Package natbib Warning: Citation `yu2021ilrc' on page 2 undefined on input line
- 11.
+Underfull \hbox (badness 2626) in paragraph at lines 9--10
+[]\T1/txr/m/n/10 Wrapper meth-ods treat fea-ture se-lec-tion as a search
+ []
 
 [2]
-
-Package natbib Warning: Citation `kennedy1997' on page 3 undefined on input lin
-e 17.
-
-
-Package natbib Warning: Citation `aghdam2009' on page 3 undefined on input line
- 17.
-
-
-Package natbib Warning: Citation `karaboga2007' on page 3 undefined on input li
-ne 17.
-
-
-Package natbib Warning: Citation `huang2006' on page 3 undefined on input line 
-17.
-
-
 Underfull \hbox (badness 1342) in paragraph at lines 17--18
 []\T1/txr/m/n/10 Evolutionary al-go-rithms have been ex-ten-sively ap-plied
  []
 
 
-Package natbib Warning: Citation `xue2019' on page 3 undefined on input line 19
-.
+Underfull \hbox (badness 1342) in paragraph at lines 19--20
+\T1/txr/m/n/10 IG-PSO [[]], which es-ti-mates rel-e-vance via a multi-layer
+ []
 
 
-Package natbib Warning: Citation `prasad2015' on page 3 undefined on input line
- 19.
-
-
-Package natbib Warning: Citation `wangjia2022' on page 3 undefined on input lin
-e 19.
-
-
-Package natbib Warning: Citation `wang2022' on page 3 undefined on input line 1
-9.
-
-
-Package natbib Warning: Citation `xuezhang2024' on page 3 undefined on input li
-ne 19.
-
-
-Package natbib Warning: Citation `wei2025' on page 3 undefined on input line 19
-.
-
-
-Package natbib Warning: Citation `weil2025' on page 3 undefined on input line 1
-9.
-
-
-Package natbib Warning: Citation `chen2025' on page 3 undefined on input line 1
-9.
-
-
-Package natbib Warning: Citation `cover1991' on page 3 undefined on input line 
-23.
-
-
-Package natbib Warning: Citation `peng2005' on page 3 undefined on input line 2
-3.
-
-
-Package natbib Warning: Citation `yu2003' on page 3 undefined on input line 23.
-
-
-
-LaTeX Warning: Reference `sec:fs-paradigms' on page 3 undefined on input line 2
-3.
-
-
-Package natbib Warning: Citation `mimpode2025' on page 3 undefined on input lin
-e 23.
-
-
-Package natbib Warning: Citation `wangjia2022' on page 3 undefined on input lin
-e 23.
-
-
-Package natbib Warning: Citation `xuezhang2024' on page 3 undefined on input li
-ne 23.
+Underfull \hbox (badness 1226) in paragraph at lines 19--20
+\T1/txr/m/n/10 are also ex-plored: reinforcement-learning-aided PSO [[]]
+ []
 
 
 Underfull \hbox (badness 1845) in paragraph at lines 25--26
@@ -1054,125 +983,44 @@ Underfull \hbox (badness 2197) in paragraph at lines 25--26
  []
 
 
-Package natbib Warning: Citation `xue2012mopso' on page 3 undefined on input li
-ne 29.
-
-
-Package natbib Warning: Citation `hu2020' on page 3 undefined on input line 29.
-
-
-
-Package natbib Warning: Citation `deb2002' on page 3 undefined on input line 31
-.
-
-
-Package natbib Warning: Citation `zhang2007' on page 3 undefined on input line 
-31.
-
-
-Package natbib Warning: Citation `coello2004' on page 3 undefined on input line
- 31.
-
-
-Package natbib Warning: Citation `hancer2023' on page 3 undefined on input line
- 31.
-
-
 Underfull \hbox (badness 7796) in paragraph at lines 31--32
 []\T1/txr/m/n/10 The multi-objective evo-lu-tion-ary al-go-rithm (MOEA)
  []
 
 
-Underfull \hbox (badness 1033) in paragraph at lines 31--32
-\T1/txr/m/n/10 the prob-lem into scalar sub-prob-lems solved co-op-er-a-tively.
-
+Underfull \hbox (badness 6252) in paragraph at lines 31--32
+\T1/txr/m/n/10 fam-ily pro-vides sev-eral ar-chi-tec-tures for this prob-lem.
  []
 
 
-Package natbib Warning: Citation `liu2024' on page 3 undefined on input line 33
-.
+Underfull \hbox (badness 1331) in paragraph at lines 31--32
+\T1/txr/m/n/10 dis-tance to main-tain Pareto-front di-ver-sity. MOEA/D-FS
+ []
 
 
-Package natbib Warning: Citation `zhang2021mtl' on page 3 undefined on input li
-ne 37.
+Underfull \hbox (badness 3009) in paragraph at lines 33--34
+[]\T1/txr/m/n/10 Despite their con-cep-tual ad-van-tages, MOFS meth-ods
+ []
 
 
-Package natbib Warning: Citation `zhang2021minion' on page 3 undefined on input
- line 37.
+Underfull \hbox (badness 1577) in paragraph at lines 33--34
+\T1/txr/m/n/10 scale. Surrogate-assisted multi-objective search [[]] can
+ []
 
 
-Package natbib Warning: Citation `chen2020emfs' on page 3 undefined on input li
-ne 37.
-
-
-Package natbib Warning: Citation `chen2021emfs' on page 3 undefined on input li
-ne 37.
-
-
-Package natbib Warning: Citation `he2022' on page 3 undefined on input line 37.
-
-
-
-Package natbib Warning: Citation `liu2022' on page 3 undefined on input line 37
-.
-
-
-Package natbib Warning: Citation `mel2024' on page 3 undefined on input line 39
-.
-
-
-LaTeX Warning: Reference `sec:proposed' on page 3 undefined on input line 39.
+Underfull \hbox (badness 1215) in paragraph at lines 37--38
+\T1/txr/m/n/10 re-lated tasks jointly, with knowl-edge trans-fer ac-cel-er-at-i
+ng
+ []
 
 [3]
-
-Package natbib Warning: Citation `bermingham2015' on page 4 undefined on input 
-line 43.
-
-
-Package natbib Warning: Citation `phuong2005' on page 4 undefined on input line
- 43.
-
-
-Package natbib Warning: Citation `saghapour2017' on page 4 undefined on input l
-ine 43.
-
-
-Package natbib Warning: Citation `zhang2015eigenbrain' on page 4 undefined on i
-nput line 43.
-
-
-Package natbib Warning: Citation `wangjia2022' on page 4 undefined on input lin
-e 43.
-
-
-Package natbib Warning: Citation `zhang2021fsgbdt' on page 4 undefined on input
- line 43.
-
-
-Package natbib Warning: Citation `yu2021ilrc' on page 4 undefined on input line
- 43.
-
-
-Package natbib Warning: Citation `lin2025' on page 4 undefined on input line 43
-.
-
-
-Package natbib Warning: Citation `liang2025' on page 4 undefined on input line 
-47.
-
-
-Package natbib Warning: Citation `xia2026' on page 4 undefined on input line 47
-.
-
-
-Underfull \hbox (badness 1102) in paragraph at lines 47--48
-\T1/txr/m/n/10 assisted evo-lu-tion-ary fea-ture se-lec-tion [\T1/txr/bx/n/10 ?
- \T1/txr/m/n/10 ] both tar-get
+Underfull \hbox (badness 2197) in paragraph at lines 43--44
+\T1/txr/m/n/10 mod-ule dis-cov-ery [[], []], and surrogate-assisted multi-
  []
 
 
-Underfull \hbox (badness 1033) in paragraph at lines 47--48
-\T1/txr/m/n/10 the small-sample, ultra-high-dimensional regime cen-tral to
+Underfull \hbox (badness 1325) in paragraph at lines 43--44
+\T1/txr/m/n/10 objective gene se-lec-tion from large-scale single-cell RNA
  []
 
 
@@ -1181,74 +1029,30 @@ Underfull \hbox (badness 1342) in paragraph at lines 51--52
 re-
  []
 
-
-Package natbib Warning: Citation `mel2024' on page 4 undefined on input line 53
-.
-
-
-LaTeX Warning: Reference `sec:ablation' on page 4 undefined on input line 53.
-
-) (sections/03_preliminaries.tex
-
-Package natbib Warning: Citation `kennedy1995' on page 4 undefined on input lin
-e 3.
-
-
-Package natbib Warning: Citation `shi1998' on page 4 undefined on input line 8.
-
-
-
-Package natbib Warning: Citation `kennedy1997' on page 4 undefined on input lin
-e 8.
-
-
-Package natbib Warning: Citation `mel2024' on page 4 undefined on input line 17
-.
-
-
-Package natbib Warning: Citation `mel2024' on page 4 undefined on input line 17
-.
-
-
-LaTeX Warning: Reference `sec:proposed' on page 4 undefined on input line 17.
-
-
-Underfull \hbox (badness 2538) in paragraph at lines 17--18
-\T1/txr/m/n/10 which the KER strat-egy ex-tends with knowledge-guided
- []
-
-
-LaTeX Warning: Reference `sec:proposed' on page 4 undefined on input line 22.
-
 )
-Underfull \hbox (badness 1803) in paragraph at lines 21--64
-\T1/txr/m/n/10 where $[]\OT1/txr/m/n/10 (\OT1/txr/bx/n/10 x\OT1/txr/m/n/10 )$ \
-T1/txr/m/n/10 is the $\OML/txmi/m/it/10 k$\T1/txr/m/n/10 -nearest neigh-bor ac-
-cu-racy on the
+Underfull \hbox (badness 1132) in paragraph at lines 53--64
+\T1/txr/m/n/10 iza-tion with adap-tive re-initialization in-jects prior feature
+-
  []
 
 
-Underfull \hbox (badness 1253) in paragraph at lines 21--64
-\T1/txr/m/n/10 con-stant through-out search---a de-sign Sec-tion [] re-places
+Underfull \hbox (badness 2035) in paragraph at lines 53--64
+\T1/txr/m/n/10 the ob-jec-tive weights with a compression-then-refinement
  []
 
-(sections/04_kds_el.tex
+(sections/03_preliminaries.tex
+Underfull \hbox (badness 1496) in paragraph at lines 18--20
+\T1/txr/m/n/10 KDS-EL, in con-trast, bi-na-rizes con-tin-u-ous po-si-tions with
 
-LaTeX Warning: Reference `F1' on page 4 undefined on input line 5.
-
-
-Underfull \hbox (badness 1215) in paragraph at lines 5--6
-\T1/txr/m/n/10 par-ti-cle swarm op-ti-miza-tion back-bone. Fig-ure [] shows
- []
-
-
-Underfull \hbox (badness 2486) in paragraph at lines 5--6
-\T1/txr/m/n/10 the com-plete pipeline trans-form-ing raw high-dimensional
  []
 
 [4]
-
-LaTeX Warning: Reference `sec:mi' on page 5 undefined on input line 7.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 31.
+) (sections/04_kds_el.tex
+Underfull \hbox (badness 4608) in paragraph at lines 5--6
+\T1/txr/m/n/10 in-te-grat-ing three com-ple-men-tary mech-a-nisms within the
+ []
 
 
 Underfull \hbox (badness 1168) in paragraph at lines 7--8
@@ -1256,41 +1060,17 @@ Underfull \hbox (badness 1168) in paragraph at lines 7--8
  []
 
 
-LaTeX Warning: Reference `sec:twophase' on page 5 undefined on input line 9.
-
-
-LaTeX Warning: Reference `sec:weight' on page 5 undefined on input line 9.
-
-
-LaTeX Warning: Reference `sec:ker' on page 5 undefined on input line 9.
-
-
-Underfull \hbox (badness 1199) in paragraph at lines 9--10
-\T1/txr/m/n/10 (Sec-tion [])---a knowledge-guided flip mech-a-nism with a
+Underfull \hbox (badness 1137) in paragraph at lines 7--8
+\T1/txr/m/n/10 with ran-domly ini-tial-ized in-di-vid-u-als at a con-trolled ra
+-tio
  []
 
 
-Package natbib Warning: Citation `mel2024' on page 5 undefined on input line 11
-.
-
-
-LaTeX Warning: Reference `sec:mi' on page 5 undefined on input line 11.
-
-
-LaTeX Warning: Reference `sec:weight' on page 5 undefined on input line 11.
-
-
-LaTeX Warning: Reference `sec:ker' on page 5 undefined on input line 11.
-
-
-LaTeX Warning: Reference `sec:twophase' on page 5 undefined on input line 11.
-
-
-Underfull \hbox (badness 1237) in paragraph at lines 11--12
-\T1/txr/m/n/10 en-cod-ing and co-evolution mech-a-nism while adding three
+Underfull \hbox (badness 1226) in paragraph at lines 11--12
+\T1/txr/m/n/10 and co-op-er-a-tive multi-task mech-a-nism while adding three
  []
 
-
+[5]
 Underfull \hbox (badness 1874) in paragraph at lines 16--17
 \T1/txr/m/n/10 de-rived from mu-tual in-for-ma-tion. Ran-dom ini-tial-iza-tion
  []
@@ -1301,160 +1081,40 @@ Underfull \hbox (badness 1509) in paragraph at lines 16--17
  of
  []
 
-
-Underfull \hbox (badness 1297) in paragraph at lines 22--24
-\T1/txr/m/n/10 each in-di-vid-ual in the ini-tial pop-u-la-tion, with prob-a-bi
-l-ity
- []
-
-
-Underfull \hbox (badness 1694) in paragraph at lines 22--24
-\T1/txr/m/n/10 con-tin-u-ous po-si-tion val-ues are bi-na-rized via the sig-moi
-d
- []
-
-
-LaTeX Warning: Reference `alg:mi_reinit' on page 5 undefined on input line 25.
-
-
-Package natbib Warning: Citation `cover1991' on page 5 undefined on input line 
-27.
-
-
-Package natbib Warning: Citation `peng2005' on page 5 undefined on input line 2
-7.
-
-
-LaTeX Warning: Reference `sec:ker' on page 5 undefined on input line 32.
-
-
-Package natbib Warning: Citation `wang2022' on page 5 undefined on input line 4
-5.
-
-[5]
-Underfull \hbox (badness 4846) in paragraph at lines 50--51
+[6]
+Underfull \hbox (badness 4846) in paragraph at lines 100--101
 \T1/txr/m/n/10 guided Elite Re-fine-ment (KER) strat-egy, which in-jects
  []
 
 
-LaTeX Warning: Reference `eq:ker_flip' on page 6 undefined on input line 62.
-
-
-Package natbib Warning: Citation `ye2026' on page 6 undefined on input line 62.
-
-
-
-LaTeX Warning: Reference `alg:ker' on page 6 undefined on input line 62.
-
-
-Underfull \hbox (badness 1024) in paragraph at lines 62--63
+Underfull \hbox (badness 1024) in paragraph at lines 118--119
 \T1/txr/m/n/10 tently cor-re-lated with fit-ness im-prove-ments. High-weight
  []
 
-
-Package natbib Warning: Citation `shi1998' on page 6 undefined on input line 86
-.
-
-
-Package natbib Warning: Citation `kennedy1995' on page 6 undefined on input lin
-e 86.
-
-
-LaTeX Warning: Reference `sec:complexity' on page 6 undefined on input line 88.
-
-
-
-Underfull \hbox (badness 1286) in paragraph at lines 88--89
-\T1/txr/m/n/10 im-prove-ment (Sec-tion []) with-out sac-ri-fic-ing quality---th
-e
- []
-
-
-Underfull \hbox (badness 1365) in paragraph at lines 88--89
-\T1/txr/m/n/10 MI+KER vari-ant al-ready sur-passes the MEL base-line by
- []
-
-
-LaTeX Warning: Reference `alg:ker' on page 6 undefined on input line 92.
-
-
-LaTeX Warning: Reference `alg:mi_reinit' on page 6 undefined on input line 92.
-
-
-LaTeX Warning: Reference `eq:mi' on page 6 undefined on input line 100.
-
-
-LaTeX Warning: Reference `eq:twophase' on page 6 undefined on input line 112.
-
-
-LaTeX Warning: Reference `eq:fitness' on page 6 undefined on input line 112.
-
-
-LaTeX Warning: Reference `eq:weight_update' on page 6 undefined on input line 1
-15.
-
-
-LaTeX Warning: Reference `eq:decay' on page 6 undefined on input line 115.
-
-
-LaTeX Warning: Reference `alg:ker' on page 6 undefined on input line 117.
-
-
-LaTeX Warning: Reference `alg:mi_reinit' on page 6 undefined on input line 120.
-
-
-
-LaTeX Warning: Reference `eq:fitness' on page 6 undefined on input line 141.
-
-[6]
-
-LaTeX Warning: Reference `alg:ker' on page 7 undefined on input line 163.
-
-
-LaTeX Warning: Reference `alg:mi_reinit' on page 7 undefined on input line 163.
-
-
 [7]
-
-Package natbib Warning: Citation `mel2024' on page 8 undefined on input line 17
-4.
+Underfull \hbox (badness 4739) in paragraph at lines 185--186
+[]\T1/txr/m/n/10 Algorithm [][]7[][] presents the com-plete KDS-EL pro-ce-
+ []
 
 )
 
 pdfTeX warning: pdflatex.exe (file ../output/figures/F1_kds_el_framework.drawio
 .pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowe
 d
-<../output/figures/F1_kds_el_framework.drawio.pdf, id=32, 505.89pt x 390.49887p
-t>
+<../output/figures/F1_kds_el_framework.drawio.pdf, id=391, 505.89pt x 390.49887
+pt>
 File: ../output/figures/F1_kds_el_framework.drawio.pdf Graphic file (type pdf)
 <use ../output/figures/F1_kds_el_framework.drawio.pdf>
 Package pdftex.def Info: ../output/figures/F1_kds_el_framework.drawio.pdf  used
- on input line 70.
+ on input line 73.
 (pdftex.def)             Requested size: 495.8984pt x 382.79353pt.
 
-LaTeX Warning: Reference `sec:setup' on page 8 undefined on input line 78.
-
-
-LaTeX Warning: Reference `sec:ablation' on page 8 undefined on input line 78.
-
-
-LaTeX Warning: Reference `sec:parametric' on page 8 undefined on input line 78.
-
-
-
-Underfull \hbox (badness 1072) in paragraph at lines 78--79
+Underfull \hbox (badness 1072) in paragraph at lines 81--82
 \T1/txr/m/n/10 effect be-hav-ior, con-ver-gence dy-nam-ics, and com-pu-ta-tiona
 l
  []
 
 (sections/05_experimental_setup.tex
-
-LaTeX Warning: Reference `T2' on page 8 undefined on input line 3.
-
-
-LaTeX Warning: Reference `sec:ceiling' on page 8 undefined on input line 3.
-
-
 Underfull \hbox (badness 1062) in paragraph at lines 3--4
 \T1/txr/m/n/10 ALL_AML, Ade-noma, Colon, DL-BCL, Gas-tric, Gas-tric1,
  []
@@ -1469,64 +1129,9 @@ Underfull \hbox (badness 1642) in paragraph at lines 3--4
 \T1/txr/m/n/10 Leukaemia, Lym-phoma, and SRBCT---on which meth-ods
  []
 
-
-Package natbib Warning: Citation `mel2024' on page 8 undefined on input line 5.
-
-
-
-LaTeX Warning: Reference `sec:ablation' on page 8 undefined on input line 5.
-
-
-Package natbib Warning: Citation `wangjia2022' on page 8 undefined on input lin
-e 5.
-
-
-Package natbib Warning: Citation `wei2025' on page 8 undefined on input line 5.
-
-
-
-Package natbib Warning: Citation `wang2022' on page 8 undefined on input line 5
-.
-
-
-Package natbib Warning: Citation `xuezhang2024' on page 8 undefined on input li
-ne 5.
-
-
-Package natbib Warning: Citation `kennedy1997' on page 8 undefined on input lin
-e 5.
-
-
-Package natbib Warning: Citation `han2024' on page 8 undefined on input line 5.
-
-
-
-Package natbib Warning: Citation `deb2002' on page 8 undefined on input line 5.
-
-
-
-Package natbib Warning: Citation `zhang2007' on page 8 undefined on input line 
-5.
-
-
-Package natbib Warning: Citation `coello2004' on page 8 undefined on input line
- 5.
-
-
-LaTeX Warning: Reference `T1' on page 8 undefined on input line 5.
-
-
-LaTeX Warning: Reference `T3' on page 8 undefined on input line 7.
-
-
-Underfull \hbox (badness 5217) in paragraph at lines 7--8
-\T1/txr/m/n/10 eval-u-a-tor, with ac-cu-racy es-ti-mated via strat-i-fied 5-fol
-d
- []
-
-
-Underfull \hbox (badness 1360) in paragraph at lines 7--8
-\T1/txr/m/n/10 cross-validation with ran-dom shuf-fling. Each PSO-based
+[8]
+Underfull \hbox (badness 7397) in paragraph at lines 5--6
+[]\T1/txr/m/n/10 Fourteen fixed-length fea-ture se-lec-tion meth-ods are
  []
 
 
@@ -1535,84 +1140,44 @@ Underfull \hbox (badness 1237) in paragraph at lines 7--8
  []
 
 
+Underfull \hbox (badness 2173) in paragraph at lines 7--8
+\T1/txr/m/n/10 with-out fix-ing ran-dom seeds, let-ting the random-number
+ []
+
+
 Underfull \hbox (badness 1077) in paragraph at lines 7--8
 \T1/txr/m/n/10 ex-plo-ration prob-a-bil-ity $[] \OT1/txr/m/n/10 = 0\OML/txmi/m/
 it/10 :\OT1/txr/m/n/10 10$\T1/txr/m/n/10 ; MI-init ra-tio
  []
 
+[9])
+Underfull \hbox (badness 1789) in paragraph at lines 9--84
+[]\T1/txr/m/n/10 For each method and dataset we re-port clas-si-fi-ca-tion
+ []
 
-Package natbib Warning: Citation `demsar2006' on page 8 undefined on input line
- 9.
+(../output/tables/T1_methods.tex
+Underfull \hbox (badness 1533) in paragraph at lines 12--12
+[]\T1/txr/m/n/8 Proposed (MI-guided init. + KER,
+ []
 
 
-Package natbib Warning: Citation `friedman1940' on page 8 undefined on input li
-ne 9.
+Underfull \hbox (badness 1931) in paragraph at lines 22--22
+[]\T1/txr/m/n/8 Multi-objective (Wrapper--Filter hy-
+ []
 
 
-Package natbib Warning: Citation `holm1979' on page 8 undefined on input line 9
-.
+Overfull \hbox (146.45094pt too wide) in paragraph at lines 7--29
+ [][] 
+ []
 
-) (../output/tables/T1_methods.tex
+) (../output/tables/T2_datasets.tex) (../output/tables/T3_params.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <8> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 13.
-
-
-Package natbib Warning: Citation `mel2024' on page 8 undefined on input line 13
-.
-
-
-Package natbib Warning: Citation `wangjia2022' on page 8 undefined on input lin
-e 15.
-
-
-Package natbib Warning: Citation `wei2025' on page 8 undefined on input line 16
-.
-
-
-Package natbib Warning: Citation `wang2022' on page 8 undefined on input line 1
-7.
-
-
-Package natbib Warning: Citation `xuezhang2024' on page 8 undefined on input li
-ne 18.
-
-
-Package natbib Warning: Citation `kennedy1997' on page 8 undefined on input lin
-e 19.
-
-
-Package natbib Warning: Citation `han2024' on page 8 undefined on input line 22
-.
-
-
-Package natbib Warning: Citation `deb2002' on page 8 undefined on input line 23
-.
-
-
-Package natbib Warning: Citation `zhang2007' on page 8 undefined on input line 
-24.
-
-
-Package natbib Warning: Citation `coello2004' on page 8 undefined on input line
- 25.
-
-) (../output/tables/T2_datasets.tex) (../output/tables/T3_params.tex)
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 9.
+)
 (sections/06_results_and_discussion.tex
-
-LaTeX Warning: Reference `T4' on page 8 undefined on input line 3.
-
-
-Package natbib Warning: Citation `wangjia2022' on page 8 undefined on input lin
-e 3.
-
-
-Package natbib Warning: Citation `mel2024' on page 8 undefined on input line 3.
-
-
-
-Underfull \hbox (badness 1360) in paragraph at lines 3--4
-\T1/txr/m/n/10 lead-ing the MI+KER vari-ant by $\OT1/txr/m/n/10 +0\OML/txmi/m/i
-t/10 :\OT1/txr/m/n/10 86$ \T1/txr/m/n/10 pp, the strongest
+Underfull \hbox (badness 3735) in paragraph at lines 3--4
+[]\T1/txr/m/n/10 Table [][]4[][] presents per-dataset and ag-gre-gate ac-cu-rac
+y
  []
 
 
@@ -1620,193 +1185,95 @@ Underfull \hbox (badness 2142) in paragraph at lines 5--6
 \T1/txr/m/n/10 ALL_AML, Colon, DL-BCL, Gas-tric, Gas-tric1, Gas-tric2,
  []
 
-[8]
-
-LaTeX Warning: Reference `sec:ceiling' on page 9 undefined on input line 7.
-
-
-Package natbib Warning: Citation `deb2002' on page 9 undefined on input line 7.
-
-
-
-LaTeX Warning: Reference `sec:features' on page 9 undefined on input line 7.
-
-
-LaTeX Warning: Reference `T4' on page 9 undefined on input line 7.
-
-
-Underfull \hbox (badness 2221) in paragraph at lines 7--8
-[]\T1/txr/m/n/10 The five datasets on which an-other method reg-is-ters
+[10 <../output/figures/F1_kds_el_framework.drawio.pdf>]
+Underfull \hbox (badness 2469) in paragraph at lines 7--8
+\T1/txr/m/n/10 and 0.8894 for KDS-EL); these moderate-dimensionality,
  []
 
 
-Underfull \hbox (badness 2753) in paragraph at lines 7--8
-\T1/txr/m/n/10 SR-BCT, sev-eral multi-objective meth-ods reach a per-fect
- []
-
-
-Underfull \hbox (badness 1337) in paragraph at lines 7--8
-\T1/txr/m/n/10 On BASE-HOCK, COIL20, and ISO-LET, NSGA-II-FS [\T1/txr/bx/n/10 ?
+Underfull \hbox (badness 1048) in paragraph at lines 7--8
+\T1/txr/m/n/10 run-to-run vari-ance along-side rais-ing cen-tral ten-dency; its
 
  []
 
 
-Underfull \hbox (badness 2582) in paragraph at lines 7--8
-\T1/txr/m/n/10 ver-sus 0.9113, 0.9939, and 0.8894 for KDS-EL); these
+Underfull \hbox (badness 1502) in paragraph at lines 12--13
+\T1/txr/m/n/10 fea-tures, and all multi-objective meth-ods (W-MOPSO-FS,
+ []
+
+[11]
+Underfull \hbox (badness 1337) in paragraph at lines 14--15
+\T1/txr/m/n/10 ver-sus 4,248 for MEL; on Gas-tric1 (22,283 di-men-sions),
  []
 
 
-LaTeX Warning: Reference `T5' on page 9 undefined on input line 12.
-
-
-LaTeX Warning: Reference `F5' on page 9 undefined on input line 12.
-
-
-Underfull \hbox (badness 1122) in paragraph at lines 12--13
-[]\T1/txr/m/n/10 KDS-EL se-lects, on av-er-age, 87.8 fea-tures across the
+Underfull \hbox (badness 1314) in paragraph at lines 14--15
+\T1/txr/m/n/10 140:1 compression---at the high-est ac-cu-racy (0.9500); on
  []
 
-[9 <../output/figures/F1_kds_el_framework.drawio.pdf>]
 
-Package natbib Warning: Citation `demsar2006' on page 10 undefined on input lin
-e 18.
-
-
-LaTeX Warning: Reference `sec:ceiling' on page 10 undefined on input line 20.
+Underfull \hbox (badness 1009) in paragraph at lines 14--15
+\T1/txr/m/n/10 w/o TPS&KER) $\OMS/txsy/m/n/10 !$ \T1/txr/m/n/10 2,722 (MEL). Th
+ese fig-ures il-lus-trate
+ []
 
 
-LaTeX Warning: Reference `T6' on page 10 undefined on input line 20.
-
-
-LaTeX Warning: Reference `T6b' on page 10 undefined on input line 22.
-
-
-Package natbib Warning: Citation `holm1979' on page 10 undefined on input line 
-22.
-
-
-LaTeX Warning: Reference `sec:ablation' on page 10 undefined on input line 22.
-
-[10]
-
-Package natbib Warning: Citation `friedman1940' on page 11 undefined on input l
-ine 24.
+Underfull \hbox (badness 1275) in paragraph at lines 24--25
+\T1/txr/m/n/10 the 20-dataset ac-cu-racy ma-trix place KDS-EL at rank 1,
+ []
 
 
 Underfull \hbox (badness 1796) in paragraph at lines 29--30
 []\T1/txr/m/n/10 Eight datasets in the benchmark---ALL1, ALL_AML,
  []
 
-
-Underfull \hbox (badness 1577) in paragraph at lines 31--32
-\T1/txr/m/n/10 de-ploy-ment, whereas sig-na-tures span-ning sev-eral hun-dred
- []
-
-
-LaTeX Warning: Reference `F8' on page 11 undefined on input line 37.
-
-
-Underfull \hbox (badness 1360) in paragraph at lines 41--42
-\T1/txr/m/n/10 sec-ond among all meth-ods and trail-ing FW-PSO by only
- []
-
-) (../output/tables/T4_accuracy.tex
+[12]) (../output/tables/T4_accuracy.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <5> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 35.
 ) (../output/tables/T5_features.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <7> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 33.
 )
-<../output/figures/F5_features_all.pdf, id=76, 739.3221pt x 499.11517pt>
+<../output/figures/F5_features_all.pdf, id=514, 739.3221pt x 499.11517pt>
 File: ../output/figures/F5_features_all.pdf Graphic file (type pdf)
 <use ../output/figures/F5_features_all.pdf>
 Package pdftex.def Info: ../output/figures/F5_features_all.pdf  used on input l
-ine 94.
+ine 97.
 (pdftex.def)             Requested size: 375.84064pt x 253.73045pt.
 
 (../output/tables/T6_wilcoxon.tex) (../output/tables/T6b_holm_bonferroni.tex)
-<../output/figures/F8_convergence.pdf, id=77, 718.70662pt x 400.55145pt>
+<../output/figures/F8_convergence.pdf, id=515, 717.70288pt x 399.5477pt>
 File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
-ne 104.
-(pdftex.def)             Requested size: 443.70319pt x 247.28807pt.
+ne 107.
+(pdftex.def)             Requested size: 443.70319pt x 247.0098pt.
 
 (sections/07_component_contribution_analysis.tex
-
-LaTeX Warning: Reference `T7' on page 11 undefined on input line 5.
-
-
-LaTeX Warning: Reference `sec:results' on page 11 undefined on input line 5.
-
-
-Package natbib Warning: Citation `mel2024' on page 11 undefined on input line 5
-.
-
-
 Underfull \hbox (badness 6792) in paragraph at lines 7--8
 []\T1/txr/m/n/10 Removing MI-guided ini-tial-iza-tion and adap-tive re-
  []
 
-[11] [12 <../output/figures/F5_features_all.pdf> <../output/figures/F8_converge
-nce.pdf>] [13]
-
-LaTeX Warning: Reference `T7' on page 14 undefined on input line 17.
-
-
-Underfull \hbox (badness 1342) in paragraph at lines 19--20
-\T1/txr/m/n/10 ab-la-tive con-fig-u-ra-tions dif-fer-en-ti-ate through fea-ture
- counts
- []
-
-
+[13] [14 <../output/figures/F5_features_all.pdf> <../output/figures/F8_converge
+nce.pdf>] [15]
 Underfull \hbox (badness 1038) in paragraph at lines 21--22
 []\T1/txr/m/n/10 On medium-difficulty datasets, ac-cu-racy de-grades in a
  []
 
 
-Underfull \hbox (badness 3271) in paragraph at lines 21--22
-\T1/txr/m/n/10 ini-tial-iza-tion is re-moved (the MI-only-to-backbone step),
+Underfull \hbox (badness 1845) in paragraph at lines 21--22
+\T1/txr/m/n/10 high-dimensional gene-expression datasets. On Gas-tric1,
  []
-
-
-Underfull \hbox (badness 2435) in paragraph at lines 21--22
-\T1/txr/m/n/10 con-tri-bu-tion and the foun-da-tional com-pres-sion on which
- []
-
-[14]
-
-LaTeX Warning: Reference `T7' on page 15 undefined on input line 25.
 
 ) (../output/tables/T7_ablation.tex
-
-Package natbib Warning: Citation `mel2024' on page 15 undefined on input line 3
-.
-
-
-Package natbib Warning: Citation `mel2024' on page 15 undefined on input line 3
-.
-
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <9> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 10.
-
-Overfull \hbox (17.48994pt too wide) in paragraph at lines 6--16
- [][] 
- []
-
 ) (sections/08_parameter_sensitivity.tex
-
-LaTeX Warning: Reference `T3' on page 15 undefined on input line 3.
-
-
-LaTeX Warning: Reference `T8' on page 15 undefined on input line 3.
-
-
 Underfull \hbox (badness 1033) in paragraph at lines 3--4
 \T1/txr/m/n/10 parameters, we con-duct a one-factor-at-a-time anal-y-sis on
  []
 
-
+[16]
 Underfull \hbox (badness 1515) in paragraph at lines 11--12
 \T1/txr/m/n/10 causes pre-ma-ture con-ver-gence ($\OMS/txsy/m/n/10 ^^@\OT1/txr/
 m/n/10 0\OML/txmi/m/it/10 :\OT1/txr/m/n/10 8$ \T1/txr/m/n/10 pp) through re-duc
@@ -1814,19 +1281,18 @@ ed
  []
 
 )
-Underfull \hbox (badness 3323) in paragraph at lines 15--114
+Underfull \hbox (badness 3323) in paragraph at lines 15--117
 \T1/txr/m/n/10 with-out per-dataset tun-ing; prac-ti-tion-ers should pre-serve
  []
 
-(../output/tables/T8_parameter_sensitivity.tex) (sections/09_conclusion.tex
-Underfull \hbox (badness 3168) in paragraph at lines 1--2
-\T1/txr/m/n/10 con-ven-tional mu-ta-tion dis-cards ac-cu-mu-lated im-prove-ment
-
+(../output/tables/T8_parameter_sensitivity.tex
+Overfull \hbox (34.88103pt too wide) in paragraph at lines 6--17
+ [][] 
  []
 
-
-Underfull \hbox (badness 1184) in paragraph at lines 1--2
-\T1/txr/m/n/10 sig-nals, and fixed ob-jec-tive weights mis-align with search
+) (sections/09_conclusion.tex
+Underfull \hbox (badness 3260) in paragraph at lines 1--2
+\T1/txr/m/n/10 Weight Schedul-ing aligns ob-jec-tive weights with search
  []
 
 
@@ -1834,47 +1300,41 @@ Underfull \hbox (badness 1297) in paragraph at lines 1--2
 \T1/txr/m/n/10 over MEL in 20/20 datasets; Holm-Bonferroni cor-rec-tion
  []
 
-[15])
-Underfull \hbox (badness 1253) in paragraph at lines 124--125
+)
+Underfull \hbox (badness 1253) in paragraph at lines 127--128
 \T1/txr/m/n/10 Soft-ware, Val-i-da-tion, For-mal anal-y-sis, In-ves-ti-ga-tion,
  Data
  []
 
-No file main.bbl.
+(main.bbl [17] [18]) [19
 
-Package natbib Warning: There were undefined citations.
-
-[16] (main.aux)
+] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 7FEEDFB34C40C4AD97754CD75B207B46;7847.
  ) 
 Here is how much of TeX's memory you used:
- 6484 strings out of 467690
- 93690 string characters out of 5431801
- 577963 words of memory out of 5000000
- 35350 multiletter control sequences out of 15000+600000
- 700545 words of font info for 161 fonts, out of 8000000 for 9000
+ 13594 strings out of 467690
+ 203986 string characters out of 5431801
+ 688272 words of memory out of 5000000
+ 42211 multiletter control sequences out of 15000+600000
+ 701137 words of font info for 161 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 72i,12n,79p,2561b,408s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><E:/MiKTeX/fonts/ty
-pe1/public/amsfonts/symbols/msbm10.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rt
-xb.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxi.pfb><E:/MiKTeX/fonts/type1/pu
-blic/txfonts/rtxmi.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxr.pfb><E:/MiKTe
-X/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txs
-y.pfb><E:/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/ti
-mes/utmr8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (16 pages, 596765 bytes).
+ 75i,12n,79p,2547b,749s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
+0800.pk><E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><E:/MiKTeX/fo
+nts/type1/public/amsfonts/symbols/msbm10.pfb><E:/MiKTeX/fonts/type1/public/txfo
+nts/rtxb.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxi.pfb><E:/MiKTeX/fonts/ty
+pe1/public/txfonts/rtxmi.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxr.pfb><E:
+/MiKTeX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfon
+ts/txsy.pfb><E:/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/
+urw/times/utmr8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (19 pages, 713032 bytes).
 PDF statistics:
- 301 PDF objects out of 1000 (max. 8388607)
- 0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 911 PDF objects out of 1000 (max. 8388607)
+ 147 named destinations out of 1000 (max. 500000)
+ 296 words of extra memory for PDF output out of 10000 (max. 10000000)
 

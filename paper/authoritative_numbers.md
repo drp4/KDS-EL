@@ -32,8 +32,8 @@
 - vs 基线 MEL 精度 **+7.06pp**
 - 运行时间 **51.3s**（14 方法中第 2，仅慢于 FWPSO 49.7s）
 - vs 原始 MEL (175.0s) **3.4× 加速**
-- Wilcoxon：KDS-EL **20/20** 显著优于 MEL，19/20 优于 MEL+MI
-- Holm-Bonferroni：对全部 13 个对比方法显著（p<1e-15 ~ 1.02e-14）
+- One-sided Wilcoxon：KDS-EL **20/20** 显著优于 MEL，19/20 优于 MEL+MI，13/20 优于 NoPool
+- Holm-Bonferroni：对全部 13 个对比方法显著（Combined/Holm p 均 p<1e-15）
 
 ## 三、消融表（20-DS）
 
@@ -46,13 +46,13 @@
 
 ### 逐组件贡献（w/o 减法读法, 2026-08-04 决定）
 > 叙事从"累积添加"翻转为"逐级剥离"：完整 KDS-EL 当主角，每行剥掉一个机制，损失即该组件贡献。对比表方法名保留 "MI variant / MI+KER variant"。
-- 去掉两阶段调度 (KDS-EL→MI+KER variant)：**−0.86pp**，特征 88→122，时间 51.3→54.2s
+- 去掉两阶段调度 (KDS-EL→MI+KER variant)：**−0.86pp**，特征 88→122，时间 51.3→53.6s
 - 再去掉 KER (MI+KER→MI variant)：**−1.63pp**，特征 122→291
 - 再去掉 MI 初始化+自适应重初始化 (MI variant→MEL)：**−4.58pp**，特征 291→2722
 - 全剥累计：**−7.06pp**（0.9574→0.8868），特征 88→2722
 
 ### 两阶段 vs 无两阶段（同批直接对比）
-- KDS-EL_KER (NoPool) vs KDS-EL (TwoPhase)：+0.86pp，特征 122→88（-28%），时间 54.2→51.3s
+- KDS-EL_KER (NoPool) vs KDS-EL (TwoPhase)：+0.86pp，特征 122→88（-28%），时间 53.6→51.3s
 - 逐数据集：以 Section 7 表为准（20-DS），KDS-EL 在绝大多数数据集不劣于 NoPool
 
 ### 补充：全量 25-DS 鲁棒性验证（正式实验 6，`formal_experiment_final/`）— 已停用
@@ -63,8 +63,8 @@
 
 ## 四、统计显著性（20-DS）
 
-- 两两 Wilcoxon（Section 5）：KDS-EL vs MEL 20/20；vs MEL+MI 19/20；vs FWPSO 19/20
-- Holm-Bonferroni（Section 6）：13 个对比方法全部拒绝 H0，Mean_ΔAcc 全部为正值
+- One-sided 两两 Wilcoxon（Section 5）：KDS-EL vs MEL 20/20；vs MEL+MI 19/20；vs FWPSO 19/20；vs NoPool 13/20
+- Holm-Bonferroni（Section 6）：13 个对比方法全部拒绝 H0，Mean_ΔAcc 全部为正值，Combined/Holm p 均 < 1e-15
 
 ## 五、天花板效应数据集（8 个，Acc ≥ 0.998）
 
@@ -78,7 +78,7 @@ ALL1, ALL_AML, Adenoma, DLBCL, Gastric2, Leukaemia, Lymphoma, SRBCT
 |---|---|---|
 | FWPSO | 49.7 | 1 |
 | **KDS-EL** | **51.3** | **2** |
-| KDS-EL/NoPool | 54.2 | 3 |
+| KDS-EL/NoPool | 53.6 | 3 |
 | MEL+MI | 57.6 | 4 |
 | W-MOPSO-FS | 110.4 | 5 |
 | SaWDE | 110.5 | 6 |

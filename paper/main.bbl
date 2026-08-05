@@ -1,0 +1,350 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{lili2017}
+J.~Li, K.~Cheng, S.~Wang, F.~Morstatter, R.~P. Trevino, J.~Tang, H.~Liu,
+  Feature selection: a data perspective, ACM Computing Surveys 50~(6) (2017)
+  1--45.
+\newblock \href {https://doi.org/10.1145/3136625} {\path{doi:10.1145/3136625}}.
+
+\bibitem{guyon2003}
+I.~Guyon, A.~Elisseeff, An introduction to variable and feature selection,
+  Journal of Machine Learning Research 3 (2003) 1157--1182.
+
+\bibitem{liang2025}
+J.~Liang, Z.~Hu, Y.~Bi, H.~Cheng, K.~Yu, C.~Yue, X.~Wang, W.-F. Guo, A survey
+  on evolutionary computation for identifying biomarkers of complex disease,
+  IEEE Transactions on Evolutionary Computation 29~(4) (2025) 1400--1418.
+\newblock \href {https://doi.org/10.1109/TEVC.2024.3414442}
+  {\path{doi:10.1109/TEVC.2024.3414442}}.
+
+\bibitem{kohavi1997}
+R.~Kohavi, G.~H. John, Wrappers for feature subset selection, Artificial
+  Intelligence 97~(1--2) (1997) 273--324.
+\newblock \href {https://doi.org/10.1016/S0004-3702(97)00043-X}
+  {\path{doi:10.1016/S0004-3702(97)00043-X}}.
+
+\bibitem{kennedy1995}
+J.~Kennedy, R.~Eberhart, Particle swarm optimization, in: Proceedings of
+  ICNN'95--International Conference on Neural Networks, Vol.~4, IEEE, 1995, pp.
+  1942--1948.
+\newblock \href {https://doi.org/10.1109/ICNN.1995.488968}
+  {\path{doi:10.1109/ICNN.1995.488968}}.
+
+\bibitem{shi1998}
+Y.~Shi, R.~Eberhart, A modified particle swarm optimizer, in: 1998 IEEE
+  International Conference on Evolutionary Computation Proceedings (IEEE World
+  Congress on Computational Intelligence), IEEE, 1998, pp. 69--73.
+\newblock \href {https://doi.org/10.1109/ICEC.1998.699146}
+  {\path{doi:10.1109/ICEC.1998.699146}}.
+
+\bibitem{mel2024}
+X.~Wang, H.~Shangguan, F.~Huang, S.~Wu, W.~Jia, Mel: Efficient multi-task
+  evolutionary learning for high-dimensional feature selection, IEEE
+  Transactions on Knowledge and Data Engineering 36~(8) (2024) 4020--4033.
+\newblock \href {https://doi.org/10.1109/TKDE.2024.3366333}
+  {\path{doi:10.1109/TKDE.2024.3366333}}.
+
+\bibitem{kramer1991}
+M.~A. Kramer, Nonlinear principal component analysis using autoassociative
+  neural networks, AIChE Journal 37~(2) (1991) 233--243.
+
+\bibitem{roffo2016}
+G.~Roffo, S.~Melzi, Features selection via eigenvector centrality, in:
+  Proceedings of New Frontiers in Mining Complex Patterns, 2016.
+
+\bibitem{peng2005}
+H.~Peng, F.~Long, C.~Ding, Feature selection based on mutual information:
+  criteria of max-dependency, max-relevance, and min-redundancy, IEEE
+  Transactions on Pattern Analysis and Machine Intelligence 27~(8) (2005)
+  1226--1238.
+\newblock \href {https://doi.org/10.1109/TPAMI.2005.159}
+  {\path{doi:10.1109/TPAMI.2005.159}}.
+
+\bibitem{yu2003}
+L.~Yu, H.~Liu, Feature selection for high-dimensional data: {A} fast
+  correlation-based filter solution, in: Proceedings of the 20th International
+  Conference on Machine Learning (ICML-03), 2003, pp. 856--863.
+
+\bibitem{oh2004}
+I.-S. Oh, J.-S. Lee, B.-R. Moon, Hybrid genetic algorithms for feature
+  selection, IEEE Transactions on Pattern Analysis and Machine Intelligence
+  26~(11) (2004) 1424--1437.
+\newblock \href {https://doi.org/10.1109/TPAMI.2004.105}
+  {\path{doi:10.1109/TPAMI.2004.105}}.
+
+\bibitem{bach2008}
+F.~R. Bach, {Bolasso}: Model consistent {Lasso} estimation through the
+  bootstrap, in: Proceedings of the 25th International Conference on Machine
+  Learning, 2008, pp. 33--40.
+
+\bibitem{zhang2021fsgbdt}
+J.~Zhang, D.~Xu, K.~Hao, Y.~Zhang, W.~Chen, J.~Liu, R.~Gao, C.~Wu, Y.~D.
+  Marinis, {FS-GBDT}: Identification multicancer-risk module via a feature
+  selection algorithm by integrating {Fisher} score and {GBDT}, Briefings in
+  Bioinformatics 22~(3) (2021) bbaa189.
+\newblock \href {https://doi.org/10.1093/bib/bbaa189}
+  {\path{doi:10.1093/bib/bbaa189}}.
+
+\bibitem{yu2021ilrc}
+K.~Yu, W.~Xie, L.~Wang, W.~Li, {ILRC}: A hybrid biomarker discovery algorithm
+  based on improved $l_1$ regularization and clustering in microarray data, BMC
+  Bioinformatics 22~(1) (2021) 1--19.
+\newblock \href {https://doi.org/10.1186/s12859-021-04223-3}
+  {\path{doi:10.1186/s12859-021-04223-3}}.
+
+\bibitem{kennedy1997}
+J.~Kennedy, R.~C. Eberhart, A discrete binary version of the particle swarm
+  algorithm, Proceedings of the 1997 IEEE International Conference on Systems,
+  Man, and Cybernetics 5 (1997) 4104--4108.
+\newblock \href {https://doi.org/10.1109/ICSMC.1997.637339}
+  {\path{doi:10.1109/ICSMC.1997.637339}}.
+
+\bibitem{aghdam2009}
+M.~H. Aghdam, N.~Ghasem-Aghaee, M.~E. Basiri, Text feature selection using ant
+  colony optimization, Expert Systems with Applications 36~(3) (2009)
+  6843--6853.
+
+\bibitem{karaboga2007}
+D.~Karaboga, B.~Basturk, A powerful and efficient algorithm for numerical
+  function optimization: Artificial bee colony ({ABC}) algorithm, Journal of
+  Global Optimization 39~(3) (2007) 459--471.
+
+\bibitem{huang2006}
+C.-L. Huang, C.-J. Wang, A {GA}-based feature selection and parameters
+  optimization for support vector machines, Expert Systems with Applications
+  31~(2) (2006) 231--240.
+
+\bibitem{xue2019}
+Y.~Xue, B.~Xue, M.~Zhang, Self-adaptive particle swarm optimization for
+  large-scale feature selection in classification, ACM Transactions on
+  Knowledge Discovery from Data 13~(5) (2019) 1--27.
+\newblock \href {https://doi.org/10.1145/3340848} {\path{doi:10.1145/3340848}}.
+
+\bibitem{prasad2015}
+Y.~Prasad, K.~Biswas, Gene selection in microarray datasets using progressively
+  refined {PSO} scheme, in: Proceedings of the AAAI Conference on Artificial
+  Intelligence, Vol.~29, 2015.
+
+\bibitem{wangjia2022}
+X.~Wang, W.~Jia, A feature weighting particle swarm optimization method to
+  identify biomarker genes, in: 2022 IEEE International Conference on
+  Bioinformatics and Biomedicine (BIBM), IEEE, 2022, pp. 830--834.
+\newblock \href {https://doi.org/10.1109/BIBM55620.2022.9995376}
+  {\path{doi:10.1109/BIBM55620.2022.9995376}}.
+
+\bibitem{wang2022}
+X.~Wang, Y.~Wang, K.-C. Wong, X.~Li, A self-adaptive weighted differential
+  evolution approach for large-scale feature selection, Knowledge-Based Systems
+  235 (2022) 107633.
+\newblock \href {https://doi.org/10.1016/j.knosys.2021.107633}
+  {\path{doi:10.1016/j.knosys.2021.107633}}.
+
+\bibitem{xuezhang2024}
+Y.~Xue, C.~Zhang, A novel importance-guided particle swarm optimization based
+  on mlp for solving large-scale feature selection problems, Swarm and
+  Evolutionary Computation 91 (2024) 101760.
+\newblock \href {https://doi.org/10.1016/j.swevo.2024.101760}
+  {\path{doi:10.1016/j.swevo.2024.101760}}.
+
+\bibitem{wei2025}
+B.~Wei, S.~Yang, W.~Zha, L.~Deng, J.~Huang, X.~Su, F.~Wang, Particle swarm
+  optimization algorithm based on comprehensive scoring framework for
+  high-dimensional feature selection, Swarm and Evolutionary Computation 95
+  (2025) 101915.
+\newblock \href {https://doi.org/10.1016/j.swevo.2025.101915}
+  {\path{doi:10.1016/j.swevo.2025.101915}}.
+
+\bibitem{weil2025}
+B.~Wei, J.~Huang, L.~Deng, S.~Yang, J.~Zheng, Y.~Huang, Reinforcement
+  learning-based particle swarm optimization with adaptive scoring mechanism
+  for high-dimensional feature selection, Swarm and Evolutionary Computation
+  (2025) 102104\href {https://doi.org/10.1016/j.swevo.2025.102104}
+  {\path{doi:10.1016/j.swevo.2025.102104}}.
+
+\bibitem{chen2025}
+K.~Chen, K.~Liu, P.~Wang, J.~Liang, Z.~Yang, K.~Yu, An efficient evolutionary
+  feature selection algorithm with divide-and-conquer strategy for
+  classification, Expert Systems with Applications 302 (2025) 130416.
+\newblock \href {https://doi.org/10.1016/j.eswa.2025.130416}
+  {\path{doi:10.1016/j.eswa.2025.130416}}.
+
+\bibitem{cover1991}
+T.~M. Cover, J.~A. Thomas, Elements of Information Theory, John Wiley \& Sons,
+  New York, NY, USA, 1991.
+
+\bibitem{mimpode2025}
+F.~Yu, J.~Guan, H.~Wu, H.~Wang, B.~Ma, Multi-population differential evolution
+  approach for feature selection with mutual information ranking, Expert
+  Systems with Applications 260 (2025) 125404.
+\newblock \href {https://doi.org/10.1016/j.eswa.2024.125404}
+  {\path{doi:10.1016/j.eswa.2024.125404}}.
+
+\bibitem{xue2012mopso}
+B.~Xue, M.~Zhang, W.~N. Browne, Particle swarm optimization for feature
+  selection in classification: {A} multi-objective approach, IEEE Transactions
+  on Cybernetics 43~(6) (2012) 1656--1671.
+
+\bibitem{hu2020}
+Y.~Hu, Y.~Zhang, D.~Gong, Multiobjective particle swarm optimization for
+  feature selection with fuzzy cost, IEEE Transactions on Cybernetics 51~(2)
+  (2020) 874--888.
+\newblock \href {https://doi.org/10.1109/TCYB.2019.2946898}
+  {\path{doi:10.1109/TCYB.2019.2946898}}.
+
+\bibitem{deb2002}
+K.~Deb, A.~Pratap, S.~Agarwal, T.~Meyarivan, A fast and elitist multiobjective
+  genetic algorithm: {NSGA-II}, IEEE Transactions on Evolutionary Computation
+  6~(2) (2002) 182--197.
+\newblock \href {https://doi.org/10.1109/4235.996017}
+  {\path{doi:10.1109/4235.996017}}.
+
+\bibitem{zhang2007}
+Q.~Zhang, H.~Li, {MOEA/D}: A multiobjective evolutionary algorithm based on
+  decomposition, IEEE Transactions on Evolutionary Computation 11~(6) (2007)
+  712--731.
+\newblock \href {https://doi.org/10.1109/TEVC.2007.892759}
+  {\path{doi:10.1109/TEVC.2007.892759}}.
+
+\bibitem{coello2004}
+C.~A.~C. Coello, G.~T. Pulido, M.~S. Lechuga, Handling multiple objectives with
+  particle swarm optimization, IEEE Transactions on Evolutionary Computation
+  8~(3) (2004) 256--279.
+\newblock \href {https://doi.org/10.1109/TEVC.2004.826067}
+  {\path{doi:10.1109/TEVC.2004.826067}}.
+
+\bibitem{hancer2023}
+E.~Hancer, B.~Xue, M.~Zhang, An evolutionary filter approach to feature
+  selection in classification for both single- and multi-objective scenarios,
+  Knowledge-Based Systems 280 (2023) 111008.
+\newblock \href {https://doi.org/10.1016/j.knosys.2023.111008}
+  {\path{doi:10.1016/j.knosys.2023.111008}}.
+
+\bibitem{liu2024}
+S.~Liu, H.~Wang, W.~Peng, W.~Yao, Surrogate-assisted evolutionary algorithms
+  for expensive combinatorial optimization: a survey, Complex \& Intelligent
+  Systems 10~(4) (2024) 5933--5949.
+\newblock \href {https://doi.org/10.1007/s40747-024-01465-5}
+  {\path{doi:10.1007/s40747-024-01465-5}}.
+
+\bibitem{zhang2021mtl}
+Y.~Zhang, Q.~Yang, A survey on multi-task learning, IEEE Transactions on
+  Knowledge and Data Engineering 34~(12) (2021) 5586--5609.
+\newblock \href {https://doi.org/10.1109/TKDE.2021.3070203}
+  {\path{doi:10.1109/TKDE.2021.3070203}}.
+
+\bibitem{zhang2021minion}
+N.~Zhang, A.~Gupta, Z.~Chen, Y.-S. Ong, Evolutionary machine learning with
+  minions: {A} case study in feature selection, IEEE Transactions on
+  Evolutionary Computation 26~(1) (2021) 130--144.
+
+\bibitem{chen2020emfs}
+K.~Chen, B.~Xue, M.~Zhang, F.~Zhou, An evolutionary multitasking-based feature
+  selection method for high-dimensional classification, IEEE Transactions on
+  Cybernetics 52~(7) (2020) 7172--7186.
+\newblock \href {https://doi.org/10.1109/TCYB.2020.3042243}
+  {\path{doi:10.1109/TCYB.2020.3042243}}.
+
+\bibitem{chen2021emfs}
+K.~Chen, B.~Xue, M.~Zhang, F.~Zhou, Evolutionary multitasking for feature
+  selection in high-dimensional classification via particle swarm optimization,
+  IEEE Transactions on Evolutionary Computation 26~(3) (2022) 446--460.
+\newblock \href {https://doi.org/10.1109/TEVC.2021.3100056}
+  {\path{doi:10.1109/TEVC.2021.3100056}}.
+
+\bibitem{he2022}
+C.-L. He, Y.~Zhang, D.~Gong, X.~Song, X.~Sun, A multitask bee colony band
+  selection algorithm with variable-size clustering for hyperspectral images,
+  IEEE Transactions on Evolutionary Computation 26~(6) (2022) 1566--1580.
+\newblock \href {https://doi.org/10.1109/TEVC.2022.3159253}
+  {\path{doi:10.1109/TEVC.2022.3159253}}.
+
+\bibitem{liu2022}
+S.~Liu, Q.~Lin, L.~Feng, K.-C. Wong, K.~C. Tan, Evolutionary multitasking for
+  large-scale multiobjective optimization, IEEE Transactions on Evolutionary
+  Computation 27~(4) (2022) 863--877.
+\newblock \href {https://doi.org/10.1109/TEVC.2022.3166482}
+  {\path{doi:10.1109/TEVC.2022.3166482}}.
+
+\bibitem{bermingham2015}
+M.~L. Bermingham, R.~Pong-Wong, A.~Spiliopoulou, C.~Hayward, I.~Rudan,
+  H.~Campbell, A.~F. Wright, J.~F. Wilson, F.~Agakov, P.~Navarro, C.~S. Haley,
+  Application of high-dimensional feature selection: Evaluation for genomic
+  prediction in man, Scientific Reports 5~(1) (2015) 1--12.
+
+\bibitem{phuong2005}
+T.~M. Phuong, Z.~Lin, R.~B. Altman, Choosing {SNPs} using feature selection,
+  in: 2005 IEEE Computational Systems Bioinformatics Conference (CSB'05), IEEE,
+  2005, pp. 301--309.
+
+\bibitem{saghapour2017}
+E.~Saghapour, S.~Kermani, M.~Sehhati, A novel feature ranking method for
+  prediction of cancer stages using proteomics data, PLoS ONE 12~(9) (2017)
+  e0184203.
+\newblock \href {https://doi.org/10.1371/journal.pone.0184203}
+  {\path{doi:10.1371/journal.pone.0184203}}.
+
+\bibitem{zhang2015eigenbrain}
+Y.~Zhang, Z.~Dong, P.~Phillips, S.~Wang, G.~Ji, J.~Yang, T.~F. Yuan, Detection
+  of subjects and brain regions related to {Alzheimer's} disease using 3{D}
+  {MRI} scans based on eigenbrain and machine learning, Frontiers in
+  Computational Neuroscience 9 (2015) 66.
+\newblock \href {https://doi.org/10.3389/fncom.2015.00066}
+  {\path{doi:10.3389/fncom.2015.00066}}.
+
+\bibitem{lin2025}
+J.~Lin, C.~He, H.~Jiang, Y.~Huang, Y.~Jin, Surrogate-assisted multiobjective
+  gene selection for cell classification from large-scale single-cell {RNA}
+  sequencing data, IEEE Transactions on Evolutionary Computation 29 (2025)
+  601--615.
+\newblock \href {https://doi.org/10.1109/TEVC.2025.3533490}
+  {\path{doi:10.1109/TEVC.2025.3533490}}.
+
+\bibitem{xia2026}
+M.~Xia, K.~Li, J.~Wan, Z.~Huang, F.~Cheng, An instance selection assisted
+  evolutionary method for high-dimensional feature selection, IEEE Transactions
+  on Evolutionary Computation 30~(3) (2026) 1225--1239.
+\newblock \href {https://doi.org/10.1109/TEVC.2025.3600815}
+  {\path{doi:10.1109/TEVC.2025.3600815}}.
+
+\bibitem{deng2025nns}
+S.~Deng, H.~Liu, W.~Zhu, K.~Li, M.~Li, Elite neighborhood search and dynamic
+  feature probability-guided crow search algorithm for high-dimensional feature
+  selection, Expert Systems with Applications 274 (2025) 127012.
+\newblock \href {https://doi.org/10.1016/j.eswa.2025.127012}
+  {\path{doi:10.1016/j.eswa.2025.127012}}.
+
+\bibitem{ye2026}
+Z.~Ye, Y.~Zeng, T.~Cai, J.~Shen, W.~Zhou, Q.~He, M.~Mei, Y.~Cen, {KMHBO}: A
+  knowledge-guided multi-niche hybrid breeding optimization algorithm for
+  high-dimensional multimodal feature selection, Expert Systems with
+  Applications 298 (2026) 129911.
+\newblock \href {https://doi.org/10.1016/j.eswa.2025.129911}
+  {\path{doi:10.1016/j.eswa.2025.129911}}.
+
+\bibitem{han2024}
+F.~Han, F.~Li, Q.~Ling, H.~Han, T.~Lu, Z.~Jiao, H.~Zhang, A feature selection
+  method based on feature-label correlation information and self-adaptive
+  {MOPSO}, Neural Processing Letters 56 (2024) 110.
+\newblock \href {https://doi.org/10.1007/s11063-024-11553-9}
+  {\path{doi:10.1007/s11063-024-11553-9}}.
+
+\bibitem{demsar2006}
+J.~Dem{\v{s}}ar, Statistical comparisons of classifiers over multiple data
+  sets, Journal of Machine Learning Research 7 (2006) 1--30.
+
+\bibitem{friedman1940}
+M.~Friedman, A comparison of alternative tests of significance for the problem
+  of $m$ rankings, The Annals of Mathematical Statistics 11~(1) (1940) 86--92.
+\newblock \href {https://doi.org/10.1214/aoms/1177731944}
+  {\path{doi:10.1214/aoms/1177731944}}.
+
+\bibitem{holm1979}
+S.~Holm, A simple sequentially rejective multiple test procedure, Scandinavian
+  Journal of Statistics 6~(2) (1979) 65--70.
+
+\end{thebibliography}

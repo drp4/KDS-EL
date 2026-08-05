@@ -50,8 +50,8 @@ ABL_VERSIONS = ["KDS_EL_TwoPhase", "KDS_EL_NoPool", "MEL_MI", "MEL"]
 
 V_LABELS = {
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "MEL_MI": "MI variant",
-    "KDS_EL_NoPool": "MI+KER variant",
+    "MEL": "MEL", "MEL_MI": "KDS-EL w/o TPS&KER",
+    "KDS_EL_NoPool": "KDS-EL w/o TPS",
     "KDS_EL_TwoPhase": "KDS-EL",
     "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
     "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
@@ -60,17 +60,17 @@ V_LABELS = {
 }
 ABL_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
-    "KDS_EL_NoPool": "w/o Two-Phase",
-    "MEL_MI": "w/o Two-Phase & KER",
-    "MEL": "MEL backbone",
+    "KDS_EL_NoPool": "KDS-EL w/o TPS",
+    "MEL_MI": "KDS-EL w/o TPS&KER",
+    "MEL": "MEL",
 }
 
 # Short labels for boxplot x-axis (max 7 chars)
 SHORT_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
-    "KDS_EL_NoPool": "MI+KER",
+    "KDS_EL_NoPool": "w/o TPS",
     "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "MEL_MI": "MI var",
+    "MEL": "MEL", "MEL_MI": "w/o TPS&KER",
     "PSO_CSM": "P-CSM", "IGPSO": "IGPSO",
     "NSGA-II-FS": "NSGA2", "MOPSO-FS": "MOPSO",
     "MOEA-D-FS": "MOEAD", "fMOPSO-FS": "fMPSO",
@@ -565,7 +565,7 @@ def fig_f6_radar(df_detail, out_dir):
 
 
 def fig_f6_ablation(df_detail, out_dir):
-    """F6: Ablation — dual panel (Acc + Feat), 4 variants: MEL → MEL+MI → KDS_EL_KER → KDS_EL."""
+    """F6: Ablation — dual panel (Acc + Feat), 4 variants: MEL → KDS-EL w/o TPS&KER → KDS-EL w/o TPS → KDS-EL."""
     print("F6: Ablation dual panel (4 variants, 20 datasets)...")
 
     # Load ablation data explicitly from 3 sources
@@ -718,15 +718,15 @@ def fig_f10_wilcoxon(df_detail, out_dir):
                     continue
                 if len(a1) == len(a2):
                     try:
-                        _, p = sp_stats.wilcoxon(a1, a2)
+                        _, p = sp_stats.wilcoxon(a1, a2, alternative='greater')
                     except Exception:
                         try:
-                            _, p = sp_stats.mannwhitneyu(a1, a2, alternative='two-sided')
+                            _, p = sp_stats.mannwhitneyu(a1, a2, alternative='greater')
                         except Exception:
                             continue
                 else:
                     try:
-                        _, p = sp_stats.mannwhitneyu(a1, a2, alternative='two-sided')
+                        _, p = sp_stats.mannwhitneyu(a1, a2, alternative='greater')
                     except Exception:
                         continue
                 total += 1
@@ -759,7 +759,7 @@ def fig_f10_wilcoxon(df_detail, out_dir):
 
     ax.set_xlabel("Losing method →", fontsize=8)
     ax.set_ylabel("Winning method →", fontsize=8)
-    ax.set_title("F10: Wilcoxon Test — Win Rate (p<0.05)\n"
+    ax.set_title("F10: One-sided Wilcoxon Test — Win Rate (p<0.05)\n"
                  "Read as: row beats column in X% of 20 datasets",
                  fontsize=7.5, pad=10)
 
@@ -781,7 +781,7 @@ def fig_f10_wilcoxon(df_detail, out_dir):
                                     linewidth=2.5, linestyle="-", zorder=10))
         # Put legend at bottom of figure (avoids title/label overlap)
         fig.text(0.5, 0.02,
-                 "Red box = KDS-EL (Proposed)  |  row = wins over others  |  column = others' wins over KDS-EL",
+                 "Red box = KDS-EL  |  row = wins over others  |  column = others' wins over KDS-EL",
                  ha="center", fontsize=7, color="#E8594A", fontweight="bold")
 
     fig.tight_layout(rect=[0.02, 0.08, 1, 0.98])

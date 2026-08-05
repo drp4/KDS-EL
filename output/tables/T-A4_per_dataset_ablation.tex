@@ -1,18 +1,16 @@
-\begin{sidewaystable}
+\begin{table}[htbp]
 \centering
 \caption{Per-dataset ablation results over the 20-dataset suite: accuracy and mean feature count for each variant of the incremental construction.}
 \label{T-A4}
-\scriptsize
-\setlength{\tabcolsep}{4pt}
-\resizebox{\dimexpr\textheight-2cm}{!}{%
+\small
 \begin{tabular}{lcccccccc}
 \toprule
-Dataset & \multicolumn{2}{c}{Backbone (MEL)} & \multicolumn{2}{c}{w/o KER \& Two-Phase} & \multicolumn{2}{c}{w/o Two-Phase} & \multicolumn{2}{c}{Full (KDS-EL)} \\\midrule
+Dataset & \multicolumn{2}{c}{MEL} & \multicolumn{2}{c}{MEL+MI} & \multicolumn{2}{c}{KDS-EL$_{\text{KER}}$} & \multicolumn{2}{c}{KDS-EL} \\\midrule
  & Acc & Feat & Acc & Feat & Acc & Feat & Acc & Feat \\
 \midrule
 ALL1 & 0.9664$\pm$0.0023 & 4248 & 0.9996$\pm$0.0000 & 55 & 0.9996$\pm$0.0000 & 55 & 0.9998$\pm$0.0001 & 39 \\
 ALL4 & 0.8704$\pm$0.0661 & 1082 & 0.9415$\pm$0.0112 & 64 & 0.9418$\pm$0.0113 & 152 & 0.9522$\pm$0.0061 & 124 \\
-ALL\_AML & 0.9539$\pm$0.0008 & 2369 & 0.9886$\pm$0.0016 & 473 & 0.9990$\pm$0.0002 & 70 & 0.9995$\pm$0.0002 & 67 \\
+ALL_AML & 0.9539$\pm$0.0008 & 2369 & 0.9886$\pm$0.0016 & 473 & 0.9990$\pm$0.0002 & 70 & 0.9995$\pm$0.0002 & 67 \\
 Adenoma & 0.9410$\pm$0.0011 & 2483 & 0.9958$\pm$0.0081 & 120 & 0.9996$\pm$0.0001 & 33 & 0.9996$\pm$0.0002 & 66 \\
 BASEHOCK & 0.8518$\pm$0.0063 & 1965 & 0.8597$\pm$0.0062 & 812 & 0.8997$\pm$0.0114 & 208 & 0.9113$\pm$0.0120 & 134 \\
 COIL20 & 0.9634$\pm$0.0017 & 323 & 0.9619$\pm$0.0007 & 348 & 0.9919$\pm$0.0008 & 60 & 0.9939$\pm$0.0011 & 84 \\
@@ -31,5 +29,5 @@ SRBCT & 0.9321$\pm$0.0085 & 906 & 0.9944$\pm$0.0043 & 129 & 0.9984$\pm$0.0006 & 
 T1D & 0.7679$\pm$0.0461 & 6715 & 0.8246$\pm$0.0084 & 174 & 0.8232$\pm$0.0126 & 366 & 0.8598$\pm$0.0094 & 330 \\
 madelon & 0.7521$\pm$0.0095 & 190 & 0.7679$\pm$0.0121 & 130 & 0.8659$\pm$0.0246 & 26 & 0.8822$\pm$0.0180 & 18 \\
 \bottomrule
-\end{tabular}}
-\end{sidewaystable}
+\end{tabular}
+\end{table}

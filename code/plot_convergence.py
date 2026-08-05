@@ -62,8 +62,8 @@ COLORS = {
     "MOPSO_FS":   "#BCC4C8",
 }
 V_LABELS = {
-    "KDS_EL_TwoPhase": "KDS-EL", "KDS_EL_NoPool": "w/o Two-Phase",
-    "MEL": "MEL backbone", "MEL_MI": "w/o Two-Phase & KER",
+    "KDS_EL_TwoPhase": "KDS-EL", "KDS_EL_NoPool": "KDS-EL w/o TPS",
+    "MEL": "MEL", "MEL_MI": "KDS-EL w/o TPS&KER",
     "FWPSO": "FWPSO", "BPSO": "BPSO",
     "SaWDE": "SaWDE", "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
     "NSGA_II_FS": "NSGA-II-FS", "MOPSO_FS": "MOPSO-FS",
@@ -311,7 +311,7 @@ def fig_f9_nhd(out_dir):
     fig.legend(handles=handles, loc="lower center", ncol=2,
                bbox_to_anchor=(0.5, -0.03), frameon=True,
                columnspacing=0.6, handlelength=1.2, fontsize=6)
-    fig.suptitle("F9: TwoPhase vs NoPool Convergence (Mean Accuracy ± Std across 10 runs)",
+    fig.suptitle("F9: Convergence of KDS-EL and KDS-EL w/o TPS (Mean Accuracy ± Std across 10 runs)",
                  fontsize=9, y=1.01)
     fig.tight_layout(rect=[0, 0.06, 1, 0.97])
     save_fig(fig, "F9_twophase_convergence", out_dir)

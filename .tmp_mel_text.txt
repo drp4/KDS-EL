@@ -1,0 +1,1285 @@
+4020
+IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, VOL. 36, NO. 8, AUGUST 2024
+MEL: Efﬁcient Multi-Task Evolutionary Learning for
+High-Dimensional Feature Selection
+Xubin Wang
+, Member, IEEE, Haojiong Shangguan
+, Fengyi Huang
+, Shangrui Wu
+,
+and Weijia Jia
+, Fellow, IEEE
+Abstract—Feature selection is a crucial step in data mining
+to enhance model performance by reducing data dimensionality.
+However, the increasing dimensionality of collected data exacer-
+bates the challenge known as the “curse of dimensionality”, where
+computation grows exponentially with the number of dimensions.
+To tackle this issue, evolutionary computational (EC) approaches
+have gained popularity due to their simplicity and applicability.
+Unfortunately, the diverse designs of EC methods result in vary-
+ing abilities to handle different data, often underutilizing and
+not sharing information effectively. In this article, we propose a
+novel approach called PSO-based Multi-task Evolutionary Learn-
+ing (MEL) that leverages multi-task learning to address these chal-
+lenges. By incorporating information sharing between different
+featureselectiontasks,MELachievesenhancedlearningabilityand
+efﬁciency. We evaluate the effectiveness of MEL through extensive
+experiments on 22 high-dimensional datasets. Comparing against
+24 EC approaches, our method exhibits strong competitiveness. In
+addition, we have open-sourced our code on GitHub.
+Index Terms—Feature selection, high-dimensional classiﬁcation,
+knowledge
+transfer,
+multi-task
+learning,
+particle
+swarm
+optimization.
+I. INTRODUCTION
+W
+ITH the rapid advancement of technology, the preva-
+lence of large-scale and high-dimensional data is be-
+comingincreasinglycommoninvariousreal-worldapplications.
+A notable example is DNA microarrays, which yield a vast
+amount of information regarding gene sequences in a single
+test [1]. While high-dimensional features offer the potential to
+deﬁne data samples more precisely, they also present several
+Manuscript received 6 March 2023; revised 22 December 2023; accepted 13
+February 2024. Date of publication 20 February 2024; date of current version
+12 July 2024. This work was supported in part by Chinese National Research
+Fund (NSFC) under Grant 62272050, in part by the Guangdong Key Lab of AI
+and Multi-modal Data Processing, United International College (UIC), Zhuhai
+under Grant 2020KSYS007 sponsored by Guangdong Provincial Department
+of Education, and in part by the Interdisciplinary Intelligence Super Computer
+Center of Beijing Normal University (Zhuhai). Recommended for acceptance
+by J. Tang. (Corresponding author: Weijia Jia.)
+Xubin Wang, Shangrui Wu, and Weijia Jia are with the Hong Kong Bap-
+tist University, Hong Kong, and also with the Institute of Artiﬁcial Intelli-
+gence and Future Networks, Beijing Normal University, Zhuhai, Guangdong
+519088, China (e-mail: wangxb19@mails.jlu.edu.cn; wushangrui@uic.edu.cn;
+jiawj@bnu.edu.cn).
+Haojiong Shangguan and Fengyi Huang are with the Hong Kong
+Baptist University, Hong Kong (e-mail: shangguanhaojiong@uic.edu.cn;
+huangfengyi@uic.edu.cn).
+https://github.com/wangxb96/MEL
+This
+article
+has
+supplementary
+downloadable
+material
+available
+at
+https://doi.org/10.1109/TKDE.2024.3366333, provided by the authors.
+Digital Object Identiﬁer 10.1109/TKDE.2024.3366333
+challenges, including model overﬁtting [2], model complex-
+ity [3], and lengthy model training times [4]. Moreover, the
+computational complexity during model construction increases
+exponentially with dimensionality, a phenomenon often referred
+to as the “curse of dimensionality” in machine learning and
+data mining [5]. Consequently, there is an escalating demand
+for the development of efﬁcient feature selection techniques to
+effectively handle high-dimensional data.
+Feature selection is an effective method to deal with such
+problems [6]. There are generally three types of methods used
+for feature selection: ﬁlter methods [7], wrapper methods [8],
+and embedded methods [9]. Filter methods evaluate features
+based on intrinsic properties of the data without involving any
+learning algorithm [6]. Common ﬁlter criteria include infor-
+mation measures such as variance, correlation with labels, and
+mutual information [6] [7]. For example, features with near-zero
+variance do not differentiate samples and can be eliminated.
+Welch’s t-test and eigenvector centrality are also widely used
+for ﬁlter-based feature selection [10] [11]. Filter methods are
+fast but ignore interactions between features and the predic-
+tive model. Wrapper and embedded methods take the predic-
+tive model into account during feature selection. Essentially,
+the feature selection method can be viewed as a combinatorial
+optimization problem, where 2n - 1 feature combinations exist
+for data containing n-dimensional features. Wrapper methods
+treat feature selection as a search problem and evaluate feature
+subsets using resampling methods and predictive accuracy on a
+held-out validation set [12]. Brute force and sequential search al-
+gorithms like sequential forward selection (SFS) and sequential
+backward selection (SBS) are commonly used [13] [14]. How-
+ever, these deterministic searches can get stuck in local optima.
+Stochastic search methods like genetic algorithm (GA) [15],
+ant colony optimization (ACO) [16] and particle swarm op-
+timization (PSO) [17]. Nevertheless, evolutionary algorithms
+incurhighcomputationaloverhead.Embeddedmethodsperform
+feature selection during model training by assigning feature
+importance weights, e.g., with decision tree based methods and
+regularization terms in logistic regression [18] [19].
+The goal of feature selection is to identify a compact feature
+subset that maximizes classiﬁcation accuracy while reducing
+dimensionality. However, feature selection is an NP-hard prob-
+lem, especially in high-dimensional datasets, as the computa-
+tional cost of ﬁnding the optimal solution can be prohibitively
+expensive [12]. Recently, evolutionary computation (EC) ap-
+proaches have received signiﬁcant attention for feature selection
+1041-4347 © 2024 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+WANG et al.: MEL: EFFICIENT MULTI-TASK EVOLUTIONARY LEARNING FOR HIGH-DIMENSIONAL FEATURE SELECTION
+4021
+due to their ability to effectively explore large search spaces
+and obtain approximate solutions [20] [21] [22]. Nevertheless,
+high-dimensional problems pose substantial challenges. The
+large search space exacerbates the “curse of dimensionality”,
+rendering exhaustive search intractable. Additionally, the in-
+creased risk of getting trapped in local optima hinders EC
+methods’ ability to efﬁciently solve real-world feature selection
+problems on high-dimensional data, due to their inherently high
+computational complexity. Therefore, more work is still needed
+to develop EC techniques that can better scale to large-scale,
+high-dimensional datasets while mitigating computational costs
+and avoiding premature convergence.
+Particle swarm optimization (PSO) is an effective metaheuris-
+tic for optimization problems. However, in high dimensions,
+its performance degrades as particles become sparse in the
+vast search space [23]. Multi-task learning (MTL) can leverage
+common patterns across related tasks to boost learning [24].
+When combined, MTL and PSO offer notable advantages for
+addressing high-dimensional feature selection problems. First,
+MTL maintains a population of interacting sub-swarms, retain-
+ingdiversityessentialforexploringcomplexlandscapes.Knowl-
+edge transfer across sub-swarms circumvents premature conver-
+gence. Second, MTL guides particles toward regions exhibiting
+consistency across tasks. This favors selection of generalizable
+features and mitigates overﬁtting single tasks. Third, cooperative
+co-evolution accelerates convergence by sharing informative
+samples between sub-swarms. This enhances PSO’s abilities to
+constructhigh-qualitysolutionsefﬁciently.Inthisarticle,weaim
+to explore the potential advantages of integrating MTL with PSO
+to improve the learning ability and efﬁciency of the algorithm.
+To summarize, we utilize three E’s (Easy, Effective, Efﬁcient)
+to encapsulate our contributions in this work:
+r Easy: We propose a simple yet effective PSO-based Multi-
+task Evolutionary Learning (MEL) approach for high-
+dimensional feature selection. MEL leverages multi-task
+learning to jointly optimize related tasks and transfer
+knowledge between them without complex operations.
+r Effective: Extensiveexperiments on22benchmarkdatasets
+demonstrate MEL signiﬁcantly outperforms 24 state-of-
+the-art EC algorithms. Results show improvements in both
+classiﬁcation performance and compact feature subset se-
+lection.
+r Efﬁcient: By dividing the search into cooperative subtasks,
+MEL learns feature importance across tasks to guide op-
+timization while sharing information efﬁciently. Experi-
+ments reveal MEL not only achieves competitive accuracy
+but also faster execution times than standard PSO on high-
+dimensional problems.
+II. RELATED WORK
+A. Particle Swarm Optimization
+The particle swarm optimization (PSO) algorithm was devel-
+oped by Eberhart and Kennedy and mimics the behavior of a
+ﬂock of birds foraging for food [25]. Assume a D-dimensional
+search space and a particle swarm containing N particles search-
+ing for the global optimal solution under its constraints, each
+particle contains the information of three D-dimensional vec-
+tors, namely: velocity vector⃗Vi = {⃗V1
+i ,⃗V2
+i , . . .,⃗VD
+i }, position
+vector⃗Xi = {⃗X 1
+i ,⃗X 2
+i , . . .,⃗X D
+i } and its own optimal position
+vector⃗Pi = {⃗P1
+i ,⃗P2
+i , . . .,⃗PD
+i }. The velocity vector represents
+the distance that the particle has passed in each dimension, and
+the optimal position vector of itself is the best position that
+each particle has reached individually. The population should
+consider the global optimal position, i.e., the optimal position of
+the particle in the population that makes the best ﬁtness value,
+denoted as⃗Pg = {⃗P1
+g,⃗P2
+g, . . .,⃗PD
+g }. The state of a particle is
+characterized by two factors, its position and velocity, whose
+update rules are expressed by the following two equations:⃗
+Vk
+i = ω⃗Vk−1
+i
++ c1r1(⃗Pk−1
+i
+−⃗X k−1
+i
+) + c2r2(⃗Pk−1
+g
+−⃗X k−1
+i
+)
+(1)⃗
+X k
+i =⃗X k−1
+i
++⃗Vk−1
+i
+(2)
+where k denotes the number of iterations; i is the ith particle in
+thepopulation;ω istheinertiaweight,whichindicatesthedegree
+of the particle inﬂuenced by itself, and it can adjust the ﬂight
+speed of the particle so that the particle tends to converge; c1 and
+c2 are learning factors, which indicate the degree of the particle
+inﬂuenced by individual experience and population experience,
+respectively.
+PSO has been widely used for feature selection due to its
+simplicity and ease of implementation. A few early studies
+have applied the basic PSO to select features in medium-scale
+datasets. For example, Prasad et al. [26] used a PSO-based
+method to reﬁne the gene space to a ﬁne grained one from
+microarray data. Cheng et al. [27] introduced PSO-SQI for illu-
+mination normalization using PSO to select features in quotient
+images. However, directly applying PSO becomes inefﬁcient
+for high-dimensional datasets due to the large search space. To
+address this issue, several variations of PSO have been proposed
+for feature selection [28] [29]. While these methods achieved
+improved performance over the basic PSO, they did not fully
+address the computational challenges of high-dimensionality.
+Directly evaluating all features in each iteration remains costly
+as the dimensionality increases. Additionally, existing PSO vari-
+ants do not take into account the dependencies between features.
+B. Multi-Task Learning
+Deﬁnition 1. (Multi-task Learning): A machine learning
+method based on shared representation, which learns n related
+tasks {Ti}n
+i=1 together and uses the association information
+between tasks {Ti}n
+i=1 to improve generalization [24].
+Multi-task learning is very related to transfer learning. Unlike
+transfer learning, which focuses more on improving the target
+task, multi-task learning emphasizes on improving the perfor-
+manceofeachtaskequallythroughsharedinformation[24][30].
+A key idea in multi-task learning is that the tasks are related
+and information can be shared across tasks. A very interesting
+real-life example is that if a person learns to play ping pong, he
+may soon be able to learn to play tennis. After he learns to play
+tennis, these skills will also help him improve his performance in
+playing badminton. The common skills acquired in the process
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+4022
+IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, VOL. 36, NO. 8, AUGUST 2024
+of learning these sports can help improve performance in each
+of them.
+There are a few key approaches in multi-task learning. One ap-
+proach is parameter sharing, where parts of the machine learning
+model, such as the lower layers of a neural network, are shared
+amongalltasksduringtraining.Taskscanalsobeclusteredbased
+on relatedness, with more related tasks sharing more parameters.
+Multi-task learning is considered to be a promising ﬁeld of
+machine learning and has achieved a wide range of applications.
+For example, it has been applied to multimodal ﬁelds [31],
+deep reinforcement learning [32], hotspot detection [33], App
+survival prediction [34], and natural language processing [35].
+Chen et al. [36] jointly predicted the status of MGMT and IDH1
+genes using a multi-task feature selection approach. Moreover,
+Liu et al. proposed a graph-guided regularization multi-task
+learning method to perform feature selection [37].
+Recently, we have noticed an increasing number of studies
+applying multi-task learning in evolutionary computation (EC)
+ﬁeld to improve performance [38] [39] [40] [41]. Moreover,
+feature selection methods based on evolutionary multitasking
+have also been proposed. For instance, Zhang et al. [42] designed
+a multitask evolutionary machine learning framework (MEML)
+and conducted a case study on feature selection. However, they
+mainly focus on large-instance data and do not study high-
+dimensional data enough. In their experiments, the medium-
+sized data selected is smaller than or equal to 500 dimensions,
+with the exception of a 5,000-dimensional data. In large-sized
+data, all data is smaller than 200 dimensions. Chen et al. [43]
+proposed an evolutionary multitask feature selection method for
+high-dimensional classiﬁcation by evaluating the importance of
+features and establishing two related tasks about the concept
+of goals. They designed a crossover operator for information
+sharing, and proposed two mechanisms called variable-range
+strategy and subset updating to reduce the searching space
+and increase the diversity of population. In their subsequent
+research [44], they start from the perspective of transforming
+high-dimensional feature selection problems into multiple low-
+dimensional feature selection problems, and design a new task
+generation strategy and a knowledge transfer mechanism. We
+note that in the above two studies, ReliefF was used to calculate
+the importance of features and a knee point selection scheme was
+designed to select the appropriate subset of features. However, as
+they also mention in the article, selecting an appropriate subset
+requires domain knowledge. If a feature subset is obtained by
+preselection through a inappropriate threshold, the valid infor-
+mationintheoriginaldatasetislikelytobelost.Atthesametime,
+they designed many mechanisms to ensure the effectiveness of
+the proposed algorithm, which also increased the complexity of
+the algorithm.
+III. METHODOLOGY
+A. Overview of the Proposed MEL
+In this study, we develop an evolutionary learning approach
+that incorporates multitasking learning for high-dimensional
+featureselection.Themainideaistodividetheparentpopulation
+into two subpopulations, dubbed subpopulation1 (⃗Sub1) and
+Fig. 1.
+Schematic diagram of the proposed MEL method. The parent popu-
+lation is divided into two subpopulations:⃗Sub1learns the feature importance
+during evolution, and its search is affected by⃗Sub2 best.⃗Sub2 also learns the
+importance of features during evolution, and searches for the optimal feature
+subset based on the results learned from⃗Sub1 and⃗Sub2. In particular, features
+with higher weights have a higher probability of being selected.
+subpopulation2 (⃗Sub2), each dedicated to searching for an
+optimal feature subset independently in its own search mode. To
+illustrate this process clearly, we provide a visual representation
+in Fig. 1. Fig. 1 demonstrates that the particles in⃗Sub1 are in-
+ﬂuenced by⃗Sub2 during the search process. This means that the
+knowledge and experience gained by⃗Sub2 will guide the search
+of⃗Sub1. Speciﬁcally,⃗Sub1 conducts its search and updates the
+learned feature importance. Simultaneously,⃗Sub2 also learns
+the feature importance during its search process. Furthermore,
+the search of⃗Sub2 is guided by the combined feature impor-
+tance learned by both subpopulations. In this guidance mech-
+anism, features with higher weights have a greater probability
+of being selected. To provide a comprehensive understanding
+of the proposed approach, we outline the detailed steps in
+Algorithm 1.
+B. Evolutionary Initialization
+In the particle swarm optimization population, each particle⃗
+Pi can be represented as:⃗Pi = {F1, F2, . . ., FD}, where F is
+the feature space, D denotes dimensions of the input features.
+We then initialize the particles randomly, with the value of
+each particle expressed as a real number. To select a subset of
+features for evaluation in evolution, we use a threshold value θ
+for binarization operation to determine the selected features. In
+particular, if Fn is greater than θ, it means that the corresponding
+feature is selected for evaluation; otherwise, the corresponding
+feature is not selected. At the same time, we set a weight matrix
+to record the weight of each feature. Initially, the weights of all
+features are set to 0. After initializing the population, we record
+the individual best (⃗Pi), global best (⃗Pg), and subpopulation best
+(⃗Ps) solutions. Subsequently, each particle’s selected feature
+subset is evaluated, and based on the evaluation results, the
+feature weights are updated.
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+WANG et al.: MEL: EFFICIENT MULTI-TASK EVOLUTIONARY LEARNING FOR HIGH-DIMENSIONAL FEATURE SELECTION
+4023
+Algorithm 1. Multi-Task Evolutionary Learning Method
+Input: NP: the size of population, T : the number of
+iterations.
+Output: num: The number of selected features; acc: The
+classiﬁcation accuracy.
+1: Initialize a PSO population with NP individuals;
+2: Initialize the weights of all features to 0;
+3: Divide the population into two equal-sized
+subpopulations⃗Sub1 and⃗Sub2 that each perform a task;
+4: Evaluate each particle, the individual best⃗Pi,
+subpopulation best⃗Ps and global best⃗Pg are recorded;
+5: while t ≤T do
+6:⃗
+Sub1: Get the knowledge from⃗Sub2 and search based
+on it; Update the weights of all features,⃗Pi,⃗Ps and⃗
+Pg;
+7:⃗
+Sub2: The search is performed based on the learned
+feature weights, and features with higher weights have
+a higher probability of being selected; Update the
+weights of all features,⃗Pi,⃗Ps and⃗Pg;
+8: end while
+9: return num, acc ←−⃗Pg.
+C. Knowledge Learning
+In this section, we aim to address the following fundamental
+question, which serves as the core motivation behind our algo-
+rithm:
+Question 1: How can we identify valuable features?
+High-dimensional data typically contains a mixture of rele-
+vant, irrelevant and redundant features [6]. This motivates us
+to select as many relevant features as possible while avoiding
+irrelevant and redundant ones. Ideally, all the selected features
+wouldberelevant.However,inwrappermethods,featuresubsets
+are typically selected and evaluated by a learner, making it
+challenging to directly measure the importance of each feature.
+Additionally, the evolutionary process is iterative. Hence, we
+propose utilizing historical information to learn the impor-
+tance of features and employ this knowledge in subsequent
+evolutionary iterations to achieve improved learning outcomes.
+Consequently, this study incorporates the concept of feature
+importance, enabling us to identify valuable features through
+their respective importance scores.
+Deﬁnition 2. (Feature Importance): The importance of a fea-
+ture is measured by the change in accuracy resulting from its
+appearance or disappearance during the evolutionary process.
+To provide a clearer explanation of feature importance, we
+will further elaborate on the above deﬁnition. Speciﬁcally, after
+one iteration of evolution, if the classiﬁcation accuracy of an
+individual⃗Pi improves, the weight of the newly selected fea-
+tures Fn ↑in that iteration will be increased by the increment
+in accuracy. Conversely, the weight of the discarded features
+Fn ↓in that iteration will be decreased by the same amount
+of increment. On the other hand, if the classiﬁcation accuracy
+of an individual⃗Pi decreases, the weight of the newly selected
+features Fn ↑in that iteration will be decreased by the decrement
+in accuracy, while the weight of the discarded features Fn ↓in
+that iteration will be increased by the same amount of decrement.
+Wedenoteacci astheaccuracyobtainedinthecurrentgeneration
+and acci−1 as the accuracy obtained in the previous generation.
+For each evaluation, two cases are considered:
+Case 1: The acci obtained by⃗Pi is greater than acci−1.
+W(Fn) =
+W(Fn) + (acci −acci−1),
+Fn ↑
+W(Fn) −(acci −acci−1),
+Fn ↓
+(3)
+Case 2: The acci obtained by⃗Pi is less than acci−1.
+W(Fn) =
+
+W(Fn) −(acci−1 −acci),
+Fn ↑
+W(Fn) + (acci−1 −acci),
+Fn ↓
+(4)
+We employ W(Fn) to denote the weight of feature Fn. The
+notation Fn ↑represents a feature that was not present in the
+previous round of evolution but has been newly selected in
+the current round. Conversely, Fn ↓represents a feature that
+was present in the previous round but has been discarded in
+the current round. For features that have remained unchanged,
+no speciﬁc action is taken. Our evaluation process for feature
+importance is based on each function evaluation during the
+evolutionary process. Unlike the approaches in [43] and [44],
+which employ Relief to evaluate features at the initial stage,
+our method ensures that the information from the original data
+is retained. In each iteration, every feature has a probability of
+being selected, but features with higher weights are more likely
+to be chosen, indicating their signiﬁcance.
+Question 2: How can we maintain the diversity of the popu-
+lation?
+In traditional EC algorithms, the evolution process often
+becomes trapped in local optima, which limits the algorithm’s
+global search ability. To address this issue, the use of a multi-
+population mechanism has been proposed as an effective method
+to improve population diversity and avoid premature conver-
+gence. Several studies have demonstrated its successful appli-
+cation in the ﬁeld of feature selection [21] [45]. Collaboration
+among multi-populations presents a promising application sce-
+nario for multitask learning, which can enhance the evolution’s
+performance.Therefore,inthisstudy,weintegratetheconceptof
+multitask learning into the multi-population mechanism, allow-
+ing each subpopulation to independently search for the optimal
+feature subset using their own search strategy.
+To develop an efﬁcient yet simple method, only two subpop-
+ulations are used in our approach. Maintaining two distinctive
+subpopulations can help balance exploration and exploitation
+during the search. Additionally, since we have a population size
+of 20, setting too many subpopulations would result in too few
+particles in each subpopulation, rendering it inappropriate. Since
+all particles are learning knowledge (feature importance), our
+idea is to set up two subpopulations, where one subpopulation is
+inﬂuenced by the other subpopulation on the basis of the original
+PSO search mechanism, while the other subpopulation searches
+based on feature importance to increase search efﬁciency. Here,
+we give the deﬁnition of two tasks.
+Deﬁnition 3. (Task 1): Subpopulation1 (⃗Sub1) conducts the
+search for the optimal feature subset based on the inﬂuence of
+individual best, subpopulation2 (⃗Sub2) best, and global best.
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+4024
+IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, VOL. 36, NO. 8, AUGUST 2024
+The search strategy in Task 1 can be based on the original PSO
+mechanism or any other suitable search algorithm. For example,
+each particle in⃗Sub1 can update its position by considering its
+individual best solution, the best solution found by any particle
+in⃗Sub2, and the global best solution found by any particle in the
+population.Thisstrategyallows⃗Sub1 toexplorethesearchspace
+by leveraging the collective knowledge of both subpopulations.
+Deﬁnition 4. (Task 2): Subpopulation2 (⃗Sub2) searches the
+optimal feature subset based on the feature importance informa-
+tion learned by the two subpopulations (⃗Sub1 and⃗Sub2).
+The search strategy in Task 2 focuses on exploiting the feature
+importance knowledge acquired during the learning phase. This
+can involve methods such as ranking the features based on their
+importance scores and selecting the most informative ones.⃗Sub2
+can update its position and velocity accordingly to guide the
+search towards the most relevant features.
+D. Knowledge Transfer
+In our algorithm, each subpopulation learns independently
+and enhances its search ability through knowledge transfer.
+Speciﬁcally, we will use two cases to illustrate the knowledge
+transfer to⃗Sub1 and⃗Sub2 respectively.
+Case 1: Knowledge transfer to⃗Sub1 .
+In traditional particle swarm optimization (as shown in formu-
+las (1) and (2)), particles modify their position and velocity by
+taking into account their past movements (inertia), their personal
+experience (cognitive state), and information about the best
+particle in the swarm (socialization). In our approach, which
+involves two subpopulations, we allow the ﬁrst subpopulation⃗
+Sub1 to learn from the second subpopulation⃗Sub2. Here, we
+let⃗Sub1 be inﬂuenced by the subpopulation best of⃗Sub2. The
+update process is as follows:⃗
+Vk
+i = ω⃗Vk−1
+i
++ c1r1(⃗Pk−1
+i
+−⃗X k−1
+i
+) + c2r2(⃗Pk−1
+g
+−⃗X k−1
+i
+)
++ c3r3(⃗Pk−1
+s
+−⃗X k−1
+i
+)
+(5)⃗
+X k
+i =⃗X k−1
+i
++⃗Vk−1
+i
+(6)
+where c3 is the learning factor learns knowledge from another
+subpopulation, r3 is a random value range from [0,1], and⃗Pk−1
+s
+is the best individual in the second subpopulation⃗Sub2.
+Case 2: Knowledge transfer to⃗Sub2 .
+When we utilize information from the feature weight matrix,
+we need to consider that after the operations in formulas (3) and
+(4), the weight values associated with each feature in the weight
+matrix may fall into one of three categories: less than 0, equal
+to 0, or greater than 0. In our algorithm,⃗Sub2 aims to select
+features for evaluation by considering their importance during
+the evolution process. It excludes features that have importance
+values less than or equal to 0, which helps in reducing evaluation
+costs and improving the efﬁciency of the feature search. This
+approach allows⃗Sub2 to concentrate its search resources on the
+most important features. The selection process based on feature
+importance in⃗Sub2 can be summarized as follows:
+δ =
+D
+
+n=1
+W(Fn), ∀W(Fn) > 0
+(7)
+TABLE I
+12 HIGH-DIMENSIONAL GENETIC DATASETS
+We ﬁrst calculate the sum of the weight values of all features
+whose weight values W(Fn) are greater than 0, denoted as δ.
+When selecting features in⃗Sub2, the probabilities of all features
+with weights less than or equal to 0 are set to 0, meaning that we
+do not select these features in this iteration. Here, features with
+weights greater than 0 are considered important features. These
+features are selected with the following probabilities ρ:
+ρ = W(Fn)
+δ
+, ∀W(Fn) ≥0
+(8)
+E. Fitness Function
+In this study, our focus is on discovering the smallest feature
+subset while achieving the largest classiﬁcation result. There-
+fore, two aspects need to be considered in the design of objective
+function: classiﬁcation accuracy and feature subset size. Here,
+we aim to select a feature subset that is as small as possible
+to avoid the computational cost and high model complexity
+caused by high-dimensional features. Simultaneously, we need
+to maintain an adequate number of features to ensure high
+classiﬁcation accuracy. Based on the above considerations, we
+set the objective function as follows:
+f = α · error_rate + β num_of_SF
+|F|
+(9)
+where error_rate is the classiﬁcation error rate, num_of_SF
+denotes the size of selected features, |F| represents the number
+of features in the feature search space, α is the control weight of
+classiﬁcation results and β is the feature size control weight. The
+settings of parameters α (0.9) and β (0.1) refer to reference [44].
+IV. IMPLEMENTATION
+A. Datasets
+We use 12 public high-dimesnional genetic datasets for our
+experiments [46]. Among these data, most of them have more
+than 7,000 dimensions, with the largest reaching 54,675 dimen-
+sions. They are available on Github,1 and the details of these
+datasets are presented in Table I.2
+1https://github.com/xwdshiwo
+2The two class labels “Pos” and “Neg” in Table I represent the positive and
+negative class labels, respectively.
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+WANG et al.: MEL: EFFICIENT MULTI-TASK EVOLUTIONARY LEARNING FOR HIGH-DIMENSIONAL FEATURE SELECTION
+4025
+TABLE II
+10 HIGH-DIMENSIONAL DATASETS WITH THOUSANDS OF SAMPLES
+To assess the impact of our proposed algorithm on datasets
+with a larger number of samples, we conducted experimental
+evaluations using high-dimensional and larger-sample datasets
+from various domains. These datasets include Text Data, Face
+Image Data, and Hand Written Image Data. The Pancancer
+dataset was sourced from reference [47], while the HAPT-
+DataSet, and MultipleFeaturesDigit datasets were obtained from
+reference [17]. The remaining datasets can be downloaded from
+the “Feature Selection” website.3 For detailed information about
+these datasets, please refer to Table II.
+B. Baselines
+1) Representative Classic Methods: To illustrate the perfor-
+mance of our method, 18 evolutionary computation algorithms
+were employed. According to the classiﬁcation methods in
+literature [48], we selected four swarm-based methods (in-
+spired by mutual behavior of swarm creatures), four nature-
+inspired methods (inspired by natural system), two evolution-
+ary algorithms (inspired by natural selection concepts), four
+bio-stimulated methods (inspired by the foraging and hunting
+behavior in the wild) and four physics-based methods (inspired
+by physical rules). These meta-heuristic optimization methods
+basically represent the most classical, representative, and widely
+used methods in the ﬁeld.
+r Swarm-based methods: Artiﬁcial Bee Colony (ABC) [49],
+Ant Colony Optimization (ACO) [50], Particle Swarm Op-
+timization (PSO) [51] and Monarch Butterﬂy Optimization
+(MBO) [52].
+r Nature-inspired methods: Bat Algorithm (BAT) [53],
+Cuckoo Search Algorithm (CS) [54], Fireﬂy Algorithm
+(FA) [55] and Flower Pollination Algorithm (FPA) [56].
+r Evolutionary algorithms: Differential Evolution (DE) [57]
+and Genetic Algorithm (GA) [58].
+r Bio-stimulated methods: Fruit Fly Optimization Algorithm
+(FOA) [59], Grey Wolf Optimizer (GWO) [60], Harris
+Hawks Optimization (HHO) [61] and Whale Optimization
+Algorithm (WOA) [62].
+r Physics-based methods: Simulated Annealing (SA) [63],
+Harmony Search (HS) [64], Gravitational Search Algo-
+rithm (GSA) [65] and Multi Verse Optimizer (MVO) [66].
+2) Recently Published Evolutionary Methods: In recent
+years, the ﬁeld of feature selection has witnessed remarkable
+3https://jundongl.github.io/scikit-feature/datasets.html
+advancements and novel approaches. With the goal of explor-
+ing the latest developments and expanding the scope of our
+study, we have incorporated six evolutionary methods for feature
+selection published in recent four years (SaWDE [21], FW-
+PSO [17], VGS-MOEA [67], MTPSO [44], PSO-EMT [43] and
+DENCA [68]). These methods represent the cutting-edge re-
+search in the ﬁeld and offer promising solutions to the challenges
+at hand. By incorporating these state-of-the-art evolutionary
+algorithms, we aim to enhance the effectiveness and robustness
+of our proposed framework.
+C. Experimental Setup
+In Section V parts A-E, our experiments are run on a Cen-
+tOS server equipped with an Intel(R) Xeon(R) Silver 4215R
+CPU @ 3.20GHz, 16GB of RAM using MATLAB R2019b.
+Furthermore, in Section V parts F-G, our experiments are run
+on MATLAB R2023b with a 13th generation i7-13700KF CPU
+and 64GB of memory. In particular, this study quantiﬁed running
+time in seconds. We obtained most of our baseline approaches
+from this online toolbox.4 To ensure the fairness of the exper-
+iment, we respect the original setting of the algorithm in the
+toolkit. In addition, for all algorithms, we set the number of
+populations (NP) to 20 and the maximum number of iterations
+(T) to 100. At the same time, we set a threshold value (θ) of 0.6 to
+convert the value of the real number ﬁeld into a discrete value, so
+as to decide whether to choose the feature of the corresponding
+ﬁeld. In this study, KNN classiﬁer is employed with K equals
+to 3. Our classiﬁcation accuracy is calculated using a ﬁve-fold
+cross-validation average. We performed each experiment ten
+timesandaveragedthedatatomakesuretheexperimentalresults
+were stable.
+V. RESULTS AND ANALYSIS
+Our experiments included a comprehensive comparison of
+our method with various inﬂuential and diverse approaches
+in the ﬁeld, such as swarm-based, nature-inspired, evolution-
+ary algorithms, bio-inspired, and physics-based methods. This
+comparison aimed to demonstrate the breadth of our method’s
+capabilities and its ability to outperform and complement ex-
+isting techniques in feature selection. In addition, we specif-
+ically compared our method with the latest advancements in
+EC methods for feature selection published in the past four
+years. This comparison was crucial to assess the novelty and
+competitiveness of our approach against the most recent devel-
+opments in the ﬁeld. Furthermore, we conducted experiments
+on larger datasets to showcase the effectiveness of our method
+in handling datasets with a larger sample size. This analysis
+aimed to highlight the scalability and generalizability of our
+method, ensuring its applicability to real-world scenarios with
+extensive and diverse data. For each experiment, we compared
+and discussed the classiﬁcation accuracy, feature subset size,
+and training time. In terms of these metrics, higher classiﬁ-
+cation accuracy is desirable, while smaller feature subset size
+and shorter training time are preferable. Each experiment was
+4https://github.com/JingweiToo/Wrapper-Feature-Selection-Toolbox
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+4026
+IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, VOL. 36, NO. 8, AUGUST 2024
+TABLE III
+COMPARISON WITH SWARM-BASED HEURISTIC METHODS ON ACCURACY
+TABLE IV
+COMPARISON WITH SWARM-BASED HEURISTIC METHODS ON SUBSET SIZE
+repeated 10 times, and the average values (denoted as “Mean”)
+and standard deviations (denoted as “Std”) were calculated. The
+best results are highlighted in bold. In addition, it’s worth noting
+that for some datasets, the results are indicated by ‘-’ because
+the methods were unable to obtain results due to limitations in
+memory, running time or the algorithms themselves.
+Overall, in Section V parts A-F, our MEL method achieved
+the best average performance across 12 datasets compared to
+the 18 EC methods and the additional ﬁve recently published
+EC methods speciﬁcally designed for feature selection. Our
+method outperformed other methods in terms of classiﬁcation
+accuracy and ranked second in terms of feature subset size,
+following the FWPSO method. In terms of running time, our
+method performed slightly slower than SaWDE and Simulated
+Annealing (SA). In Section V part G, we also conducted exper-
+iments on an additional set of 10 datasets with a larger number
+of samples. In this case, we compared our method with ﬁve
+representative algorithms. The results demonstrated the superior
+overall performance of our method in terms of various evaluation
+metrics.
+A. Comparison With Swarm-Based Heuristic Methods
+Table III presents the classiﬁcation accuracy results of MEL
+and four swarm-based heuristic methods. It is evident that MEL
+achieves the highest classiﬁcation accuracy on 8 out of 12
+datasetsanddemonstratesthebestoverallperformance.Notably,
+due to excessive memory requirements, ACO was unable to
+process the Stroke dataset, and therefore its results are not
+available for comparison. ABC and ACO exhibit strengths in
+handling certain datasets, while MBO’s average performance
+ranks second only to MEL among the 18 algorithms compared.
+Table IV displays the sizes of feature subsets obtained by these
+algorithms. It is noteworthy that, in comparison to the second-
+ranked ACO algorithm, MEL achieves an average subset size
+TABLE V
+COMPARISON WITH SWARM-BASED HEURISTIC METHODS ON RUNNING TIME
+TABLE VI
+COMPARISON WITH NATURE-INSPIRED HEURISTIC METHODS ON ACCURACY
+of only approximately 33%. These ﬁndings indicate that the
+MEL algorithm signiﬁcantly reduces model complexity while
+maintaining high accuracy in inference.
+Figs. 2 and 3 depict the convergence curves of these algo-
+rithms in terms of classiﬁcation accuracy and feature subsets,
+respectively. From Fig. 2, it is evident that MEL exhibits superior
+search capability across most datasets, particularly in cases such
+as ALL3, ALL4, CNS, Colon, and Lymphoma. Fig. 3 illustrates
+that both ACO and MEL demonstrate strong search abilities for
+relevant features. However, unlike ACO, which exhibits some
+ﬂuctuations in the curve during the search process, MEL main-
+tains better stability. Table V displays the running times of the
+algorithms on all datasets, including their average performance.
+It is noteworthy that MEL exhibits the shortest running time
+among all datasets, indicating its efﬁcient search capability.
+In comparison to the original PSO algorithm, MEL achieves
+a running time that is nearly half. Conversely, ACO exhibits
+signiﬁcantly longer running times across all datasets compared
+to other EC algorithms, suggesting that ACO may not be suitable
+for processing high-dimensional data.
+B. Comparison With Nature-Inspired Heuristic Methods
+Table VI presents the classiﬁcation accuracy results of MEL
+and four other nature-inspired heuristic methods. It is evident
+that MEL achieves the highest classiﬁcation accuracy on 9 out
+of 12 datasets and demonstrates the best overall performance.
+Additionally, Table VII highlights that the average feature sub-
+set size obtained by MEL is approximately 1/7 of the sizes
+obtained by the other nature-inspired methods, with the latter
+all exceeding 5000. Figs. 4 and 5 display the convergence
+curves of these algorithms in terms of classiﬁcation accuracy
+and subset size, respectively. From Fig. 4, it can be observed that
+although MEL did not initially achieve the best performance, it
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+WANG et al.: MEL: EFFICIENT MULTI-TASK EVOLUTIONARY LEARNING FOR HIGH-DIMENSIONAL FEATURE SELECTION
+4027
+Fig. 2.
+Convergence Curves of Swarm-based EC Algorithms in Terms of Accuracy.
+Fig. 3.
+Convergence Curves of Swarm-based EC Algorithms in Terms of the Size of Feature Subset.
+Fig. 4.
+Convergence Curves of Nature-inspired EC Algorithms in Terms of Accuracy.
+Fig. 5.
+Convergence Curves of Nature-inspired EC Algorithms in Terms of the Size of Feature Subset.
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+4028
+IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, VOL. 36, NO. 8, AUGUST 2024
+Fig. 6.
+Convergence Curves of Evolutionary Algorithms in Terms of Accuracy.
+TABLE VII
+COMPARISON WITH NATURE-INSPIRED HEURISTIC METHODS ON THE SUBSET
+SIZE
+TABLE VIII
+COMPARISON WITH NATURE-INSPIRED HEURISTIC METHODS ON RUNNING
+TIME
+quickly outperformed the other methods on most datasets. MEL
+exhibits slower convergence but demonstrates stronger global
+search ability. Fig. 5 illustrates that while the curves of the
+other methods stabilize quickly, MEL effectively searches for
+the optimal feature subset throughout most of the entire cycle.
+In Table VIII, we conducted extensive experiments by com-
+paring the running times of the nature-inspired heuristic meth-
+ods. For the Adenoma, ALL_AML, Gastric, and Stroke datasets,
+the FA algorithm achieved running times of 8.0 ± 1.4, 13.8 ±
+3.4, 1.7 ± 0.1, and 2.3 ± 0.1, respectively, which are smaller than
+the other four algorithms. However, considering the algorithm’s
+generality, our proposed algorithm outperforms the other four
+algorithms on 8 out of 12 datasets while maintaining a lower
+average running time.
+TABLE IX
+COMPARISON WITH EVOLUTIONARY ALGORITHMS ON ACCURACY
+TABLE X
+COMPARISON WITH EVOLUTIONARY ALGORITHMS ON THE SUBSET SIZE
+TABLE XI
+COMPARISON WITH EVOLUTIONARY ALGORITHMS ON RUNNING TIME
+C. Comparison With Evolutionary Algorithms
+We also evaluated classic evolutionary algorithms, including
+differential evolution (DE) and genetic algorithm (GA). For
+GA, we considered two mechanisms: Roulette and Tourna-
+ment. Extensive experiments were conducted, and the results are
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+WANG et al.: MEL: EFFICIENT MULTI-TASK EVOLUTIONARY LEARNING FOR HIGH-DIMENSIONAL FEATURE SELECTION
+4029
+Fig. 7.
+Convergence Curves of Evolutionary Algorithms in Terms of the Size of Feature Subset.
+TABLE XII
+COMPARISON WITH BIO-STIMULATED HEURISTIC METHODS ON ACCURACY
+TABLE XIII
+COMPARISON WITH BIO-STIMULATED HEURISTIC METHODS ON SUBSET SIZE
+presented in Table IX, which compares the accuracy achieved
+by MEL with that of evolutionary algorithms. Remarkably,
+MEL consistently achieves the highest classiﬁcation accuracy
+on nearly all datasets. Furthermore, the results of subset sizes
+(Table X) and running times (Table XI) further demonstrate the
+distinct advantage of MEL over these evolutionary algorithms.
+Figs. 6 and 7 illustrate the convergence curves of these al-
+gorithms during the iterative process. In the ﬁgures, “GA +
+Roulette” is represented as GA, and “GA + Tournament” is
+represented as GAt. It is evident from the ﬁgures that MEL ex-
+hibits signiﬁcant advantages over these methods. Additionally,
+we observed that the difference between GA methods using the
+Roulette and Tournament mechanisms was not substantial.
+D. Comparison With Bio-Stimulated Heuristic Methods
+Tables XII and XIII present the results of MEL and bio-
+stimulated methods in terms of classiﬁcation accuracy and fea-
+ture subset size. Figs. 8 and 9 depict the convergence curves
+of MEL and bio-stimulated methods in terms of classiﬁcation
+accuracy and feature subset size, respectively. Overall, MEL
+TABLE XIV
+COMPARISON WITH BIO-STIMULATED HEURISTIC METHODS ON RUNNING
+TIME
+outperforms the bio-stimulated methods in both classiﬁcation
+accuracy and subset size. However, we observed that algorithms
+such as GWO, HHO, and WOA, which were proposed in recent
+years, exhibit superior search capabilities on certain datasets
+(e.g., ALL_AML, DLBCL, Leukemia). It is worth noting that
+these algorithms demonstrate promising performance in speciﬁc
+scenarios but do not consistently outperform MEL across all
+datasets.
+Furthermore, our proposed method demonstrates superior
+accuracy and computational efﬁciency compared to bio-inspired
+heuristic methods, as indicated in Table XIV. It is evident that the
+MEL algorithm exhibits slightly lower runtimes than the FOA
+algorithm for the Leukemia and Stroke datasets. On average, the
+MEL algorithm requires only half the time to run compared to
+the FOA algorithm across all 12 datasets. Additionally, when
+compared to the second-ranked WOA algorithm, the MEL al-
+gorithm improves runtime efﬁciency by approximately 29.1%.
+In summary, the MEL algorithm not only achieves higher accu-
+racy but also demonstrates improved computational efﬁciency
+compared to bio-inspired heuristic methods.
+E. Comparison With Physics-Based Heuristic Methods
+Table XV presents the classiﬁcation accuracy results of the
+physics-based method, and Fig. 2 in Appendix-C, available
+online displays the convergence curves for each dataset. It is
+evident that MEL achieved the best performance on 10 out
+of the 12 datasets. However, we also observed that the GSA
+method showed competitiveness, as its convergence curves on
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+4030
+IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, VOL. 36, NO. 8, AUGUST 2024
+Fig. 8.
+Convergence Curves of Bio-stimulated EC Algorithms in Terms of Accuracy.
+Fig. 9.
+Convergence Curves of Bio-stimulated EC Algorithms in Terms of the Size of Feature Subset.
+TABLE XV
+COMPARISON WITH PHYSICS-BASED HEURISTIC METHODS ON ACCURACY
+TABLE XVI
+COMPARISON WITH PHYSICS-BASED HEURISTIC METHODS ON THE SUBSET
+SIZE
+the DLBCL, Leukemia, and Prostate datasets exhibited search
+abilities comparable to those of MEL. Table XVI reports the
+results of the physics-based method on subset size, and Fig. 3
+in Appendix-C, available online depicts the convergence curves
+TABLE XVII
+COMPARISON WITH PHYSICS-BASED HEURISTIC METHODS ON RUNNING TIME
+for each dataset. Notably, GSA achieved the smallest feature
+subset size on the DLBCL and Prostate datasets.
+The running times of physics-based heuristic methods are
+compared in Table XVII. Overall, the physics-based approach
+demonstrates fast execution. Notably, SA stands out as it runs
+approximately one-tenth the time of MEL (6.5 ± 0.5). However,
+it is important to note that SA exhibits the lowest average clas-
+siﬁcation accuracy among all the algorithms, indicating that its
+fast search strategy sacriﬁces some classiﬁcation performance.
+Taking into account factors such as algorithm complexity, accu-
+racy, and runtime, we can conclude that MEL is an efﬁcient
+and effective method. It strikes a balance between accuracy
+and computational efﬁciency, making it a favorable choice in
+practice.
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+WANG et al.: MEL: EFFICIENT MULTI-TASK EVOLUTIONARY LEARNING FOR HIGH-DIMENSIONAL FEATURE SELECTION
+4031
+TABLE XVIII
+COMPARISON WITH RECENTLY PUBLISHED EVOLUTIONARY METHODS ON
+ACCURACY
+TABLE XIX
+COMPARISON WITH RECENTLY PUBLISHED EVOLUTIONARY METHODS ON THE
+SUBSET SIZE
+TABLE XX
+COMPARISON WITH RECENTLY PUBLISHED EVOLUTIONARY METHODS ON
+RUNNING TIME
+F. Comparison With Recently Published Evolutionary
+Methods
+The provided tables (Tables XVIII, XIX, and XX) present
+a detailed comparison of the performance of several recently
+published evolutionary methods, including SaWDE [21], FW-
+PSO [17], DENCA [68], VGS-MOEA [67], PSO-EMT [43]
+and the proposed MEL in this study. The analysis focuses on
+three key evaluation metrics: accuracy, the size of the selected
+feature subset and the running time across various datasets.
+For a fair comparison with other algorithms, we re-run the
+experiment of our MEL algorithm on MATLAB R2023b with
+a 13th i7-13700KF CPU and 64GB of memory. It can be seen
+that the proposed MEL algorithm achieves the highest average
+accuracy of 94.55% across all datasets, outperforming the other
+state-of-the-art algorithms. MEL obtains the best accuracy on
+10 out of the 12 datasets. This demonstrates the effectiveness
+of MEL in selecting an optimal subset of features that leads
+to high classiﬁcation performance. Regarding the size of the
+selected feature subset (Table XIX), it can be observed that
+FWPSO generally ﬁnds the smallest subsets, with an average
+size of just 2.8 features. Although small subset is preferable
+TABLE XXI
+ACCURACY COMPARISON ON DATASETS WITH LARGE SAMPLE SIZE
+as it simpliﬁes the model and improves understandability, MEL
+achieves a favorable trade-off between accuracy and subset size.
+In addition, MEL’s search efﬁciency is also competitive, second
+only to SaWDE.
+In summary, MEL achieves the best balance of high clas-
+siﬁcation accuracy, optimal subset size selection and efﬁcient
+running time compared to other evolutionary algorithms. While
+some methods may get higher accuracy on a few datasets, MEL
+performsconsistentlywellonmostdatasets.Thesubsetsearchof
+MEL effectively ﬁnds representative features to classify samples
+accurately within a reasonable time limit.
+G. Experiments With Larger Data Samples
+This section analyze how MEL performs on larger datasets
+compared to other methods. Table XXI shows MEL achieved
+the highest average classiﬁcation accuracy of 88.64%, outper-
+forming other methods on 6 out of 10 datasets. This demon-
+strates MEL’s effectiveness in selecting informative features,
+even for datasets with thousands of samples and features. As
+shown in Table II in Appendix-D, available online, MEL selects
+medium-sized feature subsets compared to other algorithms.
+FWPSO selects the smallest subsets but attains much lower
+accuracy. MEL achieves an optimal balance between subset
+size and performance. Table III in Appendix-D, available online
+reveals MEL has the second best average runtime of 486.1
+seconds, signiﬁcantly faster than all methods except SaWDE.
+PSO-EMT incurs extremely high computational costs, making
+it impractical for real-world applications. In conclusion, MEL
+demonstrates excellent scalability for feature selection on large,
+high-dimensional datasets. It efﬁciently produces compact sub-
+sets that yield high accuracy. The balanced optimization of
+effectiveness, efﬁciency and subset quality exhibited by MEL
+makes it well-suited for real-world applications involving Big
+Data.
+VI. CONCLUSION AND FUTURE WORK
+In this article, we propose a PSO-based multi-task learning
+method called MEL for high-dimensional feature selection.
+MEL evolves by continuously learning the importance of indi-
+vidual features through the entire population. Speciﬁcally, two
+subpopulations are constructed in MEL and each independently
+searches for the optimal feature subset using different methods.
+The ﬁrst subpopulation (⃗Sub1) realizes knowledge transfer by
+incorporating the inﬂuence of the optimal solution from the other
+subpopulation (⃗Sub2) during its search process.⃗Sub2 narrows
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+4032
+IEEE TRANSACTIONS ON KNOWLEDGE AND DATA ENGINEERING, VOL. 36, NO. 8, AUGUST 2024
+the search scope and improves its ability to identify potentially
+valuable features, with the help of feature importance infor-
+mation learned by the whole population. Knowledge is shared
+between the two subpopulations through multi-task learning to
+enhance the search ability and efﬁciency of the algorithm.
+We evaluate the effectiveness of our method using three met-
+rics: accuracy, feature subset size, and algorithm running time.
+Extensive experiments on 12 high-dimensional genetic datasets
+showed that MEL can effectively improve classiﬁcation accu-
+racy while obtaining a small feature subset. MEL also showed
+highly competitive running time compared to 18 state-of-the-art
+meta-heuristic optimization algorithms and ﬁve recently pub-
+lished evolutionary feature selection methods. Additionally, we
+provided further experiments on a separate set of 10 larger
+sample size datasets, comparing MEL against ﬁve representative
+algorithms. The results demonstrated MEL’s superior overall
+performanceinclassiﬁcationmetrics,validatingitseffectiveness
+on high-dimensional data with both few and many samples.
+Despite the encouraging results of our study, some directions
+are still worth pursuing. For example, the data discussed in this
+study are basically class balanced. However, class imbalance
+data is also very common in real life, and how to address it
+better still needs a lot of efforts.
+REFERENCES
+[1] E. Glaab, J. M. Garibaldi, and N. Krasnogor, “Arraymining: A modular
+web-application for microarray analysis combining ensemble and consen-
+sus methods with cross-study normalization,” BMC Bioinform., vol. 10,
+no. 1, pp. 1–7, 2009.
+[2] M. L. Bermingham et al., “Application of high-dimensional feature selec-
+tion: Evaluation for genomic prediction in man,” Sci. Rep., vol. 5, no. 1,
+pp. 1–12, 2015.
+[3] G. James, D. Witten, T. Hastie, and R. Tibshirani, An Introduction to
+Statistical Learning, vol. 112, Berlin, Germany: Springer, 2013.
+[4] J. Li et al., “Feature selection: A data perspective,” ACM Comput Surv.,
+vol. 50, no. 6, pp. 1–45, 2017.
+[5] M. A. Kramer, “Nonlinear principal component analysis using autoasso-
+ciative neural networks,” AIChE J., vol. 37, no. 2, pp. 233–243, 1991.
+[6] I. Guyon and A. Elisseeff, “An introduction to variable and feature selec-
+tion,” J. Mach. Learn. Res., vol. 3, no. Mar, pp. 1157–1182, 2003.
+[7] L. Yu and H. Liu, “Feature selection for high-dimensional data: A fast
+correlation-based ﬁlter solution,” in Proc. 20th Int. Conf. Mach. Learn.,
+2003, pp. 856–863.
+[8] T. M. Phuong, Z. Lin, and R. B. Altman, “Choosing SNPs using feature
+selection,” in Proc. IEEE Comput. Syst. Bioinf. Conf., 2005, pp. 301–309.
+[9] E. Saghapour, S. Kermani, and M. Sehhati, “A novel feature ranking
+method for prediction of cancer stages using proteomics data,” PLoS One,
+vol. 12, no. 9, 2017, Art. no. e0184203.
+[10] Y. Zhang et al., “Detection of subjects and brain regions related to
+alzheimer’s disease using 3D MRI scans based on eigenbrain and machine
+learning,” Front. Comput. Neurosci., vol. 9, 2015, Art. no. 66.
+[11] G. Roffo and S. Melzi, “Features selection via eigenvector centrality,” in
+Proc. New Front. Mining Complex Patterns, 2016, pp. 1–12.
+[12] R. Kohavi and G. H. John, “Wrappers for feature subset selection,” Artif.
+Intell., vol. 97, no. 1/2, pp. 273–324, 1997.
+[13] A. Figueroa and G. Neumann, “Learning to rank effective paraphrases
+from query logs for community question answering,” in Proc. 27th AAAI
+Conf. Artif. Intell., 2013, pp. 1099–1105.
+[14] F. N. Alenezi, “Majority scoring with backward elimination in PLS for
+high dimensional spectrum data,” Sci. Rep., vol. 11, no. 1, pp. 1–11, 2021.
+[15] I.-S. Oh, J.-S. Lee, and B.-R. Moon, “Hybrid genetic algorithms for
+feature selection,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 26, no. 11,
+pp. 1424–1437, Nov. 2004.
+[16] W. Ma et al., “A two-stage hybrid ant colony optimization for high-
+dimensional feature selection,” Pattern Recognit., vol. 116, 2021,
+Art. no. 107933.
+[17] X. Wang and W. Jia, “A feature weighting particle swarm optimization
+method to identify biomarker genes,” in Proc. IEEE Int. Conf. Bioinf.
+Biomed., 2022, pp. 830–834.
+[18] J. Zhang et al., “FS–GBDT: Identiﬁcation multicancer-risk module via a
+feature selection algorithm by integrating ﬁsher score and GBDT,” Brief.
+Bioinf., vol. 22, no. 3, 2021, Art. no. bbaa189.
+[19] F. R. Bach, “Bolasso: Model consistent lasso estimation through the
+bootstrap,” in Proc. 25th Int. Conf. Mach. Learn., 2008, pp. 33–40.
+[20] Y. Xue, B. Xue, and M. Zhang, “Self-adaptive particle swarm optimization
+for large-scale feature selection in classiﬁcation,” ACM Trans. Knowl.
+Discov. Data, vol. 13, no. 5, pp. 1–27, 2019.
+[21] X. Wang, Y. Wang, K.-C. Wong, and X. Li, “A self-adaptive weighted
+differential evolution approach for large-scale feature selection,” Knowl.
+Based Syst., vol. 235, 2022, Art. no. 107633.
+[22] J. Zhou et al., “LAGAM: A length-adaptive genetic algorithm with Markov
+blanket for high-dimensional feature selection in classiﬁcation,” IEEE
+Trans. Cybern., vol. 53, no. 11, pp. 6858–6869, Nov. 2023.
+[23] B. Xue, M. Zhang, and W. N. Browne, “Particle swarm optimization
+for feature selection in classiﬁcation: A multi-objective approach,” IEEE
+Trans. Cybern., vol. 43, no. 6, pp. 1656–1671, Dec. 2013.
+[24] Y. Zhang and Q. Yang, “A survey on multi-task learning,” IEEE Trans.
+Knowl. Data Eng., vol. 34, no. 12, pp. 5586–5609, Dec. 2022.
+[25] J. Kennedy and R. Eberhart, “Particle swarm optimization,” in Proc. IEEE
+Int. Conf. Neural Netw., 1995, pp. 1942–1948.
+[26] Y. Prasad and K. Biswas, “Gene selection in microarray datasets using
+progressively reﬁned PSO scheme,” in Proc. AAAI Conf. Artif. Intell.,
+2015, pp. 4288–4289.
+[27] Y.Cheng,Z.Jin,C.Hao,andX.Li,“Illuminationinvariantfacerecognition
+with particle swarm optimization,” in Proc. IEEE Int. Conf. Data Mining
+Workshop, 2014, pp. 862–866.
+[28] Y. Hu, Y. Zhang, and D. Gong, “Multiobjective particle swarm optimiza-
+tion for feature selection with fuzzy cost,” IEEE Trans. Cybern., vol. 51,
+no. 2, pp. 874–888, Feb. 2021.
+[29] K. Mistry, L. Zhang, S. C. Neoh, C. P. Lim, and B. Fielding, “A micro-
+GA embedded PSO feature selection approach to intelligent facial emo-
+tion recognition,” IEEE Trans. Cybern., vol. 47, no. 6, pp. 1496–1509,
+Jun. 2017.
+[30] R. Caruana, Multitask learning, Berlin, Germany: Springer, 1998.
+[31] R. Hu and A. Singh, “Unit: Multimodal multitask learning with a uniﬁed
+transformer,” in Proc. IEEE/CVF Int. Conf. Comput. Vis., 2021, pp. 1439–
+1449.
+[32] T. Yu, S. Kumar, A. Gupta, S. Levine, K. Hausman, and C. Finn, “Gradient
+surgery for multi-task learning,” Adv. Neural Inf. Process. Syst., vol. 33,
+pp. 5824–5836, 2020.
+[33] Y. Chen, Y. Lin, T. Gai, Y. Su, Y. Wei, and D. Z. Pan, “Semisuper-
+vised hotspot detection with self-paced multitask learning,” IEEE Trans.
+Comput.-Aided Des. Integr. Circuits Syst., vol. 39, no. 7, pp. 1511–1523,
+Jul. 2020.
+[34] Y. Zhang, B. Guo, J. Liu, T. Guo, Y. Ouyang, and Z. Yu, “Which app is
+going to die? A framework for app survival prediction with multitask learn-
+ing,” IEEE Trans. Mob. Comput., vol. 21, no. 2, pp. 728–739, Feb. 2022.
+[35] S. Alqahtani, A. Mishra, and M. Diab, “A multitask learning approach
+for diacritic restoration,” in Proc. 58th Annu. Meeting Assoc. Comput.
+Linguistics, 2020, pp. 8238–8247.
+[36] L. Chen et al., “Multi-label nonlinear matrix completion with transductive
+multi-task feature selection for joint MGMT and IDH1 status prediction of
+patient with high-grade gliomas,” IEEE Trans. Med. Imag., vol. 37, no. 8,
+pp. 1775–1787, Aug. 2018.
+[37] C. Liu, C.-T. Zheng, S. Wu, Z. Yu, and H.-S. Wong, “Multitask feature se-
+lection by graph-clustered feature sharing,” IEEE Trans. Cybern., vol. 50,
+no. 1, pp. 74–86, Jan. 2020.
+[38] F. Zhang, Y. Mei, S. Nguyen, K. C. Tan, and M. Zhang, “Task related-
+ness based multitask genetic programming for dynamic ﬂexible job shop
+scheduling,” IEEE Trans. Evol. Comput., vol. 27, no. 6, pp. 1705–1719,
+Dec. 2023.
+[39] S. Liu, Q. Lin, L. Feng, K. -C. Wong, and K. C. Tan, “Evolutionary
+multitasking for large-scale multiobjective optimization,” IEEE Trans.
+Evol. Comput., vol. 27, no. 4, pp. 863–877, Aug. 2023.
+[40] C. He, Y. Zhang, D. Gong, X. Song, and X. Sun, “A multitask bee colony
+band selection algorithm with variable-size clustering for hyperspectral
+images,” IEEE Trans. Evol. Comput., vol. 26, no. 6, pp. 1566–1580,
+Dec. 2022.
+[41] Y.-J. Zheng, X. Chen, Q. Song, J. Yang, and L. Wang, “Evolutionary opti-
+mization of COVID-19 vaccine distribution with evolutionary demands,”
+IEEE Trans. Evol. Comput., vol. 27, no. 1, pp. 141–154, Feb. 2023.
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+WANG et al.: MEL: EFFICIENT MULTI-TASK EVOLUTIONARY LEARNING FOR HIGH-DIMENSIONAL FEATURE SELECTION
+4033
+[42] N. Zhang, A. Gupta, Z. Chen, and Y.-S. Ong, “Evolutionary machine
+learning with minions: A case study in feature selection,” IEEE Trans.
+Evol. Comput., vol. 26, no. 1, pp. 130–144, Feb. 2022.
+[43] K. Chen, B. Xue, M. Zhang, and F. Zhou, “An evolutionary multitasking-
+based feature selection method for high-dimensional classiﬁcation,” IEEE
+Trans. Cybern., vol. 52, no. 7, pp. 7172–7186, Jul. 2022.
+[44] K. Chen et al., “Evolutionary multitasking for feature selection in high-
+dimensional classiﬁcation via particle swarm optimization,” IEEE Trans.
+Evol. Comput., vol. 26, no. 3, pp. 446–460, Jun. 2022.
+[45] F. Kılıç, Y. Kaya, and S. Yildirim, “A novel multi population based particle
+swarm optimization for feature selection,” Knowl. Based Syst., vol. 219,
+2021, Art. no. 106894.
+[46] K. Yu, W. Xie, L. Wang, and W. Li, “ILRC: A hybrid biomarker discovery
+algorithm based on improved L1 regularization and clustering in microar-
+ray data,” BMC Bioinform., vol. 22, no. 1, pp. 1–19, 2021.
+[47] X. Li, S. Li, Y. Wang, S. Zhang, and K.-C. Wong, “Identiﬁcation of pan-
+cancer ras pathway activation with deep learning,” Brief. Bioinf., vol. 22,
+no. 4, 2021, Art. no. bbaa258.
+[48] A. Kumar and S. Bawa, “A comparative review of meta-heuristic ap-
+proaches to optimize the sla violation costs for dynamic execution of cloud
+services,” Soft Comput., vol. 24, no. 6, pp. 3909–3922, 2020.
+[49] D. Karaboga and B. Basturk, “A powerful and efﬁcient algorithm for
+numerical function optimization: Artiﬁcial bee colony (ABC) algorithm,”
+J. Glob. Optim., vol. 39, no. 3, pp. 459–471, 2007.
+[50] M. H. Aghdam, N. Ghasem-Aghaee, and M. E. Basiri, “Text feature
+selection using ant colony optimization,” Expert Syst. Appl., vol. 36, no. 3,
+pp. 6843–6853, 2009.
+[51] Y. Shi and R. Eberhart, “A modiﬁed particle swarm optimizer,” in Proc.
+IEEE Int. Conf. Evol. Comput. Proc. IEEE World Congr. Comput. Intell.,
+1998, pp. 69–73.
+[52] G.-G. Wang et al., “Monarch butterﬂy optimization,” Neural. Comput.
+Appl., vol. 31, no. 7, pp. 1995–2014, 2019.
+[53] X.-S. Yang, “A new metaheuristic bat-inspired algorithm,” in Nature
+Inspired Cooperative Strategies for Optimization (NICSO 2010), Berlin,
+Germany: Springer, 2010, pp. 65–74.
+[54] X.-S. Yang and S. Deb, “Cuckoo search via lévy ﬂights,” in Proc. IEEE
+World Congr. Nat. Biologically Inspired Comput., 2009, pp. 210–214.
+[55] X. S. Yang, “Fireﬂy algorithm, stochastic test functions and design opti-
+misation,” Int. J. Bio-Inspired Comput. vol. 2, no. 2, pp. 78–84, 2010.
+[56] X.-S. Yang, M. Karamanoglu, and X. He, “Flower pollination algorithm:
+A novel approach for multiobjective optimization,” Eng. Optim., vol. 46,
+no. 9, pp. 1222–1237, 2014.
+[57] R. Storn and K. Price, “Differential evolution–a simple and efﬁcient
+heuristic for global optimization over continuous spaces,” J. Glob. Optim.,
+vol. 11, no. 4, pp. 341–359, 1997.
+[58] C.-L. Huang and C.-J. Wang, “A GA-based feature selection and parame-
+ters optimizationfor support vector machines,” Expert Syst. Appl., vol. 31,
+no. 2, pp. 231–240, 2006.
+[59] W.-T. Pan, “A new fruit ﬂy optimization algorithm: Taking the ﬁnancial
+distress model as an example,” Knowl. Based Syst., vol. 26, pp. 69–74,
+2012.
+[60] S. Mirjalili, S. M. Mirjalili, and A. Lewis, “Grey wolf optimizer,” Adv.
+Eng. Softw., vol. 69, pp. 46–61, 2014.
+[61] A. A. Heidari, S. Mirjalili, H. Faris, I. Aljarah, M. Mafarja, and H. Chen,
+“Harris hawks optimization: Algorithm and applications,” Future Gener.
+Comput. Syst., vol. 97, pp. 849–872, 2019.
+[62] S. Mirjalili and A. Lewis, “The whale optimization algorithm,” Adv. Eng.
+Softw., vol. 95, pp. 51–67, 2016.
+[63] S. Kirkpatrick, C. D. Gelatt Jr, and M. P. Vecchi, “Optimization by
+simulated annealing,” Science, vol. 220, no. 4598, pp. 671–680, 1983.
+[64] Z. W. Geem, J. H. Kim, and G. V. Loganathan, “A new heuristic optimiza-
+tion algorithm: Harmony search,” Simulation, vol. 76, no. 2, pp. 60–68,
+2001.
+[65] E. Rashedi, H. Nezamabadi-Pour, and S. Saryazdi, “GSA: A gravitational
+search algorithm,” Inf. Sci., vol. 179, no. 13, pp. 2232–2248, 2009.
+[66] S. Mirjalili, S. M. Mirjalili, and A. Hatamlou, “Multi-verse optimizer: A
+nature-inspired algorithm for global optimization,” Neural. Comput. Appl.,
+vol. 27, no. 2, pp. 495–513, 2016.
+[67] F. Cheng, J. Cui, Q. Wang, and L. Zhang, “A variable granularity search-
+based multiobjective feature selection algorithm for high-dimensional data
+classiﬁcation,” IEEE Trans. Evol. Comput., vol. 27, no. 2, pp. 266–280,
+Apr. 2023.
+[68] E. Hancer, B. Xue, and M. Zhang, “An evolutionary ﬁlter approach
+to feature selection in classiﬁcation for both single-and multi-objective
+scenarios,” Knowl. Based Syst., vol. 280, 2023, Art. no. 111008.
+Xubin Wang (Member, IEEE) is currently with the
+Hong Kong Baptist University, China. He also serves
+as a research assistant with the Institute of Artiﬁcial
+Intelligence and Future Networks, Beijing Normal
+University (Zhuhai campus). His research interests
+span data mining, machine learning, efﬁcient AI and
+edge intelligence. He actively publishes in top-tier
+journals and conferences across ML and data mining.
+Through his research, he aims to make AI more
+accessible by improving efﬁciency, robustness and
+transparency.
+Haojiong Shangguan received the BSc degree from
+Zhejiang University, Hangzhou, Zhejiang, China, in
+2022. He is currently working toward the PhD degree
+in applied mathematics with Hong Kong Baptist Uni-
+versity. His current research interests include deep
+learning and adaptive computation.
+Fengyi Huang received the MSc Degree from the
+Guilin University of technology, Guangxi, China, in
+2022. She is currently working toward the PhD de-
+gree in computer science and technology with Hong
+Kong Baptist University, China. Her current research
+interests are edge computing and edge intelligence,
+including resource management, resource pricing,
+reinforcement learning and machine learning.
+Shangrui Wu is currently working toward the PhD
+degree with Hong Kong Baptist University. His re-
+search interests include edge computing and deep
+learning. He has been awarded the Best Student Paper
+at MSN 2023.
+Weijia Jia (Fellow, IEEE) received the BSc and MSc
+degrees in computer science from Center South Uni-
+versity, China, in 1982 and 1984, respectively and the
+master’s of applied Sci. and PhD degrees in computer
+science from Polytechnic Faculty of Mons, Belgium
+in 1992 and 1993, respectively. He is currently a
+chair professor, director of BNU-UIC Institute of
+Artiﬁcial Intelligence and Future Networks, Beijing
+Normal University(Zhuhai) and VP for Research of
+BNU-HKBU United International College (UIC) and
+has been the Zhiyuan chair professor of Shanghai Jiao
+Tong University, China. He was the chair professor and the deputy director of
+State Kay Laboratory of Internet of Things for Smart City at the University of
+Macau. From 93-95, he joined German National Research Center for Informa-
+tion Science (GMD) in Bonn (St. Augustine) as a research fellow. From 95-13,
+he worked at City University of Hong Kong as a professor. His contributions have
+been recognized as optimal network routing and deployment, anycast and QoS
+routing, sensors networking, AI (knowledge relation extractions; NLP, etc.), and
+edge computing. He has more than 600 publications in the prestige international
+journals/conferences and research books, and book chapters. He has received the
+best product awards from the International Science & Tech. Expo (Shenzhen)
+in 2011/2012 and the 1st Prize of Scientiﬁc Research Awards from the Ministry
+of Education of China in 2017 (list 2). He has served as area editor for various
+prestige international journals, chair and PC member/skeynote speaker for many
+top international conferences. He is the distinguished member of CCF.
+Authorized licensed use limited to: Indian Institute of Technology Hyderabad. Downloaded on July 29,2026 at 07:36:11 UTC from IEEE Xplore.  Restrictions apply. 
