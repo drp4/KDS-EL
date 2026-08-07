@@ -42,6 +42,42 @@ Y.~Shi, R.~Eberhart, A modified particle swarm optimizer, in: 1998 IEEE
 \newblock \href {https://doi.org/10.1109/ICEC.1998.699146}
   {\path{doi:10.1109/ICEC.1998.699146}}.
 
+\bibitem{kennedy1997}
+J.~Kennedy, R.~C. Eberhart, A discrete binary version of the particle swarm
+  algorithm, Proceedings of the 1997 IEEE International Conference on Systems,
+  Man, and Cybernetics 5 (1997) 4104--4108.
+\newblock \href {https://doi.org/10.1109/ICSMC.1997.637339}
+  {\path{doi:10.1109/ICSMC.1997.637339}}.
+
+\bibitem{wangjia2022}
+X.~Wang, W.~Jia, A feature weighting particle swarm optimization method to
+  identify biomarker genes, in: 2022 IEEE International Conference on
+  Bioinformatics and Biomedicine (BIBM), IEEE, 2022, pp. 830--834.
+\newblock \href {https://doi.org/10.1109/BIBM55620.2022.9995376}
+  {\path{doi:10.1109/BIBM55620.2022.9995376}}.
+
+\bibitem{wang2022}
+X.~Wang, Y.~Wang, K.-C. Wong, X.~Li, A self-adaptive weighted differential
+  evolution approach for large-scale feature selection, Knowledge-Based Systems
+  235 (2022) 107633.
+\newblock \href {https://doi.org/10.1016/j.knosys.2021.107633}
+  {\path{doi:10.1016/j.knosys.2021.107633}}.
+
+\bibitem{xuezhang2024}
+Y.~Xue, C.~Zhang, A novel importance-guided particle swarm optimization based
+  on mlp for solving large-scale feature selection problems, Swarm and
+  Evolutionary Computation 91 (2024) 101760.
+\newblock \href {https://doi.org/10.1016/j.swevo.2024.101760}
+  {\path{doi:10.1016/j.swevo.2024.101760}}.
+
+\bibitem{wei2025}
+B.~Wei, S.~Yang, W.~Zha, L.~Deng, J.~Huang, X.~Su, F.~Wang, Particle swarm
+  optimization algorithm based on comprehensive scoring framework for
+  high-dimensional feature selection, Swarm and Evolutionary Computation 95
+  (2025) 101915.
+\newblock \href {https://doi.org/10.1016/j.swevo.2025.101915}
+  {\path{doi:10.1016/j.swevo.2025.101915}}.
+
 \bibitem{mel2024}
 X.~Wang, H.~Shangguan, F.~Huang, S.~Wu, W.~Jia, Mel: Efficient multi-task
   evolutionary learning for high-dimensional feature selection, IEEE
@@ -97,13 +133,6 @@ K.~Yu, W.~Xie, L.~Wang, W.~Li, {ILRC}: A hybrid biomarker discovery algorithm
 \newblock \href {https://doi.org/10.1186/s12859-021-04223-3}
   {\path{doi:10.1186/s12859-021-04223-3}}.
 
-\bibitem{kennedy1997}
-J.~Kennedy, R.~C. Eberhart, A discrete binary version of the particle swarm
-  algorithm, Proceedings of the 1997 IEEE International Conference on Systems,
-  Man, and Cybernetics 5 (1997) 4104--4108.
-\newblock \href {https://doi.org/10.1109/ICSMC.1997.637339}
-  {\path{doi:10.1109/ICSMC.1997.637339}}.
-
 \bibitem{aghdam2009}
 M.~H. Aghdam, N.~Ghasem-Aghaee, M.~E. Basiri, Text feature selection using ant
   colony optimization, Expert Systems with Applications 36~(3) (2009)
@@ -129,35 +158,6 @@ Y.~Xue, B.~Xue, M.~Zhang, Self-adaptive particle swarm optimization for
 Y.~Prasad, K.~Biswas, Gene selection in microarray datasets using progressively
   refined {PSO} scheme, in: Proceedings of the AAAI Conference on Artificial
   Intelligence, Vol.~29, 2015.
-
-\bibitem{wangjia2022}
-X.~Wang, W.~Jia, A feature weighting particle swarm optimization method to
-  identify biomarker genes, in: 2022 IEEE International Conference on
-  Bioinformatics and Biomedicine (BIBM), IEEE, 2022, pp. 830--834.
-\newblock \href {https://doi.org/10.1109/BIBM55620.2022.9995376}
-  {\path{doi:10.1109/BIBM55620.2022.9995376}}.
-
-\bibitem{wang2022}
-X.~Wang, Y.~Wang, K.-C. Wong, X.~Li, A self-adaptive weighted differential
-  evolution approach for large-scale feature selection, Knowledge-Based Systems
-  235 (2022) 107633.
-\newblock \href {https://doi.org/10.1016/j.knosys.2021.107633}
-  {\path{doi:10.1016/j.knosys.2021.107633}}.
-
-\bibitem{xuezhang2024}
-Y.~Xue, C.~Zhang, A novel importance-guided particle swarm optimization based
-  on mlp for solving large-scale feature selection problems, Swarm and
-  Evolutionary Computation 91 (2024) 101760.
-\newblock \href {https://doi.org/10.1016/j.swevo.2024.101760}
-  {\path{doi:10.1016/j.swevo.2024.101760}}.
-
-\bibitem{wei2025}
-B.~Wei, S.~Yang, W.~Zha, L.~Deng, J.~Huang, X.~Su, F.~Wang, Particle swarm
-  optimization algorithm based on comprehensive scoring framework for
-  high-dimensional feature selection, Swarm and Evolutionary Computation 95
-  (2025) 101915.
-\newblock \href {https://doi.org/10.1016/j.swevo.2025.101915}
-  {\path{doi:10.1016/j.swevo.2025.101915}}.
 
 \bibitem{weil2025}
 B.~Wei, J.~Huang, L.~Deng, S.~Yang, J.~Zheng, Y.~Huang, Reinforcement

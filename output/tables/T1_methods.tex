@@ -1,29 +1,31 @@
 \begin{table}[!htb]
 \centering
-\caption{Summary of the 14 fixed-length methods compared in this study, with their associated references. Methods in the first group are progressive variants of the proposed framework; TPS denotes Two-Phase Weight Scheduling; ``Self-built'' denotes an implementation by the authors.}
+\ktablecaption
+\small
+\caption{The 14 fixed-length methods compared in this study.}
 \label{T1}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{@{}lp{4.3cm}l@{}}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{8pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lp{3.0cm}l@{}}
 \toprule
 Method & Category & Reference \\
 \midrule
-KDS-EL & Proposed (full framework) & This work \\
-KDS-EL w/o TPS & Proposed (MI-guided init.\ + KER, without two-phase scheduling) & This work \\
-KDS-EL w/o TPS\&KER & Proposed (MI-guided init.\ + adaptive re-init.) & This work \\
-MEL & Multi-task evolutionary learning & \cite{mel2024} \\
+KDS-EL & Proposed & This work \\
+KDS-EL w/o TPS & Ablation & This work \\
+KDS-EL w/o TPS\&KER & Ablation & This work \\
+MEL & Baseline & \cite{mel2024} \\
 \midrule
-FWPSO & Single-objective PSO & \cite{wangjia2022} \\
-PSO-CSM & Single-objective PSO & \cite{wei2025} \\
-SaWDE & Single-objective DE & \cite{wang2022} \\
-IGPSO & Single-objective PSO & \cite{xuezhang2024} \\
-BPSO & Single-objective binary PSO & \cite{kennedy1997} \\
+FWPSO & Single-objective & \cite{wangjia2022} \\
+PSO-CSM & Single-objective & \cite{wei2025} \\
+SaWDE & Single-objective & \cite{wang2022} \\
+IGPSO & Single-objective & \cite{xuezhang2024} \\
+BPSO & Single-objective & \cite{kennedy1997} \\
 \midrule
-W-MOPSO-FS & Multi-objective (Wrapper--Filter hybrid) & Self-built (authors' implementation, no external baseline) \\
+W-MOPSO-FS & Multi-objective & Self-built \\
 fMOPSO-FS & Multi-objective & \cite{han2024} \\
 NSGA-II-FS & Multi-objective & \cite{deb2002} \\
 MOEA-D-FS & Multi-objective & \cite{zhang2007} \\
 MOPSO-FS & Multi-objective & \cite{coello2004} \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}

@@ -1,11 +1,12 @@
 \begin{table}[!htb]
 \centering
+\ktablecaption
+\small
 \caption{Dataset Description (20 Benchmark Datasets)}
 \label{T2}
-\footnotesize
-\begin{tabular}{@{}lrrrc@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrc@{}}
 \toprule
-Dataset & \#Samples & \#Features & \#Classes & Domain \\
+Dataset & Samples & Features & Classes & Domain \\
 \midrule
 Adenoma    &   36 &  7{,}457  &  2 & Gene expression \\
 ALL\_AML   &   72 &  7{,}129  &  2 & Gene expression \\
@@ -29,5 +30,5 @@ madelon    & 2{,}600 &   500    &  2 & Synthetic \\
 PCMAC      & 1{,}943 & 3{,}289  &  2 & Text \\
 \bottomrule
 \multicolumn{5}{@{}c@{}}{Range: $n \in [36, 2600]$, $d \in [500, 54675]$, $c \in [2, 26]$} \\
-\end{tabular}
+\end{tabular*}
 \end{table}

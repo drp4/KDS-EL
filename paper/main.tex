@@ -11,13 +11,16 @@
 % -----------------------------------------------------------------------------
 \documentclass[final,5p,times]{elsarticle}
 
+\frenchspacing
+
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{stfloats}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\usepackage{rotating}
+\usepackage[figuresright]{rotating}
 \setlength{\emergencystretch}{3em}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \renewcommand{\bibfont}{\footnotesize}
@@ -25,6 +28,79 @@
 
 % Locate figures (paper/ -> ../../output/figures is ../output/figures)
 \graphicspath{{../output/figures/}}
+% Elsevier 5p submission layout: 210 x 280 mm trim, 522 pt text width.
+\geometry{%
+  paperwidth=210mm,
+  paperheight=280mm,
+  textwidth=522pt,
+  top=34pt,
+  bottom=42pt,
+  headheight=12pt,
+  headsep=6pt,
+  footskip=12pt%
+}
+
+\makeatletter
+\renewcommand\normalsize{%
+  \@setfontsize\normalsize{8}{9.6}%
+  \abovedisplayskip 8\p@ \@plus2\p@ \@minus4\p@
+  \abovedisplayshortskip \z@ \@plus2\p@
+  \belowdisplayshortskip 5\p@ \@plus2\p@ \@minus2\p@
+  \belowdisplayskip \abovedisplayskip
+  \let\@listi\@listI}
+\renewcommand\small{%
+  \@setfontsize\small{7.2}{8.7}%
+  \abovedisplayskip 7\p@ \@plus2\p@ \@minus3\p@
+  \abovedisplayshortskip \z@ \@plus1\p@
+  \belowdisplayshortskip 4\p@ \@plus1\p@ \@minus1\p@
+  \def\@listi{\leftmargin\leftmargini
+    \topsep 3\p@ \@plus1\p@ \@minus1\p@
+    \parskip 2\p@ \@plus\p@ \@minus\p@
+    \itemsep \parskip}%
+  \belowdisplayskip \abovedisplayskip}
+\renewcommand\footnotesize{%
+  \@setfontsize\footnotesize{6.8}{8.2}%
+  \abovedisplayskip 6\p@ \@plus2\p@ \@minus3\p@
+  \abovedisplayshortskip \z@ \@plus\p@
+  \belowdisplayshortskip 3\p@ \@plus\p@ \@minus\p@
+  \def\@listi{\leftmargin\leftmargini
+    \topsep 3\p@ \@plus\p@ \@minus\p@
+    \parskip 2\p@ \@plus\p@ \@minus\p@
+    \itemsep \parskip}%
+  \belowdisplayskip \abovedisplayskip}
+\renewcommand\scriptsize{\@setfontsize\scriptsize{6}{7.2}}
+\renewcommand\tiny{\@setfontsize\tiny{5}{6}}
+\renewcommand\large{\@setfontsize\large{9}{10.8}}
+\renewcommand\Large{\@setfontsize\Large{10.5}{12.6}}
+\renewcommand\LARGE{\@setfontsize\LARGE{12}{14.4}}
+\renewcommand\huge{\@setfontsize\huge{14}{16.8}}
+\renewcommand\Huge{\@setfontsize\Huge{17}{20.4}}
+
+\let\els@orig@maketitle\maketitle
+\def\maketitle{%
+  \let\els@orig@Large\Large
+  \let\els@orig@normalsize\normalsize
+  \def\Large{\@setfontsize\Large{13.4}{20}}%
+  \def\normalsize{\@setfontsize\normalsize{10.6}{18}}%
+  \els@orig@maketitle
+  \let\Large\els@orig@Large
+  \let\normalsize\els@orig@normalsize
+}
+\makeatother
+
+\makeatletter
+\newcommand{\ktablecaption}{%
+  \renewcommand\@makecaption[2]{%
+    \vskip\abovecaptionskip\small
+    \sbox\@tempboxa{##1: ##2}%
+    \ifdim \wd\@tempboxa >\hsize
+      ##1: ##2\par
+    \else
+      \global \@minipagefalse
+      \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+    \fi
+    \vskip\belowcaptionskip}}
+\makeatother
 
 \begin{document}
 
@@ -39,7 +115,8 @@
 %%% END MASKED AUTHOR BLOCK %%%
 
 \begin{abstract}
-Feature selection in high-dimensional data remains a central challenge for evolutionary computation. Particle swarm optimization suffers from three structural deficiencies: random initialization wastes budget in sparse spaces, uniform mutation discards cross-iteration feature-importance signals, and fixed objective weights misalign with search phases. To address them, we propose KDS-EL (Knowledge-Guided Dual-Phase Swarm Evolutionary Learning), a closed-loop knowledge-guided evolutionary method. First, to overcome cold-start inefficiency, we propose mutual-information-guided initialization with adaptive re-initialization, injecting prior knowledge and restarting stagnated individuals. Second, to exploit the discarded cross-iteration feature-importance signals, we propose a knowledge-guided elite refinement strategy that accumulates feature-importance knowledge and flips elites toward effective features. Third, to align objective weights with search phases, we propose two-phase weight scheduling with aggressive early compression and late accuracy refinement. On 20 high-dimensional benchmarks, KDS-EL ranks first with 0.9574 mean accuracy and 87.8 selected features, outperforming the strongest single- and multi-objective competitors by +3.97 and +4.42 percentage points; Wilcoxon and Holm--Bonferroni tests confirm significance over all 13 competitors.
+\small
+Feature selection in high-dimensional data remains a central challenge for evolutionary computation. Particle swarm optimization suffers from three structural deficiencies: random initialization provides insufficient guidance in sparse high-dimensional spaces, uniform mutation discards cross-iteration feature-importance signals, and static objective preferences cannot adapt to different evolutionary phases. To address these limitations, we propose KDS-EL (Knowledge-Guided Dual-Phase Swarm Evolutionary Learning), a closed-loop knowledge-guided evolutionary framework. First, to overcome cold-start inefficiency, we propose mutual-information-guided initialization with adaptive re-initialization, injecting prior knowledge and recovering population diversity when stagnation occurs. Second, to exploit discarded cross-iteration feature-importance signals, we propose a knowledge-guided elite refinement strategy that accumulates feature-importance knowledge and steers elite solutions toward historically effective features. Third, to align objective weights with search phases, we propose two-phase weight scheduling that emphasizes early dimensionality reduction and late-stage accuracy refinement. On 20 high-dimensional benchmarks, KDS-EL ranks first among all competitors, achieving a mean accuracy of 0.9574 with only 87.8 selected features, outperforming the strongest single- and multi-objective competitors by +3.97 and +4.42 percentage points; Wilcoxon and Holm--Bonferroni tests confirm statistically significant improvements over all 13 competitors.
 \end{abstract}
 
 \begin{keyword}
@@ -68,13 +145,6 @@ feature selection \sep particle swarm optimization \sep mutual information \sep 
 % --------------------------- 4. Proposed algorithm ---------------------
 \input{sections/04_kds_el}
 
-\begin{figure*}[!htb]
-\centering
-\includegraphics[width=0.95\linewidth]{F1_kds_el_framework.drawio.pdf}
-\caption{Overall framework of KDS-EL: raw high-dimensional data is transformed into a compact feature subset through mutual-information-guided initialization, the two-phase weighted main loop with cumulative feature-weight accumulation, and the Knowledge-guided Elite Refinement (KER) strategy.}
-\label{F1}
-\end{figure*}
-
 % ------------ 5. Experimental Results and Analysis (原 5-8 节合并) -------
 \section{Experimental Results and Analysis}\label{sec:results}
 
@@ -87,27 +157,6 @@ This section reports the experimental outcomes across six complementary perspect
 \input{../output/tables/T3_params}
 
 \input{sections/06_results_and_discussion}
-
-\input{../output/tables/T4_accuracy}
-
-\input{../output/tables/T5_features}
-
-\begin{figure*}[!htb]
-\centering
-\includegraphics[width=0.72\linewidth]{F5_features_all.pdf}
-\caption{Selection ratio (mean over 10 runs) of the 14 fixed-length methods across the 20 benchmark datasets; the log-scale ordinate highlights the compactness of KDS-EL relative to all competitors.}
-\label{F5}
-\end{figure*}
-
-\input{../output/tables/T6_wilcoxon}
-\input{../output/tables/T6b_holm_bonferroni}
-
-\begin{figure*}[!htb]
-\centering
-\includegraphics[width=0.85\linewidth]{F8_convergence.pdf}
-\caption{Mean convergence trajectories of KDS-EL, KDS-EL w/o TPS, KDS-EL w/o TPS\&KER, and MEL averaged over the 20 benchmark datasets.}
-\label{F8}
-\end{figure*}
 
 \input{sections/07_component_contribution_analysis}
 
