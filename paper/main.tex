@@ -9,18 +9,21 @@
 % Double-blind note: the author/affiliation block below is MASKED for review.
 % Restore the real author list (and delete this note) upon acceptance.
 % -----------------------------------------------------------------------------
-\documentclass[final,5p,times]{elsarticle}
+\documentclass[final,5p,times,fleqn]{elsarticle}
 
 \frenchspacing
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
+\setlength{\mathindent}{0pt}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{stfloats}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage[figuresright]{rotating}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
 \setlength{\emergencystretch}{3em}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \renewcommand{\bibfont}{\footnotesize}
@@ -37,8 +40,15 @@
   bottom=42pt,
   headheight=12pt,
   headsep=6pt,
-  footskip=12pt%
+  footskip=14pt%
 }
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[L]{\footnotesize Anonymous Author: \textit{Preprint submitted to Elsevier}}
+\fancyfoot[R]{\footnotesize Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.2pt}
 
 \makeatletter
 \renewcommand\normalsize{%
@@ -64,7 +74,7 @@
   \abovedisplayshortskip \z@ \@plus\p@
   \belowdisplayshortskip 3\p@ \@plus\p@ \@minus\p@
   \def\@listi{\leftmargin\leftmargini
-    \topsep 3\p@ \@plus\p@ \@minus\p@
+    \topsep 3\p@ \@plus1\p@ \@minus1\p@
     \parskip 2\p@ \@plus\p@ \@minus\p@
     \itemsep \parskip}%
   \belowdisplayskip \abovedisplayskip}
@@ -102,38 +112,102 @@
     \vskip\belowcaptionskip}}
 \makeatother
 
+\makeatletter
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {8pt \@plus 2pt \@minus 1pt}%
+  {4pt \@plus 1pt}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+  {6pt \@plus 2pt \@minus 1pt}%
+  {3pt \@plus 1pt}%
+  {\normalfont\normalsize\bfseries}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {4pt \@plus 1pt \@minus 1pt}%
+  {-6pt}%
+  {\normalfont\normalsize\bfseries}}
+\makeatother
+
 \begin{document}
 
 \biboptions{sort&compress}
 
-\begin{frontmatter}
+% =========================================================================
+% PAGE 1: Elsevier Highlights Page (标准 Highlights 页面)
+% =========================================================================
+\onecolumn
+\thispagestyle{empty}
 
-\title{Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}
+\noindent{\fontsize{18}{22}\selectfont\bfseries Highlights}\par
+\vspace{1.2em}
+\noindent{\fontsize{13}{17}\selectfont\bfseries Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}\par
+\vspace{0.6em}
+\noindent{\normalsize Anonymous Author}\par
+\vspace{1.8em}
 
-%%% MASKED AUTHOR BLOCK (double-blind review) — replace upon acceptance %%%
-\author[au]{Anonymous Author}
-\ead{corresponding.author@example.com}
-\affiliation[au]{organization={Anonymous Institution (masked for double-blind review)}}
-%%% END MASKED AUTHOR BLOCK %%%
+\begin{itemize}\setlength{\itemsep}{10pt}\normalsize
+  \item Closed-loop knowledge-guided swarm learning framework for high-dimensional feature selection.
+  \item MI initialization with adaptive re-initialization restores diversity and prevents search entrapment.
+  \item Knowledge-guided elite refinement accumulates feature-importance signals with exponential decay.
+  \item Two-phase weight scheduling temporally decouples feature compression from accuracy refinement.
+  \item KDS-EL achieves 95.74\% accuracy with 87.8 selected features across 20 benchmark datasets.
+\end{itemize}
 
-\begin{abstract}
-\small
-Feature selection in high-dimensional data remains a central challenge for evolutionary computation. Particle swarm optimization suffers from three structural deficiencies: random initialization provides insufficient guidance in sparse high-dimensional spaces, uniform feature perturbation fails to exploit cross-iteration feature-importance signals, and static objective preferences cannot adapt to different evolutionary phases. To address these limitations, we propose KDS-EL (Knowledge-Guided Dual-Phase Swarm Evolutionary Learning), a knowledge-guided evolutionary framework with a closed-loop feature-importance learning mechanism. First, to overcome inefficient initialization, we propose mutual-information-guided initialization with adaptive re-initialization, injecting prior knowledge and recovering population diversity when stagnation occurs. Second, to exploit discarded cross-iteration feature-importance signals, we propose a knowledge-guided elite refinement strategy that accumulates feature-importance knowledge and steers elite solutions toward historically effective features. Third, to align objective weights with search phases, we propose two-phase weight scheduling that emphasizes early dimensionality reduction and late-stage accuracy refinement. On 20 high-dimensional benchmarks, KDS-EL achieves the best classification performance among all competitors, with a mean accuracy of 0.9574 and only 87.8 selected features, outperforming the strongest single- and multi-objective competitors by +3.97 and +4.42 percentage points; Wilcoxon signed-rank tests with Holm--Bonferroni correction confirm statistically significant improvements over all 13 competitors.
-\end{abstract}
+\clearpage
+\setcounter{page}{1}
 
-\begin{keyword}
-feature selection \sep particle swarm optimization \sep mutual information \sep knowledge-guided elite refinement \sep two-phase weight scheduling
-\end{keyword}
+% =========================================================================
+% PAGE 2+: Main Article in Modern Elsevier Format
+% =========================================================================
+\twocolumn[{%
+  \vspace*{0.2cm}
+  {\fontsize{16}{20}\selectfont\bfseries Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection\par}
+  \vspace{10pt}
 
-\end{frontmatter}
+  {\normalsize Anonymous Author\textsuperscript{a,*}\par}
+  \vspace{4pt}
+  {\footnotesize\itshape \textsuperscript{a} Anonymous Institution (masked for double-blind review)\par}
+  \vspace{12pt}
 
-\begin{highlights}
-\item KDS-EL: closed-loop knowledge-guided swarm learning for feature selection
-\item MI and KER keep feature-importance knowledge inside the search loop
-\item KER re-deploys accumulated feature knowledge with a bounded refinement budget
-\item Two-Phase Weight Scheduling aligns knowledge deployment with search stages
-\item KDS-EL ranks first on 20 benchmarks with 0.9574 accuracy and 87.8 features
-\end{highlights}
+  \hrule height 0.4pt
+  \vspace{6pt}
+
+  \noindent
+  \begin{minipage}[t]{0.28\textwidth}
+    \vspace{0pt}
+    {\fontsize{8.5}{10}\selectfont\bfseries A R T I C L E \quad I N F O}\par
+    \vspace{2pt}
+    \hrule height 0.4pt
+    \vspace{5pt}
+    {\fontsize{7.5}{9.2}\selectfont
+    \textit{Keywords:}\par
+    Feature selection\par
+    Particle swarm optimization\par
+    Mutual information\par
+    Knowledge-guided elite refinement\par
+    Two-phase weight scheduling\par
+    }
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{0.68\textwidth}
+    \vspace{0pt}
+    {\fontsize{8.5}{10}\selectfont\bfseries A B S T R A C T}\par
+    \vspace{2pt}
+    \hrule height 0.4pt
+    \vspace{5pt}
+    {\fontsize{7.5}{9.2}\selectfont
+    Feature selection in high-dimensional data remains a central challenge for evolutionary computation. Particle swarm optimization suffers from three structural deficiencies: random initialization provides insufficient guidance in sparse high-dimensional spaces, uniform feature perturbation fails to exploit cross-iteration feature-importance signals, and static objective preferences cannot adapt to different evolutionary phases. To address these limitations, we propose KDS-EL (Knowledge-Guided Dual-Phase Swarm Evolutionary Learning), a knowledge-guided evolutionary framework with a closed-loop feature-importance learning mechanism. First, to overcome inefficient initialization, we propose mutual-information-guided initialization with adaptive re-initialization, injecting prior knowledge and recovering population diversity when stagnation occurs. Second, to exploit discarded cross-iteration feature-importance signals, we propose a knowledge-guided elite refinement strategy that accumulates feature-importance knowledge and steers elite solutions toward historically effective features. Third, to align objective weights with search phases, we propose two-phase weight scheduling that emphasizes early dimensionality reduction and late-stage accuracy refinement. On 20 high-dimensional benchmarks, KDS-EL achieves the best classification performance among all competitors, with a mean accuracy of 0.9574 and only 87.8 selected features, outperforming the strongest single- and multi-objective competitors by +3.97 and +4.42 percentage points; Wilcoxon signed-rank tests with Holm--Bonferroni correction confirm statistically significant improvements over all 13 competitors.\par
+    }
+  \end{minipage}
+
+  \vspace{6pt}
+  \hrule height 0.4pt
+  \vspace{10pt}
+}]
+
+{
+  \renewcommand{\thefootnote}{*}
+  \footnotetext[1]{\raggedright Corresponding author.\par\textit{E-mail address:} \texttt{corresponding.author@example.com} (Anonymous Author).\par\vspace{1pt}\textit{ORCID(s):}}
+}
 
 % --------------------------- 1. Introduction ---------------------------
 \input{sections/01_introduction}
@@ -164,13 +238,11 @@ This section reports the experimental outcomes across six complementary perspect
 
 \input{sections/08_parameter_sensitivity}
 
-
 % --------------------------- 6. Conclusion ----------------------------
 \section{Conclusion}\label{sec:conclusion}
 
 \input{sections/09_conclusion}
 
-% --------------------------- Statements -------------------------------
 \section*{CRediT Author Statement}
 \textbf{Anonymous Author}: Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Writing -- original draft, Writing -- review \& editing, Visualization.
 
@@ -180,7 +252,7 @@ The authors declare that they have no known competing financial interests or per
 \section*{Data Availability}
 The 20 benchmark datasets analyzed in this study are publicly available and widely used in the feature selection literature. The source code of KDS-EL will be made available upon publication. Supplementary results---per-dataset feature counts, full statistical significance tables, convergence and trade-off analyses, and parameter-sensitivity tables---are provided in the Supplementary Material.
 
-% --------------------------- References -------------------------------
+% --------------------------- References --------------------------------
 \bibliographystyle{elsarticle-num}
 \bibliography{references}
 

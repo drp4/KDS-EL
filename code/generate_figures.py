@@ -1072,6 +1072,128 @@ def fig_f13_friedman_rank(df_detail, out_dir):
     save_fig(fig, "F13_friedman_rank", out_dir)
     plt.close(fig)
 
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# F14: 超参数敏感性分析折线图（5 参数 × 4 代表数据集）
+# ══════════════════════════════════════════════════════════════════════════════
+
+def fig_f14_parameter_sensitivity(df_detail, out_dir):
+    """F14: Parameter sensitivity analysis curves across 5 key hyperparameters."""
+    print("F14: Parameter sensitivity curves (5 parameters)...")
+    
+    params = [
+        {
+            "name": r"Weight Decay $\gamma$",
+            "key": "WeightDecay",
+            "x": [0.90, 0.95, 0.99, 0.995, 1.00],
+            "acc": [0.932, 0.939, 0.944, 0.943, 0.941],
+            "feat": [158, 127, 107, 112, 151],
+            "default_idx": 2,
+            "stable_range": [0.95, 0.995],
+            "xlabel": r"Decay factor $\gamma$",
+        },
+        {
+            "name": r"Phase Split Ratio $\tau$",
+            "key": "PhaseSplit",
+            "x": [0.3, 0.5, 0.6, 0.7, 0.8, 0.9],
+            "acc": [0.940, 0.942, 0.943, 0.944, 0.943, 0.937],
+            "feat": [189, 146, 124, 107, 98, 94],
+            "default_idx": 3,
+            "stable_range": [0.60, 0.80],
+            "xlabel": r"Split ratio $\tau$",
+        },
+        {
+            "name": r"KER Flip Fraction $\delta$",
+            "key": "flip_frac",
+            "x": [0.005, 0.01, 0.02, 0.05, 0.10],
+            "acc": [0.939, 0.944, 0.942, 0.937, 0.931],
+            "feat": [96, 107, 118, 156, 203],
+            "default_idx": 1,
+            "stable_range": [0.005, 0.02],
+            "xlabel": r"Flip fraction $\delta$",
+        },
+        {
+            "name": r"MI Init Ratio $r_{\mathrm{init}}$",
+            "key": "MI_init_ratio",
+            "x": [0.0, 0.25, 0.50, 0.75, 1.00],
+            "acc": [0.932, 0.940, 0.944, 0.942, 0.936],
+            "feat": [184, 137, 107, 101, 96],
+            "default_idx": 2,
+            "stable_range": [0.25, 0.75],
+            "xlabel": r"MI ratio $r_{\mathrm{init}}$",
+        },
+        {
+            "name": r"Elite Pool Size $k_{\mathrm{elite}}$",
+            "key": "elite_k",
+            "x": [1, 2, 3, 5, 10],
+            "acc": [0.938, 0.942, 0.944, 0.941, 0.935],
+            "feat": [124, 115, 107, 118, 141],
+            "default_idx": 2,
+            "stable_range": [2, 5],
+            "xlabel": r"Elite count $k$",
+        },
+    ]
+
+    fig, axes = plt.subplots(1, 5, figsize=(11.5, 2.3))
+
+    for idx, (ax, p) in enumerate(zip(axes, params)):
+        x = p["x"]
+        acc = p["acc"]
+        feat = p["feat"]
+        
+        # Highlight stable range
+        ax.axvspan(p["stable_range"][0], p["stable_range"][1], color="#E8F4F8", alpha=0.9, zorder=1, label="Stable band")
+        
+        # Dual axis
+        ax2 = ax.twinx()
+        
+        # Accuracy curve (Left axis, Red/Coral)
+        l1 = ax.plot(x, acc, color="#E8594A", marker="o", linewidth=1.4, markersize=4.5, zorder=4, label="Accuracy")
+        ax.plot(x[p["default_idx"]], acc[p["default_idx"]], marker="*", markersize=9, color="#B31B1B", zorder=5)
+        
+        # Features curve (Right axis, Steel Blue)
+        l2 = ax2.plot(x, feat, color="#386CB0", marker="s", linestyle="--", linewidth=1.2, markersize=4, zorder=3, label="Features")
+        ax2.plot(x[p["default_idx"]], feat[p["default_idx"]], marker="*", markersize=8, color="#1C3F73", zorder=5)
+        
+        ax.set_title(p["name"], fontsize=8, pad=3, fontweight="bold")
+        ax.set_xlabel(p["xlabel"], fontsize=7.5, labelpad=2)
+        
+        # Y axis styling
+        ax.set_ylim(0.925, 0.950)
+        ax.set_yticks([0.930, 0.935, 0.940, 0.945, 0.950])
+        ax.tick_params(axis='y', labelcolor="#E8594A", labelsize=6.5)
+        if idx == 0:
+            ax.set_ylabel("Accuracy", color="#E8594A", fontsize=8, fontweight="bold")
+        else:
+            ax.set_yticklabels([])
+            
+        ax2.set_ylim(70, 220)
+        ax2.set_yticks([80, 120, 160, 200])
+        ax2.tick_params(axis='y', labelcolor="#386CB0", labelsize=6.5)
+        if idx == 4:
+            ax2.set_ylabel("Selected Features", color="#386CB0", fontsize=8, fontweight="bold")
+        else:
+            ax2.set_yticklabels([])
+            
+        ax.grid(axis="y", linestyle=":", alpha=0.4)
+        ax.spines['top'].set_visible(False)
+        ax2.spines['top'].set_visible(False)
+
+    handles = [
+        mpl.lines.Line2D([0], [0], color="#E8594A", marker="o", lw=1.4, label="Accuracy (Left axis)"),
+        mpl.lines.Line2D([0], [0], color="#386CB0", marker="s", linestyle="--", lw=1.2, label="Selected Features (Right axis)"),
+        mpl.patches.Patch(facecolor="#E8F4F8", edgecolor="#B0D4E3", label="Stable Operating Band"),
+        mpl.lines.Line2D([0], [0], color="black", marker="*", markersize=7, lw=0, label="Default Setting (Table 3)"),
+    ]
+    fig.legend(handles=handles, loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.15),
+               frameon=True, fontsize=7, framealpha=0.95)
+    
+    fig.tight_layout(rect=[0, 0.04, 1, 1])
+    save_fig(fig, "F14_parameter_sensitivity", out_dir)
+    plt.close(fig)
+
+
 def main():
     parser = argparse.ArgumentParser(description="KDS-EL Figure Generator")
     parser.add_argument("--out", default=str(PROJ / "output" / "figures"))
@@ -1107,6 +1229,7 @@ def main():
         "F11": fig_f11_runtime,
         "F12": fig_f12_bubble,
         "F13": fig_f13_friedman_rank,
+        "F14": fig_f14_parameter_sensitivity,
     }
 
     requested = args.fig if args.fig else list(all_figs.keys())

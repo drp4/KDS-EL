@@ -1,13 +1,14 @@
-\begin{sidewaystable}
+\begin{table*}[!t]
 \centering
-\caption{One-sided Wilcoxon signed-rank test results ($p<0.05$, row method greater than column method): entries report the number of datasets out of 20 on which the row method significantly outperforms the column method.}
+\caption{One-sided Wilcoxon signed-rank test win counts ($p<0.05$, row method greater than column method) across 20 benchmark datasets. Entries report the number of datasets on which the row method significantly outperforms the column method.}
 \label{T6}
 \scriptsize
-\setlength{\tabcolsep}{3pt}
-\resizebox{\dimexpr\textheight-2cm}{!}{%
-\begin{tabular}{lcccccccccccccc}
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.06}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lcccccccccccccc@{}}
 \toprule
-Method & KDS-EL & KDS-EL w/o TPS & KDS-EL w/o TPS\&KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO & W-MOPSO-FS & fMOPSO-FS & NSGA-II-FS & MOEA-D-FS & MOPSO-FS \\
+Method & KDS-EL & w/o TPS & w/o KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO & W-MPSO & fMPSO & NSGA-II & MOEA/D & MOPSO \\
 \midrule
 KDS-EL & --- & 13/20 & 19/20 & 20/20 & 19/20 & 20/20 & 19/20 & 20/20 & 20/20 & 14/20 & 15/20 & 16/20 & 16/20 & 18/20 \\
 KDS-EL w/o TPS & \textbf{0/20} & --- & 15/20 & 20/20 & 20/20 & 20/20 & 19/20 & 20/20 & 20/20 & 14/20 & 15/20 & 15/20 & 15/20 & 17/20 \\
@@ -24,5 +25,6 @@ NSGA-II-FS & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/
 MOEA-D-FS & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- & 4/20 \\
 MOPSO-FS & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- \\
 \bottomrule
-\end{tabular}}
-\end{sidewaystable}
+\end{tabular}%
+}
+\end{table*}

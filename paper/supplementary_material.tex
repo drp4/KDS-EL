@@ -1,7 +1,8 @@
-\documentclass[final,1p,times]{elsarticle}
+\documentclass[final,1p,times,fleqn]{elsarticle}
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
+\setlength{\mathindent}{0pt}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{stfloats}
@@ -26,7 +27,7 @@
 
 \begin{frontmatter}
 
-\title{Supplementary Material for:\\\textbf{Knowledge-Guided Dual-Phase Swarm Evolutionary Learning for High-Dimensional Feature Selection}}
+\title{Supplementary Material for:\\Knowledge-Guided Dual-Phase Swarm Evolutionary Learning for High-Dimensional Feature Selection}
 
 \author{Anonymous Author(s)}
 
@@ -38,14 +39,14 @@ This supplementary document provides comprehensive extended experimental records
 
 \section*{Table of Contents}
 \begin{itemize}
-    \item \textbf{Section S1}: Benchmark Dataset Characteristics and Selection Rationale
-    \item \textbf{Section S2}: Baseline Algorithms and Detailed Hyper-Parameter Configurations
-    \item \textbf{Section S3}: Complete Per-Dataset Classification Accuracy and Feature Compactness Metrics
-    \item \textbf{Section S4}: Granular Per-Dataset Component Contribution (Ablation) Results (\textbf{Table~S4})
-    \item \textbf{Section S5}: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (\textbf{Table~S5})
-    \item \textbf{Section S6}: Full Multi-Dataset Parameter Sensitivity Evaluation Grids (\textbf{Table~S6})
-    \item \textbf{Section S7}: Full Convergence Trajectories and Boxplot Distributions
-    \item \textbf{Section S8}: Extended Statistical Significance Testing Matrices
+    \item \textit{Section S1}: Benchmark Dataset Characteristics and Selection Rationale
+    \item \textit{Section S2}: Baseline Algorithms and Detailed Hyper-Parameter Configurations
+    \item \textit{Section S3}: Complete Per-Dataset Classification Accuracy and Feature Compactness Metrics
+    \item \textit{Section S4}: Granular Per-Dataset Component Contribution (Ablation) Results (Table~S4)
+    \item \textit{Section S5}: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (Table~S5)
+    \item \textit{Section S6}: Full Multi-Dataset Parameter Sensitivity Evaluation Grids (Table~S6)
+    \item \textit{Section S7}: Full Convergence Trajectories and Boxplot Distributions
+    \item \textit{Section S8}: Extended Statistical Significance Testing Matrices
 \end{itemize}
 
 \newpage
@@ -76,7 +77,7 @@ Tables~\ref{T4} and~\ref{T5} present the complete per-dataset 5-fold cross-valid
 
 \newpage
 
-\section*{Section S4: Granular Per-Dataset Component Contribution (Ablation) Results (\textbf{Table~S4})}\label{sec:supp_ablation}
+\section*{Section S4: Granular Per-Dataset Component Contribution (Ablation) Results (Table~S4)}\label{sec:supp_ablation}
 
 Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential configurations of the subtractive ablation chain: (i) MEL baseline~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL$_{\mathrm{KER}}$ (w/o TPS), and (iv) Complete KDS-EL.
 
@@ -91,7 +92,7 @@ Table~\ref{T-A4} provides the complete per-dataset performance metrics across th
 
 \newpage
 
-\section*{Section S5: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (\textbf{Table~S5})}\label{sec:supp_runtime}
+\section*{Section S5: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (Table~S5)}\label{sec:supp_runtime}
 
 Table~\ref{T-A5} details the mean wall-clock computational execution time (in seconds, averaged over 10 independent runs) across all 20 benchmark datasets for the 14 compared algorithms.
 
@@ -106,7 +107,7 @@ Table~\ref{T-A5} details the mean wall-clock computational execution time (in se
 
 \newpage
 
-\section*{Section S6: Full Multi-Dataset Parameter Sensitivity Evaluation Grids (\textbf{Table~S6})}\label{sec:supp_sensitivity}
+\section*{Section S6: Full Multi-Dataset Parameter Sensitivity Evaluation Grids (Table~S6)}\label{sec:supp_sensitivity}
 
 Table~\ref{T-A6} reports the full multi-dataset one-factor-at-a-time (OFAT) parameter sensitivity evaluation results across the four representative benchmark datasets (\textit{Adenoma}, \textit{Colon}, \textit{ALL4}, and \textit{BASEHOCK}) for each of the five investigated hyper-parameters ($\mathrm{WeightDecay}$, $\mathrm{PhaseSplit}$, $\mathrm{flip\_frac}$, $\mathrm{MI\_init\_ratio}$, and $\mathrm{elite\_k}$).
 

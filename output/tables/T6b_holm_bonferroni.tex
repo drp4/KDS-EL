@@ -3,8 +3,9 @@
 \caption{Holm--Bonferroni corrected pairwise comparison between KDS-EL and each of the 13 comparison methods over the 20 datasets. $\Delta$Acc is the mean accuracy advantage of KDS-EL; Combined $p$ is the unadjusted Fisher combined one-sided Wilcoxon $p$-value and Holm $p$ is its Holm--Bonferroni adjustment; $H_0$ of no superiority is rejected at the Holm threshold in every case.}
 \label{T6b}
 \footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{lcccc}
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}
 \toprule
 Method & $\Delta$Acc & Combined $p$ & Holm $p$ & Reject $H_0$ \\
 \midrule
@@ -22,5 +23,5 @@ NSGA-II-FS & $+0.0509$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
 MOEA-D-FS & $+0.0532$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
 MOPSO-FS & $+0.0565$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}

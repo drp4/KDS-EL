@@ -1,0 +1,55 @@
+\documentclass[a4paper,fleqn]{cas-dc}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[figuresright]{rotating}
+
+\graphicspath{{../output/figures/}}
+
+\begin{document}
+
+% Page 1: Highlights
+\noindent{\Large\bfseries Highlights}\par
+\vspace{1em}
+\noindent{\large\bfseries Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}\par
+\vspace{0.5em}
+\noindent Anonymous Author\par
+\vspace{1.5em}
+
+\begin{itemize}\setlength{\itemsep}{8pt}
+  \item Closed-loop knowledge-guided swarm learning framework for high-dimensional feature selection.
+  \item MI initialization with adaptive re-initialization restores diversity and prevents search entrapment.
+  \item Knowledge-guided elite refinement accumulates feature-importance signals with exponential decay.
+  \item Two-phase weight scheduling temporally decouples feature compression from accuracy refinement.
+  \item KDS-EL achieves 95.74\% accuracy with 87.8 selected features across 20 benchmark datasets.
+\end{itemize}
+
+\clearpage
+
+\shorttitle{Multi-Task PSO with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling}
+\shortauthors{Anonymous Author}
+
+\title[mode=title]{Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}
+
+\author[1]{Anonymous Author}
+\cormark[1]
+\ead{corresponding.author@example.com}
+\address[1]{School of Computer Science, Anonymous University, Anonymous City, China}
+\cortext[cor1]{Corresponding author}
+
+\begin{abstract}
+Feature selection in high-dimensional data remains a central challenge for evolutionary computation. Particle swarm optimization suffers from three structural deficiencies: random initialization provides insufficient guidance in sparse high-dimensional spaces, uniform feature perturbation fails to exploit cross-iteration feature-importance signals, and static objective preferences cannot adapt to different evolutionary phases. To address these limitations, we propose KDS-EL (Knowledge-Guided Dual-Phase Swarm Evolutionary Learning), a knowledge-guided evolutionary framework with a closed-loop feature-importance learning mechanism. First, to overcome inefficient initialization, we propose mutual-information-guided initialization with adaptive re-initialization, injecting prior knowledge and recovering population diversity when stagnation occurs. Second, to exploit discarded cross-iteration feature-importance signals, we propose a knowledge-guided elite refinement strategy that accumulates feature-importance knowledge and steers elite solutions toward historically effective features. Third, to align objective weights with search phases, we propose two-phase weight scheduling that emphasizes early dimensionality reduction and late-stage accuracy refinement. On 20 high-dimensional benchmarks, KDS-EL achieves the best classification performance among all competitors, with a mean accuracy of 0.9574 and only 87.8 selected features, outperforming the strongest single- and multi-objective competitors by +3.97 and +4.42 percentage points; Wilcoxon signed-rank tests with Holm--Bonferroni correction confirm statistically significant improvements over all 13 competitors.
+\end{abstract}
+
+\begin{keywords}
+Feature selection \sep Particle swarm optimization \sep Mutual information \sep Knowledge-guided elite refinement \sep Two-phase weight scheduling
+\end{keywords}
+
+\maketitle
+
+\input{sections/01_introduction}
+
+\end{document}

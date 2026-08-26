@@ -33,34 +33,24 @@ I(f_j; Y) = H(Y) - H(Y \mid f_j) = \sum_{v \in \mathrm{Val}(f_j)} \sum_{c=1}^C P
 \end{equation}
 where $H(Y)$ is the marginal Shannon entropy of the class labels and $H(Y \mid f_j)$ is the conditional entropy given feature $f_j$. High values of $I(f_j; Y)$ indicate strong discriminative relevance to classification targets.
 
-\begin{algorithm}[!htb]
-\caption{Traditional Filter Feature Selection via Hard MI Truncation}
-\label{alg:mi_filtering}
-\begin{algorithmic}[1]
-\Require Dataset $\mathcal{D} = (X, Y)$ with $D$ features, top retention ratio $k \in (0, 1]$
-\Ensure Truncated feature subset $\mathcal{S}_{\mathrm{Filter}}$
-\For{$j = 1$ \textbf{to} $D$}
-    \State Compute mutual information $I(f_j; Y)$ according to \eqref{eq:mi}
-\EndFor
-\State Sort feature indices $\mathrm{IDX}$ in descending order of $I(f_j; Y)$
-\State $\mathcal{S}_{\mathrm{Filter}} \leftarrow \bigl\{\mathrm{IDX}(1), \mathrm{IDX}(2), \ldots, \mathrm{IDX}(\lfloor k \cdot D \rfloor)\bigr\}$
-\State \Return $\mathcal{S}_{\mathrm{Filter}}$
-\end{algorithmic}
-\end{algorithm}
-
-Conventional filter feature selection methods~\cite{peng2005,deng2025nns} evaluate $I(f_j; Y)$ across all $D$ dimensions and execute a **hard truncation** (Algorithm~\ref{alg:mi_filtering}), discarding all features outside the top-$k$ ranking. While computationally rapid ($O(D \log D)$), hard truncation fundamentally ignores multi-feature synergy: individual features with moderate MI scores that are collectively decisive when combined are permanently eliminated. Rather than using hard truncation, KDS-EL utilizes normalized MI scores as a **soft prior** to construct continuous initial population seeds (Section~\ref{sec:mi}), injecting filter knowledge into the evolutionary wrapper without irreversibly shrinking the search space.
+Conventional filter feature selection methods~\cite{peng2005,deng2025nns} evaluate $I(f_j; Y)$ across all $D$ dimensions and execute a hard truncation:
+\begin{equation}
+\mathcal{S}_{\mathrm{Filter}} = \bigl\{\mathrm{IDX}(1), \mathrm{IDX}(2), \ldots, \mathrm{IDX}(\lfloor k \cdot D \rfloor)\bigr\},
+\label{eq:hard_filter}
+\end{equation}
+where $\mathrm{IDX}$ denotes the feature indices sorted in descending order of $I(f_j; Y)$ and $k \in (0, 1]$ represents the retention ratio, permanently discarding all features outside the top-$k$ ranking. While computationally rapid ($O(D \log D)$), hard truncation fundamentally ignores multi-feature synergy: individual features with moderate MI scores that are collectively decisive when combined are permanently eliminated. Rather than using hard truncation, KDS-EL utilizes normalized MI scores as a soft prior to construct continuous initial population seeds (Section~\ref{sec:mi}), injecting filter knowledge into the evolutionary wrapper without irreversibly shrinking the search space.
 
 \subsection{Multi-Task Evolutionary Learning Baseline (MEL)}\label{sec:mel}
 
 Multi-Task Evolutionary Learning (MEL), recently proposed by Zhang et al.~\cite{mel2024}, introduces a cooperative multi-task architecture for high-dimensional feature selection. In MEL, a population of $N$ particles is partitioned into two collaborative subpopulations, $\mathcal{P}_1$ and $\mathcal{P}_2$ ($|\mathcal{P}_1| = |\mathcal{P}_2| = N/2$), operating on dual complementary search tasks:
-\begin{itemize}
-    \item \textbf{Subpopulation 1 ($\mathcal{P}_1$ - Continuous Swarm Exploration)}: Particles update continuous velocities and positions using PSO dynamics, augmented with an inter-task knowledge transfer channel directing particles toward the historical best of Subpopulation~2 ($\mathbf{g}_{\mathrm{best},2}$):
-    \begin{equation}
-    \mathbf{v}_{1,i}^{(t+1)} = \omega \mathbf{v}_{1,i}^{(t)} + c_1 r_1 (\mathbf{p}_{\mathrm{best},1,i} - \mathbf{p}_{1,i}^{(t)}) + c_2 r_2 (\mathbf{g}_{\mathrm{best},1} - \mathbf{p}_{1,i}^{(t)}) + c_3 r_3 (\mathbf{g}_{\mathrm{best},2} - \mathbf{p}_{1,i}^{(t)}).
-    \label{eq:mel_sub1}
-    \end{equation}
-    \item \textbf{Subpopulation 2 ($\mathcal{P}_2$ - Importance-Guided Discrete Sampling)}: Rather than continuous mechanics, $\mathcal{P}_2$ samples binary feature masks directly based on a shared feature-importance matrix $W_{\mathrm{MEL}} \in \mathbb{R}^D$.
-\end{itemize}
+
+\textit{Subpopulation~1 ($\mathcal{P}_1$): Continuous swarm exploration.} Particles update continuous velocities and positions using PSO dynamics, augmented with an inter-task knowledge transfer channel directing particles toward the historical best of Subpopulation~2 ($\mathbf{g}_{\mathrm{best},2}$):
+\begin{equation}
+\mathbf{v}_{1,i}^{(t+1)} = \omega \mathbf{v}_{1,i}^{(t)} + c_1 r_1 (\mathbf{p}_{\mathrm{best},1,i} - \mathbf{p}_{1,i}^{(t)}) + c_2 r_2 (\mathbf{g}_{\mathrm{best},1} - \mathbf{p}_{1,i}^{(t)}) + c_3 r_3 (\mathbf{g}_{\mathrm{best},2} - \mathbf{p}_{1,i}^{(t)}).
+\label{eq:mel_sub1}
+\end{equation}
+
+\textit{Subpopulation~2 ($\mathcal{P}_2$): Importance-guided discrete sampling.} Rather than continuous mechanics, $\mathcal{P}_2$ samples binary feature masks directly based on a shared feature-importance matrix $W_{\mathrm{MEL}} \in \mathbb{R}^D$.
 
 In MEL, both subpopulations share a scalar fitness function combining classification error and feature subset ratio via static weights:
 \begin{equation}
@@ -71,9 +61,9 @@ where $\mathrm{Acc}(\mathbf{x})$ is the 5-fold cross-validation accuracy of a $k
 
 Despite its innovative multi-task design, MEL exhibits three critical performance bottlenecks when scaled to ultra-high-dimensional data ($D > 10^3$):
 \begin{enumerate}
-    \item \textbf{Blind Cold Start}: Uniform random initialization forces both subpopulations to start from dense configurations ($\approx 50\%$ active features), wasting substantial computational budget in non-informative spaces.
-    \item \textbf{Evolutionary Memory Loss and Stale Accumulation}: MEL's importance matrix is updated solely from per-generation accuracy differences without exponential decay, causing monotonic score accumulation that saturates ranking sensitivity.
-    \item \textbf{Static Objective Weight Rigidity}: The fixed weight $\beta = 0.10$ provides inadequate feature-pruning pressure during early generations, leading to sluggish feature reduction and prolonged evaluations ($175.0$~s average runtime).
+    \item \textbf{Unguided early-stage exploration}: Uniform random initialization forces both subpopulations to start from dense configurations ($\approx 50\%$ active features), wasting substantial computational budget in non-informative search regions during early generations.
+    \item \textbf{Evolutionary memory loss and stale accumulation}: MEL's importance matrix is updated solely from per-generation accuracy differences without exponential decay, causing monotonic score accumulation that saturates ranking sensitivity.
+    \item \textbf{Static objective weight rigidity}: The fixed weight $\beta = 0.10$ provides inadequate feature-pruning pressure during early generations, leading to sluggish feature reduction and prolonged evaluations ($175.0$~s average runtime).
 \end{enumerate}
 
 KDS-EL directly inherits the multi-task dual-subpopulation structure of MEL while completely eliminating these three structural limitations through MI-guided hybrid seeding (Section~\ref{sec:mi}), discounted cumulative importance harvesting with the KER refinement operator (Sections~\ref{sec:importance}--\ref{sec:ker}), and Two-Phase dynamic weight scheduling (Section~\ref{sec:twophase}).

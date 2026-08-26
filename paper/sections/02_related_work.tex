@@ -2,13 +2,44 @@
 
 This section provides a systematic survey of evolutionary feature selection paradigms, multi-objective versus single-objective formulations in high-dimensional spaces, evolutionary multi-task optimization, and knowledge-guided meta-heuristics, establishing the theoretical demarcation and unique positioning of KDS-EL.
 
+\begin{table*}[!t]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\caption{Taxonomic and methodological comparison between KDS-EL and representative evolutionary feature selection algorithms.}
+\label{tab:comparison_literature}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l c ccc cc c}
+\toprule
+& & \multicolumn{3}{c}{Knowledge Engineering} & \multicolumn{2}{c}{Search Control} & \\
+\cmidrule(lr){3-5} \cmidrule(lr){6-7}
+Algorithm & Paradigm & MI Prior Seeding & Online Memory & Memory Decay & Elite Refinement & Dynamic Weighting & Complexity \\
+\midrule
+BPSO~\cite{kennedy1997}         & SO-SI  & $\times$     & $\times$     & $\times$     & $\times$     & $\times$     & High \\
+FWPSO~\cite{wangjia2022}       & SO-SI  & $\circ$      & $\times$     & $\times$     & $\times$     & $\times$     & Moderate \\
+SaWDE~\cite{wang2022}          & SO-DE  & $\times$     & $\times$     & $\times$     & $\times$     & $\circ$      & High \\
+W-MOPSO-FS~\cite{xue2012mopso} & MO-SI  & $\times$     & $\times$     & $\times$     & $\times$     & $\times$     & High \\
+NNS-DFPG-CSA~\cite{deng2025nns}& SO-CSA & $\circ$      & $\times$     & $\times$     & $\times$     & $\times$     & Moderate \\
+MI-MPODE~\cite{mimpode2025}    & SO-DE  & $\checkmark$ & $\times$     & $\times$     & $\times$     & $\times$     & Moderate \\
+EMSWOA~\cite{miao2024}         & MS-WOA & $\times$     & $\times$     & $\times$     & $\circ$      & $\times$     & High \\
+MEL~\cite{mel2024}             & MT-SI  & $\times$     & $\checkmark$ & $\times$     & $\times$     & $\times$     & High \\
+\midrule
+\textbf{KDS-EL (Proposed)}     & \textbf{MT-SI} & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \textbf{Low} \\
+\bottomrule
+\end{tabular*}
+\vspace{2pt}
+\par\raggedright
+\footnotesize
+\textit{Note}: $\checkmark$: Fully supported; $\circ$: Partially supported (e.g., hard pre-filtering truncation, static velocity biasing, or adaptive scalar mutation); $\times$: Absent / not supported.\\
+\textit{Paradigms}: SO: Single-Objective; MO: Multi-Objective; MS: Multi-Swarm; MT: Multi-Task; SI: Swarm Intelligence; DE: Differential Evolution; CSA: Crow Search Algorithm; WOA: Whale Optimization Algorithm.
+\end{table*}
+
 \subsection{Evolutionary Swarm Intelligence for Feature Selection}\label{sec:fs-paradigms}
 
 Feature selection is a combinatorial NP-hard optimization problem that aims to identify an optimal subset of $d \ll D$ relevant features, maximizing predictive accuracy while eliminating redundant and uninformative dimensions~\cite{guyon2003,lili2017}. Traditional feature selection techniques are categorized into three classical paradigms:
 \begin{itemize}
-    \item \textbf{Filter Methods}: Filter techniques evaluate feature subsets based on intrinsic statistical properties, such as mutual information (mRMR~\cite{peng2005}), correlation (FCBF~\cite{yu2003}), or graph-theoretic centrality~\cite{roffo2016}. Although computationally efficient ($O(D \log D)$), filter methods evaluate features independently or pairwise, fundamentally ignoring complex multivariate interactions and resulting in suboptimal accuracy when applied to non-linear classification landscapes.
-    \item \textbf{Wrapper Methods}: Wrapper approaches evaluate candidate subsets using the direct predictive feedback of a machine learning classifier~\cite{kohavi1997}. While wrappers capture intricate feature dependencies and deliver superior classification performance, exhaustive evaluation is intractable in high-dimensional spaces ($2^D$ combinatorial states), necessitating stochastic global search heuristics.
-    \item \textbf{Embedded Methods}: Embedded methods incorporate feature selection directly into model training via regularization, such as LASSO/Bolasso~\cite{bach2008} and tree-based ensemble importance (FS-GBDT~\cite{zhang2021fsgbdt}). However, embedded rankings are tightly coupled with specific classifier inductive biases and frequently struggle to generalize across diverse classification architectures.
+    \item \textbf{Filter methods}: Filter techniques evaluate feature subsets based on intrinsic statistical properties, such as mutual information (mRMR~\cite{peng2005}), correlation (FCBF~\cite{yu2003}), or graph-theoretic centrality~\cite{roffo2016}. Although computationally efficient ($O(D \log D)$), filter methods evaluate features independently or pairwise, fundamentally ignoring complex multivariate interactions and resulting in suboptimal accuracy when applied to non-linear classification landscapes.
+    \item \textbf{Wrapper methods}: Wrapper approaches evaluate candidate subsets using the direct predictive feedback of a machine learning classifier~\cite{kohavi1997}. While wrappers capture intricate feature dependencies and deliver superior classification performance, exhaustive evaluation is intractable in high-dimensional spaces ($2^D$ combinatorial states), necessitating stochastic global search heuristics.
+    \item \textbf{Embedded methods}: Embedded methods incorporate feature selection directly into model training via regularization, such as LASSO/Bolasso~\cite{bach2008} and tree-based ensemble importance (FS-GBDT~\cite{zhang2021fsgbdt}). However, embedded rankings are tightly coupled with specific classifier inductive biases and frequently struggle to generalize across diverse classification architectures.
 \end{itemize}
 
 To harness the predictive fidelity of wrappers while mitigating combinatorial computational bottlenecks, Swarm Intelligence (SI) and Evolutionary Computation (EC) have emerged as the dominant paradigms for feature selection~\cite{xue2016survey,liang2025}. Classical meta-heuristics, including Binary Particle Swarm Optimization (BPSO)~\cite{kennedy1997}, Genetic Algorithms (GA)~\cite{huang2006}, Ant Colony Optimization (ACO)~\cite{aghdam2009}, and Artificial Bee Colony (ABC)~\cite{karaboga2007}, navigate high-dimensional spaces via population-based stochastic exploration. 
@@ -21,60 +52,37 @@ Feature selection naturally involves two conflicting objectives: minimizing clas
 
 Despite their theoretical appeal, MOFS methods encounter severe operational limitations when scaled to ultra-high-dimensional biomedical data ($D > 10^3$):
 \begin{enumerate}
-    \item \textbf{Combinatorial Archive and Sorting Overhead}: Maintaining an external non-dominated archive and executing Pareto ranking over dense high-dimensional vectors incurs substantial computational overhead, often exceeding 110--140~seconds in wall-clock time (as demonstrated in Section~\ref{sec:efficiency}).
-    \item \textbf{Pareto Front Dilution in Ultra-High Dimensions}: In extreme $p \gg n$ regimes, non-dominated sorting tends to produce large, diffused Pareto fronts populated by non-sparse candidate subsets (often retaining 2{,}000--5{,}000 active features), failing to deliver the ultra-sparse compact biomarker signatures ($<100$ features) required for clinical interpretability.
+    \item \textbf{Combinatorial archive and sorting overhead}: Maintaining an external non-dominated archive and executing Pareto ranking over dense high-dimensional vectors incurs substantial computational overhead, often exceeding 110--140~seconds in wall-clock time, as analyzed in Section~\ref{sec:efficiency}.
+    \item \textbf{Pareto front dilution in ultra-high dimensions}: In extreme $p \gg n$ regimes, non-dominated sorting tends to produce large, diffused Pareto fronts populated by non-sparse candidate subsets (often retaining 2{,}000--5{,}000 active features), failing to deliver the ultra-sparse compact biomarker signatures with fewer than 100 features required for clinical interpretability.
 \end{enumerate}
 
-To circumvent Pareto archive bloat and achieve extreme subset sparsity within tight computational budgets, weighted single-objective scalarization remains the preferred formulation in high-dimensional biomarker discovery~\cite{miao2024,mel2024}. However, conventional weighted frameworks enforce fixed static weights throughout search (e.g., $\mathbf{w} = [0.90, 0.10]$), which fails to adapt to the distinct evolutionary phases of feature selection. KDS-EL overcomes this limitation by introducing a dynamic Two-Phase Weight Scheduling strategy that aggressively eliminates noise features early and fine-tunes classification accuracy late.
+To circumvent Pareto archive bloat and achieve extreme subset sparsity within tight computational budgets, weighted single-objective scalarization remains the preferred formulation in high-dimensional biomarker discovery~\cite{miao2024,mel2024}. However, conventional weighted frameworks enforce fixed static weights throughout search (such as $\mathbf{w} = [0.90, 0.10]$), which fails to adapt to the distinct evolutionary phases of feature selection. KDS-EL overcomes this limitation by introducing a dynamic Two-Phase Weight Scheduling strategy that aggressively eliminates noise features early and fine-tunes classification accuracy late.
 
 \subsection{Evolutionary Multi-Task Optimization in Feature Selection}\label{sec:emto}
 
 Evolutionary Multi-Task Optimization (EMTO) aims to solve multiple distinct optimization tasks simultaneously by facilitating inter-task knowledge transfer through a unified chromosomal representation~\cite{zhang2021mtl}. In feature selection, EMTO frameworks partition the global population into collaborative subpopulations to explore complementary search subspaces. Prominent multi-task feature selection frameworks include minion-assisted multi-tasking~\cite{zhang2021minion}, evolutionary multi-task PSO for hyperspectral and gene expression data~\cite{chen2020emfs,chen2021emfs}, multi-task bee colony band selection~\cite{he2022}, and large-scale multi-objective multi-tasking~\cite{liu2022}.
 
-Most notably, Zhang et al.~\cite{mel2024} introduced Multi-Task Evolutionary Learning (MEL), which establishes a dual-subpopulation PSO framework. In MEL, Subpopulation~1 performs continuous swarm exploration guided by inter-task attractors, while Subpopulation~2 conducts discrete feature sampling based on a shared feature-importance matrix. While MEL successfully demonstrates the power of cross-task knowledge transfer, its baseline implementation suffers from three critical bottlenecks: (i) random uniform initialization that causes a blind cold start in sparse spaces, (ii) unconstrained feature importance accumulation without memory discounting, and (iii) rigid static objective weights that delay early dimensionality reduction.
+Most notably, Zhang et al.~\cite{mel2024} introduced Multi-Task Evolutionary Learning (MEL), which establishes a dual-subpopulation PSO framework. In MEL, Subpopulation~1 performs continuous swarm exploration guided by inter-task attractors, while Subpopulation~2 conducts discrete feature sampling based on a shared feature-importance matrix. While MEL successfully demonstrates the power of cross-task knowledge transfer, its baseline implementation suffers from three critical bottlenecks: (i) random uniform initialization that causes unguided early-stage exploration in sparse spaces, (ii) unconstrained feature importance accumulation without memory discounting, and (iii) rigid static objective weights that delay early dimensionality reduction.
 
 \subsection{Knowledge-Guided Meta-Heuristics and Information-Theoretic Hybridization}\label{sec:knowledge_guided}
 
 Integrating domain-specific prior knowledge into meta-heuristics has attracted surging attention as a means to escape the blindness of black-box search~\cite{ye2026,mimpode2025,deng2025nns}. In high-dimensional feature selection, mutual information (MI) serves as the primary information-theoretic metric to quantify non-linear feature relevance~\cite{cover1991}. 
 
-Existing knowledge-guided evolutionary algorithms typically adopt **one-shot offline injection**:
+Existing knowledge-guided evolutionary algorithms typically adopt one-shot offline injection:
 \begin{itemize}
-    \item \textbf{Static Filter Pre-Filtering}: Algorithms such as MI-MPODE~\cite{mimpode2025} and NNS-DFPG-CSA~\cite{deng2025nns} compute MI rankings offline and initialize the population or restrict the search space to the top-$k$ ranked features.
-    \item \textbf{Static Velocity Biasing}: Frameworks such as FWPSO~\cite{wangjia2022} incorporate static feature-weight vectors to bias particle velocity equations throughout evolution.
+    \item \textbf{Static filter pre-filtering}: Algorithms such as MI-MPODE~\cite{mimpode2025} and NNS-DFPG-CSA~\cite{deng2025nns} compute MI rankings offline and initialize the population or restrict the search space to the top-$k$ ranked features.
+    \item \textbf{Static velocity biasing}: Frameworks such as FWPSO~\cite{wangjia2022} incorporate static feature-weight vectors to bias particle velocity equations throughout evolution.
 \end{itemize}
 
 While beneficial, one-shot knowledge injection lacks online adaptability: once injected, the static prior is never updated or refined by the empirical trial-and-error feedback generated during subsequent wrapper evaluations. Conversely, learning-based surrogates (such as neural networks~\cite{xuezhang2024} or Gaussian processes~\cite{liu2024}) introduce severe surrogate training overhead and risk model misspecification in extreme $p \gg n$ regimes.
 
 \subsection{Unique Positioning and Structural Advancements of KDS-EL}\label{sec:positioning}
 
-To overcome the collective limitations identified in the existing literature, KDS-EL establishes a **closed-loop, knowledge-guided evolutionary learning framework** that unifies offline domain priors, online memory harvesting, and stage-aware objective scheduling:
+To overcome the collective limitations identified in the existing literature, KDS-EL establishes a closed-loop, knowledge-guided evolutionary learning framework that unifies offline domain priors, online memory harvesting, and stage-aware objective scheduling:
 \begin{enumerate}
-    \item \textbf{Soft Filter-Wrapper Seeding vs.\ Hard Truncation}: Unlike conventional filter wrappers that permanently eliminate features via hard truncation, KDS-EL uses normalized MI scores as continuous Gaussian-perturbed seeds, preserving the full search space while ensuring an informative, sparse starting basin ($\|\mathbf{x}\|_0 \ll D/2$).
-    \item \textbf{Online Cumulative Knowledge Distillation vs.\ Memoryless Perturbation}: In contrast to black-box swarm mutations, KDS-EL dynamically harvests evolutionary fitness feedback into a cumulative importance matrix $W$, regulated by an exponential forgetting factor ($\gamma=0.99$). The KER operator re-deploys this accumulated knowledge to execute targeted, directional elite flips within a strictly bounded computational budget ($k_e=3 \ll N$).
-    \item \textbf{Dynamic Stage-Aware Objective Scheduling vs.\ Static Weights}: Unlike rigid static weighting ($\mathbf{w} = [0.90, 0.10]$), KDS-EL's Two-Phase Weight Scheduling temporally decouples coarse feature pruning (Phase~1, $w_f=0.30$) from fine accuracy refinement (Phase~2, $w_a=0.95$), achieving simultaneous gains in accuracy, feature compactness, and runtime efficiency.
+    \item \textbf{Soft filter-wrapper seeding vs.\ hard truncation}: Unlike conventional filter wrappers that permanently eliminate features via hard truncation, KDS-EL uses normalized MI scores as continuous Gaussian-perturbed seeds, preserving the full search space while ensuring an informative, sparse starting basin ($\|\mathbf{x}\|_0 \ll D/2$).
+    \item \textbf{Online cumulative knowledge distillation vs.\ memoryless perturbation}: In contrast to black-box swarm mutations, KDS-EL dynamically harvests evolutionary fitness feedback into a cumulative importance matrix $W$, regulated by an exponential forgetting factor $\gamma=0.99$. The KER operator re-deploys this accumulated knowledge to execute targeted, directional elite flips within a strictly bounded computational budget with $k_e=3 \ll N$.
+    \item \textbf{Dynamic stage-aware objective scheduling vs.\ static weights}: Unlike rigid static weighting ($\mathbf{w} = [0.90, 0.10]$), KDS-EL's Two-Phase Weight Scheduling temporally decouples coarse feature pruning in Phase~1 ($w_f=0.30$) from fine accuracy refinement in Phase~2 ($w_a=0.95$), achieving simultaneous gains in accuracy, feature compactness, and runtime efficiency.
 \end{enumerate}
 Table~\ref{tab:comparison_literature} summarizes the structural comparison between KDS-EL and representative state-of-the-art evolutionary feature selection frameworks.
-
-\begin{table*}[!htb]
-\centering
-\caption{Structural and methodological comparison between KDS-EL and representative evolutionary feature selection algorithms.}
-\label{tab:comparison_literature}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccccc}
-\toprule
-Algorithm & Search Paradigm & Initialization Scheme & Knowledge Harvesting & Elite Refinement Mechanism & Objective Weighting & Evaluation Complexity \\
-\midrule
-BPSO~\cite{kennedy1997} & Single-Objective SI & Uniform Random & None (Memoryless) & Standard Swarm Update & Static Scalar & High (Unpruned) \\
-FWPSO~\cite{wangjia2022} & Single-Objective SI & Uniform Random & Static Filter Weights & Weight-Biased Velocity & Static Scalar & Moderate \\
-SaWDE~\cite{wang2022} & Single-Objective DE & Uniform Random & None & Self-Adaptive Mutation & Adaptive Scalar & High \\
-W-MOPSO-FS~\cite{xue2012mopso} & Multi-Objective SI & Uniform Random & Filter-Wrapper Hybrid & Pareto Non-Dominated Archive & Pareto Front & High (Archive Overhead) \\
-NNS-DFPG-CSA~\cite{deng2025nns} & Single-Objective CSA & Hard MI Truncation & None & Dynamic Fractional-Order Guidance & Static Scalar & Moderate \\
-MI-MPODE~\cite{mimpode2025} & Single-Objective DE & MI Subspace Seeding & Static MI Ranking & Multi-Population Migration & Static Scalar & Moderate \\
-EMSWOA~\cite{miao2024} & Multi-Swarm WOA & Uniform Random & Dynamic Sub-Swarm Interaction & Elite Tuning Operator & Static Scalar & High \\
-MEL~\cite{mel2024} & Multi-Task SI & Uniform Random & Online Accuracy Feedback & Shared Importance Sampling & Static Scalar ($\mathbf{w}=[0.9, 0.1]$) & High (Sluggish Pruning) \\
-\midrule
-\textbf{KDS-EL (Proposed)} & \textbf{Multi-Task SI} & \textbf{Soft MI Hybrid Seeding} & \textbf{Discounted Matrix $W$ ($\gamma=0.99$)} & \textbf{Knowledge-Guided KER (1-to-1)} & \textbf{Dynamic Two-Phase (TPS)} & \textbf{Low (3.4$\times$ Speedup)} \\
-\bottomrule
-\end{tabular}}
-\end{table*}
 

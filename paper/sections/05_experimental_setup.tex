@@ -21,26 +21,26 @@ To evaluate KDS-EL comprehensively against modern evolutionary feature selection
 \begin{enumerate}
     \item \textbf{Proposed framework and ablative configurations}: The complete KDS-EL and its systematically stripped variants:
     \begin{itemize}
-        \item \textit{KDS-EL}: The full framework integrating MI-guided initialization, the KER strategy, and Two-Phase Weight Scheduling (TPS).
-        \item \textit{KDS-EL w/o TPS}: The framework without two-phase scheduling, employing a static objective weighting $\mathbf{w}_s = [0.9, 0.1]$ with in-place elite replacement.
-        \item \textit{KDS-EL w/o TPS\&KER}: The framework stripped of both two-phase scheduling and the KER strategy, corresponding to the MI-initialized multi-task baseline (MEL+MI).
-        \item \textit{MEL}~\cite{mel2024}: The foundational multi-task evolutionary learning baseline stripped of all three mechanisms (random initialization, static weighting, no elite refinement).
+        \item \textbf{KDS-EL}: The full framework integrating MI-guided initialization, the KER strategy, and Two-Phase Weight Scheduling (TPS).
+        \item \textbf{KDS-EL w/o TPS}: The framework without two-phase scheduling, employing a static objective weighting $\mathbf{w}_s = [0.9, 0.1]$ with in-place elite replacement.
+        \item \textbf{KDS-EL w/o TPS\&KER}: The framework stripped of both two-phase scheduling and the KER strategy, corresponding to the MI-initialized multi-task baseline (MEL+MI).
+        \item \textbf{MEL}~\cite{mel2024}: The foundational multi-task evolutionary learning baseline stripped of all three mechanisms (random initialization, static weighting, no elite refinement).
     \end{itemize}
     \item \textbf{State-of-the-art single-objective evolutionary algorithms}: Five prominent evolutionary wrappers tailored for high-dimensional feature selection:
     \begin{itemize}
-        \item \textit{FWPSO}~\cite{wangjia2022}: Feature-weighting particle swarm optimization integrating feature saliency into velocity updates.
-        \item \textit{PSO-CSM}~\cite{wei2025}: A recently proposed PSO algorithm employing a comprehensive scoring framework.
-        \item \textit{SaWDE}~\cite{wang2022}: Self-adaptive weighted differential evolution for large-scale feature selection.
-        \item \textit{IGPSO}~\cite{xuezhang2024}: Importance-guided PSO leveraging a multilayer perceptron for relevance estimation.
-        \item \textit{BPSO}~\cite{kennedy1997}: The classical binary particle swarm optimization algorithm.
+        \item \textbf{FWPSO}~\cite{wangjia2022}: Feature-weighting particle swarm optimization integrating feature saliency into velocity updates.
+        \item \textbf{PSO-CSM}~\cite{wei2025}: A recently proposed PSO algorithm employing a comprehensive scoring framework.
+        \item \textbf{SaWDE}~\cite{wang2022}: Self-adaptive weighted differential evolution for large-scale feature selection.
+        \item \textbf{IGPSO}~\cite{xuezhang2024}: Importance-guided PSO leveraging a multilayer perceptron for relevance estimation.
+        \item \textbf{BPSO}~\cite{kennedy1997}: The classical binary particle swarm optimization algorithm.
     \end{itemize}
     \item \textbf{Multi-objective evolutionary feature selection (MOFS) algorithms}: Five multi-objective methods that simultaneously optimize classification accuracy and subset size:
     \begin{itemize}
-        \item \textit{W-MOPSO-FS}: A self-built Wrapper--Filter hybrid multi-objective PSO.
-        \item \textit{fMOPSO-FS}~\cite{han2024}: Self-adaptive multi-objective PSO based on feature-label correlation.
-        \item \textit{NSGA-II-FS}~\cite{deb2002}: The non-dominated sorting genetic algorithm applied to binary subset selection.
-        \item \textit{MOEA-D-FS}~\cite{zhang2007}: Decomposition-based multi-objective evolutionary algorithm for feature selection.
-        \item \textit{MOPSO-FS}~\cite{coello2004}: Standard multi-objective PSO with external Pareto archive management.
+        \item \textbf{W-MOPSO-FS}: A self-built Wrapper--Filter hybrid multi-objective PSO.
+        \item \textbf{fMOPSO-FS}~\cite{han2024}: Self-adaptive multi-objective PSO based on feature-label correlation.
+        \item \textbf{NSGA-II-FS}~\cite{deb2002}: The non-dominated sorting genetic algorithm applied to binary subset selection.
+        \item \textbf{MOEA-D-FS}~\cite{zhang2007}: Decomposition-based multi-objective evolutionary algorithm for feature selection.
+        \item \textbf{MOPSO-FS}~\cite{coello2004}: Standard multi-objective PSO with external Pareto archive management.
     \end{itemize}
 \end{enumerate}
 
@@ -55,23 +55,27 @@ The specific hyper-parameter settings for KDS-EL are configured as follows: know
 \subsubsection{Performance Metrics and Statistical Significance Framework}
 
 Algorithm performance is evaluated across four quantitative dimensions:
-\begin{enumerate}
-    \item \textbf{Mean Classification Accuracy ($\mathrm{Acc}$)}: The average 5-fold cross-validation accuracy over 10 independent runs, defined as
-    \begin{equation}
-        \mathrm{Acc} = \frac{1}{R} \sum_{r=1}^{R} \mathrm{Acc}_r, \qquad R=10,
-    \end{equation}
-    accompanied by its standard deviation ($\mathrm{Std}$) to measure solution stability.
-    \item \textbf{Mean Selected Feature Count ($\bar{d}$)}: The average number of active dimensions in the final feature mask:
-    \begin{equation}
-        \bar{d} = \frac{1}{R} \sum_{r=1}^{R} \|\mathbf{x}_r^*\|_0,
-    \end{equation}
-    along with the Feature Selection Ratio ($\mathrm{FSR} = \frac{\bar{d}}{D} \times 100\%$).
-    \item \textbf{Computational Runtime ($\bar{t}$)}: The average wall-clock execution time in seconds per single run.
-    \item \textbf{Statistical Significance Testing Protocol}: To verify whether observed improvements are statistically meaningful, we adhere to the multi-dataset statistical testing protocol recommended by Dem{\v{s}}ar~\cite{demsar2006}:
-    \begin{itemize}
-        \item \textit{Friedman Mean Rank Test}~\cite{friedman1940}: Computed across the $20 \times 14$ accuracy matrix to determine global algorithm rankings (lower rank indicates superior performance), with tied per-dataset means assigned their average rank.
-        \item \textit{Pairwise Wilcoxon Signed-Rank Test}~\cite{demsar2006}: Conducted at the $\alpha=0.05$ significance level to assess pairwise superiority between KDS-EL and each of the 13 competing methods across the 20 benchmark datasets.
-        \item \textit{Holm--Bonferroni Step-Down Correction}~\cite{holm1979}: Applied to adjust the family-wise error rate across all 13 pairwise hypothesis tests, ensuring rigorous statistical validation against multiple-comparison artifacts.
-        \item \textit{Per-dataset Paired Signed-Rank Annotation}: In Table~\ref{T4}, each competitor cell is annotated with $+$, $\approx$, or $-$ based on a two-sided Wilcoxon signed-rank test ($p<0.05$) across the 10 paired runs, indicating whether KDS-EL is significantly superior, statistically equivalent, or significantly inferior on that individual dataset.
-    \end{itemize}
-\end{enumerate}
+
+\textit{Mean classification accuracy ($\mathrm{Acc}$)}: The average 5-fold cross-validation accuracy over 10 independent runs is defined as:
+\begin{equation}
+\mathrm{Acc} = \frac{1}{R} \sum_{r=1}^{R} \mathrm{Acc}_r, \qquad R=10,
+\label{eq:acc_metric}
+\end{equation}
+accompanied by its standard deviation ($\mathrm{Std}$) to measure solution stability across runs.
+
+\textit{Mean selected feature count ($\bar{d}$)}: The average number of active dimensions in the final feature mask is defined as:
+\begin{equation}
+\bar{d} = \frac{1}{R} \sum_{r=1}^{R} \|\mathbf{x}_r^*\|_0,
+\label{eq:feat_metric}
+\end{equation}
+along with the Feature Selection Ratio ($\mathrm{FSR} = \frac{\bar{d}}{D} \times 100\%$).
+
+\textit{Computational runtime ($\bar{t}$)}: The average wall-clock execution time in seconds per single run.
+
+\textit{Statistical significance testing protocol}: To verify whether observed improvements are statistically meaningful, we adhere to the multi-dataset statistical testing protocol recommended by Dem{\v{s}}ar~\cite{demsar2006}:
+\begin{itemize}
+    \item \textbf{Friedman Mean Rank Test}~\cite{friedman1940}: Computed across the $20 \times 14$ accuracy matrix to determine global algorithm rankings (lower rank indicates superior performance), with tied per-dataset means assigned their average rank.
+    \item \textbf{Pairwise Wilcoxon Signed-Rank Test}~\cite{demsar2006}: Conducted at the $\alpha=0.05$ significance level to assess pairwise superiority between KDS-EL and each of the 13 competing methods across the 20 benchmark datasets.
+    \item \textbf{Holm--Bonferroni Step-Down Correction}~\cite{holm1979}: Applied to adjust the family-wise error rate across all 13 pairwise hypothesis tests, ensuring rigorous statistical validation against multiple-comparison artifacts.
+    \item \textbf{Per-dataset Paired Signed-Rank Annotation}: In Table~\ref{T4}, each competitor cell is annotated with $+$, $\approx$, or $-$ based on a two-sided Wilcoxon signed-rank test ($p<0.05$) across the 10 paired runs, indicating whether KDS-EL is significantly superior, statistically equivalent, or significantly inferior on that individual dataset.
+\end{itemize}

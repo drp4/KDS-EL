@@ -1,17 +1,19 @@
-\begin{table}[htbp]
+\begin{table}[!htb]
 \centering
-\caption{One-factor-at-a-time parameter sensitivity analysis over four representative datasets (Adenoma, Colon, ALL4, BASEHOCK). The maximum accuracy deviation from the default configuration never exceeds $\pm$1.5~pp.}
+\caption{Summary of one-factor-at-a-time (OFAT) parameter sensitivity analysis across four representative benchmark datasets (\textit{Adenoma}, \textit{Colon}, \textit{ALL4}, and \textit{BASEHOCK}).}
 \label{T8}
 \small
-\begin{tabular}{lcccc}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}
 \toprule
-Parameter & Tested range & Optimal & Stable range & Max $\Delta$Acc (pp) \\
+Parameter & Tested range & Optimal & Stable range & Max $\Delta\mathrm{Acc}$ (pp) \\
 \midrule
-Weight decay & 0.90--1.00 & 0.99 & [0.95, 0.995] & $\pm$1.2 \\
-Phase split & 0.3--0.9 & 0.70 & [0.60, 0.80] & $\pm$0.7 \\
-Flip fraction & 0.005--0.10 & 0.01 & [0.005, 0.02] & $\pm$1.3 \\
-MI init ratio & 0.0--1.0 & 0.50 & [0.25, 0.75] & $\pm$1.2 \\
-Elite count & 1--10 & 3 & [2, 5] & $\pm$0.9 \\
+Knowledge decay ($\gamma$) & 0.90--1.00 & 0.99 & [0.95, 0.995] & $\pm$1.2 \\
+Phase split ratio ($\alpha$) & 0.30--0.90 & 0.70 & [0.60, 0.80] & $\pm$0.7 \\
+Elite flip fraction ($\phi$) & 0.005--0.10 & 0.01 & [0.005, 0.02] & $\pm$1.3 \\
+MI initialization ratio ($\rho$) & 0.0--1.0 & 0.50 & [0.25, 0.75] & $\pm$1.2 \\
+Elite pool size ($k_e$) & 1--10 & 3 & [2, 5] & $\pm$0.9 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}

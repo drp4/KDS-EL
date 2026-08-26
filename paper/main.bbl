@@ -85,6 +85,34 @@ X.~Wang, H.~Shangguan, F.~Huang, S.~Wu, W.~Jia, Mel: Efficient multi-task
 \newblock \href {https://doi.org/10.1109/TKDE.2024.3366333}
   {\path{doi:10.1109/TKDE.2024.3366333}}.
 
+\bibitem{xue2012mopso}
+B.~Xue, M.~Zhang, W.~N. Browne, Particle swarm optimization for feature
+  selection in classification: {A} multi-objective approach, IEEE Transactions
+  on Cybernetics 43~(6) (2012) 1656--1671.
+\newblock \href {https://doi.org/10.1109/TSMCB.2012.2227469}
+  {\path{doi:10.1109/TSMCB.2012.2227469}}.
+
+\bibitem{deng2025nns}
+S.~Deng, H.~Liu, W.~Zhu, K.~Li, M.~Li, Elite neighborhood search and dynamic
+  feature probability-guided crow search algorithm for high-dimensional feature
+  selection, Expert Systems with Applications 274 (2025) 127012.
+\newblock \href {https://doi.org/10.1016/j.eswa.2025.127012}
+  {\path{doi:10.1016/j.eswa.2025.127012}}.
+
+\bibitem{mimpode2025}
+F.~Yu, J.~Guan, H.~Wu, H.~Wang, B.~Ma, Multi-population differential evolution
+  approach for feature selection with mutual information ranking, Expert
+  Systems with Applications 260 (2025) 125404.
+\newblock \href {https://doi.org/10.1016/j.eswa.2024.125404}
+  {\path{doi:10.1016/j.eswa.2024.125404}}.
+
+\bibitem{miao2024}
+F.~Miao, Y.~Wu, G.~Yan, X.~Si, Dynamic multi-swarm whale optimization algorithm
+  based on elite tuning for high-dimensional feature selection classification
+  problems, Applied Soft Computing 164 (2024) 111958.
+\newblock \href {https://doi.org/10.1016/j.asoc.2024.111958}
+  {\path{doi:10.1016/j.asoc.2024.111958}}.
+
 \bibitem{peng2005}
 H.~Peng, F.~Long, C.~Ding, Feature selection based on mutual information:
   criteria of max-dependency, max-relevance, and min-redundancy, IEEE
@@ -100,12 +128,16 @@ L.~Yu, H.~Liu, Feature selection for high-dimensional data: {A} fast
 
 \bibitem{roffo2016}
 G.~Roffo, S.~Melzi, Features selection via eigenvector centrality, in:
-  Proceedings of New Frontiers in Mining Complex Patterns, 2016.
+  Proceedings of New Frontiers in Mining Complex Patterns, 2016, pp. 87--101.
+\newblock \href {https://doi.org/10.1007/978-3-319-61461-8_7}
+  {\path{doi:10.1007/978-3-319-61461-8_7}}.
 
 \bibitem{bach2008}
 F.~R. Bach, {Bolasso}: Model consistent {Lasso} estimation through the
   bootstrap, in: Proceedings of the 25th International Conference on Machine
   Learning, 2008, pp. 33--40.
+\newblock \href {https://doi.org/10.1145/1390156.1390161}
+  {\path{doi:10.1145/1390156.1390161}}.
 
 \bibitem{zhang2021fsgbdt}
 J.~Zhang, D.~Xu, K.~Hao, Y.~Zhang, W.~Chen, J.~Liu, R.~Gao, C.~Wu, Y.~D.
@@ -115,20 +147,33 @@ J.~Zhang, D.~Xu, K.~Hao, Y.~Zhang, W.~Chen, J.~Liu, R.~Gao, C.~Wu, Y.~D.
 \newblock \href {https://doi.org/10.1093/bib/bbaa189}
   {\path{doi:10.1093/bib/bbaa189}}.
 
+\bibitem{xue2016survey}
+B.~Xue, M.~Zhang, W.~N. Browne, X.~Yao, A survey on evolutionary computation
+  approaches to feature selection, IEEE Transactions on Evolutionary
+  Computation 20~(4) (2016) 606--626.
+\newblock \href {https://doi.org/10.1109/TEVC.2015.2504420}
+  {\path{doi:10.1109/TEVC.2015.2504420}}.
+
 \bibitem{huang2006}
 C.-L. Huang, C.-J. Wang, A {GA}-based feature selection and parameters
   optimization for support vector machines, Expert Systems with Applications
   31~(2) (2006) 231--240.
+\newblock \href {https://doi.org/10.1016/j.eswa.2005.09.024}
+  {\path{doi:10.1016/j.eswa.2005.09.024}}.
 
 \bibitem{aghdam2009}
 M.~H. Aghdam, N.~Ghasem-Aghaee, M.~E. Basiri, Text feature selection using ant
   colony optimization, Expert Systems with Applications 36~(3) (2009)
   6843--6853.
+\newblock \href {https://doi.org/10.1016/j.eswa.2008.08.022}
+  {\path{doi:10.1016/j.eswa.2008.08.022}}.
 
 \bibitem{karaboga2007}
 D.~Karaboga, B.~Basturk, A powerful and efficient algorithm for numerical
   function optimization: Artificial bee colony ({ABC}) algorithm, Journal of
   Global Optimization 39~(3) (2007) 459--471.
+\newblock \href {https://doi.org/10.1007/s10898-007-9149-x}
+  {\path{doi:10.1007/s10898-007-9149-x}}.
 
 \bibitem{xue2019}
 Y.~Xue, B.~Xue, M.~Zhang, Self-adaptive particle swarm optimization for
@@ -139,13 +184,16 @@ Y.~Xue, B.~Xue, M.~Zhang, Self-adaptive particle swarm optimization for
 \bibitem{prasad2015}
 Y.~Prasad, K.~Biswas, Gene selection in microarray datasets using progressively
   refined {PSO} scheme, in: Proceedings of the AAAI Conference on Artificial
-  Intelligence, Vol.~29, 2015.
+  Intelligence, Vol.~29, 2015, pp. 4288--4289.
+\newblock \href {https://doi.org/10.1609/aaai.v29i1.9283}
+  {\path{doi:10.1609/aaai.v29i1.9283}}.
 
 \bibitem{weil2025}
 B.~Wei, J.~Huang, L.~Deng, S.~Yang, J.~Zheng, Y.~Huang, Reinforcement
   learning-based particle swarm optimization with adaptive scoring mechanism
-  for high-dimensional feature selection, Swarm and Evolutionary Computation
-  (2025) 102104\href {https://doi.org/10.1016/j.swevo.2025.102104}
+  for high-dimensional feature selection, Swarm and Evolutionary Computation 98
+  (2025) 102104.
+\newblock \href {https://doi.org/10.1016/j.swevo.2025.102104}
   {\path{doi:10.1016/j.swevo.2025.102104}}.
 
 \bibitem{chen2025}
@@ -154,11 +202,6 @@ K.~Chen, K.~Liu, P.~Wang, J.~Liang, Z.~Yang, K.~Yu, An efficient evolutionary
   classification, Expert Systems with Applications 302 (2025) 130416.
 \newblock \href {https://doi.org/10.1016/j.eswa.2025.130416}
   {\path{doi:10.1016/j.eswa.2025.130416}}.
-
-\bibitem{xue2012mopso}
-B.~Xue, M.~Zhang, W.~N. Browne, Particle swarm optimization for feature
-  selection in classification: {A} multi-objective approach, IEEE Transactions
-  on Cybernetics 43~(6) (2012) 1656--1671.
 
 \bibitem{deb2002}
 K.~Deb, A.~Pratap, S.~Agarwal, T.~Meyarivan, A fast and elitist multiobjective
@@ -195,13 +238,6 @@ E.~Hancer, B.~Xue, M.~Zhang, An evolutionary filter approach to feature
 \newblock \href {https://doi.org/10.1016/j.knosys.2023.111008}
   {\path{doi:10.1016/j.knosys.2023.111008}}.
 
-\bibitem{miao2024}
-F.~Miao, Y.~Wu, G.~Yan, X.~Si, Dynamic multi-swarm whale optimization algorithm
-  based on elite tuning for high-dimensional feature selection classification
-  problems, Applied Soft Computing 164 (2024) 111958.
-\newblock \href {https://doi.org/10.1016/j.asoc.2024.111958}
-  {\path{doi:10.1016/j.asoc.2024.111958}}.
-
 \bibitem{zhang2021mtl}
 Y.~Zhang, Q.~Yang, A survey on multi-task learning, IEEE Transactions on
   Knowledge and Data Engineering 34~(12) (2021) 5586--5609.
@@ -212,6 +248,8 @@ Y.~Zhang, Q.~Yang, A survey on multi-task learning, IEEE Transactions on
 N.~Zhang, A.~Gupta, Z.~Chen, Y.-S. Ong, Evolutionary machine learning with
   minions: {A} case study in feature selection, IEEE Transactions on
   Evolutionary Computation 26~(1) (2021) 130--144.
+\newblock \href {https://doi.org/10.1109/TEVC.2021.3099289}
+  {\path{doi:10.1109/TEVC.2021.3099289}}.
 
 \bibitem{chen2020emfs}
 K.~Chen, B.~Xue, M.~Zhang, F.~Zhou, An evolutionary multitasking-based feature
@@ -249,23 +287,11 @@ Z.~Ye, Y.~Zeng, T.~Cai, J.~Shen, W.~Zhou, Q.~He, M.~Mei, Y.~Cen, {KMHBO}: A
 \newblock \href {https://doi.org/10.1016/j.eswa.2025.129911}
   {\path{doi:10.1016/j.eswa.2025.129911}}.
 
-\bibitem{mimpode2025}
-F.~Yu, J.~Guan, H.~Wu, H.~Wang, B.~Ma, Multi-population differential evolution
-  approach for feature selection with mutual information ranking, Expert
-  Systems with Applications 260 (2025) 125404.
-\newblock \href {https://doi.org/10.1016/j.eswa.2024.125404}
-  {\path{doi:10.1016/j.eswa.2024.125404}}.
-
-\bibitem{deng2025nns}
-S.~Deng, H.~Liu, W.~Zhu, K.~Li, M.~Li, Elite neighborhood search and dynamic
-  feature probability-guided crow search algorithm for high-dimensional feature
-  selection, Expert Systems with Applications 274 (2025) 127012.
-\newblock \href {https://doi.org/10.1016/j.eswa.2025.127012}
-  {\path{doi:10.1016/j.eswa.2025.127012}}.
-
 \bibitem{cover1991}
 T.~M. Cover, J.~A. Thomas, Elements of Information Theory, John Wiley \& Sons,
   New York, NY, USA, 1991.
+\newblock \href {https://doi.org/10.1002/0471200611}
+  {\path{doi:10.1002/0471200611}}.
 
 \bibitem{liu2024}
 S.~Liu, H.~Wang, W.~Peng, W.~Yao, Surrogate-assisted evolutionary algorithms
@@ -294,5 +320,6 @@ M.~Friedman, A comparison of alternative tests of significance for the problem
 \bibitem{holm1979}
 S.~Holm, A simple sequentially rejective multiple test procedure, Scandinavian
   Journal of Statistics 6~(2) (1979) 65--70.
+\newblock \href {https://doi.org/10.2307/4615733} {\path{doi:10.2307/4615733}}.
 
 \end{thebibliography}

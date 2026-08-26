@@ -1,43 +1,49 @@
-\begin{table}[htbp]
+\begin{table}[!htb]
 \centering
-\caption{Full parameter sensitivity results (mean accuracy, feature count, and runtime over the four datasets) for each of the five parameters. Bold rows indicate the default configuration.}
+\caption{Complete multi-dataset OFAT parameter sensitivity evaluation grid across the four representative benchmark datasets. Bold rows denote default configurations.}
 \label{T-A6}
 \small
-\begin{tabular}{lccc}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccc@{}}
 \toprule
-Value & Avg Acc & Avg Feat & Avg Time (s) \\
+Value & Mean Accuracy & Mean Features & Mean Runtime (s) \\
 \midrule
-\multicolumn{4}{l}{\emph{WeightDecay}} \\
+\multicolumn{4}{@{}l}{\textit{Knowledge weight decay factor ($\gamma$):}} \\
 0.90 & 0.932 & 158 & 49.2 \\
 0.95 & 0.939 & 127 & 50.8 \\
 \textbf{0.99 (default)} & \textbf{0.944} & \textbf{107} & \textbf{51.3} \\
 0.995 & 0.943 & 112 & 52.1 \\
 1.00 & 0.941 & 151 & 53.7 \\
-\multicolumn{4}{l}{\emph{PhaseSplit}} \\
-0.3 & 0.940 & 189 & 52.8 \\
-0.5 & 0.942 & 146 & 52.0 \\
-0.6 & 0.943 & 124 & 51.5 \\
-\textbf{0.7 (default)} & \textbf{0.944} & \textbf{107} & \textbf{51.3} \\
-0.8 & 0.943 & 98 & 50.9 \\
-0.9 & 0.937 & 94 & 50.1 \\
-\multicolumn{4}{l}{\emph{flip\_frac}} \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Phase split ratio ($\alpha$):}} \\
+0.30 & 0.940 & 189 & 52.8 \\
+0.50 & 0.942 & 146 & 52.0 \\
+0.60 & 0.943 & 124 & 51.5 \\
+\textbf{0.70 (default)} & \textbf{0.944} & \textbf{107} & \textbf{51.3} \\
+0.80 & 0.943 & 98 & 50.9 \\
+0.90 & 0.937 & 94 & 50.1 \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Elite perturbation fraction ($\phi$):}} \\
 0.005 & 0.939 & 96 & 54.8 \\
-\textbf{0.01 (default)} & \textbf{0.944} & \textbf{107} & \textbf{51.3} \\
-0.02 & 0.942 & 118 & 50.6 \\
-0.05 & 0.937 & 156 & 49.9 \\
-0.10 & 0.931 & 203 & 48.7 \\
-\multicolumn{4}{l}{\emph{MI\_init\_ratio}} \\
-0.0 & 0.932 & 184 & 62.3 \\
+\textbf{0.010 (default)} & \textbf{0.944} & \textbf{107} & \textbf{51.3} \\
+0.020 & 0.942 & 118 & 50.6 \\
+0.050 & 0.937 & 156 & 49.9 \\
+0.100 & 0.931 & 203 & 48.7 \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{MI initialization ratio ($\rho$):}} \\
+0.00 & 0.932 & 184 & 62.3 \\
 0.25 & 0.940 & 137 & 55.8 \\
-\textbf{0.5 (default)} & \textbf{0.944} & \textbf{107} & \textbf{51.3} \\
+\textbf{0.50 (default)} & \textbf{0.944} & \textbf{107} & \textbf{51.3} \\
 0.75 & 0.942 & 101 & 49.6 \\
-1.0 & 0.936 & 96 & 47.8 \\
-\multicolumn{4}{l}{\emph{elite\_k}} \\
+1.00 & 0.936 & 96 & 47.8 \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Elite pool size ($k_e$):}} \\
 1 & 0.938 & 124 & 48.9 \\
 2 & 0.942 & 115 & 50.2 \\
 \textbf{3 (default)} & \textbf{0.944} & \textbf{107} & \textbf{51.3} \\
 5 & 0.941 & 118 & 52.7 \\
 10 & 0.935 & 141 & 55.9 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}

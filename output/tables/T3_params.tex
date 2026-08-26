@@ -2,53 +2,42 @@
 \centering
 \ktablecaption
 \small
-\caption{Parameter Settings}
+\caption{Hyper-parameter configurations and experimental settings for KDS-EL and baseline algorithms.}
 \label{T3}
-\setlength{\tabcolsep}{2pt}
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcl@{}}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lr@{}}
 \toprule
-\multicolumn{3}{@{}c}{\textbf{Common Experimental Setup}} \\
+Parameter / Setting & Value / Configuration \\
 \midrule
-Population size ($N$)              & = & 20 \\
-Maximum iterations ($T$)           & = & 100 \\
-KNN neighbors ($k$)                & = & 3 \\
-Real-to-binary threshold ($\theta$) & = & 0.6 \\
-Cross-validation                  & = & 5-fold stratified, shuffled \\
-Number of independent runs        & = & 10 \\
+\multicolumn{2}{@{}l}{\textit{Common experimental setup:}} \\
+Population size ($N$)              & 20 \\
+Maximum iterations ($T$)           & 100 \\
+$k$-NN classifier neighborhood ($k$) & 3 \\
+Real-to-binary threshold ($\theta$) & 0.60 \\
+Cross-validation scheme            & 5-fold stratified, shuffled \\
+Number of independent runs        & 10 \\
 \midrule
-\multicolumn{3}{c}{\textbf{KDS-EL (full framework)}} \\
+\multicolumn{2}{@{}l}{\textit{KDS-EL (full framework):}} \\
+Inertia weight ($\omega$)          & 0.90 \\
+Acceleration coefficients ($c_1, c_2, c_3$) & 2.0, 2.0, 2.0 \\
+Knowledge weight decay factor ($\gamma$) & 0.99 \\
+Elite perturbation fraction ($\phi$) & 0.01 \\
+Elite pool size ($k_e$)            & 3 \\
+Random exploration probability ($p_{\mathrm{rand}}$) & 0.10 \\
+MI-guided initialization ratio ($\rho$) & 0.50 \\
+Stagnation patience threshold ($\tau$) & 20 generations \\
+Phase split ratio ($\alpha$)       & 0.70 \\
+Phase-1 objective weights ($\mathbf{w}_1$) & $[0.70, \; 0.30]$ \\
+Phase-2 objective weights ($\mathbf{w}_2$) & $[0.95, \; 0.05]$ \\
 \midrule
-Inertia weight ($w$)              & = & 0.9 \\
-Acceleration coefficients         & = & $c_1 = c_2 = c_3 = 2.0$ \\
-Knowledge weight decay            & = & 0.99 \\
-Elite flip fraction               & = & 0.01 \\
-Elite count ($k_e$)               & = & 3 \\
-Random flip probability           & = & 0.10 \\
-MI-guided init ratio              & = & 0.5 \\
-Stall patience ($P_s$)            & = & 20 \\
-Phase split ratio                 & = & 0.7 \\
-Phase-1 objective weights         & = & $\mathbf{w}_s = [0.7,\,0.3]$ \\
-Phase-2 objective weights         & = & $\mathbf{w}_s = [0.95,\,0.05]$ \\
+\multicolumn{2}{@{}l}{\textit{Ablative and baseline variants:}} \\
+Fixed weights (KDS-EL w/o TPS)    & $\mathbf{w}_s = [0.90, \; 0.10]$ \\
+Parameters (KDS-EL w/o TPS\&KER)   & $\omega=0.90, \; c_{1,2,3}=2.0, \; \rho=0.50, \; \tau=20$ \\
+Parameters (MEL baseline~\cite{mel2024}) & $\omega=0.90, \; c_{1,2,3}=2.0, \; \mathbf{w}_s = [0.90, \; 0.10]$ \\
 \midrule
-\multicolumn{3}{c}{\textbf{KDS-EL w/o TPS (no two-phase scheduling)}} \\
-\midrule
-Fixed objective weights           & = & $\mathbf{w}_s = [0.9,\,0.1]$ \\
-\midrule
-\multicolumn{3}{c}{\textbf{MEL and KDS-EL w/o TPS\&KER}} \\
-\midrule
-Inertia weight ($w$)              & = & 0.9 \\
-Acceleration coefficients         & = & $c_1 = c_2 = c_3 = 2.0$ \\
-MI-guided init ratio (KDS-EL w/o TPS\&KER) & = & 0.5 \\
-Stall patience (KDS-EL w/o TPS\&KER)       & = & 20 \\
-\midrule
-\multicolumn{3}{c}{\textbf{Competitor Methods}} \\
-\midrule
-\multicolumn{3}{l}{Competitors (BPSO, FWPSO, IGPSO, PSO-CSM,} \\
-\multicolumn{3}{l}{SaWDE, NSGA-II-FS, MOPSO-FS, MOEA-D-FS,} \\
-\multicolumn{3}{l}{fMOPSO-FS, W-MOPSO-FS) use the hyper-parameters} \\
-\multicolumn{3}{l}{recommended in their original publications, with} \\
-\multicolumn{3}{l}{$N=20$ and $T=100$ unless the original paper} \\
-\multicolumn{3}{l}{specifies otherwise.} \\
+\multicolumn{2}{@{}l}{\textit{Competitor baselines:}} \\
+Competitor algorithms~\cite{wangjia2022,wei2025,wang2022,xuezhang2024,kennedy1997,han2024,deb2002,zhang2007,coello2004} & Per original literature ($N=20, T=100$) \\
 \bottomrule
 \end{tabular*}
 \end{table}

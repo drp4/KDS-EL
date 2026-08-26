@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  25 AUG 2026 21:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  26 AUG 2026 22:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -28,7 +28,16 @@ Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
 
 (E:\MiKTeX\tex/latex/base\article.cls
 Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
-(E:\MiKTeX\tex/latex/base\size10.clo
+(E:\MiKTeX\tex/latex/base\fleqn.clo
+File: fleqn.clo 2016/12/29 v1.2b Standard LaTeX option (flush left equations)
+\mathindent=\skip49
+Applying: [2015/01/01] Make \[ robust on input line 50.
+LaTeX Info: Redefining \[ on input line 51.
+Already applied: [0000/00/00] Make \[ robust on input line 62.
+Applying: [2015/01/01] Make \] robust on input line 74.
+LaTeX Info: Redefining \] on input line 75.
+Already applied: [0000/00/00] Make \] robust on input line 83.
+) (E:\MiKTeX\tex/latex/base\size10.clo
 File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 )
 \c@part=\count277
@@ -39,8 +48,8 @@ File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 \c@subparagraph=\count282
 \c@figure=\count283
 \c@table=\count284
-\abovecaptionskip=\skip49
-\belowcaptionskip=\skip50
+\abovecaptionskip=\skip50
+\belowcaptionskip=\skip51
 \bibindent=\dimen151
 )
 (E:\MiKTeX\tex/latex/graphics\graphicx.sty
@@ -84,13 +93,13 @@ File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 \els@boxb=\box58
 \leftMargin=\dimen156
 \@enLab=\toks19
-\@sep=\skip51
-\@@sep=\skip52
+\@sep=\skip52
+\@@sep=\skip53
  (supplementary_material.spl)
 (E:\MiKTeX\tex/latex/natbib\natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip53
-\bibsep=\skip54
+\bibhang=\skip54
+\bibsep=\skip55
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count291
 )
@@ -210,7 +219,7 @@ Package: inputenc 2024/02/08 v1.3d Input encoding file
 )
 (E:\MiKTeX\tex/latex/amsmath\amsmath.sty
 Package: amsmath 2025/07/09 v2.17z AMS math features
-\@mathmargin=\skip55
+\@mathmargin=\skip56
 
 For additional information on amsmath, use the `?' option.
 (E:\MiKTeX\tex/latex/amsmath\amstext.sty
@@ -270,8 +279,8 @@ LaTeX Info: Redefining \Relbar on input line 970.
 \totwidth@=\dimen173
 \lineht@=\dimen174
 \@envbody=\toks26
-\multlinegap=\skip56
-\multlinetaggap=\skip57
+\multlinegap=\skip57
+\multlinetaggap=\skip58
 \mathdisplay@stack=\toks27
 LaTeX Info: Redefining \[ on input line 2950.
 LaTeX Info: Redefining \] on input line 2951.
@@ -565,20 +574,20 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \c@ALG@line=\count315
 \c@ALG@rem=\count316
 \c@ALG@nested=\count317
-\ALG@tlm=\skip58
-\ALG@thistlm=\skip59
+\ALG@tlm=\skip59
+\ALG@thistlm=\skip60
 \c@ALG@Lnr=\count318
 \c@ALG@blocknr=\count319
 \c@ALG@storecount=\count320
 \c@ALG@tmpcounter=\count321
-\ALG@tmplength=\skip60
+\ALG@tmplength=\skip61
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
 ) (E:\MiKTeX\tex/latex/graphics\rotating.sty
 Package: rotating 2025/01/14 v2.16e rotated objects in LaTeX
 \c@r@tfl@t=\count322
-\rotFPtop=\skip61
-\rotFPbot=\skip62
+\rotFPtop=\skip62
+\rotFPbot=\skip63
 \rot@float@box=\box63
 \rot@mess@toks=\toks31
 )
@@ -702,7 +711,7 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 84.
 )
-\Hy@SectionHShift=\skip63
+\Hy@SectionHShift=\skip64
 )
 
 Package geometry Warning: Over-specification in `h'-direction.
@@ -712,54 +721,54 @@ Package geometry Warning: Over-specification in `h'-direction.
 Package geometry Warning: Over-specification in `v'-direction.
     `height' (562.0pt) is ignored.
 
-LaTeX Font Info:    Trying to load font information for T1+txr on input line 25
+LaTeX Font Info:    Trying to load font information for T1+txr on input line 26
 .
 (E:\MiKTeX\tex/latex/txfonts\t1txr.fd
 File: t1txr.fd 2000/12/15 v3.1
 ) (supplementary_material.aux)
 \openout1 = `supplementary_material.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 25.
+LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 26.
 LaTeX Font Info:    Trying to load font information for OML+txmi on input line 
-25.
+26.
 
 (E:\MiKTeX\tex/latex/txfonts\omltxmi.fd
 File: omltxmi.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 26.
 LaTeX Font Info:    Trying to load font information for OMS+txsy on input line 
-25.
+26.
 
 (E:\MiKTeX\tex/latex/txfonts\omstxsy.fd
 File: omstxsy.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 26.
 LaTeX Font Info:    Trying to load font information for OMX+txex on input line 
-25.
+26.
 
 (E:\MiKTeX\tex/latex/txfonts\omxtxex.fd
 File: omxtxex.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 26.
 LaTeX Font Info:    Trying to load font information for U+txexa on input line 2
-5.
+6.
  (E:\MiKTeX\tex/latex/txfonts\utxexa.fd
 File: utxexa.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
  (E:\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count334
@@ -818,7 +827,7 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Encoding Info:    Redeclaring text command \k (encoding T1) on input line
- 25.
+ 26.
 (E:\MiKTeX\tex/latex/graphics\color.sty
 Package: color 2025/01/14 v1.3e Standard LaTeX Color (DPC)
 
@@ -828,45 +837,43 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 Package color Info: Driver file: pdftex.def on input line 149.
 
 (E:\MiKTeX\tex/latex/graphics\mathcolor.ltx))
-Package hyperref Info: Link coloring ON on input line 25.
+Package hyperref Info: Link coloring ON on input line 26.
  (supplementary_material.out)
 (supplementary_material.out)
 \@outlinefile=\write4
 \openout4 = `supplementary_material.out'.
 
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <10> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 33.
-LaTeX Font Info:    Font shape `T1/txr/b/n' in size <14.4> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 37.
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 34.
 LaTeX Font Info:    Trying to load font information for OT1+txr on input line 3
-7.
+8.
  (E:\MiKTeX\tex/latex/txfonts\ot1txr.fd
 File: ot1txr.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Trying to load font information for U+txmia on input line 3
-7.
+8.
 
 (E:\MiKTeX\tex/latex/txfonts\utxmia.fd
 File: utxmia.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 37.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 38.
 
  (E:\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 37.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 38.
 
 
 (E:\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for U+txsyc on input line 3
-7.
+8.
  (E:\MiKTeX\tex/latex/txfonts\utxsyc.fd
 File: utxsyc.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Trying to load font information for TS1+txr on input line 4
-1.
+2.
 
 (E:\MiKTeX\tex/latex/txfonts\ts1txr.fd
 File: ts1txr.fd 2000/12/15 v3.1
@@ -876,58 +883,55 @@ File: ts1txr.fd 2000/12/15 v3.1
 ts/enc/dvips/base/8r.enc}]
 (../output/tables/T2_datasets.tex) (../output/tables/T1_methods.tex)
 (../output/tables/T3_params.tex) [2] (../output/tables/T4_accuracy.tex
-LaTeX Font Info:    Font shape `T1/txr/b/n' in size <5> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 35.
-)
-(../output/tables/T5_features.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <7> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 33.
-) [3]
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 37.
+)
+(../output/tables/T5_features.tex) [3]
 (../output/tables/T-A4_per_dataset_ablation.tex)
-<../output/figures/F6_ablation_heatmap.pdf, id=61, 502.06633pt x 456.0917pt>
+<../output/figures/F6_ablation_heatmap.pdf, id=71, 502.06633pt x 456.0917pt>
 File: ../output/figures/F6_ablation_heatmap.pdf Graphic file (type pdf)
 <use ../output/figures/F6_ablation_heatmap.pdf>
 Package pdftex.def Info: ../output/figures/F6_ablation_heatmap.pdf  used on inp
-ut line 87.
+ut line 88.
 (pdftex.def)             Requested size: 341.43307pt x 310.16609pt.
- [4] [5] [6]
+ [4]
 (../output/tables/T-A5_runtime.tex)
-<../output/figures/F11_runtime_scatter.pdf, id=79, 600.10417pt x 384.1163pt>
+<../output/figures/F11_runtime_scatter.pdf, id=80, 600.10417pt x 384.1163pt>
 File: ../output/figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use ../output/figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: ../output/figures/F11_runtime_scatter.pdf  used on inp
-ut line 102.
+ut line 103.
 (pdftex.def)             Requested size: 386.96027pt x 247.6857pt.
- [7 <../output/figures/F6_ablation_heatmap.pdf>] (../output/tables/T-A6_paramet
-er_sensitivity_full.tex
+ [5]
+(../output/tables/T-A6_parameter_sensitivity_full.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <9> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 13.
-) [8 <../output/figures/F11_runtime_scatter.pdf>] [9]
-<../output/figures/F8_convergence.pdf, id=246, 717.70288pt x 399.5477pt>
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 15.
+) [6 <../output/figures/F6_ablation_heatmap.pdf>]
+<../output/figures/F8_convergence.pdf, id=168, 652.18436pt x 362.48988pt>
 File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
-ne 121.
-(pdftex.def)             Requested size: 432.48051pt x 240.76688pt.
-<../output/figures/F7_boxplot_all.pdf, id=247, 810.1467pt x 576.87769pt>
+ne 122.
+(pdftex.def)             Requested size: 432.48051pt x 240.38347pt.
+<../output/figures/F7_boxplot_all.pdf, id=169, 810.1467pt x 576.87769pt>
 File: ../output/figures/F7_boxplot_all.pdf Graphic file (type pdf)
 <use ../output/figures/F7_boxplot_all.pdf>
 Package pdftex.def Info: ../output/figures/F7_boxplot_all.pdf  used on input li
-ne 128.
+ne 129.
 (pdftex.def)             Requested size: 432.48051pt x 307.96193pt.
- [10 <../output/figures/F8_convergence.pdf> <../output/figures/F7_boxplot_all.p
-df>] (../output/tables/T6_wilcoxon.tex)
+ [7 <../output/figures/F11_runtime_scatter.pdf> <../output/figures/F8_convergen
+ce.pdf>] (../output/tables/T6_wilcoxon.tex)
 (../output/tables/T6b_holm_bonferroni.tex)
-<../output/figures/F10_wilcoxon_heatmap.pdf, id=424, 589.63672pt x 587.69109pt>
+<../output/figures/F10_wilcoxon_heatmap.pdf, id=358, 589.63672pt x 587.69109pt>
 
 File: ../output/figures/F10_wilcoxon_heatmap.pdf Graphic file (type pdf)
 <use ../output/figures/F10_wilcoxon_heatmap.pdf>
 Package pdftex.def Info: ../output/figures/F10_wilcoxon_heatmap.pdf  used on in
-put line 145.
+put line 146.
 (pdftex.def)             Requested size: 341.43307pt x 340.30508pt.
- (supplementary_material.bbl [11 <../output/figures/F10_wilcoxon_heatmap.pdf>] 
-[12]) [13]
-(supplementary_material.aux)
+ (supplementary_material.bbl [8]
+[9 <../output/figures/F7_boxplot_all.pdf>]) [10 <../output/figures/F10_wilcoxon
+_heatmap.pdf>] (supplementary_material.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
@@ -937,13 +941,13 @@ Package rerunfilecheck Info: File `supplementary_material.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 13235 strings out of 467690
- 198116 string characters out of 5431801
- 673721 words of memory out of 5000000
- 41975 multiletter control sequences out of 15000+600000
- 699601 words of font info for 158 fonts, out of 8000000 for 9000
+ 13228 strings out of 467690
+ 198040 string characters out of 5431801
+ 688327 words of memory out of 5000000
+ 41968 multiletter control sequences out of 15000+600000
+ 693702 words of font info for 155 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,14n,79p,618b,579s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,623b,569s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
 1000.pk><E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><E:/MiKTeX/fo
 nts/type1/public/txfonts/rtcxr.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxb.p
@@ -951,9 +955,9 @@ fb><E:/MiKTeX/fonts/type1/public/txfonts/rtxmi.pfb><E:/MiKTeX/fonts/type1/publi
 c/txfonts/rtxr.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsy.pfb><E:/MiKTeX/fo
 nts/type1/urw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/
 MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on supplementary_material.pdf (13 pages, 407198 bytes).
+Output written on supplementary_material.pdf (10 pages, 435234 bytes).
 PDF statistics:
- 662 PDF objects out of 1000 (max. 8388607)
- 52 named destinations out of 1000 (max. 500000)
+ 709 PDF objects out of 1000 (max. 8388607)
+ 49 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

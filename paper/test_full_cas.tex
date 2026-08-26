@@ -1,0 +1,88 @@
+\documentclass[a4paper,fleqn]{cas-dc}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[figuresright]{rotating}
+
+\graphicspath{{../output/figures/}}
+
+\providecommand{\ktablecaption}{}
+
+\begin{document}
+
+% Page 1: Highlights
+\noindent{\Large\bfseries Highlights}\par
+\vspace{1.2em}
+\noindent{\large\bfseries Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}\par
+\vspace{0.6em}
+\noindent Anonymous Author\par
+\vspace{1.5em}
+
+\begin{itemize}\setlength{\itemsep}{10pt}
+  \item Closed-loop knowledge-guided swarm learning framework for high-dimensional feature selection.
+  \item MI initialization with adaptive re-initialization restores diversity and prevents search entrapment.
+  \item Knowledge-guided elite refinement accumulates feature-importance signals with exponential decay.
+  \item Two-phase weight scheduling temporally decouples feature compression from accuracy refinement.
+  \item KDS-EL achieves 95.74\% accuracy with 87.8 selected features across 20 benchmark datasets.
+\end{itemize}
+
+\clearpage
+
+\shorttitle{Multi-Task PSO with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling}
+\shortauthors{Anonymous Author}
+
+\title[mode=title]{Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}
+
+\author[1]{Anonymous Author}
+\cormark[1]
+\ead{corresponding.author@example.com}
+\address[1]{School of Computer Science, Anonymous University, Anonymous City, China}
+\cortext[cor1]{Corresponding author}
+
+\begin{abstract}
+Feature selection in high-dimensional data remains a central challenge for evolutionary computation. Particle swarm optimization suffers from three structural deficiencies: random initialization provides insufficient guidance in sparse high-dimensional spaces, uniform feature perturbation fails to exploit cross-iteration feature-importance signals, and static objective preferences cannot adapt to different evolutionary phases. To address these limitations, we propose KDS-EL (Knowledge-Guided Dual-Phase Swarm Evolutionary Learning), a knowledge-guided evolutionary framework with a closed-loop feature-importance learning mechanism. First, to overcome inefficient initialization, we propose mutual-information-guided initialization with adaptive re-initialization, injecting prior knowledge and recovering population diversity when stagnation occurs. Second, to exploit discarded cross-iteration feature-importance signals, we propose a knowledge-guided elite refinement strategy that accumulates feature-importance knowledge and steers elite solutions toward historically effective features. Third, to align objective weights with search phases, we propose two-phase weight scheduling that emphasizes early dimensionality reduction and late-stage accuracy refinement. On 20 high-dimensional benchmarks, KDS-EL achieves the best classification performance among all competitors, with a mean accuracy of 0.9574 and only 87.8 selected features, outperforming the strongest single- and multi-objective competitors by +3.97 and +4.42 percentage points; Wilcoxon signed-rank tests with Holm--Bonferroni correction confirm statistically significant improvements over all 13 competitors.
+\end{abstract}
+
+\begin{keywords}
+Feature selection \sep Particle swarm optimization \sep Mutual information \sep Knowledge-guided elite refinement \sep Two-phase weight scheduling
+\end{keywords}
+
+\maketitle
+
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_preliminaries}
+\input{sections/04_kds_el}
+
+\section{Experimental Results and Analysis}\label{sec:results}
+This section reports the experimental outcomes across six complementary perspectives: overall classification accuracy, feature-selection compactness, statistical significance, ceiling-effect behavior, convergence dynamics, and computational efficiency. All aggregate numbers are computed over the 20 benchmark datasets described in Section~\ref{sec:setup}. We then quantify the contribution of each mechanism in Section~\ref{sec:ablation} and assess the sensitivity of KDS-EL to its hyper-parameters in Section~\ref{sec:parametric}.
+
+\input{sections/05_experimental_setup}
+
+\input{../output/tables/T1_methods}
+\input{../output/tables/T2_datasets}
+\input{../output/tables/T3_params}
+
+\input{sections/06_results_and_discussion}
+\input{sections/07_component_contribution_analysis}
+\input{sections/08_parameter_sensitivity}
+
+\section{Conclusion}\label{sec:conclusion}
+\input{sections/09_conclusion}
+
+\section*{CRediT Author Statement}
+\textbf{Anonymous Author}: Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Writing -- original draft, Writing -- review \& editing, Visualization.
+
+\section*{Declaration of Competing Interest}
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Data Availability}
+The 20 benchmark datasets analyzed in this study are publicly available and widely used in the feature selection literature. The source code of KDS-EL will be made available upon publication. Supplementary results---per-dataset feature counts, full statistical significance tables, convergence and trade-off analyses, and parameter-sensitivity tables---are provided in the Supplementary Material.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+
+\end{document}

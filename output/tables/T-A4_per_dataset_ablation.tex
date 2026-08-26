@@ -1,11 +1,15 @@
-\begin{table}[htbp]
+\begin{table*}[!t]
 \centering
 \caption{Per-dataset ablation results over the 20-dataset suite: accuracy and mean feature count for each variant of the incremental construction.}
 \label{T-A4}
-\small
-\begin{tabular}{lcccccccc}
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.06}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lcccccccc@{}}
 \toprule
-Dataset & \multicolumn{2}{c}{MEL} & \multicolumn{2}{c}{MEL+MI} & \multicolumn{2}{c}{KDS-EL$_{\text{KER}}$} & \multicolumn{2}{c}{KDS-EL} \\\midrule
+Dataset & \multicolumn{2}{c}{MEL} & \multicolumn{2}{c}{MEL+MI} & \multicolumn{2}{c}{KDS-EL w/o TPS} & \multicolumn{2}{c}{KDS-EL} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
  & Acc & Feat & Acc & Feat & Acc & Feat & Acc & Feat \\
 \midrule
 ALL1 & 0.9664$\pm$0.0023 & 4248 & 0.9996$\pm$0.0000 & 55 & 0.9996$\pm$0.0000 & 55 & 0.9998$\pm$0.0001 & 39 \\
@@ -29,5 +33,6 @@ SRBCT & 0.9321$\pm$0.0085 & 906 & 0.9944$\pm$0.0043 & 129 & 0.9984$\pm$0.0006 & 
 T1D & 0.7679$\pm$0.0461 & 6715 & 0.8246$\pm$0.0084 & 174 & 0.8232$\pm$0.0126 & 366 & 0.8598$\pm$0.0094 & 330 \\
 madelon & 0.7521$\pm$0.0095 & 190 & 0.7679$\pm$0.0121 & 130 & 0.8659$\pm$0.0246 & 26 & 0.8822$\pm$0.0180 & 18 \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{tabular}%
+}
+\end{table*}

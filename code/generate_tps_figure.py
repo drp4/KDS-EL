@@ -1,14 +1,14 @@
 """Publication-grade Figure 4 for Two-Phase Dynamic Weight Scheduling (TPS) in KDS-EL.
-Harmonized with Figure 3 Academic Color System:
-- Strict 2-Family Academic Palette: Cobalt/Navy Blue (#1D4ED8 / #1E3A8A) + Slate Neutral (#334155 / #64748B / #CBD5E1).
-- Smooth scientific contour landscape, no boxes, no cards.
-- Zero color clash, professional, clean layout.
+Strictly adheres to Top-Tier Journal (Elsevier SWEVO/KBS/INS, IEEE TEVC) design standards:
+- Clear 2-Container Architecture (Timeline & Dynamic Specifications + Continuous Search Landscape).
+- Clean theoretical notations without hardcoded empirical hyperparameter clutter or redundant parentheses.
+- Pure academic palette: Cobalt Blue + Slate Neutral.
 """
 
 import os
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from matplotlib.patches import Circle
+from matplotlib.patches import FancyBboxPatch, Circle
 from scipy.interpolate import make_interp_spline
 import numpy as np
 
@@ -18,30 +18,48 @@ def create_figure4():
     plt.rcParams['font.serif'] = ['Times New Roman', 'Times', 'DejaVu Serif']
     plt.rcParams['mathtext.fontset'] = 'stix'
 
-    fig, ax = plt.subplots(figsize=(16, 9.2), dpi=300)
+    fig, ax = plt.subplots(figsize=(16.5, 8.8), dpi=300)
     ax.set_xlim(0, 100)
     ax.set_ylim(0, 100)
     ax.axis('off')
 
     # Color System - Harmonized Academic Cobalt Blue & Slate Neutral
+    c_card_bg = '#FFFFFF'
+    c_panel_bg = '#F8FAFC'        # Slate 50
     c_text_dark = '#0F172A'       # Slate 900
     c_text_muted = '#475569'      # Slate 600
     c_text_light = '#64748B'      # Slate 500
     
-    c_blue_navy = '#1E3A8A'       # Blue 900 (Phase 2 & Milestone & Main titles)
-    c_blue_primary = '#1D4ED8'    # Blue 700 (Phase 1 & Flow arrows)
+    c_blue_navy = '#1E3A8A'       # Blue 900
+    c_blue_primary = '#1D4ED8'    # Blue 700
     c_blue_mid = '#2563EB'        # Blue 600
     c_blue_light = '#EFF6FF'      # Blue 50
     c_blue_border = '#93C5FD'     # Blue 300
     
     c_slate_dark = '#334155'      # Slate 700
-    c_slate_line = '#64748B'      # Slate 500
-    c_grid_line = '#CBD5E1'       # Slate 300
+    c_border_neutral = '#CBD5E1'  # Slate 300
+
+    def draw_badge(x, y, w, h, bg, border, lw=1.1, r=0.4, zorder=2):
+        box = FancyBboxPatch((x, y), w, h, boxstyle=f"round,pad=0.03,rounding_size={r}",
+                             facecolor=bg, edgecolor=border, linewidth=lw, zorder=zorder)
+        ax.add_patch(box)
+        return box
+
+    # =========================================================================
+    # 0. MAIN STRUCTURAL BOUNDING CONTAINERS (方框/面板结构)
+    # =========================================================================
+    # 0. MAIN STRUCTURAL BOUNDING CONTAINERS (方框/面板结构)
+    # =========================================================================
+    # Top Timeline & Dynamic Objective Container
+    draw_badge(2.0, 69.5, 96.0, 28.5, c_panel_bg, c_border_neutral, lw=1.2, r=0.5, zorder=1)
+    
+    # Central Continuous Search Landscape Container
+    draw_badge(2.0, 3.0, 96.0, 64.5, '#FFFFFF', c_border_neutral, lw=1.2, r=0.5, zorder=1)
 
     # =========================================================================
     # 1. TOP EVOLUTIONARY TIMELINE
     # =========================================================================
-    t_y = 92.5
+    t_y = 93.8
     t_x_start = 8.0
     t_x_split = 62.0
     t_x_end = 92.0
@@ -54,32 +72,59 @@ def create_figure4():
     # Timeline Nodes
     # Iteration 1
     ax.add_patch(Circle((t_x_start, t_y), 0.75, facecolor=c_blue_primary, edgecolor='#FFFFFF', lw=1.5, zorder=5))
-    ax.text(t_x_start, t_y + 2.8, r'Initialization ($t = 1$)', fontsize=10.8, fontweight='bold', ha='center', va='center', color=c_text_dark)
+    ax.text(t_x_start, t_y + 2.5, r'Initialization ($t = 1$)', fontsize=11.5, fontweight='bold', ha='center', va='center', color=c_text_dark, zorder=6)
 
-    # Phase Transition Point
+    # Phase Transition Point (Precisely Aligned at x=62.0)
     ax.add_patch(Circle((t_x_split, t_y), 0.95, facecolor='#FFFFFF', edgecolor=c_blue_navy, lw=2.4, zorder=5))
-    ax.text(t_x_split, t_y + 2.8, r'Phase Transition ($t = \tau T$)', fontsize=10.8, fontweight='bold', ha='center', va='center', color=c_blue_navy)
+    ax.text(t_x_split, t_y + 2.5, r'Phase Transition ($t = \tau T$)', fontsize=11.5, fontweight='bold', ha='center', va='center', color=c_blue_navy, zorder=6)
 
     # Termination Point
     ax.add_patch(Circle((t_x_end, t_y), 0.75, facecolor=c_blue_navy, edgecolor='#FFFFFF', lw=1.5, zorder=5))
-    ax.text(t_x_end, t_y + 2.8, r'Termination ($t = T$)', fontsize=10.8, fontweight='bold', ha='center', va='center', color=c_text_dark)
+    ax.text(t_x_end, t_y + 2.5, r'Termination ($t = T$)', fontsize=11.5, fontweight='bold', ha='center', va='center', color=c_text_dark, zorder=6)
 
-    # Subtle Phase Transition Vertical Dashed Line across the whole height
-    ax.plot([t_x_split, t_x_split], [15.0, t_y - 1.5], color='#CBD5E1', lw=1.2, linestyle=(0, (4, 4)), alpha=0.8, zorder=2)
+    # Subtle Phase Transition Vertical Dashed Line across the landscape
+    ax.plot([62.0, 62.0], [5.0, 64.0], color='#CBD5E1', lw=1.2, linestyle=(0, (4, 4)), alpha=0.8, zorder=2)
 
     # =========================================================================
-    # 2. CONTINUOUS OPTIMIZATION LANDSCAPE (CONTOUR BACKGROUND)
+    # 2. UPPER MODULAR SPECIFICATION CARDS (CLEAN, BOLD, NO FILLER TEXT)
     # =========================================================================
-    # Create smooth meshgrid across canvas [5 to 95, 16 to 70]
-    nx, ny = 320, 220
-    gx = np.linspace(5.0, 95.0, nx)
-    gy = np.linspace(16.0, 70.0, ny)
+    card_h = 16.5
+    card_y = 72.0
+
+    # CARD 1: Phase 1 (Left)
+    c1_x, c1_w = 4.0, 30.0
+    draw_badge(c1_x, card_y, c1_w, card_h, c_card_bg, c_blue_border, lw=1.2, r=0.4, zorder=2)
+    ax.text(c1_x + c1_w/2, card_y + 13.0, 'Phase 1: Sparse Exploration', fontsize=12.2, fontweight='bold', color=c_blue_primary, ha='center', va='center', zorder=3)
+    ax.text(c1_x + c1_w/2, card_y + 8.2, r'$f(\mathbf{x}, \mathbf{w}) = w_{\mathrm{acc}} \cdot \mathrm{Error}(\mathbf{x}) + w_{\mathrm{feat}} \cdot \frac{\|\mathbf{x}\|_0}{D}$', fontsize=9.8, color=c_text_dark, ha='center', va='center', zorder=3)
+    ax.text(c1_x + c1_w/2, card_y + 3.5, r'$w_{\mathrm{feat}} > w_{\mathrm{acc}}$', fontsize=11.0, fontweight='bold', color=c_blue_primary, ha='center', va='center', zorder=3)
+
+    # CARD 2: Adaptive Weight Shift (Center)
+    c2_x, c2_w = 36.0, 28.0
+    draw_badge(c2_x, card_y, c2_w, card_h, c_card_bg, c_border_neutral, lw=1.2, r=0.4, zorder=2)
+    ax.text(c2_x + c2_w/2, card_y + 13.0, 'Adaptive Weight Shift', fontsize=12.2, fontweight='bold', color=c_blue_navy, ha='center', va='center', zorder=3)
+    ax.text(c2_x + c2_w/2, card_y + 8.2, r'$\mathbf{w}_{\mathrm{Phase\ 1}} \;\longrightarrow\; \mathbf{w}_{\mathrm{Phase\ 2}}$', fontsize=11.5, fontweight='bold', color=c_text_dark, ha='center', va='center', zorder=3)
+    ax.text(c2_x + c2_w/2, card_y + 3.5, r'Switch at $t = \tau T$', fontsize=11.0, fontweight='bold', color=c_blue_navy, ha='center', va='center', zorder=3)
+
+    # CARD 3: Phase 2 (Right)
+    c3_x, c3_w = 66.0, 30.0
+    draw_badge(c3_x, card_y, c3_w, card_h, c_card_bg, c_border_neutral, lw=1.2, r=0.4, zorder=2)
+    ax.text(c3_x + c3_w/2, card_y + 13.0, 'Phase 2: Accuracy Refinement', fontsize=12.2, fontweight='bold', color=c_blue_navy, ha='center', va='center', zorder=3)
+    ax.text(c3_x + c3_w/2, card_y + 8.2, r'$f(\mathbf{x}, \mathbf{w}) = w_{\mathrm{acc}} \cdot \mathrm{Error}(\mathbf{x}) + w_{\mathrm{feat}} \cdot \frac{\|\mathbf{x}\|_0}{D}$', fontsize=9.8, color=c_text_dark, ha='center', va='center', zorder=3)
+    ax.text(c3_x + c3_w/2, card_y + 3.5, r'$w_{\mathrm{acc}} \gg w_{\mathrm{feat}}$', fontsize=11.0, fontweight='bold', color=c_blue_navy, ha='center', va='center', zorder=3)
+
+    # =========================================================================
+    # 3. CONTINUOUS OPTIMIZATION LANDSCAPE (CONTOUR BACKGROUND)
+    # =========================================================================
+    # Create smooth meshgrid across canvas [3.0 to 97.0, 4.0 to 65.0]
+    nx, ny = 320, 240
+    gx = np.linspace(3.0, 97.0, nx)
+    gy = np.linspace(4.0, 65.0, ny)
     X, Y = np.meshgrid(gx, gy)
 
-    # Broad Phase 1 Basin centered around (34, 42)
-    Z1 = ((X - 34.0)/25.0)**2 + ((Y - 42.0)/18.0)**2
-    # Focused Phase 2 Basin centered around (85, 41)
-    Z2 = ((X - 85.0)/9.5)**2 + ((Y - 41.0)/9.5)**2
+    # Broad Phase 1 Basin centered around (34, 36)
+    Z1 = ((X - 34.0)/25.0)**2 + ((Y - 36.0)/20.0)**2
+    # Focused Phase 2 Basin centered around (85, 35)
+    Z2 = ((X - 85.0)/9.5)**2 + ((Y - 35.0)/10.5)**2
     # Combined smooth potential field
     blend = 1.0 / (1.0 + np.exp(-(X - 62.0) / 4.5))
     Z = (1.0 - blend) * Z1 + blend * Z2 * 1.6
@@ -88,45 +133,22 @@ def create_figure4():
     levels_all = [0.35, 0.75, 1.3, 2.0, 2.8, 3.8]
     ax.contour(X, Y, Z, levels=levels_all, colors='#CBD5E1', linewidths=0.75, linestyles='solid', alpha=0.7, zorder=1)
 
-    # Soft subtle basin shading (Harmonized Ice Blue and Soft Slate)
+    # Soft subtle basin shading
     ax.contourf(X, Y, Z1, levels=[0.0, 1.0, 2.4], colors=['#EFF6FF', '#F8FAFC', '#FFFFFF'], alpha=0.6, zorder=0)
     ax.contourf(X, Y, Z2, levels=[0.0, 0.6, 1.6], colors=['#DBEAFE', '#EFF6FF', '#FFFFFF'], alpha=0.5, zorder=0)
 
-    # Subtle Landscape Auxiliary Labels
-    ax.text(34.0, 18.5, r'Sparsity-Oriented Fitness Landscape', fontsize=8.5, fontstyle='italic', color='#64748B', ha='center', va='center')
-    ax.text(85.0, 18.5, r'Accuracy-Oriented Fitness Landscape', fontsize=8.5, fontstyle='italic', color=c_blue_navy, alpha=0.85, ha='center', va='center')
-
-    # =========================================================================
-    # 3. UPPER MATHEMATICAL & PREFERENCE SPECIFICATIONS
-    # =========================================================================
-    # LEFT REGION: Phase 1: Sparse Subset Exploration
-    p1_tx = 8.0
-    ax.text(p1_tx, 83.5, 'Phase 1: Sparse Subset Exploration', fontsize=12.5, fontweight='bold', color=c_blue_primary, va='center')
-    ax.text(p1_tx, 79.5, r'$f(\mathbf{x}, \mathbf{w}) = w_{\mathrm{acc}} \cdot \mathrm{Error}(\mathbf{x}) + w_{\mathrm{feat}} \cdot \frac{\|\mathbf{x}\|_0}{D}$', fontsize=10.5, color=c_text_dark, va='center')
-    ax.text(p1_tx, 75.8, r'High Feature-Ratio Penalty ($w_{\mathrm{feat}} > w_{\mathrm{acc}}$)', fontsize=10.5, fontweight='bold', color=c_blue_primary, va='center')
-    ax.text(p1_tx, 72.2, r'Sparsity-oriented exploration $\cdot$ Progressive feature reduction', fontsize=9.2, fontstyle='italic', color=c_text_muted, va='center')
-
-    # CENTER: Adaptive Weight Scheduling Transition Marker
-    t_center_x = 62.0
-    ax.text(t_center_x, 83.5, 'Adaptive Weight Scheduling', fontsize=12.5, fontweight='bold', color=c_blue_navy, ha='center', va='center')
-    ax.text(t_center_x, 79.5, r'$\mathbf{w}_{\mathrm{Phase\ 1}} \;\longrightarrow\; \mathbf{w}_{\mathrm{Phase\ 2}}$',
-            fontsize=12.0, fontweight='bold', color=c_text_dark, ha='center', va='center')
-
-    # RIGHT REGION: Phase 2: Accuracy Refinement
-    p2_tx = 72.0
-    ax.text(p2_tx, 83.5, 'Phase 2: Accuracy Refinement', fontsize=12.5, fontweight='bold', color=c_blue_navy, va='center')
-    ax.text(p2_tx, 79.5, r'$f(\mathbf{x}, \mathbf{w}) = w_{\mathrm{acc}} \cdot \mathrm{Error}(\mathbf{x}) + w_{\mathrm{feat}} \cdot \frac{\|\mathbf{x}\|_0}{D}$', fontsize=10.5, color=c_text_dark, va='center')
-    ax.text(p2_tx, 75.8, r'Classification Fidelity Priority ($w_{\mathrm{acc}} \gg w_{\mathrm{feat}}$)', fontsize=10.5, fontweight='bold', color=c_blue_navy, va='center')
-    ax.text(p2_tx, 72.2, r'Accuracy-oriented refinement $\cdot$ Elite subset fine-tuning', fontsize=9.2, fontstyle='italic', color=c_text_muted, va='center')
+    # Clean Landscape Labels
+    ax.text(34.0, 5.5, 'Sparsity-Oriented Fitness Landscape', fontsize=10.0, fontweight='bold', color='#64748B', ha='center', va='center', zorder=2)
+    ax.text(85.0, 5.5, 'Accuracy-Oriented Fitness Landscape', fontsize=10.0, fontweight='bold', color=c_blue_navy, alpha=0.9, ha='center', va='center', zorder=2)
 
     # =========================================================================
     # 4. CONTINUOUS EVOLUTIONARY SEARCH TRAJECTORY & CANDIDATE PATHS
     # =========================================================================
     # Secondary candidate exploration paths in Phase 1
     cand_paths_p1 = [
-        np.array([[10.0, 62.0], [19.0, 58.0], [29.0, 53.0], [40.0, 52.0], [50.0, 46.0], [59.0, 43.5]]),
-        np.array([[11.0, 24.0], [19.0, 31.0], [31.0, 27.0], [43.0, 33.0], [52.0, 37.0], [60.0, 39.5]]),
-        np.array([[13.0, 45.0], [22.0, 36.0], [34.0, 42.0], [45.0, 39.0], [56.0, 42.5]])
+        np.array([[10.0, 56.0], [19.0, 52.0], [29.0, 47.0], [40.0, 46.0], [50.0, 40.0], [59.0, 38.0]]),
+        np.array([[11.0, 19.0], [19.0, 25.0], [31.0, 22.0], [43.0, 27.0], [52.0, 31.0], [60.0, 34.0]]),
+        np.array([[13.0, 39.0], [22.0, 30.0], [34.0, 36.0], [45.0, 33.0], [56.0, 37.0]])
     ]
     for cpath in cand_paths_p1:
         t_pts = np.linspace(0, 1, len(cpath))
@@ -139,18 +161,18 @@ def create_figure4():
 
     # Primary Continuous Evolutionary Trajectory
     main_waypoints = np.array([
-        [8.5, 53.5],    # Iter 1 (Global initial state)
-        [15.5, 38.0],   # Broad global exploration dip
-        [24.5, 49.5],   # Exploration crest
-        [35.0, 37.0],   # Feature reduction trough
-        [46.5, 46.0],   # Intermediate convergence crest
-        [55.5, 39.5],   # Pre-transition guidance
-        [62.0, 41.5],   # Phase transition pivot point
-        [69.0, 45.0],   # Phase 2 refinement step 1
-        [76.0, 37.8],   # Phase 2 refinement step 2
-        [81.5, 42.2],   # Phase 2 local convergence
-        [84.0, 39.5],   # Fine-scale elite tuning
-        [85.5, 41.0],   # Final Elite Convergence
+        [8.5, 47.5],    # Iter 1 (Global initial state)
+        [15.5, 32.0],   # Broad global exploration dip
+        [24.5, 43.5],   # Exploration crest
+        [35.0, 31.0],   # Feature reduction trough
+        [46.5, 40.0],   # Intermediate convergence crest
+        [55.5, 34.0],   # Pre-transition guidance
+        [62.0, 36.0],   # Phase transition pivot point
+        [69.0, 39.5],   # Phase 2 refinement step 1
+        [76.0, 32.5],   # Phase 2 refinement step 2
+        [81.5, 36.5],   # Phase 2 local convergence
+        [84.0, 34.0],   # Fine-scale elite tuning
+        [85.5, 35.5],   # Final Elite Convergence
     ])
 
     # Spline interpolation for smooth organic curve
@@ -187,9 +209,9 @@ def create_figure4():
     ]
     for pt, lbl, col, va_align, offset in checkpoints:
         ax.add_patch(Circle((pt[0], pt[1]), 0.65, facecolor=col, edgecolor='#FFFFFF', lw=1.3, zorder=6))
-        ax.text(pt[0] + offset[0], pt[1] + offset[1], lbl, fontsize=10, fontweight='bold', color=col, ha='center', va=va_align, zorder=6)
+        ax.text(pt[0] + offset[0], pt[1] + offset[1], lbl, fontsize=10.5, fontweight='bold', color=col, ha='center', va=va_align, zorder=6)
 
-    # Subtle Transition Marker Circle at t=70
+    # Subtle Transition Marker Circle at t=tau T
     p_trans = main_waypoints[6]
     ax.add_patch(Circle((p_trans[0], p_trans[1]), 1.2, facecolor='none', edgecolor=c_blue_navy, lw=1.8, linestyle='--', zorder=7))
 
@@ -197,48 +219,24 @@ def create_figure4():
     r_loc = 2.8
     for la in [0.4, 2.0, 3.8, 5.2]:
         lx = 85.5 + r_loc * np.cos(la)
-        ly = 41.0 + r_loc * 0.7 * np.sin(la)
+        ly = 35.5 + r_loc * 0.7 * np.sin(la)
         ax.add_patch(Circle((lx, ly), 0.3, facecolor=c_blue_border, edgecolor=c_blue_navy, lw=0.5, zorder=5))
-        ax.annotate('', xy=(85.5 + 0.7*np.cos(la), 41.0 + 0.5*np.sin(la)), xytext=(lx, ly),
+        ax.annotate('', xy=(85.5 + 0.7*np.cos(la), 35.5 + 0.5*np.sin(la)), xytext=(lx, ly),
                     arrowprops=dict(arrowstyle='->', color=c_blue_mid, lw=0.8, mutation_scale=7), zorder=4)
 
     # Final Elite Solution Node (Cobalt/Navy Star & Concentrated Core)
     p_final = main_waypoints[11]
     ax.plot(p_final[0], p_final[1], marker='*', markersize=16, color=c_blue_primary, markeredgecolor=c_blue_navy, markeredgewidth=1.2, zorder=9)
-    ax.text(p_final[0] + 3.2, p_final[1] + 0.4, r'$\mathbf{x}^\star\ \mathrm{Refined\ Elite\ Subset}$' + '\n' + r'(Low Error & High Sparsity)',
-            fontsize=9.5, fontweight='bold', color=c_blue_navy, ha='left', va='center', zorder=9)
+    ax.text(p_final[0] + 3.2, p_final[1] + 0.4, r'$\mathbf{x}^\star\ \mathrm{Optimal\ Feature\ Subset}$',
+            fontsize=11.0, fontweight='bold', color=c_blue_navy, ha='left', va='center', zorder=9)
 
-    # Dynamic Annotations of Behavioral Change
-    ax.text(26.0, 24.5, r'$\mathbf{Broad\ Exploration}$' + '\n' + r'(Progressive feature reduction)',
-            fontsize=9.5, fontstyle='italic', color=c_blue_primary, ha='center', va='center')
-
-    ax.text(85.5, 24.5, r'$\mathbf{Focused\ Local\ Refinement}$' + '\n' + r'(Elite feature subset tuning)',
-            fontsize=9.5, fontstyle='italic', color=c_blue_navy, ha='center', va='center')
-
-    # =========================================================================
-    # 5. BOTTOM CONTINUOUS MECHANISM SUMMARY STATEMENT
-    # =========================================================================
-    sum_y = 6.8
-    ax.plot([8.0, 92.0], [12.2, 12.2], color=c_grid_line, lw=1.0, zorder=2)
-
-    summary_items = [
-        (16.0, 'Exploration', c_blue_primary),
-        (33.0, 'Feature Reduction', c_blue_primary),
-        (51.0, 'Weight Transition', c_blue_navy),
-        (70.0, 'Accuracy Refinement', c_blue_navy),
-        (88.0, 'High-Quality Compact Subset', c_blue_navy)
-    ]
-    for sx, stext, scol in summary_items:
-        ax.text(sx, sum_y, stext, fontsize=10.5, fontweight='bold', color=scol, ha='center', va='center')
-
-    # Connecting arrows between summary concepts
-    arrow_positions = [(22.0, 25.0), (41.0, 44.0), (60.0, 63.0), (79.0, 81.5)]
-    for ax_start, ax_end in arrow_positions:
-        ax.annotate('', xy=(ax_end, sum_y), xytext=(ax_start, sum_y),
-                    arrowprops=dict(arrowstyle='-|>', color=c_slate_line, lw=1.4, mutation_scale=10), zorder=3)
+    # Clean, Bold Search Mode Annotations (NO redundant filler subtitles)
+    ax.text(26.0, 19.5, 'Global Exploration', fontsize=11.5, fontweight='bold', color=c_blue_primary, ha='center', va='center', zorder=3)
+    ax.text(85.5, 19.5, 'Local Refinement', fontsize=11.5, fontweight='bold', color=c_blue_navy, ha='center', va='center', zorder=3)
 
     # Save Outputs
-    out_dir = 'output/figures'
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    out_dir = os.path.join(base_dir, 'output', 'figures')
     os.makedirs(out_dir, exist_ok=True)
     pdf_path = os.path.join(out_dir, 'F4_tps_strategy_journal.pdf')
     png_path = os.path.join(out_dir, 'F4_tps_strategy_journal.png')
@@ -247,7 +245,7 @@ def create_figure4():
     plt.savefig(pdf_path, format='pdf', bbox_inches='tight', dpi=300)
     plt.savefig(png_path, format='png', bbox_inches='tight', dpi=300)
     plt.close(fig)
-    print('Generated Continuous Harmonized Figure 4 PDF and PNG successfully!')
+    print('Generated Clean Publication-Grade Figure 4 PDF and PNG successfully!')
 
 def generate_drawio():
     import xml.etree.ElementTree as ET
@@ -263,25 +261,27 @@ def generate_drawio():
         ET.SubElement(cell, 'mxGeometry', x=str(x), y=str(y), width=str(w), height=str(h), **{'as': 'geometry'})
         return cell
 
+    # Outer containers
+    add_cell('f4_top', '', 'rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontFamily=Times New Roman;', 20, 15, 1360, 240)
+    add_cell('f4_main', '', 'rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;fontFamily=Times New Roman;', 20, 270, 1360, 600)
+
     # Timeline elements
-    add_cell('it1', '&lt;b&gt;Iteration 1&lt;/b&gt;', 'text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 60, 20, 100, 25)
-    add_cell('it70', '&lt;b&gt;&lt;font color=\"#1E3A8A\"&gt;Phase Transition: $$t = 0.70T$$&lt;/font&gt;&lt;/b&gt;', 'text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 540, 20, 220, 25)
-    add_cell('it100', '&lt;b&gt;Iteration 100&lt;/b&gt;', 'text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 1140, 20, 120, 25)
+    add_cell('it1', '&lt;b&gt;Initialization ($t=1$)&lt;/b&gt;', 'text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 60, 30, 140, 25)
+    add_cell('it70', '&lt;b&gt;&lt;font color=\"#1E3A8A\"&gt;Phase Transition ($t=\\tau T$)&lt;/font&gt;&lt;/b&gt;', 'text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 580, 30, 220, 25)
+    add_cell('it100', '&lt;b&gt;Termination ($t=T$)&lt;/b&gt;', 'text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 1140, 30, 140, 25)
 
-    # Phase 1 & 2 Labels
-    add_cell('p1_lbl', '&lt;b&gt;&lt;font size=\"4\" color=\"#1D4ED8\"&gt;Phase 1: Sparse Subset Exploration&lt;/font&gt;&lt;/b&gt;&lt;br&gt;$$f = \\alpha \\times \\text{Error Rate} + \\beta \\times \\text{Feature Ratio}$$&lt;br&gt;&lt;b&gt;$$\\alpha = 0.70, \\quad \\beta = 0.30$$&lt;/b&gt;&lt;br&gt;&lt;i&gt;Sparsity-oriented exploration $\\cdot$ Progressive feature reduction&lt;/i&gt;', 'text;html=1;align=left;verticalAlign=top;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 80, 80, 420, 90)
-    add_cell('trans_lbl', '&lt;b&gt;&lt;font size=\"4\" color=\"#1E3A8A\"&gt;Adaptive Weight Scheduling&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;$$(\\alpha, \\beta): (0.70, 0.30) \\longrightarrow (0.95, 0.05)$$&lt;/b&gt;', 'text;html=1;align=center;verticalAlign=top;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 500, 80, 300, 70)
-    add_cell('p2_lbl', '&lt;b&gt;&lt;font size=\"4\" color=\"#1E3A8A\"&gt;Phase 2: Accuracy Refinement&lt;/font&gt;&lt;/b&gt;&lt;br&gt;$$f = \\alpha \\times \\text{Error Rate} + \\beta \\times \\text{Feature Ratio}$$&lt;br&gt;&lt;b&gt;$$\\alpha = 0.95, \\quad \\beta = 0.05$$&lt;/b&gt;&lt;br&gt;&lt;i&gt;Accuracy-oriented refinement $\\cdot$ Elite subset fine-tuning&lt;/i&gt;', 'text;html=1;align=left;verticalAlign=top;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 920, 80, 420, 90)
-
-    # Bottom Summary
-    add_cell('summary_flow', '&lt;b&gt;&lt;font color=\"#1D4ED8\"&gt;Exploration&lt;/font&gt;&lt;/b&gt;  $$\\longrightarrow$$  &lt;b&gt;&lt;font color=\"#1D4ED8\"&gt;Feature Reduction&lt;/font&gt;&lt;/b&gt;  $$\\longrightarrow$$  &lt;b&gt;&lt;font color=\"#1E3A8A\"&gt;Weight Transition&lt;/font&gt;&lt;/b&gt;  $$\\longrightarrow$$  &lt;b&gt;&lt;font color=\"#1E3A8A\"&gt;Accuracy Refinement&lt;/font&gt;&lt;/b&gt;  $$\\longrightarrow$$  &lt;b&gt;&lt;font color=\"#1E3A8A\"&gt;High-Quality Compact Subset&lt;/font&gt;&lt;/b&gt;', 'text;html=1;align=center;verticalAlign=middle;fontSize=13;fontFamily=Times New Roman;', 100, 780, 1200, 30)
+    # Phase 1 & 2 Cards
+    add_cell('p1_card', '&lt;b&gt;&lt;font size=\"4\" color=\"#1D4ED8\"&gt;Phase 1: Sparse Exploration&lt;/font&gt;&lt;/b&gt;&lt;br&gt;$$f(\\mathbf{x}, \\mathbf{w}) = w_{\\mathrm{acc}} \\cdot \\mathrm{Error}(\\mathbf{x}) + w_{\\mathrm{feat}} \\cdot \\frac{\\|\\mathbf{x}\\|_0}{D}$$&lt;br&gt;&lt;b&gt;$$w_{\\mathrm{feat}} > w_{\\mathrm{acc}}$$&lt;/b&gt;', 'rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#93C5FD;align=center;verticalAlign=top;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 60, 80, 420, 140)
+    add_cell('trans_card', '&lt;b&gt;&lt;font size=\"4\" color=\"#1E3A8A\"&gt;Adaptive Weight Shift&lt;/font&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;$$\\mathbf{w}_{\\mathrm{Phase\\ 1}} \\longrightarrow \\mathbf{w}_{\\mathrm{Phase\\ 2}}$$&lt;/b&gt;&lt;br&gt;&lt;b&gt;Switch at $t = \\tau T$&lt;/b&gt;', 'rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;align=center;verticalAlign=top;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 510, 80, 380, 140)
+    add_cell('p2_card', '&lt;b&gt;&lt;font size=\"4\" color=\"#1E3A8A\"&gt;Phase 2: Accuracy Refinement&lt;/font&gt;&lt;/b&gt;&lt;br&gt;$$f(\\mathbf{x}, \\mathbf{w}) = w_{\\mathrm{acc}} \\cdot \\mathrm{Error}(\\mathbf{x}) + w_{\\mathrm{feat}} \\cdot \\frac{\\|\\mathbf{x}\\|_0}{D}$$&lt;br&gt;&lt;b&gt;$$w_{\\mathrm{acc}} \\gg w_{\\mathrm{feat}}$$&lt;/b&gt;', 'rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;align=center;verticalAlign=top;fontSize=12;fontColor=#0F172A;fontFamily=Times New Roman;', 920, 80, 420, 140)
 
     out_file = 'output/figures/F4_tps_strategy_journal.drawio'
     os.makedirs(os.path.dirname(out_file), exist_ok=True)
     tree = ET.ElementTree(mxfile)
     tree.write(out_file, encoding='utf-8', xml_declaration=True)
-    print(f'Generated Harmonized Figure 4 Draw.io XML successfully: {out_file}')
+    print(f'Generated Clean Figure 4 Draw.io XML successfully: {out_file}')
 
 if __name__ == '__main__':
     create_figure4()
     generate_drawio()
+
