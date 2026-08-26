@@ -40,8 +40,10 @@ def p_tex(p):
 # ---------- T4 accuracy ----------
 def gen_T4():
     rows = read_csv("T4_accuracy.csv")
+    sym_rows = read_csv("T4_symbols.csv")
+    symbols = {r["Dataset"]: r for r in sym_rows}
     out = [r"\begin{sidewaystable}", r"\centering",
-           r"\caption{Classification accuracy (mean $\pm$ std) of 14 fixed-length methods on 20 benchmark datasets. Bold indicates the best per dataset; the Average row reports the mean across the 20 datasets.}",
+           r"\caption{Classification accuracy (mean $\pm$ std) of 14 fixed-length methods on 20 benchmark datasets. Bold indicates the best per dataset; $+$, $\approx$, and $-$ in parentheses report two-sided Wilcoxon signed-rank tests ($p<0.05$) over the 10 runs of each dataset between KDS-EL and the column method: $+$ KDS-EL significantly better, $\approx$ no significant difference, $-$ KDS-EL significantly worse. The Average row reports the mean across the 20 datasets.}",
            r"\label{T4}", r"\tiny",
            r"\setlength{\tabcolsep}{2pt}",
            r"\resizebox{\dimexpr\textheight-2cm}{!}{%",
@@ -52,12 +54,18 @@ def gen_T4():
         ds = r["Dataset"].replace("_", "\\_")
         vals = []
         best = max(float(r[m].split("±")[0]) for m in CSV_METHODS)
+        row_syms = symbols.get(r["Dataset"], {})
         for m in CSV_METHODS:
             v = r[m].strip()
             num = float(v.split("±")[0])
             v = v.replace("±", "$\\pm$")
             if abs(num - best) < 1e-9:
                 v = "\\textbf{" + v + "}"
+            if m != "KDS_EL":
+                sym = row_syms.get(m)
+                if sym in ("+", "≈", "-"):
+                    tex_sym = "+" if sym == "+" else ("\\approx" if sym == "≈" else "-")
+                    v += "$(%s)$" % tex_sym
             vals.append(v)
         all_vals.append([float(r[m].split("±")[0]) for m in CSV_METHODS])
         out.append(ds + " & " + " & ".join(vals) + r" \\")

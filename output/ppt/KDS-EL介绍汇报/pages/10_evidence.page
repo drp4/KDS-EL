@@ -1,0 +1,128 @@
+pageType: content
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: p10-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "10 · 组件贡献与鲁棒性"
+  - elementId: p10-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: 每个机制都可独立验证，且默认参数稳定
+  - elementId: p10-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: p10-fig
+    elementType: image
+    bounds: [48, 118, 430, 270]
+    src: "media/F6_ablation.png"
+    fit: {mode: contain}
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p10-caption
+    elementType: text
+    bounds: [48, 394, 430, 20]
+    content:
+      style: "$caption"
+      align: [left, middle]
+      text: "图 6 · 消融热图：KDS-EL 与各变体在 20-DS 上的表现"
+  - elementId: p10-chain
+    elementType: text
+    bounds: [48, 424, 430, 42]
+    content:
+      style: "$small"
+      fontSize: 12
+      color: "$ink"
+      text: |
+        <p>剥离链 <strong>88 → 122 → 291 → 2722</strong>：每剥掉一个机制，平均特征数逐级膨胀，说明三个机制都在起作用。</p>
+  - elementId: p10-right-title
+    elementType: text
+    bounds: [500, 118, 412, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$ink"
+      text: 组件贡献（20-DS）
+  - elementId: p10-c1
+    elementType: text
+    bounds: [500, 150, 412, 44]
+    content:
+      text: |
+        <p><span style="font-size:18px; color:$accent; font-weight:bold;">MI +4.58pp</span>  <span style="font-size:12px; color:$muted;">2722 → 291 特征</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">去掉 MI 后精度明显下降，特征数膨胀回 2722</p>
+  - elementId: p10-line1
+    elementType: line
+    bounds: [500, 202, 412, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p10-c2
+    elementType: text
+    bounds: [500, 212, 412, 44]
+    content:
+      text: |
+        <p><span style="font-size:18px; color:$primary; font-weight:bold;">KER +1.63pp</span>  <span style="font-size:12px; color:$muted;">291 → 122 特征</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">去掉 KER 后精化失去方向，特征数回升到 291</p>
+  - elementId: p10-line2
+    elementType: line
+    bounds: [500, 264, 412, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p10-c3
+    elementType: text
+    bounds: [500, 274, 412, 44]
+    content:
+      text: |
+        <p><span style="font-size:18px; color:$gold; font-weight:bold;">TPS +0.86pp</span>  <span style="font-size:12px; color:$muted;">122 → 88 特征</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">去掉 TPS 后调度僵化，特征数回升到 122</p>
+  - elementId: p10-rob-title
+    elementType: text
+    bounds: [500, 330, 412, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$ink"
+      text: 鲁棒性与收敛
+  - elementId: p10-rob-desc
+    elementType: text
+    bounds: [500, 360, 412, 104]
+    content:
+      style: "$body"
+      fontSize: 12
+      lineHeight: 1.35
+      text: |
+        <p>5 个关键参数在默认值附近波动，精度变化不超过 <strong>±1.5pp</strong>；4 个代表性数据集验证，无需逐数据集调参；最敏感的是 MI_init_ratio=0.5。</p>
+        <p style="margin-top:6px; color:$muted;">收敛上，MI 让算法 10–15 轮进入高精度区，TPS 形成“快降 → 平台 → 微升”的轨迹。</p>
+  - elementId: p10-concl-line
+    elementType: line
+    bounds: [48, 470, 864, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p10-concl
+    elementType: text
+    bounds: [48, 480, 864, 32]
+    content:
+      fontSize: 14
+      bold: true
+      color: "$ink"
+      align: [left, middle]
+      text: |
+        <p>三个机制分别补齐起点、方向和节奏：好起点让搜索少走弯路，有方向让精化不盲翻，分阶段让目标权重不僵化。</p>
+  - elementId: p10-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "11"

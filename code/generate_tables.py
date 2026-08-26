@@ -178,6 +178,58 @@ def table_t4_accuracy(df_summary, out_dir):
     print(f"  {compact_path} (10-method compact)")
 
 
+# ═══ T4 符号：逐数据集 two-sided Wilcoxon signed-rank ═══
+T4_SYMBOL_METHODS = [
+    "KDS_EL_KER", "MEL+MI", "MEL", "FWPSO", "PSO-CSM", "SaWDE",
+    "IGPSO", "BPSO", "W-MOPSO-FS", "fMOPSO-FS", "NSGA-II-FS",
+    "MOEA-D-FS", "MOPSO-FS",
+]
+
+T4_SYMBOL_VERSION_MAP = {
+    "KDS_EL_KER": "KDS_EL_NoPool",
+    "MEL+MI": "MEL_MI",
+    "MEL": "MEL",
+    "FWPSO": "FWPSO",
+    "PSO-CSM": "PSO_CSM",
+    "SaWDE": "SaWDE",
+    "IGPSO": "IGPSO",
+    "BPSO": "BPSO",
+    "W-MOPSO-FS": "W-MOPSO-FS",
+    "fMOPSO-FS": "fMOPSO-FS",
+    "NSGA-II-FS": "NSGA-II-FS",
+    "MOEA-D-FS": "MOEA-D-FS",
+    "MOPSO-FS": "MOPSO-FS",
+}
+
+
+def table_t4_symbols(df_detail, out_dir):
+    """Generate per-dataset T4 symbols via two-sided Wilcoxon signed-rank tests."""
+    print("T4: per-dataset Wilcoxon signed-rank symbols...")
+    if sp_stats is None:
+        print("  [SKIP] scipy not available")
+        return
+    rows = []
+    for ds in MOFS_DATASETS:
+        a = g(df_detail, "KDS_EL_TwoPhase", ds)
+        if len(a) == 0:
+            continue
+        row = {"Dataset": ds}
+        for method in T4_SYMBOL_METHODS:
+            b = g(df_detail, T4_SYMBOL_VERSION_MAP[method], ds)
+            if len(b) == 0:
+                row[method] = "—"
+                continue
+            p = sp_stats.wilcoxon(a, b).pvalue
+            if p < 0.05:
+                row[method] = "+" if np.nanmean(a) > np.nanmean(b) else "-"
+            else:
+                row[method] = "≈"
+        rows.append(row)
+    outpath = os.path.join(out_dir, "T4_symbols.csv")
+    pd.DataFrame(rows).to_csv(outpath, index=False, encoding="utf-8-sig")
+    print(f"  {outpath}")
+
+
 # ═══ T5: 特征数 Mean ═══
 def table_t5_features(df_summary, out_dir):
     print("T5: Feature count + Selection Ratio (14 methods x 20 datasets)...")
@@ -432,6 +484,7 @@ def main():
 
     all_tabs = {
         "T4": table_t4_accuracy,
+        "T4sym": table_t4_symbols,
         "T5": table_t5_features,
         "T6": table_t6_wilcoxon,
         "T6b": table_holm_bonferroni,
@@ -445,6 +498,8 @@ def main():
             try:
                 if key == "T8":
                     all_tabs[key](args.out)
+                elif key == "T4sym":
+                    all_tabs[key](load_merged_detail(), args.out)
                 else:
                     all_tabs[key](df_summary, args.out)
             except Exception as e:

@@ -1,0 +1,146 @@
+pageType: content
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: p6-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "06 · 支撑性创新"
+  - elementId: p6-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: MI 引导初始化：把先验贯穿算法全生命周期
+  - elementId: p6-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: p6-code-bg
+    elementType: shape
+    bounds: [48, 118, 500, 250]
+    shapeName: rect
+    fill: {type: solid, color: "#2B2F38"}
+  - elementId: p6-code
+    elementType: text
+    bounds: [64, 128, 468, 232]
+    content:
+      fontFamily: "Consolas"
+      fontSize: 10
+      lineHeight: 1.35
+      color: "#F1EFE7"
+      align: [left, top]
+      text: |
+        <p><span style="color:#9AA0A6;"># 1) MI scores: features -> label</span></p>
+        <p>mi = compute_mi_scores(X, y)</p>
+        <p><span style="color:#9AA0A6;"># 2) half population: MI seed + noise</span></p>
+        <p>P[:half] = np.clip(mi + np.random.normal(0, 0.1, (half, D)), 0, 1)</p>
+        <p><span style="color:#9AA0A6;"># 3) other half: random</span></p>
+        <p>P[half:] = np.random.uniform(0, 1, (N - half, D))</p>
+        <p><span style="color:#9AA0A6;"># 4) binarize with theta = 0.6</span></p>
+        <p>S = (P &gt; 0.6).astype(int)</p>
+        <p><span style="color:#9AA0A6;"># 5) re-seed worse half after stall &gt;= 20</span></p>
+        <p>if stall_counter &gt;= 20:</p>
+        <p style="margin-left:16px;">for idx in np.argsort(fitP)[half:]:</p>
+        <p style="margin-left:32px;">Pbest[idx] = np.clip(mi + np.random.normal(0, 0.1, D), 0, 1)</p>
+        <p style="margin-left:32px;">P[idx] = Pbest[idx].copy()</p>
+  - elementId: p6-caption
+    elementType: text
+    bounds: [48, 372, 500, 18]
+    content:
+      style: "$caption"
+      align: [left, middle]
+      text: "代码 1 · MI 引导初始化与停滞恢复：一半知识种子 + 一半随机"
+  - elementId: p6-row1-title
+    elementType: text
+    bounds: [580, 124, 332, 28]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: "初始探索"
+  - elementId: p6-row1-desc
+    elementType: text
+    bounds: [580, 154, 332, 60]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: 搜索初期特征重要性向量 W 还没有积累，KER 缺乏知识可用；如果只靠随机采样，前几轮很难碰到好解，知识闭环就启动不了。
+  - elementId: p6-line1
+    elementType: line
+    bounds: [580, 214, 332, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p6-row2-title
+    elementType: text
+    bounds: [580, 226, 332, 28]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: "初始化做法"
+  - elementId: p6-row2-desc
+    elementType: text
+    bounds: [580, 256, 332, 54]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: 一半粒子按互信息与标签的相关性初始化，加入 σ=0.1 的高斯噪声避免过于一致，再用 θ=0.6 二值化；另一半保持随机。
+  - elementId: p6-line2
+    elementType: line
+    bounds: [580, 316, 332, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p6-row3-title
+    elementType: text
+    bounds: [580, 328, 332, 28]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: "停滞恢复"
+  - elementId: p6-row3-desc
+    elementType: text
+    bounds: [580, 358, 332, 54]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: Gbest 连续 20 轮无改进时，用 MI 种子重新初始化 fitness 较差的一半种群，给搜索一次新的知识起点。
+  - elementId: p6-takeaway
+    elementType: text
+    bounds: [580, 420, 332, 50]
+    content:
+      style: "$body"
+      fontSize: 13
+      text: |
+        <p>MI 在<strong>初始探索</strong>与<strong>停滞恢复</strong>两端复用：没有它，搜索初期只能随机采样，约 40–50% 的运行可能长期得不到有效知识。</p>
+  - elementId: p6-bottom-line
+    elementType: line
+    bounds: [48, 472, 864, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p6-bottom-note
+    elementType: text
+    bounds: [48, 482, 864, 30]
+    content:
+      style: "$small"
+      fontSize: 12
+      color: "$ink"
+      text: |
+        <p>MI_init_ratio 是最敏感参数（默认 0.5）：关闭时精度下降 1.2pp、时间增加 21%，说明 MI 应贯穿全生命周期，而不是只做一次性的初始引导。</p>
+  - elementId: p6-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "07"

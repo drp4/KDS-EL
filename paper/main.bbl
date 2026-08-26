@@ -85,14 +85,6 @@ X.~Wang, H.~Shangguan, F.~Huang, S.~Wu, W.~Jia, Mel: Efficient multi-task
 \newblock \href {https://doi.org/10.1109/TKDE.2024.3366333}
   {\path{doi:10.1109/TKDE.2024.3366333}}.
 
-\bibitem{kramer1991}
-M.~A. Kramer, Nonlinear principal component analysis using autoassociative
-  neural networks, AIChE Journal 37~(2) (1991) 233--243.
-
-\bibitem{roffo2016}
-G.~Roffo, S.~Melzi, Features selection via eigenvector centrality, in:
-  Proceedings of New Frontiers in Mining Complex Patterns, 2016.
-
 \bibitem{peng2005}
 H.~Peng, F.~Long, C.~Ding, Feature selection based on mutual information:
   criteria of max-dependency, max-relevance, and min-redundancy, IEEE
@@ -106,12 +98,9 @@ L.~Yu, H.~Liu, Feature selection for high-dimensional data: {A} fast
   correlation-based filter solution, in: Proceedings of the 20th International
   Conference on Machine Learning (ICML-03), 2003, pp. 856--863.
 
-\bibitem{oh2004}
-I.-S. Oh, J.-S. Lee, B.-R. Moon, Hybrid genetic algorithms for feature
-  selection, IEEE Transactions on Pattern Analysis and Machine Intelligence
-  26~(11) (2004) 1424--1437.
-\newblock \href {https://doi.org/10.1109/TPAMI.2004.105}
-  {\path{doi:10.1109/TPAMI.2004.105}}.
+\bibitem{roffo2016}
+G.~Roffo, S.~Melzi, Features selection via eigenvector centrality, in:
+  Proceedings of New Frontiers in Mining Complex Patterns, 2016.
 
 \bibitem{bach2008}
 F.~R. Bach, {Bolasso}: Model consistent {Lasso} estimation through the
@@ -126,12 +115,10 @@ J.~Zhang, D.~Xu, K.~Hao, Y.~Zhang, W.~Chen, J.~Liu, R.~Gao, C.~Wu, Y.~D.
 \newblock \href {https://doi.org/10.1093/bib/bbaa189}
   {\path{doi:10.1093/bib/bbaa189}}.
 
-\bibitem{yu2021ilrc}
-K.~Yu, W.~Xie, L.~Wang, W.~Li, {ILRC}: A hybrid biomarker discovery algorithm
-  based on improved $l_1$ regularization and clustering in microarray data, BMC
-  Bioinformatics 22~(1) (2021) 1--19.
-\newblock \href {https://doi.org/10.1186/s12859-021-04223-3}
-  {\path{doi:10.1186/s12859-021-04223-3}}.
+\bibitem{huang2006}
+C.-L. Huang, C.-J. Wang, A {GA}-based feature selection and parameters
+  optimization for support vector machines, Expert Systems with Applications
+  31~(2) (2006) 231--240.
 
 \bibitem{aghdam2009}
 M.~H. Aghdam, N.~Ghasem-Aghaee, M.~E. Basiri, Text feature selection using ant
@@ -142,11 +129,6 @@ M.~H. Aghdam, N.~Ghasem-Aghaee, M.~E. Basiri, Text feature selection using ant
 D.~Karaboga, B.~Basturk, A powerful and efficient algorithm for numerical
   function optimization: Artificial bee colony ({ABC}) algorithm, Journal of
   Global Optimization 39~(3) (2007) 459--471.
-
-\bibitem{huang2006}
-C.-L. Huang, C.-J. Wang, A {GA}-based feature selection and parameters
-  optimization for support vector machines, Expert Systems with Applications
-  31~(2) (2006) 231--240.
 
 \bibitem{xue2019}
 Y.~Xue, B.~Xue, M.~Zhang, Self-adaptive particle swarm optimization for
@@ -173,28 +155,10 @@ K.~Chen, K.~Liu, P.~Wang, J.~Liang, Z.~Yang, K.~Yu, An efficient evolutionary
 \newblock \href {https://doi.org/10.1016/j.eswa.2025.130416}
   {\path{doi:10.1016/j.eswa.2025.130416}}.
 
-\bibitem{cover1991}
-T.~M. Cover, J.~A. Thomas, Elements of Information Theory, John Wiley \& Sons,
-  New York, NY, USA, 1991.
-
-\bibitem{mimpode2025}
-F.~Yu, J.~Guan, H.~Wu, H.~Wang, B.~Ma, Multi-population differential evolution
-  approach for feature selection with mutual information ranking, Expert
-  Systems with Applications 260 (2025) 125404.
-\newblock \href {https://doi.org/10.1016/j.eswa.2024.125404}
-  {\path{doi:10.1016/j.eswa.2024.125404}}.
-
 \bibitem{xue2012mopso}
 B.~Xue, M.~Zhang, W.~N. Browne, Particle swarm optimization for feature
   selection in classification: {A} multi-objective approach, IEEE Transactions
   on Cybernetics 43~(6) (2012) 1656--1671.
-
-\bibitem{hu2020}
-Y.~Hu, Y.~Zhang, D.~Gong, Multiobjective particle swarm optimization for
-  feature selection with fuzzy cost, IEEE Transactions on Cybernetics 51~(2)
-  (2020) 874--888.
-\newblock \href {https://doi.org/10.1109/TCYB.2019.2946898}
-  {\path{doi:10.1109/TCYB.2019.2946898}}.
 
 \bibitem{deb2002}
 K.~Deb, A.~Pratap, S.~Agarwal, T.~Meyarivan, A fast and elitist multiobjective
@@ -217,6 +181,13 @@ C.~A.~C. Coello, G.~T. Pulido, M.~S. Lechuga, Handling multiple objectives with
 \newblock \href {https://doi.org/10.1109/TEVC.2004.826067}
   {\path{doi:10.1109/TEVC.2004.826067}}.
 
+\bibitem{hu2020}
+Y.~Hu, Y.~Zhang, D.~Gong, Multiobjective particle swarm optimization for
+  feature selection with fuzzy cost, IEEE Transactions on Cybernetics 51~(2)
+  (2020) 874--888.
+\newblock \href {https://doi.org/10.1109/TCYB.2019.2946898}
+  {\path{doi:10.1109/TCYB.2019.2946898}}.
+
 \bibitem{hancer2023}
 E.~Hancer, B.~Xue, M.~Zhang, An evolutionary filter approach to feature
   selection in classification for both single- and multi-objective scenarios,
@@ -224,12 +195,12 @@ E.~Hancer, B.~Xue, M.~Zhang, An evolutionary filter approach to feature
 \newblock \href {https://doi.org/10.1016/j.knosys.2023.111008}
   {\path{doi:10.1016/j.knosys.2023.111008}}.
 
-\bibitem{liu2024}
-S.~Liu, H.~Wang, W.~Peng, W.~Yao, Surrogate-assisted evolutionary algorithms
-  for expensive combinatorial optimization: a survey, Complex \& Intelligent
-  Systems 10~(4) (2024) 5933--5949.
-\newblock \href {https://doi.org/10.1007/s40747-024-01465-5}
-  {\path{doi:10.1007/s40747-024-01465-5}}.
+\bibitem{miao2024}
+F.~Miao, Y.~Wu, G.~Yan, X.~Si, Dynamic multi-swarm whale optimization algorithm
+  based on elite tuning for high-dimensional feature selection classification
+  problems, Applied Soft Computing 164 (2024) 111958.
+\newblock \href {https://doi.org/10.1016/j.asoc.2024.111958}
+  {\path{doi:10.1016/j.asoc.2024.111958}}.
 
 \bibitem{zhang2021mtl}
 Y.~Zhang, Q.~Yang, A survey on multi-task learning, IEEE Transactions on
@@ -270,46 +241,20 @@ S.~Liu, Q.~Lin, L.~Feng, K.-C. Wong, K.~C. Tan, Evolutionary multitasking for
 \newblock \href {https://doi.org/10.1109/TEVC.2022.3166482}
   {\path{doi:10.1109/TEVC.2022.3166482}}.
 
-\bibitem{bermingham2015}
-M.~L. Bermingham, R.~Pong-Wong, A.~Spiliopoulou, C.~Hayward, I.~Rudan,
-  H.~Campbell, A.~F. Wright, J.~F. Wilson, F.~Agakov, P.~Navarro, C.~S. Haley,
-  Application of high-dimensional feature selection: Evaluation for genomic
-  prediction in man, Scientific Reports 5~(1) (2015) 1--12.
+\bibitem{ye2026}
+Z.~Ye, Y.~Zeng, T.~Cai, J.~Shen, W.~Zhou, Q.~He, M.~Mei, Y.~Cen, {KMHBO}: A
+  knowledge-guided multi-niche hybrid breeding optimization algorithm for
+  high-dimensional multimodal feature selection, Expert Systems with
+  Applications 298 (2026) 129911.
+\newblock \href {https://doi.org/10.1016/j.eswa.2025.129911}
+  {\path{doi:10.1016/j.eswa.2025.129911}}.
 
-\bibitem{phuong2005}
-T.~M. Phuong, Z.~Lin, R.~B. Altman, Choosing {SNPs} using feature selection,
-  in: 2005 IEEE Computational Systems Bioinformatics Conference (CSB'05), IEEE,
-  2005, pp. 301--309.
-
-\bibitem{saghapour2017}
-E.~Saghapour, S.~Kermani, M.~Sehhati, A novel feature ranking method for
-  prediction of cancer stages using proteomics data, PLoS ONE 12~(9) (2017)
-  e0184203.
-\newblock \href {https://doi.org/10.1371/journal.pone.0184203}
-  {\path{doi:10.1371/journal.pone.0184203}}.
-
-\bibitem{zhang2015eigenbrain}
-Y.~Zhang, Z.~Dong, P.~Phillips, S.~Wang, G.~Ji, J.~Yang, T.~F. Yuan, Detection
-  of subjects and brain regions related to {Alzheimer's} disease using 3{D}
-  {MRI} scans based on eigenbrain and machine learning, Frontiers in
-  Computational Neuroscience 9 (2015) 66.
-\newblock \href {https://doi.org/10.3389/fncom.2015.00066}
-  {\path{doi:10.3389/fncom.2015.00066}}.
-
-\bibitem{lin2025}
-J.~Lin, C.~He, H.~Jiang, Y.~Huang, Y.~Jin, Surrogate-assisted multiobjective
-  gene selection for cell classification from large-scale single-cell {RNA}
-  sequencing data, IEEE Transactions on Evolutionary Computation 29 (2025)
-  601--615.
-\newblock \href {https://doi.org/10.1109/TEVC.2025.3533490}
-  {\path{doi:10.1109/TEVC.2025.3533490}}.
-
-\bibitem{xia2026}
-M.~Xia, K.~Li, J.~Wan, Z.~Huang, F.~Cheng, An instance selection assisted
-  evolutionary method for high-dimensional feature selection, IEEE Transactions
-  on Evolutionary Computation 30~(3) (2026) 1225--1239.
-\newblock \href {https://doi.org/10.1109/TEVC.2025.3600815}
-  {\path{doi:10.1109/TEVC.2025.3600815}}.
+\bibitem{mimpode2025}
+F.~Yu, J.~Guan, H.~Wu, H.~Wang, B.~Ma, Multi-population differential evolution
+  approach for feature selection with mutual information ranking, Expert
+  Systems with Applications 260 (2025) 125404.
+\newblock \href {https://doi.org/10.1016/j.eswa.2024.125404}
+  {\path{doi:10.1016/j.eswa.2024.125404}}.
 
 \bibitem{deng2025nns}
 S.~Deng, H.~Liu, W.~Zhu, K.~Li, M.~Li, Elite neighborhood search and dynamic
@@ -318,13 +263,16 @@ S.~Deng, H.~Liu, W.~Zhu, K.~Li, M.~Li, Elite neighborhood search and dynamic
 \newblock \href {https://doi.org/10.1016/j.eswa.2025.127012}
   {\path{doi:10.1016/j.eswa.2025.127012}}.
 
-\bibitem{ye2026}
-Z.~Ye, Y.~Zeng, T.~Cai, J.~Shen, W.~Zhou, Q.~He, M.~Mei, Y.~Cen, {KMHBO}: A
-  knowledge-guided multi-niche hybrid breeding optimization algorithm for
-  high-dimensional multimodal feature selection, Expert Systems with
-  Applications 298 (2026) 129911.
-\newblock \href {https://doi.org/10.1016/j.eswa.2025.129911}
-  {\path{doi:10.1016/j.eswa.2025.129911}}.
+\bibitem{cover1991}
+T.~M. Cover, J.~A. Thomas, Elements of Information Theory, John Wiley \& Sons,
+  New York, NY, USA, 1991.
+
+\bibitem{liu2024}
+S.~Liu, H.~Wang, W.~Peng, W.~Yao, Surrogate-assisted evolutionary algorithms
+  for expensive combinatorial optimization: a survey, Complex \& Intelligent
+  Systems 10~(4) (2024) 5933--5949.
+\newblock \href {https://doi.org/10.1007/s40747-024-01465-5}
+  {\path{doi:10.1007/s40747-024-01465-5}}.
 
 \bibitem{han2024}
 F.~Han, F.~Li, Q.~Ling, H.~Han, T.~Lu, Z.~Jiao, H.~Zhang, A feature selection

@@ -10,6 +10,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import matplotlib.ticker as mticker
+from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
 try:
@@ -1018,7 +1019,7 @@ def fig_f13_friedman_rank(df_detail, out_dir):
     versions = [v for v in ALL_VERSIONS if v in df_detail.Version.unique()]
     ds_list = [d for d in PLOT_DATASETS if d in df_detail.Dataset.unique()]
 
-    # Per-dataset ranking: rank methods by mean accuracy (1=best)
+    # Per-dataset ranking: rank methods by mean accuracy (1=best), averaging tied ranks
     ranks = {v: [] for v in versions}
     for ds in ds_list:
         ds_means = {}
@@ -1028,8 +1029,16 @@ def fig_f13_friedman_rank(df_detail, out_dir):
                 ds_means[v] = np.nanmean(arr)
         if ds_means:
             sorted_v = sorted(ds_means, key=ds_means.get, reverse=True)
-            for rank, v in enumerate(sorted_v, start=1):
-                ranks[v].append(rank)
+            i = 0
+            while i < len(sorted_v):
+                j = i
+                while (j + 1 < len(sorted_v)
+                       and ds_means[sorted_v[j + 1]] == ds_means[sorted_v[i]]):
+                    j += 1
+                avg_rank = (i + 1 + j + 1) / 2.0
+                for v in sorted_v[i:j + 1]:
+                    ranks[v].append(avg_rank)
+                i = j + 1
 
     # Average rank per method
     avg_ranks = {v: np.mean(ranks[v]) for v in versions if ranks[v]}
@@ -1043,8 +1052,10 @@ def fig_f13_friedman_rank(df_detail, out_dir):
 
     bars = ax.barh(y_pos, values, color=colors, alpha=0.85, edgecolor="none", height=0.6)
     for i, (v, bar) in enumerate(zip(sorted_methods, bars)):
+        label = str(Decimal(str(values[i])).quantize(Decimal("0.01"),
+                                                      rounding=ROUND_HALF_UP))
         ax.text(bar.get_width() + 0.15, bar.get_y() + bar.get_height() / 2,
-                f"{values[i]:.2f}", va="center", fontsize=7.5,
+                label, va="center", fontsize=7.5,
                 fontweight="bold" if "KDS" in v else "normal",
                 color=COLORS[v])
 

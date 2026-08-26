@@ -1,0 +1,180 @@
+pageType: content
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: outline-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "01 · 汇报大纲"
+  - elementId: outline-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: 四块讲清楚：问题 → 机制 → 证据 → 结论
+  - elementId: outline-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: outline-num1
+    elementType: text
+    bounds: [48, 128, 48, 32]
+    content:
+      fontSize: 24
+      bold: true
+      color: "$accent"
+      text: "01"
+  - elementId: outline-t1
+    elementType: text
+    bounds: [112, 124, 396, 28]
+    content:
+      fontSize: 17
+      bold: true
+      color: "$ink"
+      text: 问题与方法总览
+  - elementId: outline-d1
+    elementType: text
+    bounds: [112, 156, 396, 62]
+    content:
+      style: "$body"
+      fontSize: 13
+      text: |
+        <p>先讲高维 PSO 的<strong>三个结构性缺陷</strong>，再给 KDS-EL 知识闭环的整体框架。</p>
+  - elementId: outline-line1
+    elementType: line
+    bounds: [48, 230, 460, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: outline-num2
+    elementType: text
+    bounds: [48, 246, 48, 32]
+    content:
+      fontSize: 24
+      bold: true
+      color: "$accent"
+      text: "02"
+  - elementId: outline-t2
+    elementType: text
+    bounds: [112, 242, 396, 28]
+    content:
+      fontSize: 17
+      bold: true
+      color: "$ink"
+      text: 三个创新机制
+  - elementId: outline-d2
+    elementType: text
+    bounds: [112, 274, 396, 62]
+    content:
+      style: "$body"
+      fontSize: 13
+      text: |
+        <p><strong>KER</strong> 定向精化、<strong>TPS</strong> 两阶段调度、<strong>MI</strong> 知识启动，分别解决什么问题。</p>
+  - elementId: outline-line2
+    elementType: line
+    bounds: [48, 348, 460, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: outline-num3
+    elementType: text
+    bounds: [48, 364, 48, 32]
+    content:
+      fontSize: 24
+      bold: true
+      color: "$accent"
+      text: "03"
+  - elementId: outline-t3
+    elementType: text
+    bounds: [112, 360, 396, 28]
+    content:
+      fontSize: 17
+      bold: true
+      color: "$ink"
+      text: 实验规模与核心结果
+  - elementId: outline-d3
+    elementType: text
+    bounds: [112, 392, 396, 62]
+    content:
+      style: "$body"
+      fontSize: 13
+      text: |
+        <p>20 个数据集 × 14 种方法，用<strong>精度、特征数、时间</strong>三个口径给出统一结论。</p>
+  - elementId: outline-num4
+    elementType: text
+    bounds: [48, 470, 48, 32]
+    content:
+      fontSize: 24
+      bold: true
+      color: "$accent"
+      text: "04"
+  - elementId: outline-t4
+    elementType: text
+    bounds: [112, 466, 396, 28]
+    content:
+      fontSize: 17
+      bold: true
+      color: "$ink"
+      text: 组件贡献与结论
+  - elementId: outline-d4
+    elementType: text
+    bounds: [112, 498, 396, 30]
+    content:
+      style: "$body"
+      fontSize: 11
+      text: |
+        <p>消融实验证明每个机制有效，默认参数稳定，最后给结论。</p>
+  - elementId: outline-right-title
+    elementType: text
+    bounds: [548, 128, 364, 30]
+    content:
+      fontSize: 18
+      bold: true
+      color: "$primary"
+      text: 汇报重点
+  - elementId: outline-r1
+    elementType: text
+    bounds: [548, 174, 364, 58]
+    content:
+      text: |
+        <p><span style="font-size:15px; font-weight:bold; color:$ink;">创新点讲透</span></p>
+        <p style="margin-top:4px; font-size:12px; color:$muted;">每个机制先说解决什么问题，再讲怎么工作，最后给证据</p>
+  - elementId: outline-rline1
+    elementType: line
+    bounds: [548, 246, 364, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: outline-r2
+    elementType: text
+    bounds: [548, 260, 364, 58]
+    content:
+      text: |
+        <p><span style="font-size:15px; font-weight:bold; color:$ink;">数据少堆</span></p>
+        <p style="margin-top:4px; font-size:12px; color:$muted;">20 个数据集只保留最有说服力的核心指标，不铺历史数字</p>
+  - elementId: outline-rline2
+    elementType: line
+    bounds: [548, 332, 364, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: outline-r3
+    elementType: text
+    bounds: [548, 346, 364, 58]
+    content:
+      text: |
+        <p><span style="font-size:15px; font-weight:bold; color:$ink;">不谈论文写作</span></p>
+        <p style="margin-top:4px; font-size:12px; color:$muted;">聚焦方法贡献、实验规模和可复现性，不展开论文写作</p>
+  - elementId: outline-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "02"

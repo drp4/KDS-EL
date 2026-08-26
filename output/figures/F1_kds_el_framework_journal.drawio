@@ -38,7 +38,7 @@
         <mxCell id="aWupd" value="W update + decay&#10;W_j += δ(2x_j−1);  W ← 0.99W" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#d1f2eb;strokeColor=#0f766e;strokeWidth=1.5;fontSize=13;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="aLoopBox">
           <mxGeometry x="280.0" y="280.0" width="220" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="aKER" value="KER top-3&#10;90% W-guided / 10% random" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#fdebd0;strokeColor=#b45309;strokeWidth=1.5;fontSize=14;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="aLoopBox">
+        <mxCell id="aKER" value="KER top-3&#10;W-guided / random flips" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#fdebd0;strokeColor=#b45309;strokeWidth=1.5;fontSize=14;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="aLoopBox">
           <mxGeometry x="280.0" y="350.0" width="220" height="52" as="geometry" />
         </mxCell>
         <mxCell id="aOut" value="Compact feature subset" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#eef4fb;strokeColor=#2f5d8a;strokeWidth=1.5;fontSize=14;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="1">

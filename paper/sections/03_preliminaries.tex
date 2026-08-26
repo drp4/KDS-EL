@@ -1,59 +1,80 @@
 \section{Preliminaries}\label{sec:preliminaries}
 
-\subsection{Particle Swarm Optimization and Its Binary Adaptation}\label{sec:pso}
+This section establishes the theoretical foundations, mathematical notations, and baseline architectures that underpin our proposed framework. We first formulate classical continuous and binary particle swarm optimization, followed by the information-theoretic definition of mutual information for feature relevance estimation, and conclude with the dual-subpopulation multi-task evolutionary learning (MEL) baseline.
 
-Particle swarm optimization, introduced by Kennedy and Eberhart~\cite{kennedy1995}, maintains a population of candidate solutions that traverse the search space under the guidance of personal and collective historical experience. Each particle $i$ holds a continuous position $\mathbf{x}_i \in \mathbb{R}^D$ and a velocity $\mathbf{v}_i \in \mathbb{R}^D$. At iteration $t$, the velocity and position are updated as
-\begin{equation}
-\mathbf{v}_i^{(t+1)} = \omega \mathbf{v}_i^{(t)} + c_1 r_1 \bigl(\mathbf{p}_{\text{best},i} - \mathbf{x}_i^{(t)}\bigr) + c_2 r_2 \bigl(\mathbf{g}_{\text{best}} - \mathbf{x}_i^{(t)}\bigr),
-\label{eq:pso_velocity}
-\end{equation}
-where $\omega$ is the inertia weight introduced by Shi and Eberhart~\cite{shi1998}, $c_1$ and $c_2$ are acceleration coefficients, $r_1$ and $r_2$ are independent random scalars drawn uniformly from $[0,1]$, and $\mathbf{p}_{\text{best},i}$ and $\mathbf{g}_{\text{best}}$ denote the personal and global best positions, respectively.
+\subsection{Particle Swarm Optimization and Binary Formulations}\label{sec:pso}
 
-For feature selection, each candidate solution is a binary mask indicating whether a feature is selected. The binary adaptation proposed by Kennedy and Eberhart~\cite{kennedy1997} maps the continuous position to a binary decision through a sigmoid transfer function:
+Particle Swarm Optimization (PSO), originally introduced by Kennedy and Eberhart~\cite{kennedy1995}, is a population-based stochastic optimization paradigm inspired by the collective foraging behaviors of bird flocks. A swarm consists of $N$ particles navigating a $D$-dimensional search space $\mathbb{R}^D$. Each particle $i \in \{1, \ldots, N\}$ maintains a continuous position vector $\mathbf{p}_i^{(t)} = [p_{i,1}^{(t)}, \ldots, p_{i,D}^{(t)}]$ and a continuous velocity vector $\mathbf{v}_i^{(t)} = [v_{i,1}^{(t)}, \ldots, v_{i,D}^{(t)}]$ at iteration $t$. The historical trajectory is governed by its personal best position $\mathbf{p}_{\mathrm{best},i}$ and the swarm's global best position $\mathbf{g}_{\mathrm{best}}$.
+
+The velocity and position updates are formulated as:
+\begin{align}
+\mathbf{v}_i^{(t+1)} &= \omega \mathbf{v}_i^{(t)} + c_1 r_1 \bigl(\mathbf{p}_{\mathrm{best},i} - \mathbf{p}_i^{(t)}\bigr) + c_2 r_2 \bigl(\mathbf{g}_{\mathrm{best}} - \mathbf{p}_i^{(t)}\bigr), \label{eq:pso_velocity} \\
+\mathbf{p}_i^{(t+1)} &= \mathbf{p}_i^{(t)} + \mathbf{v}_i^{(t+1)}, \label{eq:pso_position}
+\end{align}
+where $\omega$ denotes the inertia weight governing momentum retention~\cite{shi1998}, $c_1$ and $c_2$ are cognitive and social acceleration coefficients, and $r_1, r_2 \sim \mathcal{U}(0, 1)$ are independent uniform random stochastic factors.
+
+To adapt PSO to combinatorial binary feature selection where solutions represent binary indicator masks $\mathbf{x}_i \in \{0, 1\}^D$ ($x_{i,j}=1$ indicates feature $j$ is selected), Kennedy and Eberhart~\cite{kennedy1997} proposed the standard Binary PSO (BPSO). BPSO transforms continuous velocities into selection probabilities via a Sigmoid transfer function:
 \begin{equation}
-S(v_{i,d}) = \frac{1}{1 + e^{-v_{i,d}}}, \qquad
-x_{i,d} = \begin{cases} 1 & \text{if } \mathrm{rand}() < S(v_{i,d}), \\ 0 & \text{otherwise},
+S(v_{i,j}^{(t+1)}) = \frac{1}{1 + \exp\bigl(-v_{i,j}^{(t+1)}\bigr)}, \quad
+x_{i,j}^{(t+1)} = \begin{cases}
+1, & \text{if } \mathrm{rand}() < S(v_{i,j}^{(t+1)}),\\[2pt]
+0, & \text{otherwise}.
 \end{cases}
 \label{eq:bpsosigmoid}
 \end{equation}
-KDS-EL, in contrast, binarizes continuous positions with the fixed threshold $\theta=0.6$ described in Section~\ref{sec:mi}. In the $p \gg n$ regime, standard binary PSO converges slowly and tends toward premature stagnation, because the velocity update provides no domain-grounded gradient toward sparse, high-accuracy regions.
+While effective for low-dimensional problems, standard BPSO suffers severe exploration-exploitation dilemmas in ultra-high-dimensional spaces with $p \gg n$: continuous velocity updates provide no domain-grounded guidance toward sparse, informative biomarker subspaces. In KDS-EL, particles maintain continuous normalized position coordinates $\mathbf{p}_i \in [0, 1]^D$, mapped deterministically to binary feature masks via a strict thresholded Heaviside step function $x_{i,j} = \mathbb{I}(p_{i,j} \ge \theta)$ with $\theta = 0.60$, eliminating stochastic binarization variance.
 
-\subsection{Mutual-Information-Based Feature Filtering}\label{sec:mi-filtering}
+\subsection{Mutual Information for Information-Theoretic Feature Relevance}\label{sec:mi-relevance}
 
-Mutual information measures the reduction in label uncertainty provided by a feature and is a standard filter score in high-dimensional feature selection~\cite{deng2025nns,cover1991,peng2005}. For a discrete feature $f_j$ and the class label $Y$, the mutual information is defined as
+Mutual information (MI), rooted in Shannon's information theory~\cite{cover1991}, quantifies the mutual dependence and reduction in uncertainty between two random variables. For a feature variable $f_j$ and the discrete class label $Y \in \{1, \ldots, C\}$, the mutual information $I(f_j; Y)$ is defined as:
 \begin{equation}
-I(f_j; Y) = \sum_{b \in \{0,1\}} \sum_{c \in \mathcal{C}} p(f_j = b, Y = c) \; \log_2 \frac{p(f_j = b, Y = c)}{p(f_j = b) \, p(Y = c)},
+I(f_j; Y) = H(Y) - H(Y \mid f_j) = \sum_{v \in \mathrm{Val}(f_j)} \sum_{c=1}^C P(f_j = v, Y = c) \log_2 \frac{P(f_j = v, Y = c)}{P(f_j = v) P(Y = c)},
 \label{eq:mi}
 \end{equation}
-where the sums run over the binary feature values and the class labels. Filtering by mutual information computes the score of every feature, ranks the features in descending order, and retains only a small fraction of the top-ranked dimensions before a classifier is trained. Algorithm~\ref{alg:mi_filtering} summarizes this procedure with a retention ratio $k$~\cite{deng2025nns}; in high-dimensional gene-expression settings, retaining 2--5\% of the features is typical.
+where $H(Y)$ is the marginal Shannon entropy of the class labels and $H(Y \mid f_j)$ is the conditional entropy given feature $f_j$. High values of $I(f_j; Y)$ indicate strong discriminative relevance to classification targets.
 
-\begin{algorithm}[H]
-\caption{Feature filtering based on mutual information}
+\begin{algorithm}[!htb]
+\caption{Traditional Filter Feature Selection via Hard MI Truncation}
 \label{alg:mi_filtering}
 \begin{algorithmic}[1]
-\Require Training dataset $\Omega$, feature count $p$, class labels $Y$, retention ratio $k$
-\Ensure Filtered feature set $S_{\mathrm{MI}}$
-\State $S_{\mathrm{MI}} \leftarrow \emptyset$
-\For{$i = 1$ to $p$}
-  \State Compute the mutual information $I(f_i; Y)$ \Comment{\eqref{eq:mi}}
+\Require Dataset $\mathcal{D} = (X, Y)$ with $D$ features, top retention ratio $k \in (0, 1]$
+\Ensure Truncated feature subset $\mathcal{S}_{\mathrm{Filter}}$
+\For{$j = 1$ \textbf{to} $D$}
+    \State Compute mutual information $I(f_j; Y)$ according to \eqref{eq:mi}
 \EndFor
-\State Sort features by descending MI score and store the ranked indices in $\mathrm{IDX}$
-\State $S_{\mathrm{MI}} \leftarrow$ the top $\lfloor p \cdot k \rfloor$ features of $\mathrm{IDX}$
-\State \Return $S_{\mathrm{MI}}$
+\State Sort feature indices $\mathrm{IDX}$ in descending order of $I(f_j; Y)$
+\State $\mathcal{S}_{\mathrm{Filter}} \leftarrow \bigl\{\mathrm{IDX}(1), \mathrm{IDX}(2), \ldots, \mathrm{IDX}(\lfloor k \cdot D \rfloor)\bigr\}$
+\State \Return $\mathcal{S}_{\mathrm{Filter}}$
 \end{algorithmic}
 \end{algorithm}
 
-KDS-EL does not hard-prune the search space with this filter. Instead, Section~\ref{sec:mi} reuses the same MI ranking to seed the initial population, preserving the full feature space while transferring the filter's knowledge into the evolutionary loop.
+Conventional filter feature selection methods~\cite{peng2005,deng2025nns} evaluate $I(f_j; Y)$ across all $D$ dimensions and execute a **hard truncation** (Algorithm~\ref{alg:mi_filtering}), discarding all features outside the top-$k$ ranking. While computationally rapid ($O(D \log D)$), hard truncation fundamentally ignores multi-feature synergy: individual features with moderate MI scores that are collectively decisive when combined are permanently eliminated. Rather than using hard truncation, KDS-EL utilizes normalized MI scores as a **soft prior** to construct continuous initial population seeds (Section~\ref{sec:mi}), injecting filter knowledge into the evolutionary wrapper without irreversibly shrinking the search space.
 
-\subsection{Multi-Task Evolutionary Learning}\label{sec:mel}
+\subsection{Multi-Task Evolutionary Learning Baseline (MEL)}\label{sec:mel}
 
-MEL~\cite{mel2024} is a PSO-based multi-task evolutionary learning method for high-dimensional feature selection. Its population of $N$ particles is divided into two equal-sized subpopulations, Sub~1 and Sub~2, each searching for an optimal feature subset with a distinct strategy. All particles share the same fixed-length real-valued representation, and a threshold $\theta$ converts each position into the binary decision of whether a feature is selected. The two subpopulations share a feature-importance matrix $W \in \mathbb{R}^D$ as the knowledge state of the search. Initially zero, $W$ is updated after each generation from the accuracy change of every particle: when the accuracy of a particle improves, the importance scores of features newly selected by that particle increase and the importance scores of discarded features decrease by the same amount, with the opposite adjustment when accuracy declines.
+Multi-Task Evolutionary Learning (MEL), recently proposed by Zhang et al.~\cite{mel2024}, introduces a cooperative multi-task architecture for high-dimensional feature selection. In MEL, a population of $N$ particles is partitioned into two collaborative subpopulations, $\mathcal{P}_1$ and $\mathcal{P}_2$ ($|\mathcal{P}_1| = |\mathcal{P}_2| = N/2$), operating on dual complementary search tasks:
+\begin{itemize}
+    \item \textbf{Subpopulation 1 ($\mathcal{P}_1$ - Continuous Swarm Exploration)}: Particles update continuous velocities and positions using PSO dynamics, augmented with an inter-task knowledge transfer channel directing particles toward the historical best of Subpopulation~2 ($\mathbf{g}_{\mathrm{best},2}$):
+    \begin{equation}
+    \mathbf{v}_{1,i}^{(t+1)} = \omega \mathbf{v}_{1,i}^{(t)} + c_1 r_1 (\mathbf{p}_{\mathrm{best},1,i} - \mathbf{p}_{1,i}^{(t)}) + c_2 r_2 (\mathbf{g}_{\mathrm{best},1} - \mathbf{p}_{1,i}^{(t)}) + c_3 r_3 (\mathbf{g}_{\mathrm{best},2} - \mathbf{p}_{1,i}^{(t)}).
+    \label{eq:mel_sub1}
+    \end{equation}
+    \item \textbf{Subpopulation 2 ($\mathcal{P}_2$ - Importance-Guided Discrete Sampling)}: Rather than continuous mechanics, $\mathcal{P}_2$ samples binary feature masks directly based on a shared feature-importance matrix $W_{\mathrm{MEL}} \in \mathbb{R}^D$.
+\end{itemize}
 
-Knowledge transfer connects the two tasks in complementary directions. Sub~1 follows the standard PSO update with an additional learning term, namely the best solution of Sub~2, so the experience of the second subpopulation guides the first. Sub~2 exploits the learned weights directly, excluding features with non-positive weights and selecting each remaining feature with probability proportional to its weight. The two subpopulations therefore search independently while continuously sharing feature-importance knowledge across tasks.
-
-KDS-EL inherits three elements of MEL. First, the fixed-length binary decision vector is shared by all components of Section~\ref{sec:proposed}. Second, the scalar fitness with which MEL maintains personal, subpopulation, and global bests is the ranking criterion reused by the KER strategy to select elite particles for refinement. Third, the fitness function of MEL is a weighted sum of classification error and subset sparsity:
+In MEL, both subpopulations share a scalar fitness function combining classification error and feature subset ratio via static weights:
 \begin{equation}
-f(\mathbf{x}) = \alpha \cdot \bigl(1 - \mathrm{Acc}(\mathbf{x})\bigr) + \beta \cdot \frac{\|\mathbf{x}\|_0}{D},
+f_{\mathrm{MEL}}(\mathbf{x}) = \alpha \cdot \bigl(1 - \mathrm{Acc}(\mathbf{x})\bigr) + \beta \cdot \left(\frac{\|\mathbf{x}\|_0}{D}\right),
 \label{eq:fitness_mel}
 \end{equation}
-where $\mathrm{Acc}(\mathbf{x})$ is the $k$-nearest-neighbor accuracy of the selected features, $\|\mathbf{x}\|_0$ is the number of selected features, and $\alpha = 0.9$ and $\beta = 0.1$ are fixed weights~\cite{mel2024}. Since both weights remain constant throughout search, MEL cannot adapt its objective emphasis to the temporal structure of feature selection, and Section~\ref{sec:proposed} replaces this static weighting with Two-Phase Weight Scheduling. The dominant per-generation cost of MEL is the evaluation of the $N$ particles, each requiring KNN-based five-fold cross-validation, giving an overall complexity of $O(T \cdot N \cdot T_{\mathrm{eval}})$.
+where $\mathrm{Acc}(\mathbf{x})$ is the 5-fold cross-validation accuracy of a $k\text{-NN}$ classifier ($k=3$), and $\alpha = 0.90, \beta = 0.10$ are fixed constants~\cite{mel2024}.
+
+Despite its innovative multi-task design, MEL exhibits three critical performance bottlenecks when scaled to ultra-high-dimensional data ($D > 10^3$):
+\begin{enumerate}
+    \item \textbf{Blind Cold Start}: Uniform random initialization forces both subpopulations to start from dense configurations ($\approx 50\%$ active features), wasting substantial computational budget in non-informative spaces.
+    \item \textbf{Evolutionary Memory Loss and Stale Accumulation}: MEL's importance matrix is updated solely from per-generation accuracy differences without exponential decay, causing monotonic score accumulation that saturates ranking sensitivity.
+    \item \textbf{Static Objective Weight Rigidity}: The fixed weight $\beta = 0.10$ provides inadequate feature-pruning pressure during early generations, leading to sluggish feature reduction and prolonged evaluations ($175.0$~s average runtime).
+\end{enumerate}
+
+KDS-EL directly inherits the multi-task dual-subpopulation structure of MEL while completely eliminating these three structural limitations through MI-guided hybrid seeding (Section~\ref{sec:mi}), discounted cumulative importance harvesting with the KER refinement operator (Sections~\ref{sec:importance}--\ref{sec:ker}), and Two-Phase dynamic weight scheduling (Section~\ref{sec:twophase}).
+

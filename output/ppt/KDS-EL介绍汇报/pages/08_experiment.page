@@ -1,0 +1,149 @@
+pageType: content
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: p8-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "08 · 实验设置与核心结果"
+  - elementId: p8-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: 规模可复现，结论用三维指标收束
+  - elementId: p8-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: p8-m1
+    elementType: text
+    bounds: [48, 118, 170, 52]
+    content:
+      text: |
+        <p><span style="font-size:30px; color:$primary; font-weight:bold;">20</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">20 个基准数据集</p>
+  - elementId: p8-m2
+    elementType: text
+    bounds: [252, 118, 170, 52]
+    content:
+      text: |
+        <p><span style="font-size:30px; color:$accent; font-weight:bold;">14</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">14 个定长对比方法</p>
+  - elementId: p8-m3
+    elementType: text
+    bounds: [456, 118, 190, 52]
+    content:
+      text: |
+        <p><span style="font-size:30px; color:$gold; font-weight:bold;">10</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">10 次独立运行 / 数据集</p>
+  - elementId: p8-m4
+    elementType: text
+    bounds: [680, 118, 232, 52]
+    content:
+      text: |
+        <p><span style="font-size:30px; color:$ink; font-weight:bold;">2,800</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">2,800 次总实验运行</p>
+  - elementId: p8-line
+    elementType: line
+    bounds: [48, 182, 864, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p8-left-title
+    elementType: text
+    bounds: [48, 196, 520, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$ink"
+      text: 实验协议
+  - elementId: p8-table
+    elementType: table
+    bounds: [48, 228, 520, 210]
+    columnWidths: [0.24, 0.76]
+    rowHeights: [0.2, 0.2, 0.2, 0.2, 0.2]
+    style: "$default"
+    rows:
+      - - text: "数据集"
+        - text: "20 个：基因表达 / 文本 / 图像 / 语音 / 合成，维度 500–54,675"
+      - - text: "评估"
+        - text: "统一 3-NN 分类器、5 折分层交叉验证，每数据集独立运行 10 次"
+      - - text: "预算"
+        - text: "统一种群 N=20、迭代 T=100；对比方法统一代码或作者实现等价复现"
+      - - text: "统计"
+        - text: "Friedman 平均秩 + Wilcoxon 两两检验 + Holm-Bonferroni 多重比较校正"
+      - - text: "口径"
+        - text: "结论以论文主表 20 个共同数据集为准，结果可追溯"
+  - elementId: p8-right-title
+    elementType: text
+    bounds: [588, 196, 324, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$ink"
+      text: 核心结果（20-DS）
+  - elementId: p8-headline
+    elementType: text
+    bounds: [588, 226, 324, 54]
+    content:
+      text: |
+        <p><span style="font-size:22px; color:$primary; font-weight:bold;">0.9574</span>  Acc · <span style="font-size:22px; color:$accent; font-weight:bold;">87.8</span>  Feat · <span style="font-size:22px; color:$gold; font-weight:bold;">51.4s</span></p>
+  - elementId: p8-vs1
+    elementType: text
+    bounds: [588, 292, 324, 40]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: |
+        <p><strong>vs MEL</strong>：精度 <span style="color:$accent; font-weight:bold;">+7.06pp</span>，平均特征 2722 → 88（−96.8%），还快 3.4 倍</p>
+  - elementId: p8-vs2
+    elementType: text
+    bounds: [588, 340, 324, 40]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: |
+        <p><strong>vs FWPSO</strong>：精度 <span style="color:$accent; font-weight:bold;">+3.97pp</span>，平均特征只有它的 1/12</p>
+  - elementId: p8-vs3
+    elementType: text
+    bounds: [588, 388, 324, 40]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: |
+        <p><strong>vs W-MOPSO-FS</strong>：精度 <span style="color:$accent; font-weight:bold;">+4.42pp</span>，速度快 2.2 倍</p>
+  - elementId: p8-note
+    elementType: text
+    bounds: [588, 440, 324, 24]
+    content:
+      style: "$caption"
+      text: "三个维度同时领先：精度第 1、特征第 1、时间第 2 快"
+  - elementId: p8-bottom-line
+    elementType: line
+    bounds: [48, 468, 864, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p8-bottom-note
+    elementType: text
+    bounds: [48, 478, 864, 28]
+    content:
+      style: "$small"
+      fontSize: 12
+      color: "$ink"
+      text: |
+        <p>数据口径：论文主表 <strong>20 个共同数据集</strong>；早期 9-DS / 25-DS 数字只作历史标注。</p>
+  - elementId: p8-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "09"

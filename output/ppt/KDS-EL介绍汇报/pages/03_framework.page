@@ -1,0 +1,167 @@
+pageType: content
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: p3-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "03 · 方法总览"
+  - elementId: p3-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: KDS-EL：闭环知识引导的进化学习框架
+  - elementId: p3-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: p3-fig
+    elementType: image
+    bounds: [48, 118, 500, 360]
+    src: "media/F1_framework.png"
+    fit: {mode: contain}
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p3-caption
+    elementType: text
+    bounds: [48, 492, 500, 20]
+    content:
+      style: "$caption"
+      align: [left, middle]
+      text: "图 1 · KDS-EL 整体框架：MI 启动 → 特征重要性 W 更新 → KER 反哺 → TPS 部署"
+  - elementId: p3-right-intro
+    elementType: text
+    bounds: [588, 112, 324, 76]
+    content:
+      style: "$body"
+      fontSize: 11
+      lineHeight: 1.35
+      text: |
+        <p>KDS-EL 以多任务 PSO（MEL）为优化骨架，用 <strong>N=20 个 0/1 粒子</strong>搜索特征子集；MI 先给起点，每轮把改进对应的特征得失写入 <strong>W</strong>。W 是特征重要性向量，记录每个特征对搜索改进的贡献；KER 按 W 精化精英，TPS 分阶段调整目标权重。</p>
+  - elementId: p3-s1-num
+    elementType: text
+    bounds: [588, 190, 40, 28]
+    content:
+      fontSize: 20
+      bold: true
+      color: "$accent"
+      align: [left, middle]
+      text: "01"
+  - elementId: p3-s1-title
+    elementType: text
+    bounds: [636, 188, 276, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: 知识启动
+  - elementId: p3-s1-desc
+    elementType: text
+    bounds: [636, 216, 276, 40]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: 用 MI 筛出与标签相关的特征，给一半种群提供初始探索起点；搜索停滞时再用它恢复多样性。
+  - elementId: p3-line1
+    elementType: line
+    bounds: [588, 262, 324, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p3-s2-num
+    elementType: text
+    bounds: [588, 272, 40, 28]
+    content:
+      fontSize: 20
+      bold: true
+      color: "$accent"
+      align: [left, middle]
+      text: "02"
+  - elementId: p3-s2-title
+    elementType: text
+    bounds: [636, 270, 276, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: 知识更新
+  - elementId: p3-s2-desc
+    elementType: text
+    bounds: [636, 298, 276, 40]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: 每次改进都更新特征重要性向量 W：选中的特征加分、丢弃的减分；0.99 衰减让近期经验更重要。
+  - elementId: p3-line2
+    elementType: line
+    bounds: [588, 344, 324, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p3-s3-num
+    elementType: text
+    bounds: [588, 354, 40, 28]
+    content:
+      fontSize: 20
+      bold: true
+      color: "$accent"
+      align: [left, middle]
+      text: "03"
+  - elementId: p3-s3-title
+    elementType: text
+    bounds: [636, 352, 276, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: 知识反哺
+  - elementId: p3-s3-desc
+    elementType: text
+    bounds: [636, 380, 276, 40]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: KER 用特征重要性 W 给特征打分，只翻转最可能改善结果的特征位，让精英解越精化越好。
+  - elementId: p3-line3
+    elementType: line
+    bounds: [588, 426, 324, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p3-s4-num
+    elementType: text
+    bounds: [588, 436, 40, 28]
+    content:
+      fontSize: 20
+      bold: true
+      color: "$accent"
+      align: [left, middle]
+      text: "04"
+  - elementId: p3-s4-title
+    elementType: text
+    bounds: [636, 434, 276, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: 知识部署
+  - elementId: p3-s4-desc
+    elementType: text
+    bounds: [636, 462, 276, 40]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: TPS 按阶段切换精度与特征数权重：前期快速压缩，后期精细调优。
+  - elementId: p3-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "04"

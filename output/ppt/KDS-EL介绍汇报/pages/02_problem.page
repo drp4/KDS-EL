@@ -1,0 +1,160 @@
+pageType: content
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: p2-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "02 · 研究背景与问题"
+  - elementId: p2-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: 通用 PSO 在高维特征选择上的三个结构性缺陷
+  - elementId: p2-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: p2-left-title
+    elementType: text
+    bounds: [48, 126, 300, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$primary"
+      text: 为什么需要特征选择
+  - elementId: p2-left-rule
+    elementType: line
+    bounds: [48, 158, 58, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$accent"}
+  - elementId: p2-left-body
+    elementType: text
+    bounds: [48, 172, 300, 226]
+    content:
+      style: "$body"
+      fontSize: 13
+      lineHeight: 1.45
+      text: |
+        <p>特征选择要解决的是：在成千上万个特征里找出真正影响分类的一组特征，降低过拟合、计算开销和解释成本。</p>
+        <p style="margin-top:8px">基因表达、文本、图像等数据维度可达数万；本工作最高 <strong>54,675 维</strong>（T1D）。</p>
+        <p style="margin-top:8px">但样本通常只有几十到几千，<strong>17/20</strong> 个数据集满足 p ≫ n，直接训练很容易过拟合。</p>
+        <p style="margin-top:8px">维数灾难、计算爆炸与大量噪声叠加，暴力枚举 <strong>2^D</strong> 个候选子集完全不可行。</p>
+  - elementId: p2-left-stat
+    elementType: text
+    bounds: [48, 404, 300, 52]
+    content:
+      text: |
+        <p><span style="font-size:22px; color:$accent; font-weight:bold;">2^D 组合空间</span></p>
+        <p style="margin-top:4px; font-size:11px; color:$muted;">D &gt; 50 后暴力搜索不可行，必须用元启发式近似搜索</p>
+  - elementId: p2-right-title
+    elementType: text
+    bounds: [380, 126, 532, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$ink"
+      text: 直接搬到特征选择上的三个问题
+  - elementId: p2-icon1
+    elementType: icon
+    bounds: [384, 166, 22, 22]
+    iconName: "fas:seedling"
+    fill: {type: solid, color: "$accent"}
+  - elementId: p2-row1-title
+    elementType: text
+    bounds: [416, 160, 496, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: "① 随机初始化浪费知识"
+  - elementId: p2-row1-desc
+    elementType: text
+    bounds: [416, 188, 496, 44]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: 传统 PSO 从全零或随机位串开始，前几轮基本在盲试；高维空间中好组合很稀疏，早期预算很难碰到有效解。
+  - elementId: p2-line1
+    elementType: line
+    bounds: [384, 240, 528, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p2-icon2
+    elementType: icon
+    bounds: [384, 254, 22, 22]
+    iconName: "fas:shuffle"
+    fill: {type: solid, color: "$accent"}
+  - elementId: p2-row2-title
+    elementType: text
+    bounds: [416, 248, 496, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: "② 变异/翻转无视知识"
+  - elementId: p2-row2-desc
+    elementType: text
+    bounds: [416, 276, 496, 44]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: 翻转哪个特征与历史表现无关，对所有位一视同仁；几万维空间里盲翻命中率极低，大量计算被浪费。
+  - elementId: p2-line2
+    elementType: line
+    bounds: [384, 328, 528, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p2-icon3
+    elementType: icon
+    bounds: [384, 342, 22, 22]
+    iconName: "fas:scale-balanced"
+    fill: {type: solid, color: "$accent"}
+  - elementId: p2-row3-title
+    elementType: text
+    bounds: [416, 336, 496, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: "③ 固定权重僵化"
+  - elementId: p2-row3-desc
+    elementType: text
+    bounds: [416, 364, 496, 44]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: 精度与特征数偏好全程不变，前期该快速剔噪时不够激进，后期该精调精度时又容易误删好特征。
+  - elementId: p2-concl-line
+    elementType: line
+    bounds: [48, 452, 864, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p2-concl
+    elementType: text
+    bounds: [48, 462, 864, 42]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      align: [left, middle]
+      text: |
+        <p>目标：用<span style="color:$accent;">闭环知识引导</span>逐一补齐三个缺陷，让<span style="color:$primary;">精度、稀疏性、效率</span>同时改善；每个机制都有独立、可复现的实验证据。</p>
+  - elementId: p2-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "03"

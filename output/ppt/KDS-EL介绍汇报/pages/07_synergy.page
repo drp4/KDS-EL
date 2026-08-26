@@ -1,0 +1,135 @@
+pageType: content
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: p7-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "07 · 创新协同与设计原则"
+  - elementId: p7-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: 三个机制：同一知识闭环的三个环节
+  - elementId: p7-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: p7-map-title
+    elementType: text
+    bounds: [48, 118, 420, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$ink"
+      text: 问题 → 机制映射
+  - elementId: p7-map-table
+    elementType: table
+    bounds: [48, 152, 420, 260]
+    columnWidths: [0.36, 0.64]
+    rowHeights: [0.2, 0.27, 0.27, 0.26]
+    style: "$default"
+    rows:
+      - - text: "问题"
+        - text: "对应机制"
+      - - text: "随机初始化浪费知识"
+        - text: |
+            <p><strong>MI 引导初始化</strong> + 自适应恢复：先给搜索一个好起点</p>
+      - - text: "变异 / 翻转无视知识"
+        - text: |
+            <p><strong>特征重要性更新 + KER 精化</strong>：让翻转有方向</p>
+      - - text: "固定权重僵化"
+        - text: |
+            <p><strong>TPS 两阶段调度</strong>：让目标权重分阶段变化</p>
+  - elementId: p7-r1-title
+    elementType: text
+    bounds: [500, 118, 412, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$primary"
+      text: "职责不重叠"
+  - elementId: p7-r1-desc
+    elementType: text
+    bounds: [500, 146, 412, 52]
+    content:
+      style: "$body"
+      fontSize: 12
+      lineHeight: 1.4
+      text: |
+        <p>三个机制分别负责搜索前、搜索中和搜索阶段变化，一一对应三个结构性缺陷，职责清楚、不重叠。</p>
+  - elementId: p7-line1
+    elementType: line
+    bounds: [500, 206, 412, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p7-r2-title
+    elementType: text
+    bounds: [500, 218, 412, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$primary"
+      text: "互补且独立"
+  - elementId: p7-r2-desc
+    elementType: text
+    bounds: [500, 246, 412, 52]
+    content:
+      style: "$body"
+      fontSize: 12
+      lineHeight: 1.4
+      text: |
+        <p>不宣称玄学协同：每个机制都可以单独打开或去掉，组件贡献证据互不依赖，结论可验证。</p>
+  - elementId: p7-line2
+    elementType: line
+    bounds: [500, 306, 412, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p7-r3-title
+    elementType: text
+    bounds: [500, 318, 412, 26]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$primary"
+      text: "轻量可控"
+  - elementId: p7-r3-desc
+    elementType: text
+    bounds: [500, 346, 412, 52]
+    content:
+      style: "$body"
+      fontSize: 12
+      lineHeight: 1.4
+      text: |
+        <p>知识获取不增加额外分类器评估；elite_k=3 限制精化预算；1v1 原地更新不扩大候选池，整体开销可控。</p>
+  - elementId: p7-bottom-line
+    elementType: line
+    bounds: [48, 458, 864, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p7-bottom-note
+    elementType: text
+    bounds: [48, 468, 864, 34]
+    content:
+      style: "$small"
+      fontSize: 12
+      color: "$ink"
+      text: |
+        <p>总复杂度 O(D log D + T·(N·T_eval + N·D + elite_k·(D + T_eval)))，加入机制不改变整体量级。</p>
+  - elementId: p7-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "08"

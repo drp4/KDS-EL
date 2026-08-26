@@ -1,0 +1,122 @@
+pageType: content
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: p5-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "05 · 核心创新 #2"
+  - elementId: p5-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: TPS：先压缩、后精调的两阶段权重调度
+  - elementId: p5-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: p5-fig
+    elementType: image
+    bounds: [48, 118, 500, 300]
+    src: "media/F14_tps.png"
+    fit: {mode: contain}
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p5-caption
+    elementType: text
+    bounds: [48, 424, 500, 20]
+    content:
+      style: "$caption"
+      align: [left, middle]
+      text: "图 3 · TPS：Phase 1 稀疏子集探索 → Phase 2 精度精化"
+  - elementId: p5-right-intro
+    elementType: text
+    bounds: [580, 118, 332, 66]
+    content:
+      style: "$body"
+      fontSize: 12
+      lineHeight: 1.35
+      text: |
+        <p>固定权重从头跑到尾不合理。TPS 使用<strong>自适应目标控制</strong>：目标函数 f = α·ErrorRate + β·FeatureRatio，通过动态调整 α、β 来改变搜索行为。</p>
+  - elementId: p5-phase1
+    elementType: text
+    bounds: [580, 196, 332, 70]
+    content:
+      text: |
+        <p><span style="font-size:15px; font-weight:bold; color:$ink;">Phase 1 · Sparse Subset Exploration</span></p>
+        <p style="margin-top:4px; font-size:11px; color:$muted;">α=0.7、β=0.3：更强稀疏惩罚，快速淘汰冗余特征</p>
+  - elementId: p5-line1
+    elementType: line
+    bounds: [580, 268, 332, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p5-phase2
+    elementType: text
+    bounds: [580, 282, 332, 70]
+    content:
+      text: |
+        <p><span style="font-size:15px; font-weight:bold; color:$ink;">Phase 2 · Accuracy Refinement</span></p>
+        <p style="margin-top:4px; font-size:11px; color:$muted;">α=0.95、β=0.05：以精度为导向，细粒度搜索特征组合</p>
+  - elementId: p5-line2
+    elementType: line
+    bounds: [580, 354, 332, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p5-takeaway
+    elementType: text
+    bounds: [580, 374, 332, 64]
+    content:
+      style: "$body"
+      fontSize: 12
+      lineHeight: 1.3
+      text: |
+        <p>整体路径：<strong>Broad Search Space → Adaptive Objective Control → Compact High-quality Feature Subset</strong>，从广搜索到自适应目标控制，最终得到紧凑高质量特征子集。</p>
+  - elementId: p5-stats-line
+    elementType: line
+    bounds: [48, 440, 864, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p5-stat1
+    elementType: text
+    bounds: [48, 452, 200, 52]
+    content:
+      text: |
+        <p><span style="font-size:16px; color:$accent; font-weight:bold;">先压后调</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">Phase 1 快速剔冗余，Phase 2 精调特征组合</p>
+  - elementId: p5-stat2
+    elementType: text
+    bounds: [264, 452, 200, 52]
+    content:
+      text: |
+        <p><span style="font-size:16px; color:$primary; font-weight:bold;">Filter → Wrapper</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">ErrorRate 与 FeatureRatio 动态权衡，先过滤、后精调</p>
+  - elementId: p5-stat3
+    elementType: text
+    bounds: [480, 452, 200, 52]
+    content:
+      text: |
+        <p><span style="font-size:16px; color:$gold; font-weight:bold;">硬切换足够</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">α/β 在两阶段固定切换，不新增连续参数</p>
+  - elementId: p5-stat4
+    elementType: text
+    bounds: [696, 452, 200, 52]
+    content:
+      text: |
+        <p><span style="font-size:16px; color:$ink; font-weight:bold;">三维同升</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">相比 MEL，精度、特征数、时间同时改善，是唯一三维同升模块</p>
+  - elementId: p5-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "06"

@@ -3,6 +3,8 @@
 > 本文件是论文起草的唯一数字来源。所有数字均基于 **20 个共同数据集**（与主对比表 T4-T6 一致）从原始 results_detail.csv 重算。
 > 生成日期：2026-08-01
 > 严禁在论文中混用 25-DS/26-DS 数字（0.9442/0.9334/107 等为过时口径）。
+>
+> **统计口径更新（2026-08-12）**：T4 逐格 `+ / ≈ / -` 统一为逐数据集 two-sided Wilcoxon signed-rank（p<0.05，10 次配对运行），由 `code/generate_tables.py --tab T4sym` 生成 `output/tables/T4_symbols.csv`；Friedman 排名统一为并列平均秩，前四名为 KDS-EL 1.90 / NoPool 2.95 / W-MOPSO-FS 5.33 / MEL+MI 5.55。正文不再使用“至少 14/20”表述，跨数据集安全声明统一采用 T6 的“至少 13/20”。
 
 ## 一、14 方法排名表（20-DS 均值）
 
@@ -65,6 +67,8 @@
 
 - One-sided 两两 Wilcoxon（Section 5）：KDS-EL vs MEL 20/20；vs MEL+MI 19/20；vs FWPSO 19/20；vs NoPool 13/20
 - Holm-Bonferroni（Section 6）：13 个对比方法全部拒绝 H0，Mean_ΔAcc 全部为正值，Combined/Holm p 均 < 1e-15
+- Friedman 平均秩（并列取平均，2026-08-12 口径）：KDS-EL 1.90 / KDS-EL_KER 2.95 / W-MOPSO-FS 5.33 / MEL+MI 5.55
+- T4 符号（two-sided Wilcoxon signed-rank）：KDS-EL 对 KDS-EL_KER 12+ / 8≈ / 0-；对 KDS-EL_KER+MI 19+ / 1≈；对 W-MOPSO-FS 14+ / 3≈ / 3-；完整矩阵见 `output/tables/T4_symbols.csv`
 
 ## 五、天花板效应数据集（8 个，Acc ≥ 0.998）
 

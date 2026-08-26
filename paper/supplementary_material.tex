@@ -1,0 +1,153 @@
+\documentclass[final,1p,times]{elsarticle}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{stfloats}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[figuresright]{rotating}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{geometry}
+
+\geometry{
+  a4paper,
+  margin=25mm
+}
+
+\newcommand{\ktablecaption}[1]{\caption{#1}}
+
+\graphicspath{{../output/figures/}}
+
+\journal{Applied Soft Computing}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Supplementary Material for:\\\textbf{Knowledge-Guided Dual-Phase Swarm Evolutionary Learning for High-Dimensional Feature Selection}}
+
+\author{Anonymous Author(s)}
+
+\begin{abstract}
+This supplementary document provides comprehensive extended experimental records, complete per-dataset metrics, detailed hyper-parameter sensitivity grids, convergence trajectories, and full statistical significance matrices supporting the main manuscript.
+\end{abstract}
+
+\end{frontmatter}
+
+\section*{Table of Contents}
+\begin{itemize}
+    \item \textbf{Section S1}: Benchmark Dataset Characteristics and Selection Rationale
+    \item \textbf{Section S2}: Baseline Algorithms and Detailed Hyper-Parameter Configurations
+    \item \textbf{Section S3}: Complete Per-Dataset Classification Accuracy and Feature Compactness Metrics
+    \item \textbf{Section S4}: Granular Per-Dataset Component Contribution (Ablation) Results (\textbf{Table~S4})
+    \item \textbf{Section S5}: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (\textbf{Table~S5})
+    \item \textbf{Section S6}: Full Multi-Dataset Parameter Sensitivity Evaluation Grids (\textbf{Table~S6})
+    \item \textbf{Section S7}: Full Convergence Trajectories and Boxplot Distributions
+    \item \textbf{Section S8}: Extended Statistical Significance Testing Matrices
+\end{itemize}
+
+\newpage
+
+\section*{Section S1: Benchmark Dataset Characteristics and Selection Rationale}\label{sec:supp_datasets}
+
+Table~\ref{T2} summarizes the statistical characteristics of the 20 benchmark datasets investigated in this study, spanning biomedical gene-expression microarrays, high-dimensional text categorization, visual object recognition, and acoustic phoneme analysis.
+
+\input{../output/tables/T2_datasets}
+
+\section*{Section S2: Baseline Algorithms and Detailed Hyper-Parameter Configurations}\label{sec:supp_baselines}
+
+Table~\ref{T1} lists the full taxonomy and categorization of the 13 baseline algorithms evaluated in the comparative study, and Table~\ref{T3} specifies the precise hyper-parameter configurations used across all algorithms to ensure strict reproducibility.
+
+\input{../output/tables/T1_methods}
+
+\input{../output/tables/T3_params}
+
+\newpage
+
+\section*{Section S3: Complete Per-Dataset Classification Accuracy and Feature Compactness Metrics}\label{sec:supp_full_results}
+
+Tables~\ref{T4} and~\ref{T5} present the complete per-dataset 5-fold cross-validation classification accuracy (mean $\pm$ standard deviation) and average selected feature counts across all 20 benchmark datasets and all 14 evaluated algorithms.
+
+\input{../output/tables/T4_accuracy}
+
+\input{../output/tables/T5_features}
+
+\newpage
+
+\section*{Section S4: Granular Per-Dataset Component Contribution (Ablation) Results (\textbf{Table~S4})}\label{sec:supp_ablation}
+
+Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential configurations of the subtractive ablation chain: (i) MEL baseline~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL$_{\mathrm{KER}}$ (w/o TPS), and (iv) Complete KDS-EL.
+
+\input{../output/tables/T-A4_per_dataset_ablation}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.75\linewidth]{F6_ablation_heatmap.pdf}
+\caption{Component contribution heatmap illustrating relative accuracy enhancements and feature reductions across the ablation chain.}
+\label{fig:supp_ablation_heatmap}
+\end{figure}
+
+\newpage
+
+\section*{Section S5: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (\textbf{Table~S5})}\label{sec:supp_runtime}
+
+Table~\ref{T-A5} details the mean wall-clock computational execution time (in seconds, averaged over 10 independent runs) across all 20 benchmark datasets for the 14 compared algorithms.
+
+\input{../output/tables/T-A5_runtime}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.85\linewidth]{F11_runtime_scatter.pdf}
+\caption{Classification accuracy versus runtime scatter plot across all 14 compared algorithms.}
+\label{fig:supp_runtime_scatter}
+\end{figure}
+
+\newpage
+
+\section*{Section S6: Full Multi-Dataset Parameter Sensitivity Evaluation Grids (\textbf{Table~S6})}\label{sec:supp_sensitivity}
+
+Table~\ref{T-A6} reports the full multi-dataset one-factor-at-a-time (OFAT) parameter sensitivity evaluation results across the four representative benchmark datasets (\textit{Adenoma}, \textit{Colon}, \textit{ALL4}, and \textit{BASEHOCK}) for each of the five investigated hyper-parameters ($\mathrm{WeightDecay}$, $\mathrm{PhaseSplit}$, $\mathrm{flip\_frac}$, $\mathrm{MI\_init\_ratio}$, and $\mathrm{elite\_k}$).
+
+\input{../output/tables/T-A6_parameter_sensitivity_full}
+
+\newpage
+
+\section*{Section S7: Full Convergence Trajectories and Boxplot Distributions}\label{sec:supp_dynamics}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.95\linewidth]{F8_convergence.pdf}
+\caption{Evolutionary convergence trajectories across benchmark datasets comparing KDS-EL against baseline and competitive evolutionary algorithms.}
+\label{fig:supp_convergence}
+\end{figure*}
+
+\begin{figure*}[!htb]
+\centering
+\includegraphics[width=0.95\linewidth]{F7_boxplot_all.pdf}
+\caption{Boxplot distributions of classification accuracy across 10 independent runs for all compared algorithms across the benchmark suite.}
+\label{fig:supp_boxplots}
+\end{figure*}
+
+\newpage
+
+\section*{Section S8: Extended Statistical Significance Testing Matrices}\label{sec:supp_stats}
+
+Table~\ref{T6} and Table~\ref{T6b} summarize the pairwise non-parametric Wilcoxon signed-rank test outcomes and the Holm--Bonferroni step-down hypothesis rejection results.
+
+\input{../output/tables/T6_wilcoxon}
+
+\input{../output/tables/T6b_holm_bonferroni}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.75\linewidth]{F10_wilcoxon_heatmap.pdf}
+\caption{Pairwise Wilcoxon signed-rank test $p$-value heatmap across all evaluated algorithms.}
+\label{fig:supp_wilcoxon_heatmap}
+\end{figure}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,138 @@
+pageType: content
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: p4-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "04 · 核心创新 #1"
+  - elementId: p4-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: KER：知识引导的精英精化闭环
+  - elementId: p4-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: p4-fig
+    elementType: image
+    bounds: [48, 118, 480, 300]
+    src: "media/F3_ker.png"
+    fit: {mode: contain}
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p4-caption
+    elementType: text
+    bounds: [48, 424, 480, 20]
+    content:
+      style: "$caption"
+      align: [left, middle]
+      text: "图 2 · KER 闭环：适应度反馈 → 知识更新 → 定向翻转 → 重评估"
+  - elementId: p4-right-intro
+    elementType: text
+    bounds: [560, 118, 352, 88]
+    content:
+      style: "$body"
+      fontSize: 11
+      lineHeight: 1.28
+      text: |
+        <p>图中是一个<strong>闭环知识学习</strong>过程：进化种群产生适应度反馈，更新 <strong>特征重要性向量 W</strong>（每个特征对搜索改进的贡献），再用 W 指导精英解定向翻转，最后重评估决定是否接受。</p>
+        <p style="margin-top:4px; color:$muted; font-size:10.5px;">W 只在 Improved? 为 Yes 时更新：选中的特征加分、丢弃的减分；每轮 W ← 0.99·W，让近期经验更重要。</p>
+  - elementId: p4-row1-title
+    elementType: text
+    bounds: [560, 206, 100, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: "打分"
+  - elementId: p4-row1-desc
+    elementType: text
+    bounds: [672, 204, 240, 46]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: 按特征重要性 W 给每个特征位打分，决定该翻谁；高重要度、当前未选的特征优先补选。
+  - elementId: p4-line1
+    elementType: line
+    bounds: [560, 250, 352, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p4-row2-title
+    elementType: text
+    bounds: [560, 262, 100, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: "翻转"
+  - elementId: p4-row2-desc
+    elementType: text
+    bounds: [672, 260, 240, 46]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: Knowledge-guided Flip：按特征重要性 W 定向翻转精英解，而不是随机盲翻。
+  - elementId: p4-line2
+    elementType: line
+    bounds: [560, 306, 352, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p4-row3-title
+    elementType: text
+    bounds: [560, 318, 100, 26]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: "保留"
+  - elementId: p4-row3-desc
+    elementType: text
+    bounds: [672, 316, 240, 46]
+    content:
+      style: "$small"
+      fontSize: 12
+      text: 重评估后 Improved? 为 Yes 才接受；No 则保留原精英，elite_k=3 控制预算。
+  - elementId: p4-stats-line
+    elementType: line
+    bounds: [48, 440, 864, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p4-stat1
+    elementType: text
+    bounds: [48, 452, 270, 54]
+    content:
+      text: |
+        <p><span style="font-size:16px; color:$accent; font-weight:bold;">精准打击</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">优先处理高重要性 W 未选、低重要性 W 已选的特征位</p>
+  - elementId: p4-stat2
+    elementType: text
+    bounds: [336, 452, 270, 54]
+    content:
+      text: |
+        <p><span style="font-size:16px; color:$primary; font-weight:bold;">知识闭环</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">反馈 → 知识更新 → 定向翻转 → 重评估，形成闭环</p>
+  - elementId: p4-stat3
+    elementType: text
+    bounds: [624, 452, 288, 54]
+    content:
+      text: |
+        <p><span style="font-size:16px; color:$gold; font-weight:bold;">轻量</span></p>
+        <p style="margin-top:2px; font-size:11px; color:$muted;">零额外分类器评估，elite_k=3 限定精化预算，机制轻量可控</p>
+  - elementId: p4-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "05"

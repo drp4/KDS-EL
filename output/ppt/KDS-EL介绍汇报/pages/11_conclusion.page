@@ -1,0 +1,167 @@
+pageType: final
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: p11-kicker
+    elementType: text
+    bounds: [48, 34, 300, 20]
+    content:
+      style: "$kicker"
+      text: "11 · 结论与展望"
+  - elementId: p11-title
+    elementType: text
+    bounds: [48, 56, 864, 40]
+    content:
+      style: "$title"
+      text: 一个知识闭环，三个机制，三维领先
+  - elementId: p11-header-line
+    elementType: line
+    bounds: [48, 102, 864, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$primary"}
+  - elementId: p11-c1-num
+    elementType: text
+    bounds: [48, 124, 44, 30]
+    content:
+      fontSize: 22
+      bold: true
+      color: "$accent"
+      text: "01"
+  - elementId: p11-c1-title
+    elementType: text
+    bounds: [104, 124, 400, 28]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: 总体性能：20-DS 排名第 1
+  - elementId: p11-c1-desc
+    elementType: text
+    bounds: [104, 154, 400, 68]
+    content:
+      style: "$body"
+      fontSize: 13
+      text: |
+        <p>20 个数据集上平均精度 0.9574、平均特征 87.8、平均耗时 51.4s；相比 MEL，精度提高 <strong>7.06pp</strong>、特征减少 96.8%、速度提升 3.4 倍。</p>
+  - elementId: p11-line1
+    elementType: line
+    bounds: [48, 232, 456, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p11-c2-num
+    elementType: text
+    bounds: [48, 244, 44, 30]
+    content:
+      fontSize: 22
+      bold: true
+      color: "$accent"
+      text: "02"
+  - elementId: p11-c2-title
+    elementType: text
+    bounds: [104, 244, 400, 28]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: 机制可验证：互补且独立
+  - elementId: p11-c2-desc
+    elementType: text
+    bounds: [104, 274, 400, 68]
+    content:
+      style: "$body"
+      fontSize: 12
+      lineHeight: 1.35
+      text: |
+        <p>三个机制贡献独立可验证：MI <strong>+4.58pp</strong>、KER +1.63pp、TPS +0.86pp；Friedman 平均秩第 1，Holm 校正后对 13 个方法全部显著。</p>
+  - elementId: p11-line2
+    elementType: line
+    bounds: [48, 352, 456, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p11-c3-num
+    elementType: text
+    bounds: [48, 364, 44, 30]
+    content:
+      fontSize: 22
+      bold: true
+      color: "$accent"
+      text: "03"
+  - elementId: p11-c3-title
+    elementType: text
+    bounds: [104, 364, 400, 28]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      text: 诚实且鲁棒：结论可复现
+  - elementId: p11-c3-desc
+    elementType: text
+    bounds: [104, 394, 400, 68]
+    content:
+      style: "$body"
+      fontSize: 13
+      text: |
+        <p>默认参数附近波动不超过 ±1.5pp；8 个精度天花板数据集仍以 39–83 个特征占优，也不回避部分数据集上非最优。</p>
+  - elementId: p11-right-title
+    elementType: text
+    bounds: [560, 124, 352, 28]
+    content:
+      fontSize: 16
+      bold: true
+      color: "$primary"
+      text: 未来工作
+  - elementId: p11-f1
+    elementType: text
+    bounds: [560, 162, 352, 62]
+    content:
+      text: |
+        <p><span style="font-size:14px; font-weight:bold; color:$ink;">GPU 加速 MI 估计</span></p>
+        <p style="margin-top:4px; font-size:12px; color:$muted;">把互信息计算搬到 GPU，支撑 D ≥ 10^5 的超大规模特征空间</p>
+  - elementId: p11-f2
+    elementType: text
+    bounds: [560, 232, 352, 62]
+    content:
+      text: |
+        <p><span style="font-size:14px; font-weight:bold; color:$ink;">更广的学习设定</span></p>
+        <p style="margin-top:4px; font-size:12px; color:$muted;">扩展到多标签、流式特征选择和类别不平衡等真实场景</p>
+  - elementId: p11-f3
+    elementType: text
+    bounds: [560, 302, 352, 62]
+    content:
+      text: |
+        <p><span style="font-size:14px; font-weight:bold; color:$ink;">深度特征表示</span></p>
+        <p style="margin-top:4px; font-size:12px; color:$muted;">在 Transformer / 深度嵌入空间验证知识引导是否仍然有效</p>
+  - elementId: p11-f4
+    elementType: text
+    bounds: [560, 372, 352, 62]
+    content:
+      text: |
+        <p><span style="font-size:14px; font-weight:bold; color:$ink;">跨数据集迁移</span></p>
+        <p style="margin-top:4px; font-size:12px; color:$muted;">让 KER 积累的特征知识在不同数据集之间复用，减少重复搜索</p>
+  - elementId: p11-close-line
+    elementType: line
+    bounds: [48, 474, 864, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: p11-close
+    elementType: text
+    bounds: [48, 486, 864, 30]
+    content:
+      fontSize: 15
+      bold: true
+      color: "$ink"
+      align: [center, middle]
+      text: 感谢聆听 · 欢迎讨论
+  - elementId: p11-footer
+    elementType: text
+    bounds: [890, 516, 40, 18]
+    content:
+      style: "$small"
+      fontSize: 11
+      align: [right, middle]
+      text: "12"

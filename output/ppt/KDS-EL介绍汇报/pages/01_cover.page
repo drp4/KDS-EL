@@ -1,0 +1,147 @@
+pageType: cover
+background:
+  type: solid
+  color: "$paper"
+elements:
+  - elementId: cover-left
+    elementType: shape
+    bounds: [0, 0, 420, 540]
+    shapeName: rect
+    fill: {type: solid, color: "$primary"}
+  - elementId: cover-kicker
+    elementType: text
+    bounds: [48, 52, 340, 28]
+    content:
+      style: "$kicker"
+      color: "$gold"
+      align: [left, middle]
+      text: RESEARCH INTRODUCTION
+  - elementId: cover-title
+    elementType: text
+    bounds: [48, 108, 340, 110]
+    content:
+      color: "$white"
+      fontSize: 60
+      bold: true
+      align: [left, middle]
+      text: KDS-EL
+  - elementId: cover-subtitle
+    elementType: text
+    bounds: [48, 224, 340, 64]
+    content:
+      color: "$white"
+      fontSize: 20
+      lineHeight: 1.35
+      align: [left, top]
+      text: |
+        <p>知识引导双阶段群智能</p>
+        <p>进化学习框架</p>
+  - elementId: cover-rule
+    elementType: line
+    bounds: [48, 306, 300, 2]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 2, color: "$gold"}
+  - elementId: cover-meta
+    elementType: text
+    bounds: [48, 326, 340, 110]
+    content:
+      color: "#E7E2D6"
+      fontSize: 13
+      lineHeight: 1.7
+      align: [left, top]
+      text: |
+        <p>高维特征选择 · 进化计算</p>
+        <p>20 个基准数据集 · 14 种方法</p>
+        <p>10 次独立运行 · 可复现实验</p>
+  - elementId: cover-date
+    elementType: text
+    bounds: [48, 500, 340, 24]
+    content:
+      color: "#E7E2D6"
+      fontSize: 12
+      align: [left, middle]
+      text: 2026-08 · 组合汇报
+  - elementId: cover-right-title
+    elementType: text
+    bounds: [470, 40, 442, 56]
+    content:
+      style: "$small"
+      color: "$ink"
+      fontSize: 13
+      lineHeight: 1.4
+      text: |
+        <p>Knowledge-Guided Dual-Phase Swarm Evolutionary Learning</p>
+        <p>组合汇报：方法创新 + 实验规模 + 核心结论</p>
+  - elementId: cover-num1
+    elementType: text
+    bounds: [470, 104, 250, 72]
+    content:
+      color: "$primary"
+      fontSize: 42
+      bold: true
+      align: [left, middle]
+      text: 0.9574
+  - elementId: cover-label1
+    elementType: text
+    bounds: [470, 178, 380, 24]
+    content:
+      style: "$small"
+      color: "$muted"
+      fontSize: 12
+      text: 20 个数据集平均分类精度 · 14 种方法中排名第 1
+  - elementId: cover-line1
+    elementType: line
+    bounds: [470, 216, 442, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: cover-num2
+    elementType: text
+    bounds: [470, 232, 250, 72]
+    content:
+      color: "$accent"
+      fontSize: 42
+      bold: true
+      align: [left, middle]
+      text: "87.8"
+  - elementId: cover-label2
+    elementType: text
+    bounds: [470, 306, 380, 24]
+    content:
+      style: "$small"
+      color: "$muted"
+      fontSize: 12
+      text: 平均只保留 87.8 个特征 · 约为原始特征 2–3%
+  - elementId: cover-line2
+    elementType: line
+    bounds: [470, 344, 442, 1]
+    viewBox: [1, 1]
+    points: "0,0 1,0"
+    border: {style: solid, width: 1, color: "$line"}
+  - elementId: cover-num3
+    elementType: text
+    bounds: [470, 360, 250, 72]
+    content:
+      color: "$gold"
+      fontSize: 42
+      bold: true
+      align: [left, middle]
+      text: 51.4s
+  - elementId: cover-label3
+    elementType: text
+    bounds: [470, 434, 380, 24]
+    content:
+      style: "$small"
+      color: "$muted"
+      fontSize: 12
+      text: 平均运行 51.4 秒 · 对比方法中第 2 快
+  - elementId: cover-foot
+    elementType: text
+    bounds: [470, 498, 442, 34]
+    content:
+      style: "$small"
+      color: "$muted"
+      fontSize: 11
+      text: |
+        <p>数据口径：论文主表 20 个共同数据集 · 10 次独立运行</p>
