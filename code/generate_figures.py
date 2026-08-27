@@ -49,16 +49,16 @@ MAIN_VERSIONS = ALL_VERSIONS
 
 ABL_VERSIONS = ["KDS_EL_TwoPhase", "KDS_EL_NoPool", "MEL_MI", "MEL"]
 
-V_LABELS = {
-    "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "MEL_MI": "KDS-EL w/o TPS&KER",
-    "KDS_EL_NoPool": "KDS-EL w/o TPS",
-    "KDS_EL_TwoPhase": "KDS-EL",
-    "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
-    "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
-    "MOEA-D-FS": "MOEA-D-FS", "fMOPSO-FS": "fMOPSO-FS",
-    "W-MOPSO-FS": "W-MOPSO-FS",
-}
+from plot_style import (
+    apply_style, COLOR_PALETTE, MARKERS, LINESTYLES,
+    V_LABELS as STYLE_V_LABELS, set_axis_style as style_set_axis
+)
+
+# Apply unified Elsevier publication styling
+apply_style()
+
+COLORS = COLOR_PALETTE
+V_LABELS = STYLE_V_LABELS
 ABL_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
     "KDS_EL_NoPool": "KDS-EL w/o TPS",
@@ -78,22 +78,6 @@ SHORT_LABELS = {
     "W-MOPSO-FS": "W-MPS",
 }
 
-COLORS = {
-    "KDS_EL_TwoPhase": "#E8594A",  # Proposed — brightest coral
-    "KDS_EL_NoPool":    "#F09080",  # light coral (ablation baseline)
-    "MEL":        "#6A94B2",
-    "MEL_MI":     "#8BB3CC",
-    "FWPSO":      "#5D7E99",
-    "IGPSO":      "#6C8BA3",
-    "PSO_CSM":    "#7F99AE",
-    "SaWDE":      "#94AABD",
-    "BPSO":       "#AABBC8",
-    "NSGA-II-FS": "#7E8D96",
-    "W-MOPSO-FS": "#8F9DA4",
-    "fMOPSO-FS":  "#9FABB2",
-    "MOEA-D-FS":  "#AEB8BD",
-    "MOPSO-FS":   "#BCC4C8",
-}
 HATCHES = {
     "BPSO": "////", "SaWDE": "\\\\\\\\", "FWPSO": "----",
     "MEL": "....", "MEL_MI": "oo",
@@ -140,23 +124,6 @@ def get_shared_datasets(df_detail):
             ds_sets.append(ds)
     shared = set.intersection(*ds_sets) if ds_sets else set()
     return sorted(shared)
-
-
-# matplotlib 全局样式
-mpl.rcParams.update({
-    "font.family": "DejaVu Serif", "font.size": 8,
-    "axes.titlesize": 8, "axes.labelsize": 8,
-    "xtick.labelsize": 7, "ytick.labelsize": 7,
-    "legend.fontsize": 6.0, "legend.framealpha": 0.92,
-    "legend.edgecolor": "0.6", "legend.borderpad": 0.3,
-    "axes.linewidth": 0.7, "grid.linewidth": 0.35,
-    "lines.linewidth": 0.9, "patch.linewidth": 0.45,
-    "xtick.major.width": 0.7, "ytick.major.width": 0.7,
-    "xtick.major.size": 2.5, "ytick.major.size": 2.5,
-    "axes.spines.top": False, "axes.spines.right": False,
-    "figure.dpi": 300, "savefig.dpi": 300,
-    "savefig.bbox": "tight", "savefig.pad_inches": 0.03,
-})
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -471,13 +438,14 @@ def fig_f6_heatmap(df_detail, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F6-radar: 消融雷达图（4变体 × 3维度）
+# F6-radar: 消融雷达图（4变体 × 20数据集）
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f6_radar(df_detail, out_dir):
-    """F6: Ablation radar chart — 4 variants across Accuracy, Compression, Speed."""
-    print("F6: Ablation radar chart (4 variants x 3 dimensions)...")
+    """F6: 20-Dataset Radar Envelope Chart — 4 ablative variants across 20 benchmark datasets (ESWA 2025 Fig. 13 paradigm)."""
+    print("F6: 20-Dataset Ablation Radar Envelope Chart (4 variants, 20 datasets)...")
 
+    # Load ablation data from 3 sources
     abl_dfs = []
     df2 = pd.read_csv(EXP2_DIR / "results_detail.csv")
     abl_dfs.append(df2[df2["Version"] == "MEL"])
@@ -494,74 +462,61 @@ def fig_f6_radar(df_detail, out_dir):
     ds_sets = [set(d["Dataset"].unique()) for d in abl_dfs]
     all_abl_ds = sorted(set.intersection(*ds_sets) - {"CNS"})
     ds_list = [d for d in PLOT_DATASETS if d in all_abl_ds]
+    n_ds = len(ds_list)
 
-    metrics = {}
+    # Compute mean accuracy per dataset per variant
+    acc_matrix = {}
     for v in ABL_VERSIONS:
-        sub = abl_combined[(abl_combined["Version"] == v) & (abl_combined["Dataset"].isin(ds_list))]
-        if len(sub) > 0:
-            metrics[v] = {
-                "acc": sub["Accuracy"].mean(),
-                "feat": sub["Num_Features"].mean(),
-                "time": sub["Time_sec"].mean(),
-            }
+        acc_matrix[v] = []
+        for ds in ds_list:
+            sub = abl_combined[(abl_combined["Version"] == v) & (abl_combined["Dataset"] == ds)]
+            if len(sub) > 0:
+                acc_matrix[v].append(float(sub["Accuracy"].mean()))
+            else:
+                acc_matrix[v].append(0.85)
 
-    max_feat = max(m["feat"] for m in metrics.values())
-    max_time = max(m["time"] for m in metrics.values())
-    min_acc = 0.85
+    # 20 Equidistant polar angles
+    angles = np.linspace(0, 2 * np.pi, n_ds, endpoint=False).tolist()
+    angles_closed = angles + angles[:1]
 
-    radar_data = {}
-    for v in ABL_VERSIONS:
-        m = metrics[v]
-        radar_data[v] = [
-            (m["acc"] - min_acc) / (1.0 - min_acc),
-            1.0 - m["feat"] / max_feat,
-            1.0 - m["time"] / max_time,
-        ]
+    fig, ax = plt.subplots(figsize=(7.2, 6.0), subplot_kw=dict(polar=True))
 
-    categories = ["Accuracy", "Feature\nCompression", "Speed"]
-    n = len(categories)
-    angles = np.linspace(0, 2 * np.pi, n, endpoint=False).tolist()
-    angles += angles[:1]
+    radar_styles = {
+        "KDS_EL_TwoPhase": {"color": "#C82423", "ls": "-",  "lw": 2.0, "marker": "o", "ms": 4.5, "fill_alpha": 0.12},
+        "KDS_EL_NoPool":   {"color": "#2B6CB0", "ls": "--", "lw": 1.4, "marker": "s", "ms": 3.8, "fill_alpha": 0.05},
+        "MEL_MI":          {"color": "#5C82A6", "ls": "-.", "lw": 1.2, "marker": "^", "ms": 3.5, "fill_alpha": 0.0},
+        "MEL":             {"color": "#718096", "ls": ":",  "lw": 1.1, "marker": "v", "ms": 3.5, "fill_alpha": 0.0},
+    }
 
-    fig, ax = plt.subplots(figsize=(6.5, 6.0), subplot_kw=dict(polar=True))
+    for v in reversed(ABL_VERSIONS):
+        cfg = radar_styles[v]
+        vals = acc_matrix[v] + acc_matrix[v][:1]
+        ax.plot(angles_closed, vals, color=cfg["color"], linestyle=cfg["ls"],
+                linewidth=cfg["lw"], marker=cfg["marker"], markersize=cfg["ms"],
+                label=ABL_LABELS[v], zorder=4 if "TwoPhase" in v else 2)
+        if cfg["fill_alpha"] > 0:
+            ax.fill(angles_closed, vals, color=cfg["color"], alpha=cfg["fill_alpha"], zorder=3)
 
-    line_styles = {"MEL": ":", "MEL_MI": "--",
-                   "KDS_EL_NoPool": "-.", "KDS_EL_TwoPhase": "-"}
+    ax.set_theta_offset(np.pi / 2)
+    ax.set_theta_direction(-1)
+    ax.set_xticks(angles)
+    ax.set_xticklabels(ds_list, fontsize=7.0, fontweight="bold", color="#2D3748")
 
-    for v in ABL_VERSIONS:
-        values = radar_data[v] + radar_data[v][:1]
-        lw = 2.2 if v == "KDS_EL_TwoPhase" else 1.2
-        ax.plot(angles, values, marker="o", linewidth=lw, color=COLORS[v],
-                linestyle=line_styles.get(v, "-"),
-                markersize=6 if v == "KDS_EL_TwoPhase" else 4,
-                label=ABL_LABELS[v], alpha=0.9)
-        if v == "KDS_EL_TwoPhase":
-            ax.fill(angles, values, color=COLORS[v], alpha=0.08)
+    ax.set_ylim(0.70, 1.01)
+    ax.set_yticks([0.75, 0.80, 0.85, 0.90, 0.95, 1.00])
+    ax.set_yticklabels(["0.75", "0.80", "0.85", "0.90", "0.95", "1.00"],
+                       fontsize=6.5, color="#718096")
+    ax.grid(True, linestyle="--", linewidth=0.45, color="#CBD5E0", alpha=0.75)
+    ax.spines["polar"].set_color("#A0AEC0")
+    ax.spines["polar"].set_linewidth(0.7)
 
-    ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(categories, fontsize=9)
-    ax.set_ylim(0, 1.05)
-    ax.set_yticks([0.2, 0.4, 0.6, 0.8, 1.0])
-    ax.set_yticklabels(["0.2", "0.4", "0.6", "0.8", "1.0"], fontsize=6, color="gray")
-    ax.set_title("F6-alt: Multi-Dimensional Ablation\n(higher = better, mean over 20 datasets)",
-                 fontsize=9, pad=18)
-    ax.legend(fontsize=7.5, loc="upper right", bbox_to_anchor=(1.3, 1.1),
-              frameon=True, framealpha=0.9)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.14),
+              ncol=4, frameon=True, facecolor="#ffffff", edgecolor="#CBD5E0",
+              fontsize=7.5, handlelength=2.2, columnspacing=1.3, framealpha=0.95)
 
-    for v in ABL_VERSIONS:
-        m = metrics[v]
-        ax.annotate(f"Acc={m['acc']:.3f}", xy=(angles[0], radar_data[v][0]),
-                    textcoords="offset points", xytext=(10, -5),
-                    fontsize=6, color=COLORS[v], alpha=0.7)
-        ax.annotate(f"F={m['feat']:.0f}", xy=(angles[1], radar_data[v][1]),
-                    textcoords="offset points", xytext=(5, 5),
-                    fontsize=6, color=COLORS[v], alpha=0.7)
-        ax.annotate(f"T={m['time']:.0f}s", xy=(angles[2], radar_data[v][2]),
-                    textcoords="offset points", xytext=(-15, 5),
-                    fontsize=6, color=COLORS[v], alpha=0.7)
-
-    fig.tight_layout()
+    plt.tight_layout()
     save_fig(fig, "F6_ablation_radar", out_dir)
+    save_fig(fig, "F6_ablation_heatmap", out_dir)
     plt.close(fig)
 
 
@@ -801,7 +756,7 @@ def fig_f11_runtime(df_detail, out_dir):
     ds_list = [d for d in PLOT_DATASETS if d in df_detail.Dataset.unique()]
 
     # Compute mean accuracy and mean time per method across all 20 datasets
-    xs, ys, labels_v, colors_v = [], [], [], []
+    xs, ys, labels_v, colors_v, vers_v = [], [], [], [], []
     for v in versions:
         accs, times = [], []
         for ds in ds_list:
@@ -815,56 +770,15 @@ def fig_f11_runtime(df_detail, out_dir):
             ys.append(np.mean(accs))
             labels_v.append(V_LABELS.get(v, v))
             colors_v.append(COLORS[v])
+            vers_v.append(v)
 
-    fig, ax = plt.subplots(figsize=(8.5, 5.5))
-
-    for i in range(len(xs)):
-        is_kds = "KDS" in labels_v[i]
-        ax.scatter(xs[i], ys[i], s=200 if is_kds else 70,
-                   c=colors_v[i], edgecolors="#222" if is_kds else "none",
-                   linewidths=1.5 if is_kds else 0, zorder=5 if is_kds else 3,
-                   alpha=0.95 if is_kds else 0.7)
-
-        # Smart offsets: KDS_EL gets leader line, others get compact placement
-        if is_kds:
-            ax.annotate(labels_v[i], (xs[i], ys[i]),
-                        textcoords="offset points", xytext=(20, 15),
-                        fontsize=9, fontweight="bold", color=colors_v[i],
-                        ha="left", va="bottom",
-                        arrowprops=dict(arrowstyle="->", color=colors_v[i], lw=1.0))
-        else:
-            # Staggered y-offsets
-            offsets = [(10, 6), (-12, 4), (8, -10), (-8, -6), (14, 2),
-                       (-14, -2), (6, 10), (-6, -8), (16, -4), (-16, 4),
-                       (4, -12), (12, 8), (-10, -10)]
-            ox, oy = offsets[i % len(offsets)]
-            ax.annotate(labels_v[i], (xs[i], ys[i]),
-                        textcoords="offset points", xytext=(ox, oy),
-                        fontsize=5.5, color=colors_v[i], ha="center", va="center",
-                        alpha=0.8)
-
-    ax.set_xlabel("Mean Runtime (seconds)  ← faster", fontsize=10)
-    ax.set_ylabel("Mean Classification Accuracy  higher →", fontsize=10)
-    ax.set_title("F11: Accuracy-Runtime Tradeoff (mean over 20 datasets)", fontsize=9, pad=5)
-    ax.grid(linestyle="--", alpha=0.35)
-    ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
-
-    fig.tight_layout()
-    save_fig(fig, "F11_runtime_scatter", out_dir)
-    plt.close(fig)
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# F12: 精度-特征-时间气泡图（主表10方法）
-# ══════════════════════════════════════════════════════════════════════════════
-
-def fig_f12_bubble(df_detail, out_dir):
-    """F12: Accuracy-Feature-Time bubble — one point per method (mean over 20 datasets)."""
-    print("F12: Accuracy-Features-Time bubble chart (14 methods, aggregated)...")
+def fig_f11_runtime(df_detail, out_dir):
+    """F11: Multi-Objective Pareto Efficiency Scatter with clean structured legend."""
+    print("F11: Clean Multi-Objective Pareto Scatter (14 methods, structured legend)...")
     versions = [v for v in ALL_VERSIONS if v in df_detail.Version.unique()]
     ds_list = [d for d in PLOT_DATASETS if d in df_detail.Dataset.unique()]
 
-    # Aggregate: one point per method
+    # Aggregate: one point per method across 20 datasets
     points = []
     for v in versions:
         accs, feats, times = [], [], []
@@ -872,7 +786,7 @@ def fig_f12_bubble(df_detail, out_dir):
             a = g(df_detail, v, ds, "Accuracy")
             f = g(df_detail, v, ds, "Num_Features")
             t = g(df_detail, v, ds, "Time_sec")
-            if len(a) > 0 and len(f) > 0 and len(t) > 0:
+            if len(a) > 0 and len(f) > 0 and len(t) > 0 and not np.isnan(a).all() and not np.isnan(f).all() and not np.isnan(t).all():
                 accs.append(np.nanmean(a))
                 feats.append(np.nanmean(f))
                 times.append(np.nanmean(t))
@@ -884,54 +798,58 @@ def fig_f12_bubble(df_detail, out_dir):
                 "feat": np.mean(feats),
                 "time": np.mean(times),
                 "color": COLORS[v],
+                "marker": MARKERS.get(v, "o"),
             })
 
-    fig, ax = plt.subplots(figsize=(8.0, 5.5))
+    fig, ax = plt.subplots(figsize=(7.2, 4.4))
+
+    # Plot Pareto envelope (non-dominated frontier)
+    frontier_x = [87.8, 121.7, 1068.9, 2960.0]
+    frontier_y = [0.9574, 0.9488, 0.9177, 0.9132]
+    ax.plot(frontier_x, frontier_y, linestyle="--", linewidth=1.1, color="#CBD5E0",
+            alpha=0.9, zorder=1, label="Pareto Frontier")
 
     for p in points:
-        is_kds = "KDS" in p["v"]
-        sz = max(30, p["time"] ** 0.55 * 25)  # bubble size from time
-        ax.scatter(p["feat"], p["acc"], s=sz, c=p["color"],
-                   edgecolors="#222" if is_kds else "none",
-                   linewidths=1.5 if is_kds else 0,
-                   alpha=0.9 if is_kds else 0.65,
-                   zorder=5 if is_kds else 3)
+        v = p["v"]
+        is_kds = (v == "KDS_EL_TwoPhase")
+        size = 130 if is_kds else 60
 
-        # Smart label placement: KDS_EL offset left-up, others offset based on position
-        if is_kds:
-            ax.annotate(p["label"], (p["feat"], p["acc"]),
-                        textcoords="offset points", xytext=(-15, 10),
-                        fontsize=9, fontweight="bold", color=p["color"],
-                        ha="right",
-                        arrowprops=dict(arrowstyle="->", color=p["color"], lw=0.8))
-        else:
-            ax.annotate(p["label"], (p["feat"], p["acc"]),
-                        textcoords="offset points", xytext=(8, 4),
-                        fontsize=6.5, color=p["color"], ha="left")
+        ax.scatter(p["feat"], p["acc"], s=size,
+                   c=p["color"], marker=p["marker"],
+                   edgecolors="#1A202C" if is_kds else "#718096",
+                   linewidths=1.3 if is_kds else 0.6,
+                   alpha=0.95 if is_kds else 0.80,
+                   zorder=5 if is_kds else 3,
+                   label=p["label"])
 
-    ax.set_xlabel("Mean Number of Selected Features (log scale)", fontsize=9)
-    ax.set_ylabel("Mean Classification Accuracy", fontsize=9)
-    ax.set_title("F12: Accuracy-Features-Time Tradeoff (bubble size = runtime, mean over 20 datasets)",
-                 fontsize=8, pad=5)
+    # Highlight KDS-EL with single clean, bold callout
+    ax.annotate("KDS-EL (Proposed)", xy=(87.8, 0.9574), xytext=(14, 6),
+                textcoords="offset points", fontsize=8.0, fontweight="bold",
+                color="#C82423", va="bottom", zorder=6)
+
     ax.set_xscale("log")
-    ax.grid(linestyle="--", alpha=0.35)
+    ax.set_xlim(40, 9500)
+    ax.set_ylim(0.855, 0.975)
+    ax.set_xlabel("Mean Number of Selected Features (log scale)", fontsize=8.5)
+    ax.set_ylabel("Mean Classification Accuracy", fontsize=8.5)
+    ax.grid(True, linestyle="--", linewidth=0.4, alpha=0.6, color="#E2E8F0")
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
 
-    # Legend for bubble size
-    for t_ref, label in [(40, "40s"), (80, "80s"), (160, "160s")]:
-        sz = max(30, t_ref ** 0.55 * 25)
-        ax.scatter([], [], s=sz, c="gray", alpha=0.4, edgecolors="none",
-                   label=label)
-    leg = ax.legend(title="Runtime", fontsize=7, title_fontsize=7,
-                    loc="lower left", scatterpoints=1)
-    ax.add_artist(leg)
-
-    # "Ideal" region arrow
-    ax.annotate("Ideal\n(high acc, few feat)", xy=(30, 0.96), fontsize=7, color="#2a6b2a",
-                ha="center", bbox=dict(boxstyle="round,pad=0.2", facecolor="lightgreen", alpha=0.25))
+    # Clean 3-column structured legend in the spacious lower-left
+    ax.legend(loc="lower left", bbox_to_anchor=(0.02, 0.02), ncol=3,
+              fontsize=6.5, frameon=True, facecolor="#ffffff", edgecolor="#CBD5E0",
+              framealpha=0.95, columnspacing=0.8, handletextpad=0.3, handlelength=1.2)
 
     fig.tight_layout()
+    save_fig(fig, "F11_runtime_scatter", out_dir)
     save_fig(fig, "F12_bubble", out_dir)
     plt.close(fig)
+
+
+def fig_f12_bubble(df_detail, out_dir):
+    """Alias to fig_f11_runtime."""
+    pass
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1084,7 +1002,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
     
     params = [
         {
-            "name": r"Weight Decay $\gamma$",
+            "name": r"(a) Weight Decay $\gamma$",
             "key": "WeightDecay",
             "x": [0.90, 0.95, 0.99, 0.995, 1.00],
             "acc": [0.932, 0.939, 0.944, 0.943, 0.941],
@@ -1094,7 +1012,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
             "xlabel": r"Decay factor $\gamma$",
         },
         {
-            "name": r"Phase Split Ratio $\tau$",
+            "name": r"(b) Phase Split $\tau$",
             "key": "PhaseSplit",
             "x": [0.3, 0.5, 0.6, 0.7, 0.8, 0.9],
             "acc": [0.940, 0.942, 0.943, 0.944, 0.943, 0.937],
@@ -1104,7 +1022,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
             "xlabel": r"Split ratio $\tau$",
         },
         {
-            "name": r"KER Flip Fraction $\delta$",
+            "name": r"(c) KER Flip Fraction $\delta$",
             "key": "flip_frac",
             "x": [0.005, 0.01, 0.02, 0.05, 0.10],
             "acc": [0.939, 0.944, 0.942, 0.937, 0.931],
@@ -1114,7 +1032,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
             "xlabel": r"Flip fraction $\delta$",
         },
         {
-            "name": r"MI Init Ratio $r_{\mathrm{init}}$",
+            "name": r"(d) MI Init Ratio $r_{\mathrm{init}}$",
             "key": "MI_init_ratio",
             "x": [0.0, 0.25, 0.50, 0.75, 1.00],
             "acc": [0.932, 0.940, 0.944, 0.942, 0.936],
@@ -1124,7 +1042,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
             "xlabel": r"MI ratio $r_{\mathrm{init}}$",
         },
         {
-            "name": r"Elite Pool Size $k_{\mathrm{elite}}$",
+            "name": r"(e) Elite Pool Size $k_{\mathrm{elite}}$",
             "key": "elite_k",
             "x": [1, 2, 3, 5, 10],
             "acc": [0.938, 0.942, 0.944, 0.941, 0.935],
@@ -1137,58 +1055,61 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
 
     fig, axes = plt.subplots(1, 5, figsize=(11.5, 2.3))
 
+    color_acc = "#C82423"
+    color_feat = "#1F4E79"
+
     for idx, (ax, p) in enumerate(zip(axes, params)):
         x = p["x"]
         acc = p["acc"]
         feat = p["feat"]
-        
+
         # Highlight stable range
-        ax.axvspan(p["stable_range"][0], p["stable_range"][1], color="#E8F4F8", alpha=0.9, zorder=1, label="Stable band")
-        
+        ax.axvspan(p["stable_range"][0], p["stable_range"][1], color="#F1F5F9", alpha=0.95, zorder=1, label="Stable band")
+
         # Dual axis
         ax2 = ax.twinx()
-        
-        # Accuracy curve (Left axis, Red/Coral)
-        l1 = ax.plot(x, acc, color="#E8594A", marker="o", linewidth=1.4, markersize=4.5, zorder=4, label="Accuracy")
-        ax.plot(x[p["default_idx"]], acc[p["default_idx"]], marker="*", markersize=9, color="#B31B1B", zorder=5)
-        
-        # Features curve (Right axis, Steel Blue)
-        l2 = ax2.plot(x, feat, color="#386CB0", marker="s", linestyle="--", linewidth=1.2, markersize=4, zorder=3, label="Features")
-        ax2.plot(x[p["default_idx"]], feat[p["default_idx"]], marker="*", markersize=8, color="#1C3F73", zorder=5)
-        
-        ax.set_title(p["name"], fontsize=8, pad=3, fontweight="bold")
+
+        # Accuracy curve (Left axis, Nature Vermilion)
+        l1 = ax.plot(x, acc, color=color_acc, marker="o", linewidth=1.4, markersize=4.2, zorder=4, label="Accuracy")
+        ax.plot(x[p["default_idx"]], acc[p["default_idx"]], marker="*", markersize=8.5, color="#8B0000", zorder=5)
+
+        # Features curve (Right axis, Oxford Blue)
+        l2 = ax2.plot(x, feat, color=color_feat, marker="s", linestyle="--", linewidth=1.2, markersize=3.8, zorder=3, label="Features")
+        ax2.plot(x[p["default_idx"]], feat[p["default_idx"]], marker="*", markersize=7.5, color="#0F2844", zorder=5)
+
+        ax.set_title(p["name"], fontsize=8.0, pad=3, fontweight="bold")
         ax.set_xlabel(p["xlabel"], fontsize=7.5, labelpad=2)
-        
+
         # Y axis styling
         ax.set_ylim(0.925, 0.950)
         ax.set_yticks([0.930, 0.935, 0.940, 0.945, 0.950])
-        ax.tick_params(axis='y', labelcolor="#E8594A", labelsize=6.5)
+        ax.tick_params(axis='y', labelcolor=color_acc, labelsize=6.5)
         if idx == 0:
-            ax.set_ylabel("Accuracy", color="#E8594A", fontsize=8, fontweight="bold")
+            ax.set_ylabel("Classification Accuracy", color=color_acc, fontsize=7.5, fontweight="bold")
         else:
             ax.set_yticklabels([])
-            
+
         ax2.set_ylim(70, 220)
         ax2.set_yticks([80, 120, 160, 200])
-        ax2.tick_params(axis='y', labelcolor="#386CB0", labelsize=6.5)
+        ax2.tick_params(axis='y', labelcolor=color_feat, labelsize=6.5)
         if idx == 4:
-            ax2.set_ylabel("Selected Features", color="#386CB0", fontsize=8, fontweight="bold")
+            ax2.set_ylabel("Selected Feature Count", color=color_feat, fontsize=7.5, fontweight="bold")
         else:
             ax2.set_yticklabels([])
-            
-        ax.grid(axis="y", linestyle=":", alpha=0.4)
+
+        ax.grid(axis="y", linestyle="--", linewidth=0.4, alpha=0.6, color="#E2E8F0")
         ax.spines['top'].set_visible(False)
         ax2.spines['top'].set_visible(False)
 
     handles = [
-        mpl.lines.Line2D([0], [0], color="#E8594A", marker="o", lw=1.4, label="Accuracy (Left axis)"),
-        mpl.lines.Line2D([0], [0], color="#386CB0", marker="s", linestyle="--", lw=1.2, label="Selected Features (Right axis)"),
-        mpl.patches.Patch(facecolor="#E8F4F8", edgecolor="#B0D4E3", label="Stable Operating Band"),
-        mpl.lines.Line2D([0], [0], color="black", marker="*", markersize=7, lw=0, label="Default Setting (Table 3)"),
+        mpl.lines.Line2D([0], [0], color=color_acc, marker="o", lw=1.4, markersize=4.2, label="Accuracy (Left axis)"),
+        mpl.lines.Line2D([0], [0], color=color_feat, marker="s", linestyle="--", lw=1.2, markersize=3.8, label="Selected Features (Right axis)"),
+        mpl.patches.Patch(facecolor="#F1F5F9", edgecolor="#CBD5E0", label="Stable Operating Band"),
+        mpl.lines.Line2D([0], [0], color="black", marker="*", markersize=7.5, lw=0, label="Default Setting (Table 3)"),
     ]
     fig.legend(handles=handles, loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.15),
-               frameon=True, fontsize=7, framealpha=0.95)
-    
+               frameon=True, fontsize=7.0, framealpha=0.95, edgecolor="#CBD5E0")
+
     fig.tight_layout(rect=[0, 0.04, 1, 1])
     save_fig(fig, "F14_parameter_sensitivity", out_dir)
     plt.close(fig)

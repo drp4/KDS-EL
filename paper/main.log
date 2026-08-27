@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  27 AUG 2026 18:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  27 AUG 2026 20:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1171,80 +1171,75 @@ Underfull \hbox (badness 1888) in paragraph at lines 14--15
 \T1/txr/m/n/8 KDS-EL achieves com-pet-i-tive ac-cu-racy with only 134, 84, and
  []
 
-(../output/tables/T5_features.tex)
-<../output/figures/F5_features_all.pdf, id=834, 739.3221pt x 499.11517pt>
-File: ../output/figures/F5_features_all.pdf Graphic file (type pdf)
-<use ../output/figures/F5_features_all.pdf>
-Package pdftex.def Info: ../output/figures/F5_features_all.pdf  used on input l
-ine 27.
-(pdftex.def)             Requested size: 375.84064pt x 253.73045pt.
- [9] (../output/tables/T6_wilcoxon.tex)
-Underfull \hbox (badness 1117) in paragraph at lines 56--57
+(../output/tables/T5_features.tex) [9] (../output/tables/T6_wilcoxon.tex)
+Underfull \hbox (badness 1117) in paragraph at lines 49--50
 []\T1/txr/m/n/8 KDS-EL sig-nif-i-cantly out-per-forms MEL, PSO-CSM, IG-PSO, and
 
  []
 
 [10]
-Underfull \hbox (badness 1472) in paragraph at lines 59--60
+Underfull \hbox (badness 1472) in paragraph at lines 52--53
 \T1/txr/m/n/8 fMOPSO-FS, 16 against NSGA-II-FS and MOEA-D-FS, and 18
  []
 
 
-Underfull \hbox (badness 3471) in paragraph at lines 59--60
+Underfull \hbox (badness 3471) in paragraph at lines 52--53
 \T1/txr/m/n/8 ceiling-effect datasets where ac-cu-racy sat-u-rates, while KDS-E
 L
  []
 
 (../output/tables/T6b_holm_bonferroni.tex)
-<../output/figures/F13_friedman_rank.pdf, id=860, 529.08481pt x 312.21957pt>
+<../output/figures/F13_friedman_rank.pdf, id=857, 527.6394pt x 310.65373pt>
 File: ../output/figures/F13_friedman_rank.pdf Graphic file (type pdf)
 <use ../output/figures/F13_friedman_rank.pdf>
 Package pdftex.def Info: ../output/figures/F13_friedman_rank.pdf  used on input
- line 77.
-(pdftex.def)             Requested size: 206.64185pt x 121.9414pt.
- [11 <../output/figures/F5_features_all.pdf>]
-Underfull \hbox (badness 1052) in paragraph at lines 82--83
+ line 70.
+(pdftex.def)             Requested size: 206.64185pt x 121.66165pt.
+
+Underfull \hbox (badness 1052) in paragraph at lines 75--76
 \T1/txr/m/n/8 w/o TPS (2.95), W-MOPSO-FS (5.33), KDS-EL w/o TPS&KER (5.55),
  []
 
-<../output/figures/F8_convergence.pdf, id=970, 652.18436pt x 362.48988pt>
+[11 <../output/figures/F13_friedman_rank.pdf>]
+<../output/figures/F8_convergence.pdf, id=883, 636.01959pt x 469.69603pt>
 File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
-ne 105.
-(pdftex.def)             Requested size: 495.8984pt x 275.63344pt.
+ne 98.
+(pdftex.def)             Requested size: 480.23904pt x 354.65775pt.
 
-Underfull \hbox (badness 1052) in paragraph at lines 112--113
+Underfull \hbox (badness 1052) in paragraph at lines 105--106
 \T1/txr/m/n/8 the first 10 it-er-a-tions. In con-trast, the ran-domly ini-tial-
 ized MEL
  []
 
 
-Underfull \hbox (badness 1924) in paragraph at lines 112--113
+Underfull \hbox (badness 1924) in paragraph at lines 105--106
 \T1/txr/m/n/8 base-line re-quires 40--60 it-er-a-tions sim-ply to es-cape poor-
 quality
  []
 
-<../output/figures/F11_runtime_scatter.pdf, id=972, 600.10417pt x 384.1163pt>
+<../output/figures/F11_runtime_scatter.pdf, id=885, 506.4339pt x 304.73952pt>
 File: ../output/figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use ../output/figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: ../output/figures/F11_runtime_scatter.pdf  used on inp
-ut line 124.
-(pdftex.def)             Requested size: 214.20154pt x 137.10367pt.
-
-Underfull \hbox (badness 3954) in paragraph at lines 139--140
+ut line 117.
+(pdftex.def)             Requested size: 221.76123pt x 133.44409pt.
+[12 <../output/figures/F8_convergence.pdf> <../output/figures/F11_runtime_scatt
+er.pdf>]
+Underfull \hbox (badness 3954) in paragraph at lines 132--133
 \T1/txr/m/n/8 KNN-based wrap-per eval-u-a-tion, dis-tance cal-cu-la-tion com-pl
 ex-ity
  []
 
 
-Underfull \hbox (badness 1874) in paragraph at lines 140--141
+Underfull \hbox (badness 1874) in paragraph at lines 133--134
 []\T1/txr/bx/n/8 Bounded KER re-fine-ment bud-get\T1/txr/m/n/8 : The KER strat-
 egy op-er-ates
  []
 
 
-Underfull \hbox (badness 1178) in paragraph at lines 141--142
+Underfull \hbox (badness 1178) in paragraph at lines 134--135
 []\T1/txr/bx/n/8 Absence of Pareto archive over-head\T1/txr/m/n/8 : Un-like MOF
 S al-go-rithms
  []
@@ -1261,22 +1256,20 @@ Underfull \hbox (badness 2229) in paragraph at lines 3--4
 ate the com-plete
  []
 
-[12 <../output/figures/F13_friedman_rank.pdf>]
 (../output/tables/T7_ablation.tex)
-<../output/figures/F6_ablation_heatmap.pdf, id=1064, 502.06633pt x 456.0917pt>
-File: ../output/figures/F6_ablation_heatmap.pdf Graphic file (type pdf)
-<use ../output/figures/F6_ablation_heatmap.pdf>
-Package pdftex.def Info: ../output/figures/F6_ablation_heatmap.pdf  used on inp
-ut line 13.
-(pdftex.def)             Requested size: 252.0pt x 228.92216pt.
+<../output/figures/F6_ablation_radar.pdf, id=968, 415.46979pt x 422.26967pt>
+File: ../output/figures/F6_ablation_radar.pdf Graphic file (type pdf)
+<use ../output/figures/F6_ablation_radar.pdf>
+Package pdftex.def Info: ../output/figures/F6_ablation_radar.pdf  used on input
+ line 13.
+(pdftex.def)             Requested size: 221.76123pt x 225.3869pt.
 
 Underfull \hbox (badness 1742) in paragraph at lines 20--21
 \T1/txr/m/n/8 to 53.6 s. This con-firms that tem-po-rally de-cou-pling ex-plo-r
 ation
  []
 
-[13 <../output/figures/F8_convergence.pdf> <../output/figures/F11_runtime_scatt
-er.pdf> <../output/figures/F6_ablation_heatmap.pdf>]
+
 Underfull \hbox (badness 2671) in paragraph at lines 22--23
 \T1/txr/m/n/8 mechanisms---which leaves the foun-da-tional MEL base-line [[]]
  []
@@ -1287,7 +1280,7 @@ Underfull \hbox (badness 1052) in paragraph at lines 22--23
 pre-vents
  []
 
-)
+[13 <../output/figures/F6_ablation_radar.pdf>])
 Underfull \hbox (badness 2556) in paragraph at lines 37--238
 \T1/txr/m/n/8 re-place-ment con-sis-tently out-per-formed $\OT1/txr/m/n/8 2\OML
 /txmi/m/it/8 N$ \T1/txr/m/n/8 com-pet-i-tive pool-ing in both
@@ -1312,13 +1305,13 @@ ns across the
  []
 
 (../output/tables/T8_parameter_sensitivity.tex)
-<../output/figures/F14_parameter_sensitivity.pdf, id=1330, 817.69179pt x 183.58
-588pt>
+<../output/figures/F14_parameter_sensitivity.pdf, id=1006, 817.31973pt x 182.14
+049pt>
 File: ../output/figures/F14_parameter_sensitivity.pdf Graphic file (type pdf)
 <use ../output/figures/F14_parameter_sensitivity.pdf>
 Package pdftex.def Info: ../output/figures/F14_parameter_sensitivity.pdf  used 
 on input line 11.
-(pdftex.def)             Requested size: 522.0pt x 117.19762pt.
+(pdftex.def)             Requested size: 522.0pt x 116.32771pt.
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <5> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 22.
 
@@ -1339,7 +1332,8 @@ Underfull \hbox (badness 3168) in paragraph at lines 23--24
 g
  []
 
-[14]) (sections/09_conclusion.tex
+) (sections/09_conclusion.tex [14 <../output/figures/F14_parameter_sensitivity.
+pdf>]
 Underfull \hbox (badness 2073) in paragraph at lines 3--4
 \T1/txr/m/n/8 multi-objective com-peti-tor W-MOPSO-FS by +4.42 pp, while re-duc
 -ing
@@ -1357,7 +1351,9 @@ Underfull \hbox (badness 1558) in paragraph at lines 5--245
 el learn-ing,
  []
 
-(main.bbl [15 <../output/figures/F14_parameter_sensitivity.pdf>]) [16]
+(main.bbl [15]) [16
+
+]
 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (main.aux)
@@ -1369,13 +1365,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 20FE320FB6FE0CDDE706A659E71F3A7C;13446.
  ) 
 Here is how much of TeX's memory you used:
- 14387 strings out of 467690
- 219626 string characters out of 5431801
- 718091 words of memory out of 5000000
- 42901 multiletter control sequences out of 15000+600000
+ 14376 strings out of 467690
+ 219213 string characters out of 5431801
+ 717758 words of memory out of 5000000
+ 42891 multiletter control sequences out of 15000+600000
  799347 words of font info for 346 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,79p,1706b,645s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,15n,79p,1706b,713s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi525\ectt
 0800.pk><E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam7.pfb><E:/MiKTeX/fon
 ts/type1/public/amsfonts/symbols/msbm10.pfb><E:/MiKTeX/fonts/type1/public/amsfo
@@ -1387,9 +1383,9 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (17 pages, 791216 bytes).
+Output written on main.pdf (17 pages, 688038 bytes).
 PDF statistics:
- 1688 PDF objects out of 1728 (max. 8388607)
- 198 named destinations out of 1000 (max. 500000)
- 422 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1292 PDF objects out of 1440 (max. 8388607)
+ 197 named destinations out of 1000 (max. 500000)
+ 417 words of extra memory for PDF output out of 10000 (max. 10000000)
 

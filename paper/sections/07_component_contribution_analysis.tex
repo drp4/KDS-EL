@@ -4,15 +4,15 @@ To systematically disentangle the individual contributions of the three proposed
 
 \subsubsection{Subtractively-Read Global Ablation Chain}
 
-Table~\ref{T7} summarizes the aggregate performance of the ablation chain across the 20 benchmark datasets, while Fig.~\ref{fig:ablation_heatmap} visualizes the per-dataset accuracy and relative improvements ($\Delta\mathrm{Acc}$) over the baseline. In this subtractive reading framework, the complete KDS-EL (achieving 0.9574 mean accuracy and 87.8 selected features) serves as the primary benchmark. Each subsequent row isolates the empirical marginal contribution of an individual mechanism by measuring the exact performance degradation caused by its removal.
+Table~\ref{T7} summarizes the aggregate performance of the ablation chain across the 20 benchmark datasets, while Fig.~\ref{fig:ablation_radar} visualizes the classification accuracy contours across all 20 benchmark datasets in a multi-dataset radar envelope chart. In this subtractive reading framework, the complete KDS-EL (achieving 0.9574 mean accuracy and 87.8 selected features) serves as the primary benchmark. Each subsequent row isolates the empirical marginal contribution of an individual mechanism by measuring the exact performance degradation caused by its removal.
 
 \input{../output/tables/T7_ablation}
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=\linewidth]{F6_ablation_heatmap.pdf}
-\caption{Heatmap of component contribution analysis: (a) classification accuracy across ablative variants, and (b) accuracy improvement ($\Delta\mathrm{Acc}$) relative to the MEL baseline.}
-\label{fig:ablation_heatmap}
+\includegraphics[width=0.88\linewidth]{F6_ablation_radar.pdf}
+\caption{Ablation radar chart of KDS-EL and its variants across 20 benchmark datasets.}
+\label{fig:ablation_radar}
 \end{figure}
 
 The global ablation results reveal clear, quantifiable contributions across all three evolutionary mechanisms:

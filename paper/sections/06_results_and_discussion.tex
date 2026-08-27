@@ -18,16 +18,9 @@ In addition to superior central tendency, KDS-EL demonstrates remarkably low run
 
 \subsection{Feature-Selection Compactness and Pareto Dominance}\label{sec:features}
 
-In high-dimensional feature selection, classification accuracy alone is insufficient; obtaining a compact and interpretable feature subset is equally essential for mitigating the curse of dimensionality and facilitating downstream scientific discovery. Table~\ref{T5} reports the mean number of selected features alongside the Feature Selection Ratio ($\mathrm{FSR}$) across all 20 datasets, while Fig.~\ref{F5} visualizes the selection ratios on a logarithmic scale.
+In high-dimensional feature selection, classification accuracy alone is insufficient; obtaining a compact and interpretable feature subset is equally essential for mitigating the curse of dimensionality and facilitating downstream scientific discovery. Table~\ref{T5} reports the mean number of selected features alongside the Feature Selection Ratio ($\mathrm{FSR}$) across all 20 benchmark datasets.
 
 \input{../output/tables/T5_features}
-
-\begin{figure*}[!htb]
-\centering
-\includegraphics[width=0.72\linewidth]{F5_features_all.pdf}
-\caption{Comparison of Feature Selection Ratio (FSR) on a logarithmic scale across 20 benchmark datasets.}
-\label{F5}
-\end{figure*}
 
 As shown in Table~\ref{T5}, KDS-EL demonstrates substantial dimensionality reduction capability, selecting an average of only 87.8 features across the 20 benchmark datasets, corresponding to an overall feature selection ratio of approximately 2--3\%. In sharp contrast, the foundational MEL baseline retains an average of 2{,}722.2 features, which is over 30 times larger than that of KDS-EL. All five multi-objective methods retain substantial subsets, ranging from 2{,}960.0 features for W-MOPSO-FS to 5{,}263.3 features for MOPSO-FS. Even among the single-objective competitors, the most compact method, FWPSO, retains an average of 1{,}068.9 features---more than 12 times the subset size of KDS-EL.
 
@@ -98,12 +91,12 @@ This comparison underscores the practical clinical relevance of KDS-EL. In biome
 
 \subsection{Convergence Dynamics and Search Trajectories}\label{sec:convergence}
 
-To examine the search dynamics and optimization trajectory of KDS-EL, Fig.~\ref{F8} plots the convergence curves of KDS-EL, KDS-EL w/o TPS, KDS-EL w/o TPS\&KER, and MEL, presenting the overall mean convergence averaged across all 20 benchmark datasets alongside five representative benchmark datasets across 100 generations.
+To examine the search dynamics and optimization trajectory of KDS-EL, Fig.~\ref{F8} plots the convergence curves of KDS-EL, KDS-EL w/o TPS, KDS-EL w/o TPS\&KER, and MEL, presenting the overall mean convergence averaged across all 20 benchmark datasets alongside eight representative benchmark datasets across 100 generations.
 
 \begin{figure*}[!htb]
 \centering
-\includegraphics[width=0.95\linewidth]{F8_convergence.pdf}
-\caption{Convergence curves of KDS-EL and its ablative variants: (a) overall mean across 20 benchmark datasets, and (b)--(f) trajectories on five representative datasets. Shaded bands represent $\pm 1$ standard deviation.}
+\includegraphics[width=0.92\linewidth]{F8_convergence.pdf}
+\caption{Convergence curves of KDS-EL and its ablative variants: (a) overall mean, and (b)--(i) eight representative benchmark datasets.}
 \label{F8}
 \end{figure*}
 
@@ -117,12 +110,12 @@ The convergence curves reveal distinct optimization phases that corroborate the 
 
 \subsection{Computational Efficiency and Complexity Analysis}\label{sec:efficiency}
 
-Table~S5 in the Supplementary Material provides the complete per-dataset runtime measurements across all 14 algorithms, while Fig.~\ref{F11} visualizes the accuracy-versus-runtime trade-off.
+Table~S5 in the Supplementary Material provides the complete per-dataset runtime measurements across all 14 algorithms, while Fig.~\ref{F11} visualizes the multi-objective Pareto trade-off between classification accuracy and selected feature subset size across the 20 benchmark datasets.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.85\linewidth]{F11_runtime_scatter.pdf}
-\caption{Classification accuracy versus runtime trade-off of the 14 compared methods across 20 benchmark datasets.}
+\includegraphics[width=0.88\linewidth]{F11_runtime_scatter.pdf}
+\caption{Multi-objective Pareto efficiency across 20 benchmark datasets.}
 \label{F11}
 \end{figure}
 

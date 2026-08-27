@@ -31,68 +31,31 @@ FINAL_CURVES = PROJ / "output" / "formal_experiment_final" / "curves"
 
 ALL_CURVE_DIRS = [EXP1_CURVES, EXP2_CURVES, EXP4_CURVES, MEL_MI_CURVES, FINAL_CURVES]
 
-# ── 全局样式 (对标 Elsevier 5p 顶刊排版规范) ──
-mpl.rcParams.update({
-    "font.family": "DejaVu Serif",
-    "font.size": 8.0,
-    "axes.titlesize": 8.5,
-    "axes.labelsize": 8.0,
-    "xtick.labelsize": 7.0,
-    "ytick.labelsize": 7.0,
-    "legend.fontsize": 7.5,
-    "legend.framealpha": 0.95,
-    "legend.edgecolor": "#d0d0d0",
-    "legend.borderpad": 0.4,
-    "axes.linewidth": 0.7,
-    "grid.linewidth": 0.35,
-    "lines.linewidth": 1.0,
-    "axes.spines.top": False,
-    "axes.spines.right": False,
-    "figure.dpi": 300,
-    "savefig.dpi": 300,
-    "savefig.bbox": "tight",
-    "savefig.pad_inches": 0.03,
-})
+from plot_style import (
+    apply_style, COLOR_PALETTE, MARKERS, LINESTYLES,
+    V_LABELS as STYLE_V_LABELS
+)
 
-# ── 颜色和标签 ──
-COLORS = {
-    "KDS_EL_TwoPhase": "#D93829",  # Proposed — vibrant crimson / coral
-    "KDS_EL_NoPool":   "#2B6CB0",  # NoPool — slate blue
-    "MEL_MI":          "#2A9D8F",  # MEL+MI — deep teal
-    "MEL":             "#718096",  # MEL baseline — neutral gray
-    "FWPSO":           "#5D7E99",
-    "IGPSO":           "#6C8BA3",
-    "PSO_CSM":         "#7F99AE",
-    "SaWDE":           "#94AABD",
-    "BPSO":            "#AABBC8",
-    "NSGA_II_FS":      "#7E8D96",
-    "W_MOPSO_FS":      "#8F9DA4",
-    "fMOPSO_FS":       "#9FABB2",
-    "MOEA_D_FS":       "#AEB8BD",
-    "MOPSO_FS":        "#BCC4C8",
-}
+# Apply unified Elsevier publication styling
+apply_style()
 
+COLORS = COLOR_PALETTE
 V_LABELS = {
-    "KDS_EL_TwoPhase": "KDS-EL",
-    "KDS_EL_NoPool":   "KDS-EL w/o TPS",
-    "MEL_MI":          "KDS-EL w/o TPS&KER",
-    "MEL":             "MEL",
-    "FWPSO": "FWPSO", "BPSO": "BPSO",
-    "SaWDE": "SaWDE", "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
-    "NSGA_II_FS": "NSGA-II-FS", "MOPSO_FS": "MOPSO-FS",
-    "MOEA_D_FS": "MOEA-D-FS", "fMOPSO_FS": "fMOPSO-FS",
+    **STYLE_V_LABELS,
+    "NSGA_II_FS": "NSGA-II-FS",
+    "MOPSO_FS": "MOPSO-FS",
+    "MOEA_D_FS": "MOEA-D-FS",
+    "fMOPSO_FS": "fMOPSO-FS",
     "W_MOPSO_FS": "W-MOPSO-FS",
 }
 
 LINE_STYLES = {
-    "KDS_EL_TwoPhase": "-",
-    "KDS_EL_NoPool":   "--",
-    "MEL_MI":          "-.",
-    "MEL":             ":",
-    "FWPSO": "-", "BPSO": "--",
-    "SaWDE": "-.", "PSO_CSM": ":", "IGPSO": "--",
-    "NSGA_II_FS": "-", "MOPSO_FS": "--", "MOEA_D_FS": "-.",
-    "fMOPSO_FS": "-", "W_MOPSO_FS": "-.",
+    **LINESTYLES,
+    "NSGA_II_FS": "-.",
+    "MOPSO_FS": "--",
+    "MOEA_D_FS": ":",
+    "fMOPSO_FS": "--",
+    "W_MOPSO_FS": "-",
 }
 
 # 20 权威基准数据集
@@ -213,25 +176,23 @@ def save_fig(fig, name, out_dir):
 
 def fig_f8_convergence(out_dir):
     """F8: Convergence — Balanced 2×3 grid: (a) Overall Mean (20 DS) + (b)-(f) 5 representative datasets."""
-    # 5 代表性数据集涵盖各类高维特征场景：
-    # 1. Adenoma: 微阵列小样本基因 (N=36, D=7457)
-    # 2. DLBCL: 多类别生物医疗 (N=77, D=5469)
-    # 3. T1D: 超高维基因芯片 (N=101, D=54675)
-    # 4. BASEHOCK: 大样本高维文本 (N=1993, D=4862)
-    # 5. Madelon: 强非线性特征交互/人工合成 (N=2000, D=500)
+    # 8 个代表性数据集（标题保持极简纯净，N/D 已在 Table 2 详述）
     REP_DS_CONFIGS = [
-        ("Adenoma", "(b) Adenoma ($N=36, D=7{,}457$)", (0.93, 1.005)),
-        ("DLBCL", "(c) DLBCL ($N=77, D=5{,}469$)", (0.92, 1.005)),
-        ("T1D", "(d) T1D ($N=101, D=54{,}675$)", (0.68, 0.88)),
-        ("BASEHOCK", "(e) BASEHOCK ($N=1{,}993, D=4{,}862$)", (0.81, 0.93)),
-        ("madelon", "(f) Madelon ($N=2{,}000, D=500$)", (0.68, 0.91)),
+        ("Adenoma", "(b) Adenoma", (0.92, 1.005)),
+        ("DLBCL", "(c) DLBCL", (0.90, 1.005)),
+        ("Leukaemia", "(d) Leukaemia", (0.93, 1.005)),
+        ("T1D", "(e) T1D", (0.65, 0.90)),
+        ("BASEHOCK", "(f) BASEHOCK", (0.80, 0.94)),
+        ("COIL20", "(g) COIL20", (0.87, 1.005)),
+        ("ISOLET", "(h) ISOLET", (0.79, 0.93)),
+        ("madelon", "(i) Madelon", (0.65, 0.92)),
     ]
 
     ABL_PLOT_COLORS = {
-        "KDS_EL_TwoPhase": "#D93829",   # 珊瑚红 (本文方法)
-        "KDS_EL_NoPool":   "#2B6CB0",   # 钢蓝 (消融变体)
-        "MEL_MI":          "#2A9D8F",   # 墨绿/青蓝 (去KER&TPS)
-        "MEL":             "#718096",   # 石板灰 (原始基线)
+        "KDS_EL_TwoPhase": COLORS["KDS_EL_TwoPhase"],   # Nature Vermilion (#C82423)
+        "KDS_EL_NoPool":   COLORS["KDS_EL_NoPool"],     # Deep Ocean Blue (#2B6CB0)
+        "MEL_MI":          COLORS["MEL_MI"],            # Slate Blue (#5C82A6)
+        "MEL":             COLORS["MEL"],               # Slate Gray (#718096)
     }
     ABL_PLOT_STYLES = {
         "KDS_EL_TwoPhase": "-",
@@ -239,10 +200,16 @@ def fig_f8_convergence(out_dir):
         "MEL_MI":          "-.",
         "MEL":             ":",
     }
+    ABL_PLOT_MARKERS = {
+        "KDS_EL_TwoPhase": "o",
+        "KDS_EL_NoPool":   "s",
+        "MEL_MI":          "^",
+        "MEL":             "v",
+    }
     ABL_PLOT_WIDTHS = {
-        "KDS_EL_TwoPhase": 1.6,
-        "KDS_EL_NoPool":   1.2,
-        "MEL_MI":          1.1,
+        "KDS_EL_TwoPhase": 1.7,
+        "KDS_EL_NoPool":   1.3,
+        "MEL_MI":          1.2,
         "MEL":             1.1,
     }
     ABL_PLOT_LABELS = {
@@ -252,7 +219,7 @@ def fig_f8_convergence(out_dir):
         "MEL":             "MEL",
     }
 
-    print("F8: Convergence — Balanced 2x3 Grid (Overall Mean + 5 Representative Datasets)...")
+    print("F8: Convergence — Comprehensive 3x3 Grid (Clean Titles & Correct Limits)...")
 
     # ── 1. 全局 20 数据集均值预计算 ──
     all_curves = {v: [] for v in F8_ABL_VERSIONS}
@@ -262,7 +229,7 @@ def fig_f8_convergence(out_dir):
             if data is not None:
                 all_curves[v].append(np.mean(1.0 - data, axis=0))
 
-    fig, axes = plt.subplots(2, 3, figsize=(9.2, 5.0))
+    fig, axes = plt.subplots(3, 3, figsize=(9.0, 6.5))
     axes = axes.ravel()
 
     # ── (a) Overall Mean Convergence (Top-Left Subplot) ──
@@ -271,24 +238,22 @@ def fig_f8_convergence(out_dir):
         if all_curves[v]:
             stacked = np.array(all_curves[v])
             mean_c = np.mean(stacked, axis=0)
-            sem_c = np.std(stacked, axis=0) / np.sqrt(len(stacked))
             x = np.arange(len(mean_c))
             ax0.plot(x, mean_c, color=ABL_PLOT_COLORS[v], linestyle=ABL_PLOT_STYLES[v],
-                     linewidth=ABL_PLOT_WIDTHS[v])
-            ax0.fill_between(x, mean_c - sem_c, mean_c + sem_c,
-                             color=ABL_PLOT_COLORS[v], alpha=0.14, linewidth=0)
+                     linewidth=ABL_PLOT_WIDTHS[v], marker=ABL_PLOT_MARKERS[v],
+                     markevery=15, markersize=4.0)
 
-    ax0.set_title("(a) Overall Mean (20 Datasets)", fontsize=8.5, fontweight="bold", pad=4)
-    ax0.set_xlabel("Iteration", fontsize=7.5)
-    ax0.set_ylabel("Mean Accuracy", fontsize=7.5)
+    ax0.set_title("(a) Overall Mean (20 Datasets)", fontsize=8.0, fontweight="bold", pad=3)
+    ax0.set_xlabel("Iteration", fontsize=7.0, labelpad=2)
+    ax0.set_ylabel("Mean Accuracy", fontsize=7.0, labelpad=2)
     ax0.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
     ax0.set_xlim(0, 100)
     ax0.set_ylim(0.83, 0.97)
-    ax0.grid(True, linestyle="--", alpha=0.35, linewidth=0.4)
-    ax0.axvline(x=70, color="#888888", linestyle=":", linewidth=0.8, alpha=0.7)
-    ax0.text(71, 0.84, "t=70 (Phase 2)", fontsize=6.0, color="#555555", rotation=90)
+    ax0.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
+    ax0.axvline(x=70, color="#718096", linestyle=":", linewidth=0.8, alpha=0.8)
+    ax0.text(71, 0.84, "t=70 (Phase 2)", fontsize=5.5, color="#4A5568", rotation=90)
 
-    # ── (b)-(f) 5 个代表性数据集 ──
+    # ── (b)-(i) 8 个代表性数据集 ──
     for idx, (ds, title, ylim) in enumerate(REP_DS_CONFIGS, start=1):
         ax = axes[idx]
         for v in F8_ABL_VERSIONS:
@@ -296,33 +261,32 @@ def fig_f8_convergence(out_dir):
             if data is not None:
                 acc_data = 1.0 - data
                 mean_c = np.mean(acc_data, axis=0)
-                std_c = np.std(acc_data, axis=0)
                 x = np.arange(len(mean_c))
                 ax.plot(x, mean_c, color=ABL_PLOT_COLORS[v], linestyle=ABL_PLOT_STYLES[v],
-                        linewidth=ABL_PLOT_WIDTHS[v])
-                ax.fill_between(x, mean_c - std_c, mean_c + std_c,
-                                color=ABL_PLOT_COLORS[v], alpha=0.10, linewidth=0)
+                        linewidth=ABL_PLOT_WIDTHS[v], marker=ABL_PLOT_MARKERS[v],
+                        markevery=15, markersize=4.0)
 
-        ax.set_title(title, fontsize=8.5, fontweight="bold", pad=4)
-        ax.set_xlabel("Iteration", fontsize=7.5)
-        ax.set_ylabel("Accuracy", fontsize=7.5)
+        ax.set_title(title, fontsize=8.0, fontweight="bold", pad=3)
+        ax.set_xlabel("Iteration", fontsize=7.0, labelpad=2)
+        ax.set_ylabel("Accuracy", fontsize=7.0, labelpad=2)
         ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
         ax.set_xlim(0, 100)
         ax.set_ylim(ylim)
-        ax.grid(True, linestyle="--", alpha=0.35, linewidth=0.4)
-        ax.axvline(x=70, color="#888888", linestyle=":", linewidth=0.8, alpha=0.7)
+        ax.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
+        ax.axvline(x=70, color="#718096", linestyle=":", linewidth=0.8, alpha=0.8)
 
     # ── 全局统一顶部图例 (Elsevier 标准规范) ──
     handles = [
         Line2D([0], [0], color=ABL_PLOT_COLORS[v], linestyle=ABL_PLOT_STYLES[v],
-               linewidth=1.6 if "TwoPhase" in v else 1.2, label=ABL_PLOT_LABELS[v])
+               linewidth=1.6 if "TwoPhase" in v else 1.2, marker=ABL_PLOT_MARKERS[v],
+               markersize=4.5, label=ABL_PLOT_LABELS[v])
         for v in F8_ABL_VERSIONS
     ]
-    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 1.025),
-               ncol=4, frameon=True, facecolor="#fafafa", edgecolor="#d0d0d0",
-               fontsize=7.8, handlelength=2.2, columnspacing=1.4, framealpha=0.95)
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 1.02),
+               ncol=4, frameon=True, facecolor="#ffffff", edgecolor="#CBD5E0",
+               fontsize=7.5, handlelength=2.2, columnspacing=1.4, framealpha=0.95)
 
-    plt.tight_layout(rect=[0, 0, 1, 0.96])
+    plt.tight_layout(rect=[0, 0, 1, 0.965])
     save_fig(fig, "F8_convergence", out_dir)
     plt.close(fig)
 

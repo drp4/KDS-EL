@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  27 AUG 2026 18:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  27 AUG 2026 19:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -888,47 +888,47 @@ LaTeX Font Info:    Font shape `T1/txr/b/n' in size <7> not available
 )
 (../output/tables/T5_features.tex) [3]
 (../output/tables/T-A4_per_dataset_ablation.tex)
-<../output/figures/F6_ablation_heatmap.pdf, id=71, 502.06633pt x 456.0917pt>
+<../output/figures/F6_ablation_heatmap.pdf, id=71, 500.62093pt x 454.6463pt>
 File: ../output/figures/F6_ablation_heatmap.pdf Graphic file (type pdf)
 <use ../output/figures/F6_ablation_heatmap.pdf>
 Package pdftex.def Info: ../output/figures/F6_ablation_heatmap.pdf  used on inp
 ut line 88.
-(pdftex.def)             Requested size: 341.43307pt x 310.16609pt.
+(pdftex.def)             Requested size: 341.43307pt x 310.09193pt.
  [4]
 (../output/tables/T-A5_runtime.tex)
-<../output/figures/F11_runtime_scatter.pdf, id=80, 600.10417pt x 384.1163pt>
+<../output/figures/F11_runtime_scatter.pdf, id=80, 504.9125pt x 317.17824pt>
 File: ../output/figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use ../output/figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: ../output/figures/F11_runtime_scatter.pdf  used on inp
 ut line 103.
-(pdftex.def)             Requested size: 386.96027pt x 247.6857pt.
+(pdftex.def)             Requested size: 386.96027pt x 243.08098pt.
  [5]
 (../output/tables/T-A6_parameter_sensitivity_full.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <9> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 15.
 ) [6 <../output/figures/F6_ablation_heatmap.pdf>]
-<../output/figures/F8_convergence.pdf, id=168, 652.18436pt x 362.48988pt>
+<../output/figures/F8_convergence.pdf, id=116, 636.39478pt x 346.3797pt>
 File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
 ne 122.
-(pdftex.def)             Requested size: 432.48051pt x 240.38347pt.
-<../output/figures/F7_boxplot_all.pdf, id=169, 810.1467pt x 576.87769pt>
+(pdftex.def)             Requested size: 432.48051pt x 235.39766pt.
+<../output/figures/F7_boxplot_all.pdf, id=117, 808.7013pt x 575.19139pt>
 File: ../output/figures/F7_boxplot_all.pdf Graphic file (type pdf)
 <use ../output/figures/F7_boxplot_all.pdf>
 Package pdftex.def Info: ../output/figures/F7_boxplot_all.pdf  used on input li
 ne 129.
-(pdftex.def)             Requested size: 432.48051pt x 307.96193pt.
+(pdftex.def)             Requested size: 432.48051pt x 307.60587pt.
  [7 <../output/figures/F11_runtime_scatter.pdf> <../output/figures/F8_convergen
 ce.pdf>] (../output/tables/T6_wilcoxon.tex)
 (../output/tables/T6b_holm_bonferroni.tex)
-<../output/figures/F10_wilcoxon_heatmap.pdf, id=358, 589.63672pt x 587.69109pt>
+<../output/figures/F10_wilcoxon_heatmap.pdf, id=196, 588.19131pt x 586.24568pt>
 
 File: ../output/figures/F10_wilcoxon_heatmap.pdf Graphic file (type pdf)
 <use ../output/figures/F10_wilcoxon_heatmap.pdf>
 Package pdftex.def Info: ../output/figures/F10_wilcoxon_heatmap.pdf  used on in
 put line 146.
-(pdftex.def)             Requested size: 341.43307pt x 340.30508pt.
+(pdftex.def)             Requested size: 341.43307pt x 340.30003pt.
  (supplementary_material.bbl [8]
 [9 <../output/figures/F7_boxplot_all.pdf>]) [10 <../output/figures/F10_wilcoxon
 _heatmap.pdf>] (supplementary_material.aux)
@@ -955,9 +955,9 @@ fb><E:/MiKTeX/fonts/type1/public/txfonts/rtxmi.pfb><E:/MiKTeX/fonts/type1/publi
 c/txfonts/rtxr.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsy.pfb><E:/MiKTeX/fo
 nts/type1/urw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/
 MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on supplementary_material.pdf (10 pages, 434806 bytes).
+Output written on supplementary_material.pdf (10 pages, 435718 bytes).
 PDF statistics:
- 709 PDF objects out of 1000 (max. 8388607)
+ 413 PDF objects out of 1000 (max. 8388607)
  49 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
