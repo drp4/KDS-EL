@@ -59,12 +59,5 @@ f_{\mathrm{MEL}}(\mathbf{x}) = \alpha \cdot \bigl(1 - \mathrm{Acc}(\mathbf{x})\b
 \end{equation}
 where $\mathrm{Acc}(\mathbf{x})$ is the 5-fold cross-validation accuracy of a $k\text{-NN}$ classifier ($k=3$), and $\alpha = 0.90, \beta = 0.10$ are fixed constants~\cite{mel2024}.
 
-Despite its innovative multi-task design, MEL exhibits three critical performance bottlenecks when scaled to ultra-high-dimensional data ($D > 10^3$):
-\begin{enumerate}
-    \item \textbf{Unguided early-stage exploration}: Uniform random initialization forces both subpopulations to start from dense configurations ($\approx 50\%$ active features), wasting substantial computational budget in non-informative search regions during early generations.
-    \item \textbf{Evolutionary memory loss and stale accumulation}: MEL's importance matrix is updated solely from per-generation accuracy differences without exponential decay, causing monotonic score accumulation that saturates ranking sensitivity.
-    \item \textbf{Static objective weight rigidity}: The fixed weight $\beta = 0.10$ provides inadequate feature-pruning pressure during early generations, leading to sluggish feature reduction and prolonged evaluations ($175.0$~s average runtime).
-\end{enumerate}
-
-KDS-EL directly inherits the multi-task dual-subpopulation structure of MEL while completely eliminating these three structural limitations through MI-guided hybrid seeding (Section~\ref{sec:mi}), discounted cumulative importance harvesting with the KER refinement operator (Sections~\ref{sec:importance}--\ref{sec:ker}), and Two-Phase dynamic weight scheduling (Section~\ref{sec:twophase}).
+While MEL demonstrates the utility of cross-task knowledge transfer, its reliance on uniform random initialization, unconstrained importance accumulation without memory discounting, and rigid static weighting creates substantial search inefficiencies in ultra-high-dimensional spaces. The proposed KDS-EL framework directly inherits this dual-subpopulation backbone while resolving these deficiencies through three synergistic mechanisms detailed in Section~\ref{sec:proposed}.
 

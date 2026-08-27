@@ -17,60 +17,17 @@ To prevent data leakage during feature relevance estimation and evaluation, a st
 
 \subsubsection{Comparison Algorithms and Baseline Categorization}
 
-To evaluate KDS-EL comprehensively against modern evolutionary feature selection paradigms, 14 fixed-length methods are compared under identical evaluation budgets. As categorized in Table~\ref{T1}, the competitor suite comprises three representative groups:
-\begin{enumerate}
-    \item \textbf{Proposed framework and ablative configurations}: The complete KDS-EL and its systematically stripped variants:
-    \begin{itemize}
-        \item \textbf{KDS-EL}: The full framework integrating MI-guided initialization, the KER strategy, and Two-Phase Weight Scheduling (TPS).
-        \item \textbf{KDS-EL w/o TPS}: The framework without two-phase scheduling, employing a static objective weighting $\mathbf{w}_s = [0.9, 0.1]$ with in-place elite replacement.
-        \item \textbf{KDS-EL w/o TPS\&KER}: The framework stripped of both two-phase scheduling and the KER strategy, corresponding to the MI-initialized multi-task baseline (MEL+MI).
-        \item \textbf{MEL}~\cite{mel2024}: The foundational multi-task evolutionary learning baseline stripped of all three mechanisms (random initialization, static weighting, no elite refinement).
-    \end{itemize}
-    \item \textbf{State-of-the-art single-objective evolutionary algorithms}: Five prominent evolutionary wrappers tailored for high-dimensional feature selection:
-    \begin{itemize}
-        \item \textbf{FWPSO}~\cite{wangjia2022}: Feature-weighting particle swarm optimization integrating feature saliency into velocity updates.
-        \item \textbf{PSO-CSM}~\cite{wei2025}: A recently proposed PSO algorithm employing a comprehensive scoring framework.
-        \item \textbf{SaWDE}~\cite{wang2022}: Self-adaptive weighted differential evolution for large-scale feature selection.
-        \item \textbf{IGPSO}~\cite{xuezhang2024}: Importance-guided PSO leveraging a multilayer perceptron for relevance estimation.
-        \item \textbf{BPSO}~\cite{kennedy1997}: The classical binary particle swarm optimization algorithm.
-    \end{itemize}
-    \item \textbf{Multi-objective evolutionary feature selection (MOFS) algorithms}: Five multi-objective methods that simultaneously optimize classification accuracy and subset size:
-    \begin{itemize}
-        \item \textbf{W-MOPSO-FS}: A self-built Wrapper--Filter hybrid multi-objective PSO.
-        \item \textbf{fMOPSO-FS}~\cite{han2024}: Self-adaptive multi-objective PSO based on feature-label correlation.
-        \item \textbf{NSGA-II-FS}~\cite{deb2002}: The non-dominated sorting genetic algorithm applied to binary subset selection.
-        \item \textbf{MOEA-D-FS}~\cite{zhang2007}: Decomposition-based multi-objective evolutionary algorithm for feature selection.
-        \item \textbf{MOPSO-FS}~\cite{coello2004}: Standard multi-objective PSO with external Pareto archive management.
-    \end{itemize}
-\end{enumerate}
-
-All comparison algorithms are implemented based on their original publications, adopting the hyper-parameter settings recommended by their respective authors.
+To evaluate KDS-EL comprehensively against modern evolutionary feature selection paradigms, 14 fixed-length methods are compared under identical evaluation budgets. As categorized in Table~\ref{T1}, the competitor suite encompasses: (i) the proposed framework and its systematically stripped ablative configurations (KDS-EL, KDS-EL w/o TPS, KDS-EL w/o TPS\&KER, and the foundational MEL baseline~\cite{mel2024}); (ii) five state-of-the-art single-objective evolutionary algorithms (FWPSO~\cite{wangjia2022}, PSO-CSM~\cite{wei2025}, SaWDE~\cite{wang2022}, IGPSO~\cite{xuezhang2024}, and classical BPSO~\cite{kennedy1997}); and (iii) five multi-objective evolutionary feature selection methods (W-MOPSO-FS, fMOPSO-FS~\cite{han2024}, NSGA-II-FS~\cite{deb2002}, MOEA-D-FS~\cite{zhang2007}, and MOPSO-FS~\cite{coello2004}). All comparison algorithms adopt the hyper-parameter settings recommended in their original publications.
 
 \subsubsection{Parameter Configurations and Experimental Environment}
 
-To guarantee fairness across all comparative experiments, a uniform experimental protocol is applied. The $K$-nearest neighbor (KNN) classifier with $k=3$ serves as the standard evaluation model across all algorithms due to its non-parametric nature and sensitivity to feature subset quality. Each algorithm is executed with a swarm population size of $N=20$ candidate solutions over a maximum of $T=100$ iterations. For continuous-to-binary transformation in continuous velocity-based algorithms, the standard threshold $\theta=0.6$ is employed. Every experiment is repeated over 10 independent runs with distinct random seeds.
+To guarantee fairness across all comparative experiments, a uniform experimental protocol is applied. The $k$-nearest neighbor ($k\text{-NN}$) classifier with $k=3$ serves as the standard evaluation model due to its non-parametric nature and sensitivity to feature subset quality. Each algorithm is executed with a population size of $N=20$ candidate solutions over $T=100$ iterations. For continuous-to-binary transformation in continuous velocity-based algorithms, the standard threshold $\theta=0.60$ is employed. Every experiment is repeated over 10 independent runs with distinct random seeds.
 
-The specific hyper-parameter settings for KDS-EL are configured as follows: knowledge weight decay factor $\mathrm{WeightDecay}=0.99$; phase split ratio $\mathrm{PhaseSplit}=0.70$ with stage-wise objective weights $\mathbf{w}_s=[0.70,\,0.30]$ during Phase~1 (aggressive feature reduction) and $\mathbf{w}_s=[0.95,\,0.05]$ during Phase~2 (fine accuracy refinement); KER perturbation fraction $\mathrm{flip\_frac}=0.01$; KER random exploration probability $\mathrm{rand\_flip\_p}=0.10$; elite refinement pool size $\mathrm{elite\_k}=3$; MI initialization ratio $\mathrm{MI\_init\_ratio}=0.50$; and adaptive stagnation patience $\mathrm{stall\_patience}=20$ generations. Table~\ref{T3} provides the complete summary of parameter settings. All experiments were conducted on a workstation equipped with an Intel Core i5-13700KF CPU @ 3.40~GHz and 32~GB RAM under Windows 11 and MATLAB R2023b / Python 3.9 execution environments.
+The hyper-parameters for KDS-EL are configured as follows: knowledge weight decay factor $\mathrm{WeightDecay}=0.99$; phase split ratio $\mathrm{PhaseSplit}=0.70$ with stage-wise objective weights $\mathbf{w}_1=[0.70,\,0.30]$ during Phase~1 and $\mathbf{w}_2=[0.95,\,0.05]$ during Phase~2; KER perturbation fraction $\mathrm{flip\_frac}=0.01$; KER random exploration probability $p_{\mathrm{rand}}=0.10$; elite pool size $\mathrm{elite\_k}=3$; MI initialization ratio $\mathrm{MI\_init\_ratio}=0.50$; and stagnation patience $\mathrm{stall\_patience}=20$ generations. Table~\ref{T3} provides the complete summary of parameter settings. All experiments were conducted on a workstation equipped with an Intel Core i5-13700KF CPU @ 3.40~GHz and 32~GB RAM under Windows 11 and MATLAB R2023b / Python 3.9 execution environments.
 
 \subsubsection{Performance Metrics and Statistical Significance Framework}
 
-Algorithm performance is evaluated across four quantitative dimensions:
-
-\textit{Mean classification accuracy ($\mathrm{Acc}$)}: The average 5-fold cross-validation accuracy over 10 independent runs is defined as:
-\begin{equation}
-\mathrm{Acc} = \frac{1}{R} \sum_{r=1}^{R} \mathrm{Acc}_r, \qquad R=10,
-\label{eq:acc_metric}
-\end{equation}
-accompanied by its standard deviation ($\mathrm{Std}$) to measure solution stability across runs.
-
-\textit{Mean selected feature count ($\bar{d}$)}: The average number of active dimensions in the final feature mask is defined as:
-\begin{equation}
-\bar{d} = \frac{1}{R} \sum_{r=1}^{R} \|\mathbf{x}_r^*\|_0,
-\label{eq:feat_metric}
-\end{equation}
-along with the Feature Selection Ratio ($\mathrm{FSR} = \frac{\bar{d}}{D} \times 100\%$).
-
-\textit{Computational runtime ($\bar{t}$)}: The average wall-clock execution time in seconds per single run.
+Algorithm performance is evaluated across three primary quantitative dimensions over 10 independent runs: (i) mean classification accuracy ($\mathrm{Acc}$) alongside standard deviation ($\mathrm{Std}$); (ii) mean selected feature count ($\bar{d}$) and the Feature Selection Ratio ($\mathrm{FSR} = \frac{\bar{d}}{D} \times 100\%$); and (iii) mean computational wall-clock runtime in seconds.
 
 \textit{Statistical significance testing protocol}: To verify whether observed improvements are statistically meaningful, we adhere to the multi-dataset statistical testing protocol recommended by Dem{\v{s}}ar~\cite{demsar2006}:
 \begin{itemize}

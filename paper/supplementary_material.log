@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  26 AUG 2026 22:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  27 AUG 2026 18:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -941,13 +941,13 @@ Package rerunfilecheck Info: File `supplementary_material.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 13228 strings out of 467690
- 198040 string characters out of 5431801
- 688327 words of memory out of 5000000
+ 13225 strings out of 467690
+ 198022 string characters out of 5431801
+ 685717 words of memory out of 5000000
  41968 multiletter control sequences out of 15000+600000
- 693702 words of font info for 155 fonts, out of 8000000 for 9000
+ 692086 words of font info for 152 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,623b,569s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,475b,569s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
 1000.pk><E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><E:/MiKTeX/fo
 nts/type1/public/txfonts/rtcxr.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxb.p
@@ -955,7 +955,7 @@ fb><E:/MiKTeX/fonts/type1/public/txfonts/rtxmi.pfb><E:/MiKTeX/fonts/type1/publi
 c/txfonts/rtxr.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsy.pfb><E:/MiKTeX/fo
 nts/type1/urw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/
 MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on supplementary_material.pdf (10 pages, 435234 bytes).
+Output written on supplementary_material.pdf (10 pages, 434806 bytes).
 PDF statistics:
  709 PDF objects out of 1000 (max. 8388607)
  49 named destinations out of 1000 (max. 500000)

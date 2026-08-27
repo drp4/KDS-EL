@@ -45,7 +45,7 @@ def gen_T4():
     out = [
         r"\begin{table*}[!t]",
         r"\centering",
-        r"\caption{Classification accuracy (mean $\pm$ std) of the 14 fixed-length methods across 20 benchmark datasets. Bold indicates the best per dataset; $+$, $\approx$, and $-$ in superscripts report two-sided Wilcoxon signed-rank tests ($p<0.05$) over 10 independent runs between KDS-EL and the column method ($+$: KDS-EL significantly better, $\approx$: no significant difference, $-$: KDS-EL significantly worse). The Average row reports the mean across all 20 datasets.}",
+        r"\caption{Comparison of classification accuracy (mean $\pm$ std) across 20 benchmark datasets.}",
         r"\label{T4}",
         r"\scriptsize",
         r"\setlength{\tabcolsep}{2.5pt}",
@@ -85,6 +85,9 @@ def gen_T4():
         r"\bottomrule",
         r"\end{tabular}%",
         r"}",
+        r"\vspace{2pt}",
+        r"\par\raggedright\footnotesize",
+        r"\textit{Note}: Bold values indicate the best performance per dataset. Superscripts $+$, $\approx$, and $-$ denote that KDS-EL is significantly better, statistically comparable, or significantly worse ($p < 0.05$, two-sided Wilcoxon signed-rank test), respectively.",
         r"\end{table*}"
     ]
     with open(os.path.join(TAB, "T4_accuracy.tex"), "w", encoding="utf-8") as f:
@@ -97,7 +100,7 @@ def gen_T5():
     out = [
         r"\begin{table*}[!t]",
         r"\centering",
-        r"\caption{Average number of selected features (over 10 runs) of the 14 methods on 20 benchmark datasets. Bold indicates the minimum per dataset.}",
+        r"\caption{Comparison of the average number of selected features across 20 benchmark datasets.}",
         r"\label{T5}",
         r"\scriptsize",
         r"\setlength{\tabcolsep}{3.5pt}",
@@ -127,6 +130,9 @@ def gen_T5():
         r"\bottomrule",
         r"\end{tabular}%",
         r"}",
+        r"\vspace{2pt}",
+        r"\par\raggedright\footnotesize",
+        r"\textit{Note}: Bold values indicate the minimum number of selected features per dataset.",
         r"\end{table*}"
     ]
     with open(os.path.join(TAB, "T5_features.tex"), "w", encoding="utf-8") as f:
@@ -139,7 +145,7 @@ def gen_T6():
     out = [
         r"\begin{table*}[!t]",
         r"\centering",
-        r"\caption{One-sided Wilcoxon signed-rank test win counts ($p<0.05$, row method greater than column method) across 20 benchmark datasets. Entries report the number of datasets on which the row method significantly outperforms the column method.}",
+        r"\caption{Win counts of pairwise Wilcoxon signed-rank tests ($p < 0.05$) across 20 benchmark datasets.}",
         r"\label{T6}",
         r"\scriptsize",
         r"\setlength{\tabcolsep}{3.5pt}",
@@ -168,6 +174,9 @@ def gen_T6():
         r"\bottomrule",
         r"\end{tabular}%",
         r"}",
+        r"\vspace{2pt}",
+        r"\par\raggedright\footnotesize",
+        r"\textit{Note}: Entries indicate the number of datasets where the row algorithm significantly outperforms the column algorithm.",
         r"\end{table*}"
     ]
     with open(os.path.join(TAB, "T6_wilcoxon.tex"), "w", encoding="utf-8") as f:
@@ -181,7 +190,7 @@ def gen_T6b():
     out = [
         r"\begin{table}[!htb]",
         r"\centering",
-        r"\caption{Holm--Bonferroni corrected pairwise comparison between KDS-EL and each of the 13 comparison methods over the 20 datasets. $\Delta$Acc is the mean accuracy advantage of KDS-EL; Combined $p$ is the unadjusted Fisher combined one-sided Wilcoxon $p$-value and Holm $p$ is its Holm--Bonferroni adjustment; $H_0$ of no superiority is rejected at the Holm threshold in every case.}",
+        r"\caption{Holm--Bonferroni corrected pairwise comparisons across 20 benchmark datasets.}",
         r"\label{T6b}",
         r"\footnotesize",
         r"\setlength{\tabcolsep}{3.5pt}",
@@ -199,6 +208,9 @@ def gen_T6b():
     out += [
         r"\bottomrule",
         r"\end{tabular*}",
+        r"\vspace{2pt}",
+        r"\par\raggedright\footnotesize",
+        r"\textit{Note}: $\Delta$Acc denotes the mean accuracy advantage of KDS-EL. Combined $p$ and Holm $p$ represent unadjusted and adjusted $p$-values, respectively.",
         r"\end{table}"
     ]
     with open(os.path.join(TAB, "T6b_holm_bonferroni.tex"), "w", encoding="utf-8") as f:
@@ -216,7 +228,7 @@ def gen_T7():
     out = [
         r"\begin{table}[!htb]",
         r"\centering",
-        r"\caption{Component contribution analysis: each row strips one mechanism from the complete KDS-EL, and $\Delta$Acc reports the resulting accuracy loss relative to the row above. ``MEL'' denotes the framework stripped of all three mechanisms---the residual that remains once every component has been removed, corresponding to MEL~\cite{mel2024}. Feature counts are dataset means.}",
+        r"\caption{Results of subtractive component contribution analysis across 20 benchmark datasets.}",
         r"\label{T7}",
         r"\small",
         r"\setlength{\tabcolsep}{6pt}",
@@ -236,6 +248,9 @@ def gen_T7():
     out += [
         r"\bottomrule",
         r"\end{tabular*}",
+        r"\vspace{2pt}",
+        r"\par\raggedright\footnotesize",
+        r"\textit{Note}: $\Delta$Acc indicates the marginal accuracy degradation when stripping the corresponding component. Bold values denote the best performance.",
         r"\end{table}"
     ]
     with open(os.path.join(TAB, "T7_ablation.tex"), "w", encoding="utf-8") as f:
@@ -254,7 +269,7 @@ def gen_T8():
     out = [
         r"\begin{table}[!htb]",
         r"\centering",
-        r"\caption{One-factor-at-a-time parameter sensitivity analysis over four representative datasets (Adenoma, Colon, ALL4, BASEHOCK). The maximum accuracy deviation from the default configuration never exceeds $\pm$1.5~pp.}",
+        r"\caption{Summary of parameter sensitivity analysis across four representative datasets.}",
         r"\label{T8}",
         r"\small",
         r"\setlength{\tabcolsep}{4pt}",
@@ -269,6 +284,9 @@ def gen_T8():
     out += [
         r"\bottomrule",
         r"\end{tabular*}",
+        r"\vspace{2pt}",
+        r"\par\raggedright\footnotesize",
+        r"\textit{Note}: Max $\Delta$Acc denotes the maximum accuracy variation across the investigated parameter range.",
         r"\end{table}"
     ]
     with open(os.path.join(TAB, "T8_parameter_sensitivity.tex"), "w", encoding="utf-8") as f:
@@ -283,7 +301,7 @@ def gen_TA4():
     out = [
         r"\begin{table*}[!t]",
         r"\centering",
-        r"\caption{Per-dataset ablation results over the 20-dataset suite: accuracy and mean feature count for each variant of the incremental construction.}",
+        r"\caption{Granular per-dataset component contribution analysis results across 20 benchmark datasets.}",
         r"\label{T-A4}",
         r"\scriptsize",
         r"\setlength{\tabcolsep}{3.5pt}",
@@ -340,7 +358,7 @@ def gen_TA5():
     out = [
         r"\begin{table*}[!t]",
         r"\centering",
-        r"\caption{Per-dataset wall-clock runtime in seconds (mean over 10 runs) for the 14 methods on 20 benchmark datasets.}",
+        r"\caption{Per-dataset computational runtime in seconds (mean over 10 runs) across 20 benchmark datasets.}",
         r"\label{T-A5}",
         r"\scriptsize",
         r"\setlength{\tabcolsep}{3.5pt}",
@@ -370,7 +388,7 @@ def gen_TA6():
     out = [
         r"\begin{table}[!htb]",
         r"\centering",
-        r"\caption{Full parameter sensitivity results (mean accuracy, feature count, and runtime over the four datasets) for each of the five parameters. Bold rows indicate the default configuration.}",
+        r"\caption{Detailed parameter sensitivity evaluation results across five key hyper-parameters.}",
         r"\label{T-A6}",
         r"\small",
         r"\setlength{\tabcolsep}{4pt}",
@@ -396,6 +414,9 @@ def gen_TA6():
     out += [
         r"\bottomrule",
         r"\end{tabular*}",
+        r"\vspace{2pt}",
+        r"\par\raggedright\footnotesize",
+        r"\textit{Note}: Bold entries indicate default parameter configurations.",
         r"\end{table}"
     ]
     with open(os.path.join(TAB, "T-A6_parameter_sensitivity_full.tex"), "w", encoding="utf-8") as f:
@@ -405,3 +426,4 @@ def gen_TA6():
 if __name__ == "__main__":
     gen_T4(); gen_T5(); gen_T6(); gen_T6b(); gen_T7(); gen_T8()
     gen_TA4(); gen_TA5(); gen_TA6()
+

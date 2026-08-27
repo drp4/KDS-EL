@@ -7,7 +7,7 @@ In this section, we present the comprehensive architectural design, mathematical
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=\linewidth]{F1_architecture_journal.pdf}
-\caption{Overall architectural pipeline of KDS-EL: high-dimensional data undergo filter-based mutual information ranking, dual-subpopulation initialization with Gaussian perturbation, two-phase dynamic objective weight scheduling, cross-iteration cumulative feature-importance matrix accumulation with exponential decay, and knowledge-guided elite refinement with 1-to-1 in-place replacement.}
+\caption{Overall framework of the proposed KDS-EL algorithm.}
 \label{F1}
 \end{figure}
 
@@ -23,20 +23,9 @@ The optimization process operates in a closed loop through four tightly coupled 
 
 \subsection{MI-Prior Seeding and Adaptive Re-injection Strategy}\label{sec:mi}
 
-\subsubsection{Deficiency Analysis and Design Rationale}
+In ultra-high-dimensional feature selection ($D \gg 10^3$), standard uniform random initialization produces candidate solutions where approximately $50\%$ of all features are active ($\|\mathbf{x}\|_0 \approx D/2$), forcing the swarm into dense, noisy search basins. To establish an informative initial search origin while preserving stochastic diversity, KDS-EL introduces a filter-wrapper hybrid seeding strategy.
 
-Standard binary meta-heuristics universally initialize particle positions via uniform random sampling over $[0, 1]^D$. In an ultra-high-dimensional feature space where $D \gg 10^3$, uniform random initialization produces candidate solutions where approximately $50\%$ of all features are active ($\|\mathbf{x}\|_0 \approx D/2$). However, for biomedical classification problems, true informative biomarker subsets are notoriously sparse, typically comprising fewer than $100$ genes ($\|\mathbf{x}^{\star}\|_0 \ll 0.01 D$). Consequently, random initialization forces the swarm into dense, highly redundant, and noisy search basins, squandering a major fraction of the computational evaluation budget simply attempting to discard thousands of irrelevant features.
-
-To resolve this unguided early-stage exploration inefficiency, KDS-EL establishes a filter-wrapper hybrid seeding strategy that injects prior feature-relevance knowledge into the swarm origin while preserving sufficient stochastic diversity.
-
-\subsubsection{Mathematical Formulation of MI Seeding}
-
-Let $\mathcal{D} = \{(\mathbf{f}_i, y_i)\}_{i=1}^{N_{\mathrm{samp}}}$ denote the training set with $D$-dimensional feature vectors $\mathbf{f}_i$ and class labels $y_i \in \{1, \ldots, C\}$. The mutual information $I(f_j; Y)$ between the $j$-th feature $f_j$ and the label $Y$ is defined as:
-\begin{equation}
-I(f_j; Y) = \sum_{v \in \mathrm{Val}(f_j)} \sum_{c = 1}^C P(f_j = v, Y = c) \log_2 \frac{P(f_j = v, Y = c)}{P(f_j = v) P(Y = c)}.
-\label{eq:mi_def}
-\end{equation}
-The continuous feature values are discretized into equal-frequency bins to estimate probability distributions. The raw MI scores $\{I(f_j; Y)\}_{j=1}^D$ are normalized into a baseline relevance vector $\mathbf{m} \in [0, 1]^D$:
+Given the training dataset $\mathcal{D} = \{(\mathbf{f}_i, y_i)\}_{i=1}^{N_{\mathrm{samp}}}$, the mutual information scores $\{I(f_j; Y)\}_{j=1}^D$ computed via \eqref{eq:mi} are normalized into a baseline prior relevance vector $\mathbf{m} \in [0, 1]^D$:
 \begin{equation}
 m_j = \frac{I(f_j; Y) - \min_{1 \le k \le D} I(f_k; Y)}{\max_{1 \le k \le D} I(f_k; Y) - \min_{1 \le k \le D} I(f_k; Y) + \epsilon},
 \label{eq:mi_norm}
@@ -46,7 +35,7 @@ where $\epsilon = 10^{-12}$ prevents division by zero.
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{../output/figures/F2_mi_initialization_journal.pdf}
-\caption{Operational mechanism of MI-Prior Seeding and Adaptive Re-injection: mutual information $I(f_j; \mathbf{Y})$ extracts feature--target relevance to construct a normalized prior vector $\widetilde{\mathbf{m}} \in [0, 1]^D$, which guides Subpopulation~1 with Gaussian perturbation while Subpopulation~2 maintains stochastic exploration; upon detecting evolutionary stagnation, the MI prior is adaptively re-injected into inferior particles to restore swarm search vitality.}
+\caption{Schematic diagram of the MI-prior seeding and adaptive re-injection mechanism.}
 \label{fig:mi_seeding}
 \end{figure*}
 
@@ -81,65 +70,41 @@ The refreshed particles are then re-evaluated under the current objective weight
 
 \subsection{Cumulative Feature-Importance Matrix with Exponential Memory Decay}\label{sec:importance}
 
-\subsubsection{Deficiency Analysis and Design Rationale}
+To capture and retain the empirical trial-and-error feedback generated across generations, KDS-EL maintains a continuous cumulative feature-importance matrix $W \in \mathbb{R}^D$, initialized to $\mathbf{0}$.
 
-Standard PSO operators update particle trajectories purely based on instantaneous personal best ($\mathbf{p}_{\mathrm{best}}$) and global best ($\mathbf{g}_{\mathrm{best}}$) coordinates. Across consecutive evolutionary cycles, thousands of candidate subset evaluations are performed, generating abundant empirical evidence regarding which specific feature additions or deletions consistently enhance classification performance. Standard meta-heuristics completely discard this trial-and-error feedback upon the conclusion of each generation, suffering from severe evolutionary memory loss.
-
-To capture and retain this cross-iteration evolutionary feedback, KDS-EL maintains a global continuous cumulative feature-importance matrix $W \in \mathbb{R}^D$, initialized to the zero vector $\mathbf{0}$.
-
-\subsubsection{Differential Feedback Update and Exponential Forgetting}
-
-At generation $t$, whenever a newly evaluated particle $\mathbf{x}_i^{(t)}$ achieves a strict fitness improvement over its historical personal best ($f_i^{(t)} < f_i^{\mathrm{pbest}}$), we extract the differential feature subset $\mathcal{C}_i^{(t)}$ containing features whose selection status changed:
+At generation $t$, whenever a candidate particle $\mathbf{x}_i^{(t)}$ achieves a strict fitness improvement over its personal best ($f_i^{(t)} < f_i^{\mathrm{pbest}}$), the differential feature subset $\mathcal{C}_i^{(t)}$ containing features whose selection status changed is extracted:
 \begin{equation}
 \mathcal{C}_i^{(t)} = \bigl\{j \in \{1, \ldots, D\} \;\big|\; x_{i,j}^{(t)} \neq p_{\mathrm{best},i,j}\bigr\}.
 \label{eq:changed_features}
 \end{equation}
-The magnitude of fitness improvement is quantified as:
-\begin{equation}
-\delta_i^{(t)} = f_i^{\mathrm{pbest}} - f_i^{(t)} > 0.
-\label{eq:delta_fitness}
-\end{equation}
-Each changed feature $j \in \mathcal{C}_i^{(t)}$ receives a directional reward proportional to $\delta_i^{(t)}$:
+Let $\delta_i^{(t)} = f_i^{\mathrm{pbest}} - f_i^{(t)} > 0$ denote the fitness improvement. Each changed feature $j \in \mathcal{C}_i^{(t)}$ receives a directional reward proportional to $\delta_i^{(t)}$:
 \begin{equation}
 W_j \leftarrow W_j + \delta_i^{(t)} \cdot (2 x_{i,j}^{(t)} - 1), \quad \forall j \in \mathcal{C}_i^{(t)},
 \label{eq:importance_update}
 \end{equation}
-where $(2 x_{i,j}^{(t)} - 1) = +1$ if feature $j$ was newly activated (rewarding beneficial inclusion) and $-1$ if feature $j$ was deactivated (rewarding beneficial elimination). Features whose status remained unchanged, as well as non-improving particles ($\delta_i^{(t)} \le 0$), exert zero impact on $W$.
+where $(2 x_{i,j}^{(t)} - 1) = +1$ if feature $j$ was newly activated and $-1$ if deactivated. Non-improving particles ($\delta_i^{(t)} \le 0$) exert zero impact on $W$.
 
-To prevent early-discovered features from dominating the matrix indefinitely and to allow the algorithm to forget stale historical correlations as the search shifts toward fine-grained subspaces, an exponential memory decay is applied to the entire matrix at the conclusion of each generation:
+To prevent early-discovered features from dominating the matrix indefinitely and allow the algorithm to adapt as the search shifts toward fine-grained subspaces, an exponential memory decay is applied at the conclusion of each generation:
 \begin{equation}
 W \leftarrow \gamma \cdot W, \quad \text{where } \gamma = 0.99.
 \label{eq:decay}
 \end{equation}
-
-\subsubsection{Theoretical Function of the Forgetting Factor \texorpdfstring{$\gamma$}{gamma}}
-
-The exponential decay factor $\gamma = 0.99$ fulfills two indispensable theoretical roles:
-\begin{itemize}
-    \item \textbf{Dynamic rank adaptation}: As the search progresses from coarse feature elimination to localized accuracy refinement, features that were critical in early generations may become redundant. The decay factor ensures that unless a feature repeatedly contributes to fitness improvements in recent generations, its cumulative score exponentially depreciates as $\gamma^k$, allowing newly discovered interactive features to rise in rank.
-    \item \textbf{Score saturation prevention}: Without decay ($\gamma = 1.00$), cumulative importance values would grow monotonically unbounded ($W_j \to \infty$), causing the relative score distribution to saturate and destroying the sensitivity of downstream elite refinement operators.
-\end{itemize}
+The decay factor ensures that unless a feature repeatedly contributes to fitness improvements, its score depreciates as $\gamma^k$, preventing score saturation while dynamically maintaining ranking sensitivity.
 
 \subsection{Knowledge-guided Elite Refinement (KER) Strategy}\label{sec:ker}
 
-\subsubsection{Deficiency Analysis and Design Rationale}
-
-In conventional swarm algorithms, elite individuals (such as $\mathbf{g}_{\mathrm{best}}$) are typically updated solely through global swarm convergence or perturbed via isotropic random bit mutations. In ultra-high-dimensional spaces with thousands of features, uniform random bit-flipping possesses an infinitesimal probability of flipping the precise subset of features required to escape a local optimum, resulting in stagnation during late evolutionary stages.
-
-To exploit the historical evolutionary knowledge distilled in $W$, we introduce the Knowledge-guided Elite Refinement (KER) strategy. KER performs targeted, directional bit perturbations on top-performing solutions, selectively activating promising absent features and pruning uninformative active features.
-
-\subsubsection{Probabilistic Dual-Branch Formulation}
+To exploit the historical evolutionary knowledge distilled in $W$, the Knowledge-guided Elite Refinement (KER) strategy performs targeted directional bit perturbations on top-performing solutions, selectively activating promising absent features and pruning uninformative active features.
 
 \begin{figure*}[!htb]
 \centering
 \includegraphics[width=0.95\linewidth]{F3_ker_strategy_journal.pdf}
-\caption{Operational workflow of the Knowledge-guided Elite Refinement (KER) strategy: candidate elites undergo knowledge-guided directional refinement guided by the cumulative importance matrix $\mathbf{W}$ and ergodic exploration, evaluated in a closed loop and admitted via greedy 1-to-1 in-place replacement.}
+\caption{Flowchart of the Knowledge-guided Elite Refinement (KER) strategy.}
 \label{F3}
 \end{figure*}
 
-At each generation, the top $\mathrm{elite\_k} = 3$ individuals (ranked by current fitness) are selected for refinement. For each elite individual $\mathbf{x}_e \in \{0, 1\}^D$, KER executes a probabilistic dual-branch operation (Fig.~\ref{F3}):
+At each generation, the top $\mathrm{elite\_k} = 3$ individuals (ranked by fitness) are selected. For each elite individual $\mathbf{x}_e \in \{0, 1\}^D$, KER executes a probabilistic dual-branch operation (Fig.~\ref{F3}):
 
-\textit{Branch~1 (Ergodic random exploration, $p_{\mathrm{rand}} = 0.10$)}: To guarantee search ergodicity and prevent irreversible bias toward early-accumulated matrix patterns, $\lfloor \phi D \rfloor$ features are selected uniformly at random and inverted:
+\textit{Branch~1 (Ergodic random exploration, $p_{\mathrm{rand}} = 0.10$)}: To guarantee search ergodicity, $\lfloor \phi D \rfloor$ features are selected uniformly at random and inverted:
 \begin{equation}
 x'_{e,j} \leftarrow 1 - x_{e,j}, \quad \forall j \in \mathcal{S}_{\mathrm{rand}}, \quad |\mathcal{S}_{\mathrm{rand}}| = \lfloor \phi D \rfloor,
 \label{eq:ker_rand}
@@ -148,29 +113,22 @@ where $\phi = \mathrm{flip\_frac} = 0.01$ defines the refinement perturbation bu
 
 \textit{Branch~2 (Knowledge-guided directional refinement, $1 - p_{\mathrm{rand}} = 0.90$)}: Each feature $j \in \{1, \ldots, D\}$ is assigned a state-dependent directional flip score $\sigma_j$:
 \begin{equation}
-\sigma_j = \begin{cases}
+\sigma_j = (1 - 2 x_{e,j}) \cdot W_j = \begin{cases}
 +W_j, & \text{if } x_{e,j} = 0 \quad \text{(activate absent feature)},\\[2pt]
 -W_j, & \text{if } x_{e,j} = 1 \quad \text{(deactivate present feature)}.
 \end{cases}
 \label{eq:flip_score}
 \end{equation}
-The scores can be written compactly as $\sigma_j = (1 - 2 x_{e,j}) \cdot W_j$. We identify the index set $\mathcal{S}_{\mathrm{know}}$ containing the $\lfloor \phi D \rfloor$ features possessing the highest flip scores $\sigma_j$:
+We identify the index set $\mathcal{S}_{\mathrm{know}}$ containing the $\lfloor \phi D \rfloor$ features possessing the highest flip scores $\sigma_j$:
 \begin{equation}
-\mathcal{S}_{\mathrm{know}} = \mathop{\arg\max}_{\substack{\mathcal{S} \subset \{1, \ldots, D\} \\ |\mathcal{S}| = \lfloor \phi D \rfloor}} \sum_{j \in \mathcal{S}} \sigma_j.
+\mathcal{S}_{\mathrm{know}} = \arg\max_{|\mathcal{S}| = \lfloor \phi D \rfloor} \sum_{j \in \mathcal{S}} \sigma_j, \quad \text{where } \mathcal{S} \subseteq \{1, \ldots, D\},
 \label{eq:top_scores}
 \end{equation}
-The directional refinement is then applied:
-\begin{equation}
-x'_{e,j} = \begin{cases}
-1 - x_{e,j}, & \text{if } j \in \mathcal{S}_{\mathrm{know}},\\[2pt]
-x_{e,j}, & \text{otherwise}.
-\end{cases}
-\label{eq:ker_flip}
-\end{equation}
+and invert the selected features: $x'_{e,j} \leftarrow 1 - x_{e,j}, \forall j \in \mathcal{S}_{\mathrm{know}}$.
 
 \subsubsection{1-to-1 In-Place Replacement and Bounded Evaluation Budget}
 
-The perturbed offspring $\mathbf{x}'_e$ is evaluated under current objective weights $\mathbf{w}(t)$. A greedy 1-to-1 in-place replacement rule is enforced:
+The refined mutant $\mathbf{x}'_e$ is evaluated in a closed loop, and admitted via greedy 1-to-1 in-place replacement:
 \begin{equation}
 \mathbf{x}_e^{\star} = \begin{cases}
 \mathbf{x}'_e, & \text{if } f(\mathbf{x}'_e, \mathbf{w}(t)) < f(\mathbf{x}_e, \mathbf{w}(t)),\\[2pt]
@@ -178,36 +136,32 @@ The perturbed offspring $\mathbf{x}'_e$ is evaluated under current objective wei
 \end{cases}
 \label{eq:inplace}
 \end{equation}
-If improved, $\mathbf{x}'_e$ immediately overwrites $\mathbf{x}_e$ in the population and updates the global best if $f(\mathbf{x}'_e) < f_{\mathrm{gbest}}$.
-
-\textit{Rationale over $2N$-candidate pooling}: Unlike early multi-task prototypes that maintain an expanded $2N$ competitive selection pool, 1-to-1 in-place replacement incurs zero archive management overhead and prevents high selection pressure from prematurely collapsing population diversity.
-
-\textit{Bounded refinement budget}: Because $\mathrm{elite\_k} = 3$ is strictly fixed and $\phi = 0.01$ modifies only $1\%$ of the feature dimensions, KER executes within an exact bounded evaluation overhead of $k_e = 3$ function evaluations per generation, avoiding exponential computational expansion. The detailed execution of KER is formalized in Algorithm~\ref{alg:ker}.
+If improved, $\mathbf{x}'_e$ immediately overwrites $\mathbf{x}_e$ in the population and updates the global best if $f(\mathbf{x}'_e) < f_{\mathrm{gbest}}$. Because $\mathrm{elite\_k} = 3$ is fixed, KER executes within an exact bounded overhead of $k_e = 3$ evaluations per generation. The detailed execution of KER is formalized in Algorithm~\ref{alg:ker}.
 
 \begin{algorithm}[!htb]
 \small
-\caption{Knowledge-guided Elite Refinement (KER)}
+\caption{Knowledge-guided Elite Refinement (KER) strategy}
 \label{alg:ker}
 \begin{algorithmic}[1]
-\Require Elite candidate solution $\mathbf{x}_e \in \{0, 1\}^D$, cumulative importance matrix $W \in \mathbb{R}^D$, perturbation budget $\phi \in (0, 1)$, exploration probability $p_{\mathrm{rand}} \in [0, 1]$, current dynamic objective weights $\mathbf{w}(t)$
-\Ensure Refined elite solution $\mathbf{x}_e^{\star} \in \{0, 1\}^D$ satisfying $f(\mathbf{x}_e^{\star}, \mathbf{w}(t)) \le f(\mathbf{x}_e, \mathbf{w}(t))$
-\State $k_{\mathrm{flip}} \leftarrow \max\bigl(1, \lfloor \phi \cdot D \rfloor\bigr)$ \Comment{Determine feature perturbation budget}
+\Require Elite candidate solution $\mathbf{x}_e \in \{0, 1\}^D$, cumulative importance matrix $W \in \mathbb{R}^D$, perturbation budget $\phi \in (0, 1)$, exploration probability $p_{\mathrm{rand}} \in [0, 1]$, dynamic objective weights $\mathbf{w}(t)$
+\Ensure Refined elite candidate $\mathbf{x}_e^{\star} \in \{0, 1\}^D$
+\State $k_{\mathrm{flip}} \leftarrow \max\bigl(1, \lfloor \phi \cdot D \rfloor\bigr)$ \Comment{Determine perturbation budget}
 \State Sample random variable $r \sim \mathcal{U}(0, 1)$
 \If{$r < p_{\mathrm{rand}}$} \Comment{Branch 1: Ergodic random exploration}
     \State Sample random feature subset $\mathcal{S}_{\mathrm{rand}} \subset \{1, \ldots, D\}$ with $|\mathcal{S}_{\mathrm{rand}}| = k_{\mathrm{flip}}$
     \State $\mathbf{x}'_e \leftarrow \mathbf{x}_e$; \quad $x'_{e,j} \leftarrow 1 - x_{e,j}, \quad \forall j \in \mathcal{S}_{\mathrm{rand}}$
 \Else \Comment{Branch 2: Knowledge-guided directional refinement}
     \For{$j = 1$ \textbf{to} $D$}
-        \State $\sigma_j \leftarrow (1 - 2 x_{e,j}) \cdot W_j$ \Comment{State-dependent directional flip score \eqref{eq:flip_score}}
+        \State $\sigma_j \leftarrow (1 - 2 x_{e,j}) \cdot W_j$ \Comment{Compute directional flip score}
     \EndFor
     \State Identify subset $\mathcal{S}_{\mathrm{know}}$ of size $k_{\mathrm{flip}}$ with top $\sigma_j$ scores via \eqref{eq:top_scores}
     \State $\mathbf{x}'_e \leftarrow \mathbf{x}_e$; \quad $x'_{e,j} \leftarrow 1 - x_{e,j}, \quad \forall j \in \mathcal{S}_{\mathrm{know}}$
 \EndIf
 \State Evaluate offspring fitness $f' \leftarrow f(\mathbf{x}'_e, \mathbf{w}(t))$ using \eqref{eq:fitness}
 \If{$f' < f(\mathbf{x}_e, \mathbf{w}(t))$}
-    \State $\mathbf{x}_e^{\star} \leftarrow \mathbf{x}'_e$ \Comment{Greedy 1-to-1 in-place replacement \eqref{eq:inplace}}
+    \State $\mathbf{x}_e^{\star} \leftarrow \mathbf{x}'_e$ \Comment{Greedy 1-to-1 in-place replacement}
 \Else
-    \State $\mathbf{x}_e^{\star} \leftarrow \mathbf{x}_e$ \Comment{Retain historical elite}
+    \State $\mathbf{x}_e^{\star} \leftarrow \mathbf{x}_e$ \Comment{Retain original elite}
 \EndIf
 \State \Return $\mathbf{x}_e^{\star}$
 \end{algorithmic}
@@ -215,34 +169,23 @@ If improved, $\mathbf{x}'_e$ immediately overwrites $\mathbf{x}_e$ in the popula
 
 \subsection{Two-Phase Dynamic Objective Weight Scheduling Strategy}\label{sec:twophase}
 
-\subsubsection{Deficiency Analysis and Design Rationale}
-
-In multi-objective feature selection transformed via weighted-sum aggregation, conventional algorithms universally fix the objective weights throughout the entire evolutionary trajectory (e.g., static $\mathbf{w} = [0.90, 0.10]$)~\cite{miao2024,mel2024}. However, feature selection exhibits an intrinsic temporal asymmetry between early and late search stages:
-\begin{itemize}
-    \item \textbf{Early evolutionary stage}: The swarm navigates dense, highly noisy regions containing thousands of redundant features. The primary optimization objective is rapid, aggressive dimensionality reduction to prune non-informative search space.
-    \item \textbf{Late evolutionary stage}: Once redundant features have been aggressively stripped and the swarm converges to a compact candidate set ($<100$ features), the objective shifts decisively toward fine-grained accuracy tuning among subtle biomarker combinations.
-\end{itemize}
-A static weight vector compromises between these competing stage-dependent goals, leading to sluggish early feature reduction and inadequate late-stage accuracy refinement.
-
-\subsubsection{Dynamic Weight Scheduling Formulation}
-
-To reconcile this temporal conflict, KDS-EL introduces the Two-Phase Weight Scheduling (TPS) strategy. The total generational budget $T = 100$ is partitioned at split point $\alpha = \mathrm{PhaseSplit} = 0.70$. The dynamic dual-objective weight vector $\mathbf{w}(t) = [w_a(t), w_f(t)]$ is governed by a step-transition function:
+To reconcile the temporal trade-off between coarse feature reduction (early) and fine accuracy refinement (late), KDS-EL introduces the Two-Phase Weight Scheduling (TPS) strategy. The total generational budget $T = 100$ is partitioned at split point $\alpha = \mathrm{PhaseSplit} = 0.70$. The dynamic dual-objective weight vector $\mathbf{w}(t) = [w_a(t), w_f(t)]$ is governed by:
 \begin{equation}
 \mathbf{w}(t) = \begin{cases}
-[0.70, \; 0.30], & \text{for } 1 \le t \le \lfloor \alpha T \rfloor \quad \text{(Phase~1)},\\[4pt]
-[0.95, \; 0.05], & \text{for } \lfloor \alpha T \rfloor < t \le T \quad \text{(Phase~2)}.
+[0.70, \; 0.30], & \text{for } 1 \le t \le \lfloor \alpha T \rfloor \quad \text{(Phase~1: Aggressive Pruning)},\\[4pt]
+[0.95, \; 0.05], & \text{for } \lfloor \alpha T \rfloor < t \le T \quad \text{(Phase~2: Accuracy Refinement)}.
 \end{cases}
 \label{eq:twophase}
 \end{equation}
 
 The unified scalar fitness $f(\mathbf{x}, \mathbf{w}(t))$ of a binary feature subset $\mathbf{x} \in \{0, 1\}^D$ at generation $t$ is formulated as:
 \begin{equation}
-f(\mathbf{x}, \mathbf{w}(t)) = w_a(t) \cdot \mathrm{Error}(\mathbf{x}) + w_f(t) \cdot \left(\frac{\|\mathbf{x}\|_0}{D}\right),
+f(\mathbf{x}, \mathbf{w}(t)) = w_a(t) \cdot \bigl(1 - \mathrm{Acc}(\mathbf{x})\bigr) + w_f(t) \cdot \left(\frac{\|\mathbf{x}\|_0}{D}\right),
 \label{eq:fitness}
 \end{equation}
-where $\mathrm{Error}(\mathbf{x}) = 1 - \mathrm{Acc}(\mathbf{x})$ denotes the 5-fold cross-validation classification error rate evaluated by a $k$-nearest neighbors ($k\text{-NN}, k=3$) classifier, and $\|\mathbf{x}\|_0 / D = \frac{1}{D}\sum_{j=1}^D x_j$ represents the normalized feature selection ratio ($\mathrm{FSR}$).
+where $\mathrm{Acc}(\mathbf{x})$ denotes 5-fold cross-validation classification accuracy evaluated by a $k$-NN classifier ($k=3$), and $\|\mathbf{x}\|_0 / D$ represents the normalized feature selection ratio ($\mathrm{FSR}$).
 
-In Phase~1 ($t \le 70$), the heavy feature-ratio penalty ($w_f = 0.30$) drives rapid elimination of thousands of non-informative features without sacrificing classification fidelity. In Phase~2 ($t > 70$), the weight switches to prioritize classification accuracy ($w_a = 0.95$), allowing the swarm and the KER operator to fine-tune delicate biomarker interactions over the surviving compact subspace.
+In Phase~1 ($t \le 0.7T$), the heavy feature-ratio penalty ($w_f = 0.30$) drives rapid elimination of non-informative dimensions. In Phase~2 ($t > 0.7T$), the weight switches to prioritize classification accuracy ($w_a = 0.95$), enabling fine-tuning of delicate biomarker interactions over the surviving compact subspace.
 
 \subsection{Integrated KDS-EL Main Algorithm}\label{sec:main_algo}
 
@@ -250,15 +193,15 @@ Algorithm~\ref{alg:kds_el} consolidates the holistic execution workflow of KDS-E
 
 \begin{algorithm*}[!htb]
 \small
-\caption{Complete Algorithmic Framework of KDS-EL}
+\caption{Pseudo-code of the proposed KDS-EL algorithm}
 \label{alg:kds_el}
 \begin{algorithmic}[1]
 \Require Training dataset $\mathcal{D} = (X, Y)$ with $D$ features, population size $N$, maximum iterations $T$, binarization threshold $\theta$, MI seeding ratio $\rho$, memory decay factor $\gamma$, elite pool size $k_e$, perturbation fraction $\phi$, random branch probability $p_{\mathrm{rand}}$, phase split ratio $\alpha$, stagnation threshold $\tau$
-\Ensure Globally optimal compact feature subset $\mathbf{x}^{\star} \in \{0, 1\}^D$ and optimal fitness $f_{\mathrm{gbest}}$
-\Statex \textit{// Stage 1: Offline Filter-Level Feature Relevance Extraction}
-\State Compute continuous mutual information $I(f_j; Y)$ for all features $j \in \{1, \ldots, D\}$ via \eqref{eq:mi_def}
+\Ensure Optimal compact feature subset $\mathbf{x}^{\star} \in \{0, 1\}^D$ and optimal fitness $f_{\mathrm{gbest}}$
+\Statex \textit{// Stage 1: Filter-level MI relevance extraction}
+\State Compute continuous mutual information $I(f_j; Y)$ for all features $j \in \{1, \ldots, D\}$ via \eqref{eq:mi}
 \State Normalize MI scores to construct baseline prior relevance vector $\mathbf{m} \in [0, 1]^D$ via \eqref{eq:mi_norm}
-\Statex \textit{// Stage 2: Knowledge-Informed Hybrid Population Seeding}
+\Statex \textit{// Stage 2: Knowledge-informed hybrid population seeding}
 \For{$i = 1$ \textbf{to} $N$}
     \If{$i \le \lfloor \rho N \rfloor$}
         \State Sample Gaussian perturbation $\boldsymbol{\varepsilon}_i \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_D)$ and set continuous position $\mathbf{p}_i \leftarrow \mathrm{clip}(\mathbf{m} + \boldsymbol{\varepsilon}_i, 0, 1)$
@@ -272,37 +215,37 @@ Algorithm~\ref{alg:kds_el} consolidates the holistic execution workflow of KDS-E
 \State Evaluate initial population fitness $\{f_i\}_{i=1}^N$ under $\mathbf{w}(1) = [0.70, 0.30]$ via \eqref{eq:fitness}
 \State Initialize personal bests $\mathbf{p}_{\mathrm{best},i} \leftarrow \mathbf{x}_i, \; f_i^{\mathrm{pbest}} \leftarrow f_i, \; \forall i \in \{1, \ldots, N\}$
 \State Identify initial global best $\mathbf{g}_{\mathrm{best}} \leftarrow \arg\min_{\mathbf{p}_{\mathrm{best},i}} f_i^{\mathrm{pbest}}$ with fitness $f_{\mathrm{gbest}} \leftarrow \min_{i} f_i^{\mathrm{pbest}}$
-\Statex \textit{// Stage 3: Dynamic Two-Phase Evolutionary Optimization Loop}
+\Statex \textit{// Stage 3: Dynamic two-phase evolutionary optimization loop}
 \For{$t = 1$ \textbf{to} $T$}
-    \State Update dynamic objective weight vector $\mathbf{w}(t) \leftarrow \begin{cases} [0.70, \; 0.30], & \text{if } t \le \lfloor \alpha T \rfloor \quad \text{(Phase 1: Aggressive Feature Pruning)} \\ [0.95, \; 0.05], & \text{if } t > \lfloor \alpha T \rfloor \quad \text{(Phase 2: Fine Accuracy Refinement)} \end{cases}$
-    \Statex \quad \textit{// Subpopulation 1 ($\mathcal{P}_1$): Continuous Swarm Exploration with Inter-Task Channel}
+    \State Update dynamic objective weight vector $\mathbf{w}(t) \leftarrow \begin{cases} [0.70, \; 0.30], & \text{if } t \le \lfloor \alpha T \rfloor \quad \text{(Phase 1: Feature Pruning)} \\ [0.95, \; 0.05], & \text{if } t > \lfloor \alpha T \rfloor \quad \text{(Phase 2: Accuracy Refinement)} \end{cases}$
+    \Statex \quad \textit{// Subpopulation 1 ($\mathcal{P}_1$): Continuous PSO search with inter-task transfer}
     \For{$i = 1$ \textbf{to} $N/2$}
-        \State $\mathbf{v}_{1,i} \leftarrow \omega \mathbf{v}_{1,i} + c_1 r_1 (\mathbf{p}_{\mathrm{best},1,i} - \mathbf{p}_{1,i}) + c_2 r_2 (\mathbf{g}_{\mathrm{best},1} - \mathbf{p}_{1,i}) + c_3 r_3 (\mathbf{g}_{\mathrm{best},2} - \mathbf{p}_{1,i})$ \Comment{Inter-task attractor from $\mathcal{P}_2$}
+        \State $\mathbf{v}_{1,i} \leftarrow \omega \mathbf{v}_{1,i} + c_1 r_1 (\mathbf{p}_{\mathrm{best},1,i} - \mathbf{p}_{1,i}) + c_2 r_2 (\mathbf{g}_{\mathrm{best},1} - \mathbf{p}_{1,i}) + c_3 r_3 (\mathbf{g}_{\mathrm{best},2} - \mathbf{p}_{1,i})$ \Comment{Inter-task transfer from $\mathcal{P}_2$}
         \State $\mathbf{p}_{1,i} \leftarrow \mathbf{p}_{1,i} + \mathbf{v}_{1,i}; \quad x_{1,i,j} \leftarrow \mathbb{I}(p_{1,i,j} \ge \theta), \quad \forall j \in \{1, \ldots, D\}$
     \EndFor
-    \Statex \quad \textit{// Subpopulation 2 ($\mathcal{P}_2$): Probability-Driven Feature Sampling Guided by $W$}
+    \Statex \quad \textit{// Subpopulation 2 ($\mathcal{P}_2$): Probability-driven feature sampling guided by $W$}
     \For{$i = N/2 + 1$ \textbf{to} $N$}
         \State Compute feature activation probabilities: $P_j \leftarrow \frac{1}{1 + \exp(-W_j)}, \quad \forall j \in \{1, \ldots, D\}$
         \State Sample discrete candidate mask $\mathbf{x}_{2,i}$ based on $\mathbf{P}$ blended with personal best $\mathbf{p}_{\mathrm{best},2,i}$
     \EndFor
-    \Statex \quad \textit{// Fitness Wrapper Evaluation \& Differential Knowledge Harvesting}
+    \Statex \quad \textit{// Fitness wrapper evaluation \& differential knowledge harvesting}
     \For{$i = 1$ \textbf{to} $N$}
         \State Evaluate candidate fitness $f_i \leftarrow f(\mathbf{x}_i, \mathbf{w}(t))$ using 5-fold cross-validation $k\text{-NN}$ classifier via \eqref{eq:fitness}
         \If{$f_i < f_i^{\mathrm{pbest}}$}
             \State Compute fitness improvement magnitude $\delta_i \leftarrow f_i^{\mathrm{pbest}} - f_i$
             \For{\textbf{each} $j \in \{1, \ldots, D\}$ \textbf{such that} $x_{i,j} \neq p_{\mathrm{best},i,j}$}
-                \State $W_j \leftarrow W_j + \delta_i \cdot (2 x_{i,j} - 1)$ \Comment{Reward newly activated (+1) or eliminated (-1) features}
+                \State $W_j \leftarrow W_j + \delta_i \cdot (2 x_{i,j} - 1)$ \Comment{Reward activated (+1) or eliminated (-1) features}
             \EndFor
             \State Update personal best: $\mathbf{p}_{\mathrm{best},i} \leftarrow \mathbf{x}_i, \quad f_i^{\mathrm{pbest}} \leftarrow f_i$
         \EndIf
     \EndFor
-    \State $W \leftarrow \gamma \cdot W$ \Comment{Apply exponential memory decay to prevent saturation \eqref{eq:decay}}
-    \Statex \quad \textit{// Knowledge-Guided Elite Refinement (KER)}
+    \State $W \leftarrow \gamma \cdot W$ \Comment{Exponential memory decay via \eqref{eq:decay}}
+    \Statex \quad \textit{// Knowledge-guided elite refinement}
     \State Identify top $k_e$ elite candidates $\mathcal{E} \subset \{1, \ldots, N\}$ ranked by $f_i^{\mathrm{pbest}}$
     \For{\textbf{each} $e \in \mathcal{E}$}
         \State $\mathbf{p}_{\mathrm{best},e} \leftarrow \textsc{KER}(\mathbf{p}_{\mathrm{best},e}, W, \phi, p_{\mathrm{rand}}, \mathbf{w}(t))$ \Comment{Call Algorithm~\ref{alg:ker}}
     \EndFor
-    \Statex \quad \textit{// Global Best Tracking \& Adaptive Stagnation Recovery}
+    \Statex \quad \textit{// Global best tracking \& adaptive stagnation recovery}
     \State Update global best $\mathbf{g}_{\mathrm{best}} \leftarrow \arg\min_{\mathbf{p}_{\mathrm{best},i}} f_i^{\mathrm{pbest}}, \; f_{\mathrm{gbest\_curr}} \leftarrow \min_i f_i^{\mathrm{pbest}}$
     \If{$f_{\mathrm{gbest\_curr}} < f_{\mathrm{gbest}}$}
         \State $f_{\mathrm{gbest}} \leftarrow f_{\mathrm{gbest\_curr}}, \quad \mathrm{stall\_count} \leftarrow 0$

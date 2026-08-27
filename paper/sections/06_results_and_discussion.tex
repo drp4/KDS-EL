@@ -25,13 +25,13 @@ In high-dimensional feature selection, classification accuracy alone is insuffic
 \begin{figure*}[!htb]
 \centering
 \includegraphics[width=0.72\linewidth]{F5_features_all.pdf}
-\caption{Feature selection ratio (mean over 10 independent runs) of the 14 fixed-length methods across the 20 benchmark datasets on a logarithmic scale, illustrating the extreme compactness achieved by KDS-EL.}
+\caption{Comparison of Feature Selection Ratio (FSR) on a logarithmic scale across 20 benchmark datasets.}
 \label{F5}
 \end{figure*}
 
-As shown in Table~\ref{T5}, KDS-EL demonstrates an extraordinary capacity for dimensionality reduction, selecting an average of only 87.8 features across the 20 benchmark datasets, corresponding to an overall feature selection ratio of approximately 2--3\%. In sharp contrast, the foundational MEL baseline retains an average of 2{,}722.2 features, which is over 30 times larger than that of KDS-EL. All five multi-objective methods retain substantial subsets, ranging from 2{,}960.0 features for W-MOPSO-FS to 5{,}263.3 features for MOPSO-FS. Even among the single-objective competitors, the most compact method, FWPSO, retains an average of 1{,}068.9 features---more than 12 times the subset size of KDS-EL.
+As shown in Table~\ref{T5}, KDS-EL demonstrates substantial dimensionality reduction capability, selecting an average of only 87.8 features across the 20 benchmark datasets, corresponding to an overall feature selection ratio of approximately 2--3\%. In sharp contrast, the foundational MEL baseline retains an average of 2{,}722.2 features, which is over 30 times larger than that of KDS-EL. All five multi-objective methods retain substantial subsets, ranging from 2{,}960.0 features for W-MOPSO-FS to 5{,}263.3 features for MOPSO-FS. Even among the single-objective competitors, the most compact method, FWPSO, retains an average of 1{,}068.9 features---more than 12 times the subset size of KDS-EL.
 
-The feature reduction capability of KDS-EL is particularly striking on ultra-high-dimensional gene-expression datasets:
+The feature reduction capability of KDS-EL is particularly evident on ultra-high-dimensional gene-expression datasets:
 \begin{itemize}
     \item On \textit{ALL1}, KDS-EL identifies a minimal signature of only 39 features with 0.9998 accuracy ($\mathrm{FSR} = 0.31\%$), whereas MEL and NSGA-II-FS retain 4{,}248 and 2{,}847 features, respectively.
     \item On \textit{Gastric1}, KDS-EL selects only 31 features with 0.9800 accuracy ($\mathrm{FSR} = 0.14\%$), compressing the feature space by more than 700-fold compared with 7{,}393 features for MEL and 6{,}044 features for fMOPSO-FS.
@@ -56,7 +56,7 @@ The statistical results demonstrate that:
     \item KDS-EL significantly outperforms MEL, PSO-CSM, IGPSO, and BPSO on all 20 benchmark datasets without any loss.
     \item KDS-EL significantly outperforms KDS-EL w/o TPS\&KER, FWPSO, and SaWDE on 19 out of 20 datasets.
     \item Compared with its immediate ablative counterpart, KDS-EL w/o TPS, KDS-EL achieves 13 wins and 7 ties across the 20 datasets, confirming the statistically significant advantage of Two-Phase Weight Scheduling.
-    \item Against the five multi-objective methods, KDS-EL achieves 14 to 18 wins across the 20 datasets (14 against W-MOPSO-FS, 15 against fMOPSO-FS, 16 against NSGA-II-FS and MOEA-D-FS, and 18 against MOPSO-FS). The few statistical ties occur exclusively on ceiling-effect datasets where accuracy saturates, while KDS-EL decisively dominates in feature compactness.
+    \item Against the five multi-objective methods, KDS-EL achieves 14 to 18 wins across the 20 datasets (14 against W-MOPSO-FS, 15 against fMOPSO-FS, 16 against NSGA-II-FS and MOEA-D-FS, and 18 against MOPSO-FS). The few statistical ties occur exclusively on ceiling-effect datasets where accuracy saturates, while KDS-EL maintains substantial advantages in feature compactness.
 \end{enumerate}
 Crucially, no competing algorithm achieves a statistically significant advantage over KDS-EL on a majority of the 20 benchmark datasets.
 
@@ -66,7 +66,7 @@ To control the family-wise error rate across multiple hypothesis comparisons, we
 
 \input{../output/tables/T6b_holm_bonferroni}
 
-As reported in Table~\ref{T6b}, all 13 null hypotheses of equivalent performance are decisively rejected at the corrected significance levels. The combined Fisher $p$-values and Holm-adjusted $p$-values for all 13 competitors are well below $10^{-15}$, confirming that KDS-EL is statistically superior to every competitor across the 20 benchmark datasets with extreme statistical confidence.
+As reported in Table~\ref{T6b}, all 13 null hypotheses of equivalent performance are rejected at the corrected significance levels. The combined Fisher $p$-values and Holm-adjusted $p$-values for all 13 competitors are below $10^{-15}$, confirming that KDS-EL is statistically superior to every competitor across the 20 benchmark datasets.
 
 \subsubsection{Friedman Rank Test}
 
@@ -75,11 +75,11 @@ To evaluate global algorithmic rankings, the non-parametric Friedman test~\cite{
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.82\linewidth]{F13_friedman_rank.pdf}
-\caption{Average Friedman ranks of the 14 compared methods across the 20 benchmark datasets (lower rank indicates superior accuracy performance).}
+\caption{Average Friedman ranks of the 14 compared methods across 20 benchmark datasets.}
 \label{F13}
 \end{figure}
 
-KDS-EL achieves the best Friedman rank of 1.90, decisively outperforming KDS-EL w/o TPS (2.95), W-MOPSO-FS (5.33), KDS-EL w/o TPS\&KER (5.55), fMOPSO-FS (5.75), FWPSO (6.10), NSGA-II-FS (6.25), MOEA-D-FS (6.80), and the remaining methods, which range from 7.15 (PSO-CSM) to 13.80 (BPSO). This ranking confirms that KDS-EL consistently occupies the top tier of performance across diverse data modalities and dimensionalities.
+KDS-EL achieves the best Friedman rank of 1.90, outperforming KDS-EL w/o TPS (2.95), W-MOPSO-FS (5.33), KDS-EL w/o TPS\&KER (5.55), fMOPSO-FS (5.75), FWPSO (6.10), NSGA-II-FS (6.25), MOEA-D-FS (6.80), and the remaining methods, which range from 7.15 (PSO-CSM) to 13.80 (BPSO). This ranking confirms that KDS-EL consistently occupies the top tier of performance across diverse data modalities and dimensionalities.
 
 \subsection{Ceiling-Effect Analysis on Biomedical Gene-Expression Datasets}\label{sec:ceiling}
 
@@ -103,7 +103,7 @@ To examine the search dynamics and optimization trajectory of KDS-EL, Fig.~\ref{
 \begin{figure*}[!htb]
 \centering
 \includegraphics[width=0.95\linewidth]{F8_convergence.pdf}
-\caption{Mean convergence trajectories of KDS-EL and its ablative variants across 100 iterations: (a) overall mean convergence averaged over all 20 benchmark datasets, and (b)--(f) convergence profiles on representative datasets spanning small-sample microarray (\textit{Adenoma}), multi-class biomedical (\textit{DLBCL}), ultra-high dimensionality (\textit{T1D}), large sample size (\textit{BASEHOCK}), and non-linear feature interactions (\textit{Madelon}). Shaded ribbons denote $\pm 1$ standard deviation (or SEM for the overall mean) across 10 independent runs; the vertical dotted line at $t=70$ marks the Phase~2 weight transition point.}
+\caption{Convergence curves of KDS-EL and its ablative variants: (a) overall mean across 20 benchmark datasets, and (b)--(f) trajectories on five representative datasets. Shaded bands represent $\pm 1$ standard deviation.}
 \label{F8}
 \end{figure*}
 
@@ -122,7 +122,7 @@ Table~S5 in the Supplementary Material provides the complete per-dataset runtime
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.85\linewidth]{F11_runtime_scatter.pdf}
-\caption{Classification accuracy versus runtime trade-off of the 14 compared methods across the 20 benchmark datasets, illustrating that KDS-EL achieves top classification accuracy with low computational overhead.}
+\caption{Classification accuracy versus runtime trade-off of the 14 compared methods across 20 benchmark datasets.}
 \label{F11}
 \end{figure}
 

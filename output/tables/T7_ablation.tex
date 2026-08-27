@@ -1,6 +1,6 @@
 \begin{table}[!htb]
 \centering
-\caption{Component contribution analysis: each row strips one mechanism from the complete KDS-EL, and $\Delta$Acc reports the resulting accuracy loss relative to the row above. ``MEL'' denotes the framework stripped of all three mechanisms---the residual that remains once every component has been removed, corresponding to MEL~\cite{mel2024}. Feature counts are dataset means.}
+\caption{Results of subtractive component contribution analysis across 20 benchmark datasets.}
 \label{T7}
 \small
 \setlength{\tabcolsep}{6pt}
@@ -15,4 +15,7 @@ KDS-EL w/o TPS\&KER & 0.9325 & 291 & -1.63 \\
 MEL & 0.8868 & 2722 & -4.58 \\
 \bottomrule
 \end{tabular*}
+\vspace{2pt}
+\par\raggedright\footnotesize
+\textit{Note}: $\Delta$Acc indicates the marginal accuracy degradation when stripping the corresponding component. Bold values denote the best performance.
 \end{table}
