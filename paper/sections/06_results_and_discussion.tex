@@ -11,10 +11,10 @@ On individual datasets, KDS-EL achieves the best classification accuracy on 15 o
 A rigorous examination of the five datasets where KDS-EL does not record the strictly highest accuracy reveals important structural insights:
 \begin{enumerate}
     \item On \textit{ALL1} and \textit{SRBCT}, multi-objective methods (e.g., NSGA-II-FS and W-MOPSO-FS) achieve a nominal accuracy of 1.0000, while KDS-EL records 0.9998 and 0.9986, respectively. As detailed in Section~\ref{sec:ceiling}, this negligible disparity (<0.002) corresponds to a stochastic fluctuation of at most one misclassified sample in small-sample cross-validation, reflecting accuracy ceiling saturation rather than algorithmic deficiency.
-    \item On moderate-dimensional datasets with larger sample sizes (\textit{BASEHOCK}, \textit{COIL20}, and \textit{ISOLET}), NSGA-II-FS achieves slightly higher accuracy than KDS-EL (by 1.25, 0.32, and 1.96~pp). However, this slight accuracy gain is obtained at the expense of selecting massive feature subsets: 2{,}073, 283, and 185 features, respectively. In contrast, KDS-EL achieves competitive accuracy with only 134, 84, and 60 features, delivering an order-of-magnitude reduction in feature redundancy.
+    \item On moderate-dimensional datasets with larger sample sizes (\textit{BASEHOCK}, \textit{COIL20}, and \textit{ISOLET}), NSGA-II-FS achieves slightly higher accuracy than KDS-EL by 1.25, 0.32, and 1.96~pp, respectively. However, this slight accuracy gain is obtained at the expense of selecting massive feature subsets: 2{,}073, 283, and 185 features, respectively. In contrast, KDS-EL achieves competitive accuracy with only 134, 84, and 60 features, delivering an order-of-magnitude reduction in feature redundancy.
 \end{enumerate}
 
-In addition to superior central tendency, KDS-EL demonstrates remarkably low run-to-run dispersion, as reflected by the standard deviations in Table~\ref{T4}. On high-dimensional datasets such as \textit{Gastric1} (22{,}283 features), KDS-EL exhibits an accuracy standard deviation of only 0.0089, compared with 0.0215 for FWPSO and 0.0381 for MEL. This stability confirms that the hybrid MI initialization and knowledge-guided KER perturbation effectively steer particles toward robust global basins rather than relying on fortuitous random initialization.
+In addition to superior central tendency, KDS-EL demonstrates remarkably low run-to-run dispersion, as reflected by the standard deviations in Table~\ref{T4}. On high-dimensional datasets such as \textit{Gastric1} with 22{,}283 features, KDS-EL exhibits an accuracy standard deviation of only 0.0089, compared with 0.0215 for FWPSO and 0.0381 for MEL. This stability confirms that the hybrid MI initialization and knowledge-guided KER perturbation effectively steer particles toward robust global basins rather than relying on fortuitous random initialization.
 
 \subsection{Feature-Selection Compactness and Pareto Dominance}\label{sec:features}
 
@@ -78,12 +78,12 @@ KDS-EL achieves the best Friedman rank of 1.90, outperforming KDS-EL w/o TPS (2.
 
 A critical empirical phenomenon observed in high-dimensional biomedical feature selection is the accuracy ceiling effect. Among the 20 benchmark datasets, eight gene-expression microarrays---\textit{ALL1}, \textit{ALL\_AML}, \textit{Adenoma}, \textit{DLBCL}, \textit{Gastric2}, \textit{Leukaemia}, \textit{Lymphoma}, and \textit{SRBCT}---exhibit classification accuracy exceeding 0.998 across top-performing methods.
 
-Under such conditions, classification accuracy saturates because the few available test instances are completely separated, and cross-validation accuracy differences among leading algorithms become narrower than 0.002 (corresponding to stochastic variation in at most one sample). Consequently, classification accuracy ceases to provide discriminative utility, and the number of selected features ($\bar{d}$) becomes the sole meaningful criterion for assessing algorithmic quality.
+Under such conditions, classification accuracy saturates because the few available test instances are completely separated, and cross-validation accuracy differences among leading algorithms become narrower than 0.002, corresponding to stochastic variation in at most one sample. Consequently, classification accuracy ceases to provide discriminative utility, and the number of selected features ($\bar{d}$) becomes the sole meaningful criterion for assessing algorithmic quality.
 
 On these eight ceiling datasets, KDS-EL achieves an average of only 39 to 83 selected features, such as 39 features on \textit{ALL1}, 45 on \textit{Lymphoma}, and 64 on \textit{DLBCL}. In stark contrast:
 \begin{enumerate}
     \item Single-objective FWPSO requires 278 to 1{,}362 features to achieve comparable accuracy.
-    \item Multi-objective methods retain between 700 and 10{,}701 features on the same datasets (for instance, MOPSO-FS selects 5{,}920 features on \textit{ALL1} and 10{,}701 features on \textit{Gastric2}).
+    \item Multi-objective methods retain between 700 and 10{,}701 features on the same datasets, where MOPSO-FS selects 5{,}920 features on \textit{ALL1} and 10{,}701 features on \textit{Gastric2}.
     \item Standard MEL selects 2{,}483 to 4{,}248 features across these datasets.
 \end{enumerate}
 

@@ -102,16 +102,16 @@ To exploit the historical evolutionary knowledge distilled in $W$, the KER strat
 \label{F3}
 \end{figure*}
 
-At each generation, the top $\mathrm{elite\_k} = 3$ individuals (ranked by fitness) are selected. For each elite individual $\mathbf{x}_e \in \{0, 1\}^D$, KER executes a probabilistic dual-branch operation (Fig.~\ref{F3}):
+At each generation, the top $k_e = 3$ individuals ranked by fitness are selected. For each elite individual $\mathbf{x}_e \in \{0, 1\}^D$, KER executes a probabilistic dual-branch operation (Fig.~\ref{F3}):
 
-\textit{Branch~1 (Ergodic random exploration, $p_{\mathrm{rand}} = 0.10$)}: To guarantee search ergodicity, $\lfloor \phi D \rfloor$ features are selected uniformly at random and inverted:
+\textit{Branch~1: Ergodic random exploration ($p_{\mathrm{rand}} = 0.10$)}: To guarantee search ergodicity, $\lfloor \phi D \rfloor$ features are selected uniformly at random and inverted:
 \begin{equation}
 x'_{e,j} \leftarrow 1 - x_{e,j}, \quad \forall j \in \mathcal{S}_{\mathrm{rand}}, \quad |\mathcal{S}_{\mathrm{rand}}| = \lfloor \phi D \rfloor,
 \label{eq:ker_rand}
 \end{equation}
-where $\phi = \mathrm{flip\_frac} = 0.01$ defines the refinement perturbation budget.
+where $\phi = 0.01$ defines the refinement perturbation budget.
 
-\textit{Branch~2 (Knowledge-guided directional refinement, $1 - p_{\mathrm{rand}} = 0.90$)}: Each feature $j \in \{1, \ldots, D\}$ is assigned a state-dependent directional flip score $\sigma_j$:
+\textit{Branch~2: Knowledge-guided directional refinement ($1 - p_{\mathrm{rand}} = 0.90$)}: Each feature $j \in \{1, \ldots, D\}$ is assigned a state-dependent directional flip score $\sigma_j$:
 \begin{equation}
 \sigma_j = (1 - 2 x_{e,j}) \cdot W_j = \begin{cases}
 +W_j, & \text{if } x_{e,j} = 0 \quad \text{(activate absent feature)},\\[2pt]
@@ -169,7 +169,7 @@ If improved, $\mathbf{x}'_e$ immediately overwrites $\mathbf{x}_e$ in the popula
 
 \subsection{Two-Phase Dynamic Objective Weight Scheduling Strategy}\label{sec:twophase}
 
-To reconcile the temporal trade-off between coarse feature reduction (early) and fine accuracy refinement (late), KDS-EL introduces the Two-Phase Weight Scheduling (TPS) strategy. The total generational budget $T = 100$ is partitioned at split point $\alpha = \mathrm{PhaseSplit} = 0.70$. The dynamic dual-objective weight vector $\mathbf{w}(t) = [w_a(t), w_f(t)]$ is governed by:
+To reconcile the temporal trade-off between early coarse feature reduction and late fine accuracy refinement, KDS-EL introduces the Two-Phase Weight Scheduling (TPS) strategy. The total generational budget $T = 100$ is partitioned at split point $\alpha = 0.70$. The dynamic dual-objective weight vector $\mathbf{w}(t) = [w_a(t), w_f(t)]$ is governed by:
 \begin{equation}
 \mathbf{w}(t) = \begin{cases}
 [0.70, \; 0.30], & \text{for } 1 \le t \le \lfloor \alpha T \rfloor \quad \text{(Phase~1: Aggressive Pruning)},\\[4pt]
