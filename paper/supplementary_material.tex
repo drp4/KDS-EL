@@ -40,7 +40,7 @@ This supplementary document provides comprehensive extended experimental records
 \section*{Table of Contents}
 \begin{itemize}
     \item \textit{Section S1}: Benchmark Dataset Characteristics and Selection Rationale
-    \item \textit{Section S2}: Baseline Algorithms and Detailed Hyper-Parameter Configurations
+    \item \textit{Section S2}: Comparison Algorithms and Detailed Hyper-Parameter Configurations
     \item \textit{Section S3}: Complete Per-Dataset Classification Accuracy and Feature Compactness Metrics
     \item \textit{Section S4}: Granular Per-Dataset Component Contribution (Ablation) Results (Table~S4)
     \item \textit{Section S5}: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (Table~S5)
@@ -57,9 +57,9 @@ Table~\ref{T2} summarizes the statistical characteristics of the 20 benchmark da
 
 \input{../output/tables/T2_datasets}
 
-\section*{Section S2: Baseline Algorithms and Detailed Hyper-Parameter Configurations}\label{sec:supp_baselines}
+\section*{Section S2: Comparison Algorithms and Detailed Hyper-Parameter Configurations}\label{sec:supp_methods}
 
-Table~\ref{T1} lists the full taxonomy and categorization of the 13 baseline algorithms evaluated in the comparative study, and Table~\ref{T3} specifies the precise hyper-parameter configurations used across all algorithms to ensure strict reproducibility.
+Table~\ref{T1} lists the full taxonomy and categorization of the 13 comparison algorithms evaluated in the comparative study, and Table~\ref{T3} specifies the precise hyper-parameter configurations used across all algorithms to ensure strict reproducibility.
 
 \input{../output/tables/T1_methods}
 
@@ -79,7 +79,7 @@ Tables~\ref{T4} and~\ref{T5} present the complete per-dataset 5-fold cross-valid
 
 \section*{Section S4: Granular Per-Dataset Component Contribution (Ablation) Results (Table~S4)}\label{sec:supp_ablation}
 
-Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential configurations of the subtractive ablation chain: (i) MEL baseline~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL$_{\mathrm{KER}}$ (w/o TPS), and (iv) Complete KDS-EL.
+Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential configurations of the subtractive ablation chain: (i) Standard MEL~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL$_{\mathrm{KER}}$ (w/o TPS), and (iv) Complete KDS-EL.
 
 \input{../output/tables/T-A4_per_dataset_ablation}
 

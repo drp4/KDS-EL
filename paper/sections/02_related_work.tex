@@ -36,11 +36,11 @@ MEL~\cite{mel2024}             & MT-SI  & $\times$     & $\checkmark$ & $\times$
 \subsection{Evolutionary Swarm Intelligence for Feature Selection}\label{sec:fs-paradigms}
 
 Feature selection is a combinatorial NP-hard optimization problem that aims to identify an optimal subset of $d \ll D$ relevant features, maximizing predictive accuracy while eliminating redundant and uninformative dimensions~\cite{guyon2003,lili2017}. Traditional feature selection techniques are categorized into three classical paradigms:
-\begin{itemize}
+\begin{enumerate}
     \item \textbf{Filter methods}: Filter techniques evaluate feature subsets based on intrinsic statistical properties, such as mutual information (mRMR~\cite{peng2005}), correlation (FCBF~\cite{yu2003}), or graph-theoretic centrality~\cite{roffo2016}. Although computationally efficient ($O(D \log D)$), filter methods evaluate features independently or pairwise, fundamentally ignoring complex multivariate interactions and resulting in suboptimal accuracy when applied to non-linear classification landscapes.
     \item \textbf{Wrapper methods}: Wrapper approaches evaluate candidate subsets using the direct predictive feedback of a machine learning classifier~\cite{kohavi1997}. While wrappers capture intricate feature dependencies and deliver superior classification performance, exhaustive evaluation is intractable in high-dimensional spaces ($2^D$ combinatorial states), necessitating stochastic global search heuristics.
     \item \textbf{Embedded methods}: Embedded methods incorporate feature selection directly into model training via regularization, such as LASSO/Bolasso~\cite{bach2008} and tree-based ensemble importance (FS-GBDT~\cite{zhang2021fsgbdt}). However, embedded rankings are tightly coupled with specific classifier inductive biases and frequently struggle to generalize across diverse classification architectures.
-\end{itemize}
+\end{enumerate}
 
 To harness the predictive fidelity of wrappers while mitigating combinatorial computational bottlenecks, Swarm Intelligence (SI) and Evolutionary Computation (EC) have emerged as the dominant paradigms for feature selection~\cite{xue2016survey,liang2025}. Classical meta-heuristics, including Binary Particle Swarm Optimization (BPSO)~\cite{kennedy1997}, Genetic Algorithms (GA)~\cite{huang2006}, Ant Colony Optimization (ACO)~\cite{aghdam2009}, and Artificial Bee Colony (ABC)~\cite{karaboga2007}, navigate high-dimensional spaces via population-based stochastic exploration. 
 
@@ -62,17 +62,17 @@ To circumvent Pareto archive bloat and achieve extreme subset sparsity within ti
 
 Evolutionary Multi-Task Optimization (EMTO) aims to solve multiple distinct optimization tasks simultaneously by facilitating inter-task knowledge transfer through a unified chromosomal representation~\cite{zhang2021mtl}. In feature selection, EMTO frameworks partition the global population into collaborative subpopulations to explore complementary search subspaces. Prominent multi-task feature selection frameworks include minion-assisted multi-tasking~\cite{zhang2021minion}, evolutionary multi-task PSO for hyperspectral and gene expression data~\cite{chen2020emfs,chen2021emfs}, multi-task bee colony band selection~\cite{he2022}, and large-scale multi-objective multi-tasking~\cite{liu2022}.
 
-Most notably, Zhang et al.~\cite{mel2024} introduced Multi-Task Evolutionary Learning (MEL), which establishes a dual-subpopulation PSO framework. In MEL, Subpopulation~1 performs continuous swarm exploration guided by inter-task attractors, while Subpopulation~2 conducts discrete feature sampling based on a shared feature-importance matrix. While MEL successfully demonstrates the power of cross-task knowledge transfer, its baseline implementation suffers from three critical bottlenecks: (i) random uniform initialization that causes unguided early-stage exploration in sparse spaces, (ii) unconstrained feature importance accumulation without memory discounting, and (iii) rigid static objective weights that delay early dimensionality reduction.
+Most notably, Zhang et al.~\cite{mel2024} introduced Multi-Task Evolutionary Learning (MEL), which establishes a dual-subpopulation PSO framework. In MEL, Subpopulation~1 performs continuous swarm exploration guided by inter-task attractors, while Subpopulation~2 conducts discrete feature sampling based on a shared feature-importance matrix. While MEL successfully demonstrates the power of cross-task knowledge transfer, its unguided multi-task formulation suffers from three critical bottlenecks: (i) random uniform initialization that causes unguided early-stage exploration in sparse spaces, (ii) unconstrained feature importance accumulation without memory discounting, and (iii) rigid static objective weights that delay early dimensionality reduction.
 
 \subsection{Knowledge-Guided Meta-Heuristics and Information-Theoretic Hybridization}\label{sec:knowledge_guided}
 
 Integrating domain-specific prior knowledge into meta-heuristics has attracted surging attention as a means to escape the blindness of black-box search~\cite{ye2026,mimpode2025,deng2025nns}. In high-dimensional feature selection, mutual information (MI) serves as the primary information-theoretic metric to quantify non-linear feature relevance~\cite{cover1991}. 
 
 Existing knowledge-guided evolutionary algorithms typically adopt one-shot offline injection:
-\begin{itemize}
+\begin{enumerate}
     \item \textbf{Static filter pre-filtering}: Algorithms such as MI-MPODE~\cite{mimpode2025} and NNS-DFPG-CSA~\cite{deng2025nns} compute MI rankings offline and initialize the population or restrict the search space to the top-$k$ ranked features.
     \item \textbf{Static velocity biasing}: Frameworks such as FWPSO~\cite{wangjia2022} incorporate static feature-weight vectors to bias particle velocity equations throughout evolution.
-\end{itemize}
+\end{enumerate}
 
 While beneficial, one-shot knowledge injection lacks online adaptability: once injected, the static prior is never updated or refined by the empirical trial-and-error feedback generated during subsequent wrapper evaluations. Conversely, learning-based surrogates (such as neural networks~\cite{xuezhang2024} or Gaussian processes~\cite{liu2024}) introduce severe surrogate training overhead and risk model misspecification in extreme $p \gg n$ regimes.
 

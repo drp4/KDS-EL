@@ -1,6 +1,6 @@
 \section{Preliminaries}\label{sec:preliminaries}
 
-This section establishes the theoretical foundations, mathematical notations, and baseline architectures that underpin our proposed framework. We first formulate classical continuous and binary particle swarm optimization, followed by the information-theoretic definition of mutual information for feature relevance estimation, and conclude with the dual-subpopulation multi-task evolutionary learning (MEL) baseline.
+This section establishes the theoretical foundations, mathematical notations, and algorithmic building blocks that underpin our proposed framework. We first formulate classical continuous and binary particle swarm optimization, followed by the information-theoretic definition of mutual information for feature relevance estimation, and conclude with the dual-subpopulation multi-task evolutionary learning (MEL) framework.
 
 \subsection{Particle Swarm Optimization and Binary Formulations}\label{sec:pso}
 
@@ -40,7 +40,7 @@ Conventional filter feature selection methods~\cite{peng2005,deng2025nns} evalua
 \end{equation}
 where $\mathrm{IDX}$ denotes the feature indices sorted in descending order of $I(f_j; Y)$ and $k \in (0, 1]$ represents the retention ratio, permanently discarding all features outside the top-$k$ ranking. While computationally rapid ($O(D \log D)$), hard truncation fundamentally ignores multi-feature synergy: individual features with moderate MI scores that are collectively decisive when combined are permanently eliminated. Rather than using hard truncation, KDS-EL utilizes normalized MI scores as a soft prior to construct continuous initial population seeds (Section~\ref{sec:mi}), injecting filter knowledge into the evolutionary wrapper without irreversibly shrinking the search space.
 
-\subsection{Multi-Task Evolutionary Learning Baseline (MEL)}\label{sec:mel}
+\subsection{Dual-Subpopulation Multi-Task Swarm Framework (MEL)}\label{sec:mel}
 
 Multi-Task Evolutionary Learning (MEL), recently proposed by Zhang et al.~\cite{mel2024}, introduces a cooperative multi-task architecture for high-dimensional feature selection. In MEL, a population of $N$ particles is partitioned into two collaborative subpopulations, $\mathcal{P}_1$ and $\mathcal{P}_2$ ($|\mathcal{P}_1| = |\mathcal{P}_2| = N/2$), operating on dual complementary search tasks:
 

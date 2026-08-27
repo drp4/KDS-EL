@@ -15,9 +15,9 @@ The benchmark suite embodies several critical challenges inherent to high-dimens
 
 To prevent data leakage during feature relevance estimation and evaluation, a stratified 5-fold cross-validation scheme with random shuffling is strictly enforced. The cross-validation partitioning is performed prior to feature selection, ensuring that candidate subsets are evaluated strictly on validation folds.
 
-\subsubsection{Comparison Algorithms and Baseline Categorization}
+\subsubsection{Comparison Algorithms and Methodological Categorization}
 
-To evaluate KDS-EL comprehensively against modern evolutionary feature selection paradigms, 14 fixed-length methods are compared under identical evaluation budgets. As categorized in Table~\ref{T1}, the competitor suite encompasses: (i) the proposed framework and its systematically stripped ablative configurations (KDS-EL, KDS-EL w/o TPS, KDS-EL w/o TPS\&KER, and the foundational MEL baseline~\cite{mel2024}); (ii) five state-of-the-art single-objective evolutionary algorithms (FWPSO~\cite{wangjia2022}, PSO-CSM~\cite{wei2025}, SaWDE~\cite{wang2022}, IGPSO~\cite{xuezhang2024}, and classical BPSO~\cite{kennedy1997}); and (iii) five multi-objective evolutionary feature selection methods (W-MOPSO-FS, fMOPSO-FS~\cite{han2024}, NSGA-II-FS~\cite{deb2002}, MOEA-D-FS~\cite{zhang2007}, and MOPSO-FS~\cite{coello2004}). All comparison algorithms adopt the hyper-parameter settings recommended in their original publications.
+To evaluate KDS-EL comprehensively against modern evolutionary feature selection paradigms, 14 fixed-length methods are compared under identical evaluation budgets. As categorized in Table~\ref{T1}, the competitor suite encompasses: (i) the proposed framework and its systematically stripped ablative configurations (KDS-EL, KDS-EL w/o TPS, KDS-EL w/o TPS\&KER, and standard MEL~\cite{mel2024}); (ii) five state-of-the-art single-objective evolutionary algorithms (FWPSO~\cite{wangjia2022}, PSO-CSM~\cite{wei2025}, SaWDE~\cite{wang2022}, IGPSO~\cite{xuezhang2024}, and classical BPSO~\cite{kennedy1997}); and (iii) five multi-objective evolutionary feature selection methods (W-MOPSO-FS, fMOPSO-FS~\cite{han2024}, NSGA-II-FS~\cite{deb2002}, MOEA-D-FS~\cite{zhang2007}, and MOPSO-FS~\cite{coello2004}). All comparison algorithms adopt the hyper-parameter settings recommended in their original publications.
 
 \subsubsection{Parameter Configurations and Experimental Environment}
 
@@ -30,9 +30,9 @@ The hyper-parameters for KDS-EL are configured as follows: knowledge weight deca
 Algorithm performance is evaluated across three primary quantitative dimensions over 10 independent runs: (i) mean classification accuracy ($\mathrm{Acc}$) alongside standard deviation ($\mathrm{Std}$); (ii) mean selected feature count ($\bar{d}$) and the Feature Selection Ratio ($\mathrm{FSR} = \frac{\bar{d}}{D} \times 100\%$); and (iii) mean computational wall-clock runtime in seconds.
 
 \textit{Statistical significance testing protocol}: To verify whether observed improvements are statistically meaningful, we adhere to the multi-dataset statistical testing protocol recommended by Dem{\v{s}}ar~\cite{demsar2006}:
-\begin{itemize}
+\begin{enumerate}
     \item \textbf{Friedman Mean Rank Test}~\cite{friedman1940}: Computed across the $20 \times 14$ accuracy matrix to determine global algorithm rankings (lower rank indicates superior performance), with tied per-dataset means assigned their average rank.
     \item \textbf{Pairwise Wilcoxon Signed-Rank Test}~\cite{demsar2006}: Conducted at the $\alpha=0.05$ significance level to assess pairwise superiority between KDS-EL and each of the 13 competing methods across the 20 benchmark datasets.
     \item \textbf{Holm--Bonferroni Step-Down Correction}~\cite{holm1979}: Applied to adjust the family-wise error rate across all 13 pairwise hypothesis tests, ensuring rigorous statistical validation against multiple-comparison artifacts.
     \item \textbf{Per-dataset Paired Signed-Rank Annotation}: In Table~\ref{T4}, each competitor cell is annotated with $+$, $\approx$, or $-$ based on a two-sided Wilcoxon signed-rank test ($p<0.05$) across the 10 paired runs, indicating whether KDS-EL is significantly superior, statistically equivalent, or significantly inferior on that individual dataset.
-\end{itemize}
+\end{enumerate}
