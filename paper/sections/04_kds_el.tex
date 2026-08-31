@@ -175,7 +175,7 @@ The unified scalar fitness $f(\mathbf{x}, \mathbf{w}(t))$ of a binary feature su
 f(\mathbf{x}, \mathbf{w}(t)) = w_a(t) \cdot \bigl(1 - \mathrm{Acc}(\mathbf{x})\bigr) + w_f(t) \cdot \left(\frac{\|\mathbf{x}\|_0}{D}\right),
 \label{eq:fitness}
 \end{equation}
-where $\mathrm{Acc}(\mathbf{x})$ denotes 5-fold cross-validation classification accuracy evaluated by a $k$-NN classifier ($k=3$), and $\|\mathbf{x}\|_0 / D$ represents the normalized feature selection ratio ($\mathrm{FSR}$).
+where $\mathrm{Acc}(\mathbf{x})$ denotes 5-fold cross-validation classification accuracy evaluated by a 3-NN classifier, and $\|\mathbf{x}\|_0 / D$ represents the normalized feature selection ratio.
 
 In Phase~1 ($t \le 0.7T$), the heavy feature-ratio penalty ($w_f = 0.30$) drives rapid elimination of non-informative dimensions. In Phase~2 ($t > 0.7T$), the weight switches to prioritize classification accuracy ($w_a = 0.95$), enabling fine-tuning of delicate biomarker interactions over the surviving compact subspace.
 

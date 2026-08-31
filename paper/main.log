@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  31 AUG 2026 20:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  31 AUG 2026 20:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -946,15 +946,9 @@ LaTeX Font Info:    Calculating math sizes for size <7.2> on input line 11.
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <7.2> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 26.
 
-Underfull \hbox (badness 1527) in paragraph at lines 56--57
-\T1/txr/m/n/8 nu-mer-ous spe-cial-ized single-objective evo-lu-tion-ary al-go-r
-ithms have been
- []
-
-
-Underfull \hbox (badness 2027) in paragraph at lines 56--57
-\T1/txr/m/n/8 (SaWDE) [[]], multi-layer perceptron-guided PSO (IG-PSO) [[]], mu
-lti-
+Underfull \hbox (badness 1308) in paragraph at lines 56--57
+\T1/txr/m/n/8 search tra-jec-to-ries [[]], self-adaptive dif-fer-en-tial evo-lu
+-tion with adap-tive
  []
 
 
@@ -1044,62 +1038,57 @@ Package pdftex.def Info: ../output/figures/F3_ker_strategy_journal.pdf  used on
  input line 157.
 (pdftex.def)             Requested size: 511.55777pt x 283.85071pt.
 [5 <../output/figures/F2_mi_initialization_journal.pdf>] [6 <../output/figures/
-F3_ker_strategy_journal.pdf>]) (sections/05_experimental_setup.tex
-Underfull \hbox (badness 1762) in paragraph at lines 7--8
-[]\T1/txr/m/n/8 To val-i-date the per-for-mance and gen-er-al-iza-tion abil-ity
- of KDS-EL
+F3_ker_strategy_journal.pdf>]) (sections/05_experimental_setup.tex)
+Underfull \hbox (badness 1675) in paragraph at lines 19--219
+[]\T1/txr/m/n/8 To de-ter-mine whether the em-pir-i-cal im-prove-ments of KDS-E
+L are
  []
 
 
-Underfull \hbox (badness 1205) in paragraph at lines 15--16
-\T1/txr/m/n/8 multi-task evo-lu-tion-ary learn-ing al-go-rithm (MEL [[]]). In a
-d-di-tion, five
+Underfull \hbox (badness 3954) in paragraph at lines 19--219
+\T1/txr/m/n/8 sta-tis-ti-cally sig-nif-i-cant, we fol-low the multi-problem sta
+-tis-ti-cal test-ing
  []
 
-
-Underfull \hbox (badness 1210) in paragraph at lines 15--16
-\T1/txr/m/n/8 W-MOPSO-FS, fMOPSO-FS [[]], NSGA-II-FS [[]], MOEA-D-FS [[]],
- []
-
-) (../output/tables/T1_methods.tex) (../output/tables/T2_datasets.tex)
-(../output/tables/T3_params.tex) (sections/06_experimental_analysis.tex
-[7] (../output/tables/T4_accuracy.tex
+(../output/tables/T2_datasets.tex) (../output/tables/T3_params.tex)
+(sections/06_experimental_analysis.tex (../output/tables/T4_accuracy.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <6> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 37.
-) (../output/tables/T5_features.tex)
+)
+[7] (../output/tables/T5_features.tex)
 Underfull \hbox (badness 2302) in paragraph at lines 27--28
 \T1/txr/m/n/8 ultra-high-dimensional gene-expression datasets. For in-stance, o
 n \T1/txr/m/it/8 ALL1\T1/txr/m/n/8 ,
  []
 
-[8]
-<../output/figures/F8_convergence.pdf, id=770, 636.01959pt x 469.69603pt>
+<../output/figures/F8_convergence.pdf, id=755, 636.01959pt x 469.69603pt>
 File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
 ne 37.
 (pdftex.def)             Requested size: 480.23904pt x 354.65775pt.
- (../output/tables/T6_wilcoxon.tex) [9]
+(../output/tables/T6_wilcoxon.tex) [8]
 (../output/tables/T6b_holm_bonferroni.tex)
 Underfull \hbox (badness 1237) in paragraph at lines 56--57
 []\T1/txr/m/n/8 To as-sess global al-go-rith-mic rank-ings, the non-parametric 
 Fried-man
  []
 
-<../output/figures/F13_friedman_rank.pdf, id=783, 527.6394pt x 310.65373pt>
+<../output/figures/F13_friedman_rank.pdf, id=769, 527.6394pt x 310.65373pt>
 File: ../output/figures/F13_friedman_rank.pdf Graphic file (type pdf)
 <use ../output/figures/F13_friedman_rank.pdf>
 Package pdftex.def Info: ../output/figures/F13_friedman_rank.pdf  used on input
  line 60.
 (pdftex.def)             Requested size: 206.64185pt x 121.66165pt.
-(../output/tables/T7_ablation.tex)
-<../output/figures/F6_ablation_radar.pdf, id=788, 415.46979pt x 422.26967pt>
+[9] (../output/tables/T7_ablation.tex)
+<../output/figures/F6_ablation_radar.pdf, id=781, 415.46979pt x 422.26967pt>
 File: ../output/figures/F6_ablation_radar.pdf Graphic file (type pdf)
 <use ../output/figures/F6_ablation_radar.pdf>
 Package pdftex.def Info: ../output/figures/F6_ablation_radar.pdf  used on input
  line 75.
 (pdftex.def)             Requested size: 221.76123pt x 225.3869pt.
- [10 <../output/figures/F8_convergence.pdf>]
+ [10 <../output/figures/F8_convergence.pdf> <../output/figures/F13_friedman_ran
+k.pdf>]
 Underfull \hbox (badness 1048) in paragraph at lines 84--85
 []\T1/txr/m/n/8 Third, re-gard-ing Mu-tual In-for-ma-tion Ini-tial-iza-tion and
  Adap-tive Re-
@@ -1117,7 +1106,7 @@ Underfull \hbox (badness 3536) in paragraph at lines 88--89
  pre-lim-i-nary
  []
 
-<../output/figures/F11_runtime_scatter.pdf, id=851, 506.4339pt x 304.73952pt>
+<../output/figures/F11_runtime_scatter.pdf, id=856, 506.4339pt x 304.73952pt>
 File: ../output/figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use ../output/figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: ../output/figures/F11_runtime_scatter.pdf  used on inp
@@ -1129,8 +1118,7 @@ Underfull \hbox (badness 1077) in paragraph at lines 103--104
 y ev-i-dent on
  []
 
-[11 <../output/figures/F13_friedman_rank.pdf> <../output/figures/F6_ablation_ra
-dar.pdf> <../output/figures/F11_runtime_scatter.pdf>]
+
 Underfull \hbox (badness 1748) in paragraph at lines 105--106
 []\T1/txr/m/n/8 This ef-fi-ciency is driven by three com-ple-men-tary fac-tors.
  First, in
@@ -1162,35 +1150,35 @@ ns across the
  []
 
 (../output/tables/T8_parameter_sensitivity.tex)
-<../output/figures/F14_parameter_sensitivity.pdf, id=910, 817.31973pt x 182.140
+<../output/figures/F14_parameter_sensitivity.pdf, id=861, 817.31973pt x 182.140
 49pt>
 File: ../output/figures/F14_parameter_sensitivity.pdf Graphic file (type pdf)
 <use ../output/figures/F14_parameter_sensitivity.pdf>
 Package pdftex.def Info: ../output/figures/F14_parameter_sensitivity.pdf  used 
 on input line 119.
 (pdftex.def)             Requested size: 522.0pt x 116.32771pt.
- [12 <../output/figures/F14_parameter_sensitivity.pdf>]) (sections/09_conclusio
-n.tex
+ [11 <../output/figures/F6_ablation_radar.pdf> <../output/figures/F11_runtime_s
+catter.pdf>])
+(sections/09_conclusion.tex
 Underfull \hbox (badness 2073) in paragraph at lines 3--4
 \T1/txr/m/n/8 multi-objective com-peti-tor W-MOPSO-FS by +4.42 pp, while re-duc
 -ing
  []
 
 )
-Underfull \hbox (badness 3068) in paragraph at lines 5--230
+Underfull \hbox (badness 3068) in paragraph at lines 5--229
 []\T1/txr/m/n/8 Despite these promis-ing out-comes, sev-eral lim-i-ta-tions of-
 fer fer-tile
  []
 
 
-Underfull \hbox (badness 1558) in paragraph at lines 5--230
+Underfull \hbox (badness 1558) in paragraph at lines 5--229
 \T1/txr/m/n/8 re-fine-ment and stage-aware ob-jec-tive schedul-ing to multi-lab
 el learn-ing,
  []
 
-(main.bbl [13]) [14
-
-] (main.aux)
+[12 <../output/figures/F14_parameter_sensitivity.pdf>] (main.bbl) [13]
+(main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
@@ -1199,13 +1187,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 2AFF847673F109D2269266078B39EA92;7941.
  ) 
 Here is how much of TeX's memory you used:
- 13827 strings out of 467690
- 208572 string characters out of 5431801
- 707972 words of memory out of 5000000
- 42417 multiletter control sequences out of 15000+600000
+ 13816 strings out of 467690
+ 208261 string characters out of 5431801
+ 721531 words of memory out of 5000000
+ 42411 multiletter control sequences out of 15000+600000
  785351 words of font info for 316 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,79p,1706b,689s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,15n,79p,1706b,579s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi525\ectt
 0800.pk><E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam7.pfb><E:/MiKTeX/fon
 ts/type1/public/amsfonts/symbols/msbm10.pfb><E:/MiKTeX/fonts/type1/public/amsfo
@@ -1217,9 +1205,9 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (15 pages, 660165 bytes).
+Output written on main.pdf (14 pages, 653752 bytes).
 PDF statistics:
- 1182 PDF objects out of 1200 (max. 8388607)
- 153 named destinations out of 1000 (max. 500000)
+ 1168 PDF objects out of 1200 (max. 8388607)
+ 151 named destinations out of 1000 (max. 500000)
  329 words of extra memory for PDF output out of 10000 (max. 10000000)
 
