@@ -80,10 +80,10 @@ where $(2 x_{i,j}^{(t)} - 1) = +1$ if feature $j$ was newly activated and $-1$ i
 
 To prevent early-discovered features from dominating the matrix indefinitely and allow the algorithm to adapt as the search shifts toward fine-grained subspaces, an exponential memory decay is applied at the conclusion of each generation:
 \begin{equation}
-W \leftarrow \gamma \cdot W, \quad \text{where } \gamma = 0.99.
+W \leftarrow \gamma \cdot W.
 \label{eq:decay}
 \end{equation}
-The decay factor ensures that unless a feature repeatedly contributes to fitness improvements, its score depreciates as $\gamma^k$, preventing score saturation while dynamically maintaining ranking sensitivity.
+The decay factor $\gamma = 0.99$ ensures that unless a feature repeatedly contributes to fitness improvements, its score depreciates exponentially, preventing score saturation while dynamically maintaining ranking sensitivity.
 
 \subsection{Elite refinement strategy}\label{sec:ker}
 
@@ -101,21 +101,19 @@ where $\phi = 0.01$ defines the refinement perturbation budget.
 \textit{Branch~2: Knowledge-guided directional refinement ($1 - p_{\mathrm{rand}} = 0.90$)}: Each feature $j \in \{1, \ldots, D\}$ is assigned a state-dependent directional flip score $\sigma_j$:
 \begin{equation}
 \sigma_j = (1 - 2 x_{e,j}) \cdot W_j = \begin{cases}
-+W_j, & \text{if } x_{e,j} = 0 \quad \text{(activate absent feature)},\\[2pt]
--W_j, & \text{if } x_{e,j} = 1 \quad \text{(deactivate present feature)}.
++W_j, & \text{if } x_{e,j} = 0,\\[2pt]
+-W_j, & \text{if } x_{e,j} = 1.
 \end{cases}
 \label{eq:flip_score}
 \end{equation}
-We identify the index set $\mathcal{S}_{\mathrm{know}}$ containing the $\lfloor \phi D \rfloor$ features possessing the highest flip scores $\sigma_j$:
+A positive score $+W_j$ favors activating an absent feature with proven positive historical contribution, whereas a negative score $-W_j$ favors deactivating a present feature that previously degraded fitness. We identify the index set $\mathcal{S}_{\mathrm{know}}$ containing the $\lfloor \phi D \rfloor$ features possessing the highest flip scores $\sigma_j$:
 \begin{equation}
-\mathcal{S}_{\mathrm{know}} = \arg\max_{|\mathcal{S}| = \lfloor \phi D \rfloor} \sum_{j \in \mathcal{S}} \sigma_j, \quad \text{where } \mathcal{S} \subseteq \{1, \ldots, D\},
+\mathcal{S}_{\mathrm{know}} = \arg\max_{|\mathcal{S}| = \lfloor \phi D \rfloor} \sum_{j \in \mathcal{S}} \sigma_j, \quad \mathcal{S} \subseteq \{1, \ldots, D\},
 \label{eq:top_scores}
 \end{equation}
 and invert the selected features: $x'_{e,j} \leftarrow 1 - x_{e,j}, \forall j \in \mathcal{S}_{\mathrm{know}}$.
 
-\subsubsection{In-place replacement}
-
-The refined mutant $\mathbf{x}'_e$ is evaluated in a closed loop, and admitted via greedy 1-to-1 in-place replacement:
+\textit{Greedy 1-to-1 in-place replacement}: The refined mutant $\mathbf{x}'_e$ is evaluated in a closed loop, and admitted via greedy 1-to-1 in-place replacement:
 \begin{equation}
 \mathbf{x}_e^{\star} = \begin{cases}
 \mathbf{x}'_e, & \text{if } f(\mathbf{x}'_e, \mathbf{w}(t)) < f(\mathbf{x}_e, \mathbf{w}(t)),\\[2pt]
@@ -166,8 +164,8 @@ If improved, $\mathbf{x}'_e$ immediately overwrites $\mathbf{x}_e$ in the popula
 To align objective weights with the temporal structure of feature selection and resolve the conflict between early dimensionality reduction and late accuracy refinement, KDS-EL introduces the Two-Phase Weight Scheduling (TPS) strategy. The total generational budget $T = 100$ is partitioned at split point $\kappa = 0.70$. The dynamic dual-objective weight vector $\mathbf{w}(t) = [w_a(t), w_f(t)]$ is governed by:
 \begin{equation}
 \mathbf{w}(t) = \begin{cases}
-[0.70, \; 0.30], & \text{for } 1 \le t \le \lfloor \kappa T \rfloor \quad \text{(Phase~1: Aggressive Pruning)},\\[4pt]
-[0.95, \; 0.05], & \text{for } \lfloor \kappa T \rfloor < t \le T \quad \text{(Phase~2: Accuracy Refinement)}.
+[0.70, \; 0.30], & \text{for } 1 \le t \le \lfloor \kappa T \rfloor,\\[4pt]
+[0.95, \; 0.05], & \text{for } \lfloor \kappa T \rfloor < t \le T.
 \end{cases}
 \label{eq:twophase}
 \end{equation}
@@ -231,21 +229,21 @@ The execution time of KDS-EL is decomposed into two distinct phases:
 
 \textit{Offline preprocessing phase (mutual information calculation)}: Computing the mutual information $I(f_j; Y)$ between each feature $f_j$ and class label $Y$ requires $O(N_{\mathrm{samp}})$ operations per feature, where $N_{\mathrm{samp}}$ is the number of training samples. For all $D$ features, computing and sorting the prior MI vector incurs:
 \begin{equation}
-T_{\mathrm{pre}} = O(D \cdot N_{\mathrm{samp}} + D \log D).
+T_{\mathrm{pre}} = \mathcal{O}(D \cdot N_{\mathrm{samp}} + D \log D).
 \label{eq:t_pre}
 \end{equation}
 Because this step is executed only once prior to the evolutionary loop, its overhead is entirely negligible relative to iterative wrapper evaluations.
 
-\textit{Iterative evolutionary main loop ($T$ iterations)}: In each of the $T$ generations, computational costs arise from: (i) updating particle continuous positions ($O(N \cdot D)$), (ii) differential matrix updating and decay ($O(N \cdot D + D)$), (iii) refining $k_e$ elites via KER ($O(k_e \cdot (D + T_{\mathrm{eval\_single}}))$), (iv) occasional adaptive re-initialization ($O(\frac{N}{2} \cdot (D + T_{\mathrm{eval\_single}}))$), and (v) evaluating 5-fold cross-validation $k\text{-NN}$ classification accuracy for $N$ candidate particles:
+\textit{Iterative evolutionary main loop ($T$ iterations)}: In each of the $T$ generations, computational costs arise from: (i) updating particle continuous positions ($\mathcal{O}(N \cdot D)$), (ii) differential matrix updating and decay ($\mathcal{O}(N \cdot D + D)$), (iii) refining $k_e$ elites via KER ($\mathcal{O}(k_e \cdot (D + T_{\mathrm{eval\_single}}))$), (iv) occasional adaptive re-initialization ($\mathcal{O}(\frac{N}{2} \cdot (D + T_{\mathrm{eval\_single}}))$), and (v) evaluating 5-fold cross-validation $k\text{-NN}$ classification accuracy for $N$ candidate particles:
 \begin{equation}
-T_{\mathrm{eval}} = O(N \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}),
+T_{\mathrm{eval}} = \mathcal{O}(N \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}),
 \label{eq:t_eval}
 \end{equation}
 where $d_{\mathrm{selected}} = \|\mathbf{x}\|_0$ is the number of active features in candidate $\mathbf{x}$.
 
 Summing these terms across $T$ generations yields the total asymptotic time complexity:
 \begin{equation}
-\mathcal{T}_{\mathrm{total}} = O\Bigl(D \log D + T \cdot \bigl[N \cdot D + (N + k_e) \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}\bigr]\Bigr).
+\mathcal{T}_{\mathrm{total}} = \mathcal{O}\Bigl(D \log D + T \cdot \bigl[N \cdot D + (N + k_e) \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}\bigr]\Bigr).
 \label{eq:total_complexity}
 \end{equation}
 
@@ -253,18 +251,18 @@ Summing these terms across $T$ generations yields the total asymptotic time comp
 
 Because $k_e = 3 \ll N = 20$ and $N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}} \gg D$, the dominant asymptotic per-generation complexity of KDS-EL is strictly governed by wrapper evaluations:
 \begin{equation}
-\mathcal{T}_{\mathrm{KDS-EL}} = O(T \cdot N \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}),
+\mathcal{T}_{\mathrm{KDS-EL}} = \mathcal{O}(T \cdot N \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}),
 \label{eq:dominant_complexity}
 \end{equation}
-which is identically of the same asymptotic order as standard MEL~\cite{mel2024} ($O(T \cdot N \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{MEL}})$).
+which is identically of the same asymptotic order as standard MEL~\cite{mel2024} ($\mathcal{O}(T \cdot N \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{MEL}})$).
 
 Crucially, in standard MEL, random initialization and sluggish feature reduction result in dense candidate subsets ($d_{\mathrm{MEL}} \approx 2{,}722$ active features on average). In contrast, KDS-EL's MI seeding and Phase~1 aggressive feature pruning rapidly compress the active feature count to $d_{\mathrm{KDS-EL}} \approx 88$ features. Because $k\text{-NN}$ distance calculation scales linearly with $d_{\mathrm{selected}}$, evaluating a KDS-EL particle is over an order of magnitude faster than evaluating an unpruned MEL particle. Consequently, KDS-EL delivers a 3.4$\times$ empirical wall-clock speedup, reducing average runtime from 175.0~s for MEL to 51.4~s while incorporating richer knowledge operators.
 
 \subsubsection{Space complexity}
 
-The memory footprint of KDS-EL comprises: (i) the population continuous and binary position matrices ($O(N \cdot D)$), (ii) personal-best vectors ($O(N \cdot D)$), (iii) the cumulative feature-importance matrix $W$ ($O(D)$), and (iv) the precomputed normalized MI vector $\mathbf{m}$ ($O(D)$). The overall space complexity is:
+The memory footprint of KDS-EL comprises: (i) the population continuous and binary position matrices ($\mathcal{O}(N \cdot D)$), (ii) personal-best vectors ($\mathcal{O}(N \cdot D)$), (iii) the cumulative feature-importance matrix $W$ ($\mathcal{O}(D)$), and (iv) the precomputed normalized MI vector $\mathbf{m}$ ($\mathcal{O}(D)$). The overall space complexity is:
 \begin{equation}
-\mathcal{S}_{\mathrm{total}} = O(N \cdot D + N_{\mathrm{samp}} \cdot D),
+\mathcal{S}_{\mathrm{total}} = \mathcal{O}(N \cdot D + N_{\mathrm{samp}} \cdot D),
 \label{eq:space_complexity}
 \end{equation}
 which scales strictly linearly with dimension $D$, ensuring minimal memory consumption.

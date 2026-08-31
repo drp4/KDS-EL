@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  31 AUG 2026 19:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  31 AUG 2026 20:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -28,7 +28,16 @@ Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
 
 (E:\MiKTeX\tex/latex/base\article.cls
 Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
-(E:\MiKTeX\tex/latex/base\size10.clo
+(E:\MiKTeX\tex/latex/base\fleqn.clo
+File: fleqn.clo 2016/12/29 v1.2b Standard LaTeX option (flush left equations)
+\mathindent=\skip49
+Applying: [2015/01/01] Make \[ robust on input line 50.
+LaTeX Info: Redefining \[ on input line 51.
+Already applied: [0000/00/00] Make \[ robust on input line 62.
+Applying: [2015/01/01] Make \] robust on input line 74.
+LaTeX Info: Redefining \] on input line 75.
+Already applied: [0000/00/00] Make \] robust on input line 83.
+) (E:\MiKTeX\tex/latex/base\size10.clo
 File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 )
 \c@part=\count277
@@ -39,8 +48,8 @@ File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 \c@subparagraph=\count282
 \c@figure=\count283
 \c@table=\count284
-\abovecaptionskip=\skip49
-\belowcaptionskip=\skip50
+\abovecaptionskip=\skip50
+\belowcaptionskip=\skip51
 \bibindent=\dimen151
 )
 (E:\MiKTeX\tex/latex/graphics\graphicx.sty
@@ -84,13 +93,13 @@ File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 \els@boxb=\box58
 \leftMargin=\dimen156
 \@enLab=\toks19
-\@sep=\skip51
-\@@sep=\skip52
+\@sep=\skip52
+\@@sep=\skip53
  (main.spl)
 (E:\MiKTeX\tex/latex/natbib\natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip53
-\bibsep=\skip54
+\bibhang=\skip54
+\bibsep=\skip55
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count291
 )
@@ -121,7 +130,7 @@ Package: iftex 2024/12/12 v1.0g TeX engine tests
  (E:\MiKTeX\tex/latex/geometry\geometry.cfg))
 (E:\MiKTeX\tex/latex/base\fleqn.clo
 File: fleqn.clo 2016/12/29 v1.2b Standard LaTeX option (flush left equations)
-\mathindent=\skip55
+\mathindent=\skip56
 Applying: [2015/01/01] Make \[ robust on input line 50.
 LaTeX Info: Redefining \[ on input line 51.
 Already applied: [0000/00/00] Make \[ robust on input line 62.
@@ -218,7 +227,7 @@ Package: inputenc 2024/02/08 v1.3d Input encoding file
 )
 (E:\MiKTeX\tex/latex/amsmath\amsmath.sty
 Package: amsmath 2025/07/09 v2.17z AMS math features
-\@mathmargin=\skip56
+\@mathmargin=\skip57
 
 For additional information on amsmath, use the `?' option.
 (E:\MiKTeX\tex/latex/amsmath\amstext.sty
@@ -278,8 +287,8 @@ LaTeX Info: Redefining \Relbar on input line 970.
 \totwidth@=\dimen173
 \lineht@=\dimen174
 \@envbody=\toks26
-\multlinegap=\skip57
-\multlinetaggap=\skip58
+\multlinegap=\skip58
+\multlinetaggap=\skip59
 \mathdisplay@stack=\toks27
 LaTeX Info: Redefining \[ on input line 2950.
 LaTeX Info: Redefining \] on input line 2951.
@@ -573,20 +582,20 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \c@ALG@line=\count315
 \c@ALG@rem=\count316
 \c@ALG@nested=\count317
-\ALG@tlm=\skip59
-\ALG@thistlm=\skip60
+\ALG@tlm=\skip60
+\ALG@thistlm=\skip61
 \c@ALG@Lnr=\count318
 \c@ALG@blocknr=\count319
 \c@ALG@storecount=\count320
 \c@ALG@tmpcounter=\count321
-\ALG@tmplength=\skip61
+\ALG@tmplength=\skip62
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
 ) (E:\MiKTeX\tex/latex/graphics\rotating.sty
 Package: rotating 2025/01/14 v2.16e rotated objects in LaTeX
 \c@r@tfl@t=\count322
-\rotFPtop=\skip62
-\rotFPbot=\skip63
+\rotFPtop=\skip63
+\rotFPbot=\skip64
 \rot@float@box=\box63
 \rot@mess@toks=\toks31
 )
@@ -710,60 +719,60 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 84.
 )
-\Hy@SectionHShift=\skip64
+\Hy@SectionHShift=\skip65
 )
 
 Package geometry Warning: Over-specification in `v'-direction.
     `height' (682.0pt) is ignored.
 
 LaTeX Font Info:    Trying to load font information for T1+txr on input line 12
-0.
+2.
 (E:\MiKTeX\tex/latex/txfonts\t1txr.fd
 File: t1txr.fd 2000/12/15 v3.1
 ) (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 120.
+LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 122.
 LaTeX Font Info:    Trying to load font information for OML+txmi on input line 
-120.
+122.
 
 (E:\MiKTeX\tex/latex/txfonts\omltxmi.fd
 File: omltxmi.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 120.
-LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 122.
 LaTeX Font Info:    Trying to load font information for OMS+txsy on input line 
-120.
+122.
 
 (E:\MiKTeX\tex/latex/txfonts\omstxsy.fd
 File: omstxsy.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 120.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 120.
-LaTeX Font Info:    ... okay on input line 120.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 120.
-LaTeX Font Info:    ... okay on input line 120.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 120.
-LaTeX Font Info:    ... okay on input line 120.
-LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 122.
 LaTeX Font Info:    Trying to load font information for OMX+txex on input line 
-120.
+122.
 
 (E:\MiKTeX\tex/latex/txfonts\omxtxex.fd
 File: omxtxex.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 120.
-LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 120.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 122.
 LaTeX Font Info:    Trying to load font information for U+txexa on input line 1
-20.
+22.
  (E:\MiKTeX\tex/latex/txfonts\utxexa.fd
 File: utxexa.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    ... okay on input line 120.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 120.
-LaTeX Font Info:    ... okay on input line 120.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 120.
-LaTeX Font Info:    ... okay on input line 120.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 122.
+LaTeX Font Info:    ... okay on input line 122.
  (E:\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count334
@@ -822,7 +831,7 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Encoding Info:    Redeclaring text command \k (encoding T1) on input line
- 120.
+ 122.
 (E:\MiKTeX\tex/latex/graphics\color.sty
 Package: color 2025/01/14 v1.3e Standard LaTeX Color (DPC)
 
@@ -832,17 +841,17 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 Package color Info: Driver file: pdftex.def on input line 149.
 
 (E:\MiKTeX\tex/latex/graphics\mathcolor.ltx))
-Package hyperref Info: Link coloring ON on input line 120.
+Package hyperref Info: Link coloring ON on input line 122.
  (main.out) (main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <18> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 130.
-LaTeX Font Info:    Font shape `T1/txr/b/n' in size <13> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 132.
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <13> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 134.
 LaTeX Font Info:    Trying to load font information for TS1+txr on input line 1
-38.
+40.
 
 (E:\MiKTeX\tex/latex/txfonts\ts1txr.fd
 File: ts1txr.fd 2000/12/15 v3.1
@@ -852,37 +861,37 @@ File: ts1txr.fd 2000/12/15 v3.1
 {C:/Users/86185/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{E:/MiKTeX/fon
 ts/enc/dvips/base/8r.enc}]
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <16> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 195.
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 197.
 LaTeX Font Info:    Trying to load font information for OT1+txr on input line 1
-95.
+97.
 
 (E:\MiKTeX\tex/latex/txfonts\ot1txr.fd
 File: ot1txr.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Trying to load font information for U+txmia on input line 1
-95.
+97.
  (E:\MiKTeX\tex/latex/txfonts\utxmia.fd
 File: utxmia.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 195
+LaTeX Font Info:    Trying to load font information for U+msa on input line 197
 .
 (E:\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 195
+LaTeX Font Info:    Trying to load font information for U+msb on input line 197
 .
  (E:\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for U+txsyc on input line 1
-95.
+97.
 
 (E:\MiKTeX\tex/latex/txfonts\utxsyc.fd
 File: utxsyc.fd 2000/12/15 v3.1
 )
-LaTeX Font Info:    Calculating math sizes for size <6.8> on input line 195.
+LaTeX Font Info:    Calculating math sizes for size <6.8> on input line 197.
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <8.5> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 195.
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 197.
  (sections/01_introduction.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <8> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 1.
@@ -937,68 +946,68 @@ LaTeX Font Info:    Calculating math sizes for size <7.2> on input line 11.
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <7.2> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 26.
 
-Underfull \hbox (badness 1527) in paragraph at lines 57--58
+Underfull \hbox (badness 1527) in paragraph at lines 56--57
 \T1/txr/m/n/8 nu-mer-ous spe-cial-ized single-objective evo-lu-tion-ary al-go-r
 ithms have been
  []
 
 
-Underfull \hbox (badness 2027) in paragraph at lines 57--58
+Underfull \hbox (badness 2027) in paragraph at lines 56--57
 \T1/txr/m/n/8 (SaWDE) [[]], multi-layer perceptron-guided PSO (IG-PSO) [[]], mu
 lti-
  []
 
 
-Underfull \hbox (badness 1072) in paragraph at lines 61--62
+Underfull \hbox (badness 1072) in paragraph at lines 60--61
 \T1/txr/m/n/8 be-hav-iors of bird flocks. A swarm con-sists of $\OML/txmi/m/it/
 8 N$ \T1/txr/m/n/8 par-ti-cles nav-i-gat-ing a
  []
 
 [2]
-Underfull \hbox (badness 2435) in paragraph at lines 102--103
+Underfull \hbox (badness 2435) in paragraph at lines 101--102
 \T1/txr/m/n/8 trans-fer through a uni-fied chro-mo-so-mal rep-re-sen-ta-tion [[
 ]]. In fea-ture
  []
 
 
-Underfull \hbox (badness 1389) in paragraph at lines 125--126
+Underfull \hbox (badness 1389) in paragraph at lines 124--125
 \T1/txr/m/n/8 Objective Fea-ture Se-lec-tion (MOFS) al-go-rithms model this tra
 de-off by
  []
 
 
-Underfull \hbox (badness 3209) in paragraph at lines 127--128
+Underfull \hbox (badness 3209) in paragraph at lines 126--127
 []\T1/txr/m/n/8 Despite their the-o-ret-i-cal ap-peal, MOFS meth-ods en-counter
  se-vere
  []
 
 
-Underfull \hbox (badness 3815) in paragraph at lines 127--128
+Underfull \hbox (badness 3815) in paragraph at lines 126--127
 \T1/txr/m/n/8 Pareto rank-ing over dense high-dimensional vec-tors in-curs sub-
 stan-tial
  []
 
 
-Underfull \hbox (badness 1184) in paragraph at lines 127--128
+Underfull \hbox (badness 1184) in paragraph at lines 126--127
 \T1/txr/m/n/8 com-pu-ta-tional over-head, of-ten ex-ceed-ing 110--140 sec-onds 
 in wall-clock
  []
 
 
-Underfull \hbox (badness 1194) in paragraph at lines 133--134
+Underfull \hbox (badness 1194) in paragraph at lines 132--133
 []\T1/txr/m/n/8 Integrating domain-specific prior knowl-edge into meta-heuristi
 cs has
  []
 
 ) (sections/04_kds_el.tex [3]
-<../output/figures/F1_architecture_journal.pdf, id=321, 403.62247pt x 635.97598
+<../output/figures/F1_architecture_journal.pdf, id=317, 403.62247pt x 635.97598
 pt>
 File: ../output/figures/F1_architecture_journal.pdf Graphic file (type pdf)
 <use ../output/figures/F1_architecture_journal.pdf>
 Package pdftex.def Info: ../output/figures/F1_architecture_journal.pdf  used on
  input line 9.
 (pdftex.def)             Requested size: 252.0pt x 397.07643pt.
-<../output/figures/F2_mi_initialization_journal.pdf, id=325, 1185.22804pt x 657
+<../output/figures/F2_mi_initialization_journal.pdf, id=321, 1185.22804pt x 657
 .65701pt>
 File: ../output/figures/F2_mi_initialization_journal.pdf Graphic file (type pdf
 )
@@ -1026,13 +1035,13 @@ r-formed for
  []
 
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 130.
-<../output/figures/F3_ker_strategy_journal.pdf, id=436, 1185.22804pt x 657.6570
+put line 128.
+<../output/figures/F3_ker_strategy_journal.pdf, id=432, 1185.22804pt x 657.6570
 1pt>
 File: ../output/figures/F3_ker_strategy_journal.pdf Graphic file (type pdf)
 <use ../output/figures/F3_ker_strategy_journal.pdf>
 Package pdftex.def Info: ../output/figures/F3_ker_strategy_journal.pdf  used on
- input line 159.
+ input line 157.
 (pdftex.def)             Requested size: 511.55777pt x 283.85071pt.
 [5 <../output/figures/F2_mi_initialization_journal.pdf>] [6 <../output/figures/
 F3_ker_strategy_journal.pdf>]) (sections/05_experimental_setup.tex
@@ -1041,60 +1050,65 @@ Underfull \hbox (badness 1762) in paragraph at lines 7--8
  of KDS-EL
  []
 
-) [7] (../output/tables/T1_methods.tex) (../output/tables/T2_datasets.tex)
+
+Underfull \hbox (badness 1205) in paragraph at lines 15--16
+\T1/txr/m/n/8 multi-task evo-lu-tion-ary learn-ing al-go-rithm (MEL [[]]). In a
+d-di-tion, five
+ []
+
+
+Underfull \hbox (badness 1210) in paragraph at lines 15--16
+\T1/txr/m/n/8 W-MOPSO-FS, fMOPSO-FS [[]], NSGA-II-FS [[]], MOEA-D-FS [[]],
+ []
+
+) (../output/tables/T1_methods.tex) (../output/tables/T2_datasets.tex)
 (../output/tables/T3_params.tex) (sections/06_experimental_analysis.tex
-(../output/tables/T4_accuracy.tex
+[7] (../output/tables/T4_accuracy.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <6> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 37.
-)
-Underfull \hbox (badness 1831) in paragraph at lines 11--12
-\T1/txr/m/n/8 single-objective com-peti-tors (FW-PSO, PSO-CSM, SaWDE, IG-PSO, a
-nd
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 11--12
-\T1/txr/m/n/8 evo-lu-tion-ary fea-ture se-lec-tion meth-ods (W-MOPSO-FS, fMOPSO
--FS,
- []
-
-[8] (../output/tables/T5_features.tex)
+) (../output/tables/T5_features.tex)
 Underfull \hbox (badness 2302) in paragraph at lines 27--28
 \T1/txr/m/n/8 ultra-high-dimensional gene-expression datasets. For in-stance, o
 n \T1/txr/m/it/8 ALL1\T1/txr/m/n/8 ,
  []
 
-<../output/figures/F8_convergence.pdf, id=773, 636.01959pt x 469.69603pt>
+[8]
+<../output/figures/F8_convergence.pdf, id=770, 636.01959pt x 469.69603pt>
 File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
 ne 37.
 (pdftex.def)             Requested size: 480.23904pt x 354.65775pt.
-[9] (../output/tables/T6_wilcoxon.tex)
+ (../output/tables/T6_wilcoxon.tex) [9]
 (../output/tables/T6b_holm_bonferroni.tex)
 Underfull \hbox (badness 1237) in paragraph at lines 56--57
 []\T1/txr/m/n/8 To as-sess global al-go-rith-mic rank-ings, the non-parametric 
 Fried-man
  []
 
-<../output/figures/F13_friedman_rank.pdf, id=786, 527.6394pt x 310.65373pt>
+<../output/figures/F13_friedman_rank.pdf, id=783, 527.6394pt x 310.65373pt>
 File: ../output/figures/F13_friedman_rank.pdf Graphic file (type pdf)
 <use ../output/figures/F13_friedman_rank.pdf>
 Package pdftex.def Info: ../output/figures/F13_friedman_rank.pdf  used on input
  line 60.
 (pdftex.def)             Requested size: 206.64185pt x 121.66165pt.
 (../output/tables/T7_ablation.tex)
-<../output/figures/F6_ablation_radar.pdf, id=791, 415.46979pt x 422.26967pt>
+<../output/figures/F6_ablation_radar.pdf, id=788, 415.46979pt x 422.26967pt>
 File: ../output/figures/F6_ablation_radar.pdf Graphic file (type pdf)
 <use ../output/figures/F6_ablation_radar.pdf>
 Package pdftex.def Info: ../output/figures/F6_ablation_radar.pdf  used on input
  line 75.
 (pdftex.def)             Requested size: 221.76123pt x 225.3869pt.
- [10 <../output/figures/F8_convergence.pdf> <../output/figures/F13_friedman_ran
-k.pdf>]
+ [10 <../output/figures/F8_convergence.pdf>]
 Underfull \hbox (badness 1048) in paragraph at lines 84--85
 []\T1/txr/m/n/8 Third, re-gard-ing Mu-tual In-for-ma-tion Ini-tial-iza-tion and
  Adap-tive Re-
+ []
+
+
+Underfull \hbox (badness 1048) in paragraph at lines 84--85
+\T1/txr/m/n/8 mechanisms---reducing the frame-work to the un-guided multi-task 
+swarm
  []
 
 
@@ -1103,19 +1117,20 @@ Underfull \hbox (badness 3536) in paragraph at lines 88--89
  pre-lim-i-nary
  []
 
-<../output/figures/F11_runtime_scatter.pdf, id=869, 506.4339pt x 304.73952pt>
+<../output/figures/F11_runtime_scatter.pdf, id=851, 506.4339pt x 304.73952pt>
 File: ../output/figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use ../output/figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: ../output/figures/F11_runtime_scatter.pdf  used on inp
 ut line 96.
 (pdftex.def)             Requested size: 221.76123pt x 133.44409pt.
-[11 <../output/figures/F6_ablation_radar.pdf>]
+
 Underfull \hbox (badness 1077) in paragraph at lines 103--104
 []\T1/txr/m/n/8 The com-pu-ta-tional scal-a-bil-ity of KDS-EL is par-tic-u-larl
 y ev-i-dent on
  []
 
-
+[11 <../output/figures/F13_friedman_rank.pdf> <../output/figures/F6_ablation_ra
+dar.pdf> <../output/figures/F11_runtime_scatter.pdf>]
 Underfull \hbox (badness 1748) in paragraph at lines 105--106
 []\T1/txr/m/n/8 This ef-fi-ciency is driven by three com-ple-men-tary fac-tors.
  First, in
@@ -1147,48 +1162,50 @@ ns across the
  []
 
 (../output/tables/T8_parameter_sensitivity.tex)
-<../output/figures/F14_parameter_sensitivity.pdf, id=899, 817.31973pt x 182.140
+<../output/figures/F14_parameter_sensitivity.pdf, id=910, 817.31973pt x 182.140
 49pt>
 File: ../output/figures/F14_parameter_sensitivity.pdf Graphic file (type pdf)
 <use ../output/figures/F14_parameter_sensitivity.pdf>
 Package pdftex.def Info: ../output/figures/F14_parameter_sensitivity.pdf  used 
 on input line 119.
 (pdftex.def)             Requested size: 522.0pt x 116.32771pt.
- [12 <../output/figures/F11_runtime_scatter.pdf>]) (sections/09_conclusion.tex
+ [12 <../output/figures/F14_parameter_sensitivity.pdf>]) (sections/09_conclusio
+n.tex
 Underfull \hbox (badness 2073) in paragraph at lines 3--4
 \T1/txr/m/n/8 multi-objective com-peti-tor W-MOPSO-FS by +4.42 pp, while re-duc
 -ing
  []
 
 )
-Underfull \hbox (badness 3068) in paragraph at lines 5--228
+Underfull \hbox (badness 3068) in paragraph at lines 5--230
 []\T1/txr/m/n/8 Despite these promis-ing out-comes, sev-eral lim-i-ta-tions of-
 fer fer-tile
  []
 
 
-Underfull \hbox (badness 1558) in paragraph at lines 5--228
+Underfull \hbox (badness 1558) in paragraph at lines 5--230
 \T1/txr/m/n/8 re-fine-ment and stage-aware ob-jec-tive schedul-ing to multi-lab
 el learn-ing,
  []
 
-(main.bbl [13 <../output/figures/F14_parameter_sensitivity.pdf>]) [14]
-(main.aux)
+(main.bbl [13]) [14
+
+] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 22122F8C28F04DB091F944E7059FC1E3;8112.
+(rerunfilecheck)             Checksum: 2AFF847673F109D2269266078B39EA92;7941.
  ) 
 Here is how much of TeX's memory you used:
- 13825 strings out of 467690
- 208512 string characters out of 5431801
- 693056 words of memory out of 5000000
- 42416 multiletter control sequences out of 15000+600000
+ 13827 strings out of 467690
+ 208572 string characters out of 5431801
+ 707972 words of memory out of 5000000
+ 42417 multiletter control sequences out of 15000+600000
  785351 words of font info for 316 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,16n,79p,1706b,655s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,15n,79p,1706b,689s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi525\ectt
 0800.pk><E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam7.pfb><E:/MiKTeX/fon
 ts/type1/public/amsfonts/symbols/msbm10.pfb><E:/MiKTeX/fonts/type1/public/amsfo
@@ -1200,9 +1217,9 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (15 pages, 660633 bytes).
+Output written on main.pdf (15 pages, 660165 bytes).
 PDF statistics:
- 1186 PDF objects out of 1200 (max. 8388607)
- 154 named destinations out of 1000 (max. 500000)
- 337 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1182 PDF objects out of 1200 (max. 8388607)
+ 153 named destinations out of 1000 (max. 500000)
+ 329 words of extra memory for PDF output out of 10000 (max. 10000000)
 
