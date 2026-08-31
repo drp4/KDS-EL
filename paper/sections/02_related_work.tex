@@ -1,6 +1,6 @@
-\section{Related Work}\label{sec:related}
+\section{Related Work and Background}\label{sec:related}
 
-This section provides a systematic survey of evolutionary feature selection paradigms, multi-objective versus single-objective formulations in high-dimensional spaces, evolutionary multi-task optimization, and knowledge-guided meta-heuristics, establishing the theoretical demarcation and unique positioning of KDS-EL.
+This section provides a systematic survey of evolutionary feature selection paradigms, establishes the formal mathematical model of feature selection, formulates continuous and binary particle swarm optimization, reviews mutual information for feature relevance estimation, introduces the baseline multi-task evolutionary learning (MEL) framework, and defines the unique taxonomic positioning of KDS-EL.
 
 \begin{table*}[!t]
 \centering
@@ -33,56 +33,108 @@ MEL~\cite{mel2024}             & MT-SI  & $\times$     & $\checkmark$ & $\times$
 \textit{Paradigms}: SO: Single-Objective; MO: Multi-Objective; MS: Multi-Swarm; MT: Multi-Task; SI: Swarm Intelligence; DE: Differential Evolution; CSA: Crow Search Algorithm; WOA: Whale Optimization Algorithm.
 \end{table*}
 
-\subsection{Evolutionary Swarm Intelligence for Feature Selection}\label{sec:fs-paradigms}
+\subsection{Problem formulation of feature selection}\label{sec:problem_formulation}
 
-Feature selection is a combinatorial NP-hard optimization problem that aims to identify an optimal subset of $d \ll D$ relevant features, maximizing predictive accuracy while eliminating redundant and uninformative dimensions~\cite{guyon2003,lili2017}. Traditional feature selection techniques are categorized into three classical paradigms:
-\begin{enumerate}
-    \item \textbf{Filter methods}: Filter techniques evaluate feature subsets based on intrinsic statistical properties, such as mutual information (mRMR~\cite{peng2005}), correlation (FCBF~\cite{yu2003}), or graph-theoretic centrality~\cite{roffo2016}. Although computationally efficient ($O(D \log D)$), filter methods evaluate features independently or pairwise, fundamentally ignoring complex multivariate interactions and resulting in suboptimal accuracy when applied to non-linear classification landscapes.
-    \item \textbf{Wrapper methods}: Wrapper approaches evaluate candidate subsets using the direct predictive feedback of a machine learning classifier~\cite{kohavi1997}. While wrappers capture intricate feature dependencies and deliver superior classification performance, exhaustive evaluation is intractable in high-dimensional spaces ($2^D$ combinatorial states), necessitating stochastic global search heuristics.
-    \item \textbf{Embedded methods}: Embedded methods incorporate feature selection directly into model training via regularization, such as LASSO/Bolasso~\cite{bach2008} and tree-based ensemble importance (FS-GBDT~\cite{zhang2021fsgbdt}). However, embedded rankings are tightly coupled with specific classifier inductive biases and frequently struggle to generalize across diverse classification architectures.
-\end{enumerate}
+Feature selection (FS) is a combinatorial optimization problem that aims to identify an optimal, minimal subset of informative features from an original $D$-dimensional feature space, simultaneously maximizing classification performance and eliminating irrelevant or redundant dimensions~\cite{guyon2003,lili2017}.
 
-To harness the predictive fidelity of wrappers while mitigating combinatorial computational bottlenecks, Swarm Intelligence (SI) and Evolutionary Computation (EC) have emerged as the dominant paradigms for feature selection~\cite{xue2016survey,liang2025}. Classical meta-heuristics, including Binary Particle Swarm Optimization (BPSO)~\cite{kennedy1997}, Genetic Algorithms (GA)~\cite{huang2006}, Ant Colony Optimization (ACO)~\cite{aghdam2009}, and Artificial Bee Colony (ABC)~\cite{karaboga2007}, navigate high-dimensional spaces via population-based stochastic exploration. 
+Let $\mathcal{D} = \{(\mathbf{f}_i, y_i)\}_{i=1}^{N_{\mathrm{samp}}}$ denote a supervised dataset comprising $N_{\mathrm{samp}}$ training instances, where $\mathbf{f}_i = [f_{i,1}, f_{i,2}, \ldots, f_{i,D}] \in \mathbb{R}^D$ is the full feature vector and $y_i \in \{1, 2, \ldots, C\}$ is the corresponding discrete class label across $C$ categories. A candidate feature subset is mathematically represented as a binary decision vector $\mathbf{x} = [x_1, x_2, \ldots, x_D] \in \{0, 1\}^D$, defined as:
+\begin{equation}
+x_j = \begin{cases}
+1, & \text{if feature } f_j \text{ is selected}, \\[2pt]
+0, & \text{if feature } f_j \text{ is discarded}.
+\end{cases}
+\label{eq:binary_decision}
+\end{equation}
+The feature selection task inherently balances two dual criteria: minimizing classification error rate while minimizing the feature selection ratio ($\mathrm{FSR}$). In evolutionary wrapper feature selection, this is mathematically formulated as minimizing a unified scalar objective function $f(\mathbf{x})$~\cite{miao2024,deng2025nns}:
+\begin{equation}
+\min_{\mathbf{x} \in \{0, 1\}^D} f(\mathbf{x}) = w_a \cdot \bigl(1 - \mathrm{Acc}(\mathbf{x})\bigr) + w_f \cdot \left(\frac{\|\mathbf{x}\|_0}{D}\right),
+\label{eq:fs_formulation}
+\end{equation}
+where $\mathrm{Acc}(\mathbf{x})$ denotes the cross-validation classification accuracy evaluated on the masked feature subset $\{\mathbf{f}_i \odot \mathbf{x}\}_{i=1}^{N_{\mathrm{samp}}}$ using an inductive learning algorithm, $\|\mathbf{x}\|_0 = \sum_{j=1}^D x_j$ denotes the $L_0$-pseudo-norm representing the number of active features, and $w_a \in [0, 1], w_f = 1 - w_a$ are weighting parameters balancing classification accuracy and subset compactness.
 
-To combat the curse of dimensionality in small-sample regimes ($p \gg n$), numerous specialized single-objective evolutionary algorithms have been developed: self-adaptive swarm mechanisms~\cite{xue2019}, progressively refined search trajectories~\cite{prasad2015}, self-adaptive differential evolution with adaptive weighting (SaWDE)~\cite{wang2022}, multi-layer perceptron-guided PSO (IGPSO)~\cite{xuezhang2024}, multi-criterion scoring PSO (PSO-CSM)~\cite{wei2025}, reinforcement-learning-assisted swarm control~\cite{weil2025}, and divide-and-conquer subspace decomposition~\cite{chen2025}. While these methods enhance local search operators, they universally treat feature perturbation as a memoryless stochastic trial, discarding the accumulated evolutionary feedback across generations.
+Because the cardinality of the discrete search space is $|\Omega| = 2^D$, exhaustive evaluation is computationally intractable for high-dimensional biomedical regimes ($D \gg 10^3$). Traditional feature selection techniques are categorized into three classical paradigms: filter, wrapper, and embedded methods~\cite{guyon2003}. \textit{Filter methods} evaluate features based on intrinsic statistical properties, such as mutual information (mRMR~\cite{peng2005}), correlation (FCBF~\cite{yu2003}), or centrality measures~\cite{roffo2016}. \textit{Embedded methods} perform feature selection during model training, such as Bolasso~\cite{bach2008} and tree-based ensemble importance (FS-GBDT~\cite{zhang2021fsgbdt}). \textit{Wrapper methods} evaluate candidate subsets using the direct predictive feedback of a classifier~\cite{kohavi1997}. While wrappers capture intricate feature interactions and deliver superior accuracy, navigating the $2^D$ combinatorial space requires efficient stochastic global search heuristics, for which Evolutionary Computation (EC) paradigms---including Genetic Algorithms (GA)~\cite{huang2006}, Ant Colony Optimization (ACO)~\cite{aghdam2009}, Artificial Bee Colony (ABC)~\cite{karaboga2007}, and Swarm Intelligence (SI)~\cite{xue2016survey,liang2025}---have emerged as dominant approaches.
 
-\subsection{Multi-Objective versus Single-Objective Formulations at Scale}\label{sec:mofs_vs_sofs}
+To combat the curse of dimensionality in small-sample regimes ($p \gg n$), numerous specialized single-objective evolutionary algorithms have been developed: self-adaptive swarm mechanisms~\cite{xue2019}, progressively refined search trajectories~\cite{prasad2015}, self-adaptive differential evolution with adaptive weighting (SaWDE)~\cite{wang2022}, multi-layer perceptron-guided PSO (IGPSO)~\cite{xuezhang2024}, multi-criterion scoring PSO (PSO-CSM)~\cite{wei2025}, reinforcement learning-based swarm control~\cite{weil2025}, and divide-and-conquer subspace decomposition~\cite{chen2025}. While these methods enhance local search operators, they universally treat feature perturbation as a memoryless stochastic trial, discarding the accumulated evolutionary feedback across generations.
 
-Feature selection naturally involves two conflicting objectives: minimizing classification error and minimizing the number of selected features. Multi-Objective Feature Selection (MOFS) algorithms model this trade-off by searching for a Pareto front of non-dominated solutions. Pioneered by Xue et al.~\cite{xue2012mopso}, diverse multi-objective evolutionary algorithms have been adapted to feature selection, including NSGA-II-FS~\cite{deb2002}, MOEA/D-FS~\cite{zhang2007}, MOPSO-FS~\cite{coello2004}, and hybrid filter-wrapper multi-objective architectures~\cite{hu2020,hancer2023}.
+\subsection{Particle swarm optimization}\label{sec:pso}
 
-Despite their theoretical appeal, MOFS methods encounter severe operational limitations when scaled to ultra-high-dimensional biomedical data ($D > 10^3$):
-\begin{enumerate}
-    \item \textbf{Combinatorial archive and sorting overhead}: Maintaining an external non-dominated archive and executing Pareto ranking over dense high-dimensional vectors incurs substantial computational overhead, often exceeding 110--140~seconds in wall-clock time, as analyzed in Section~\ref{sec:efficiency}.
-    \item \textbf{Pareto front dilution in ultra-high dimensions}: In extreme $p \gg n$ regimes, non-dominated sorting tends to produce large, diffused Pareto fronts populated by non-sparse candidate subsets, often retaining 2{,}000--5{,}000 active features, failing to deliver the ultra-sparse compact biomarker signatures with fewer than 100 features required for clinical interpretability.
-\end{enumerate}
+PSO, originally introduced by Kennedy and Eberhart~\cite{kennedy1995}, is a population-based stochastic optimization paradigm inspired by the collective foraging behaviors of bird flocks. A swarm consists of $N$ particles navigating a $D$-dimensional continuous search space $\mathbb{R}^D$. Each particle $i \in \{1, \ldots, N\}$ maintains a continuous position vector $\mathbf{p}_i^{(t)} = [p_{i,1}^{(t)}, \ldots, p_{i,D}^{(t)}]$ and a continuous velocity vector $\mathbf{v}_i^{(t)} = [v_{i,1}^{(t)}, \ldots, v_{i,D}^{(t)}]$ at iteration $t$. The historical trajectory is governed by its personal best position $\mathbf{p}_{\mathrm{best},i}$ and the swarm's global best position $\mathbf{g}_{\mathrm{best}}$.
+
+The velocity and position updates are formulated as:
+\begin{align}
+\mathbf{v}_i^{(t+1)} &= \omega \mathbf{v}_i^{(t)} + c_1 r_1 \bigl(\mathbf{p}_{\mathrm{best},i} - \mathbf{p}_i^{(t)}\bigr) + c_2 r_2 \bigl(\mathbf{g}_{\mathrm{best}} - \mathbf{p}_i^{(t)}\bigr), \label{eq:pso_velocity} \\
+\mathbf{p}_i^{(t+1)} &= \mathbf{p}_i^{(t)} + \mathbf{v}_i^{(t+1)}, \label{eq:pso_position}
+\end{align}
+where $\omega$ denotes the inertia weight governing momentum retention~\cite{shi1998}, $c_1$ and $c_2$ are cognitive and social acceleration coefficients, and $r_1, r_2 \sim \mathcal{U}(0, 1)$ are independent uniform random stochastic factors.
+
+To adapt PSO to combinatorial binary feature selection where candidate solutions represent binary indicator masks $\mathbf{x}_i \in \{0, 1\}^D$, Kennedy and Eberhart~\cite{kennedy1997} proposed the standard Binary PSO (BPSO). BPSO transforms continuous velocities into selection probabilities via a Sigmoid transfer function:
+\begin{equation}
+S(v_{i,j}^{(t+1)}) = \frac{1}{1 + \exp\bigl(-v_{i,j}^{(t+1)}\bigr)}, \quad
+x_{i,j}^{(t+1)} = \begin{cases}
+1, & \text{if } \mathrm{rand}() < S(v_{i,j}^{(t+1)}),\\[2pt]
+0, & \text{otherwise}.
+\end{cases}
+\label{eq:bpsosigmoid}
+\end{equation}
+While effective for low-dimensional problems, standard BPSO suffers severe exploration-exploitation dilemmas in ultra-high-dimensional spaces with $p \gg n$: continuous velocity updates provide no domain-grounded guidance toward sparse, informative biomarker subspaces. In KDS-EL, particles maintain continuous normalized position coordinates $\mathbf{p}_i \in [0, 1]^D$, mapped deterministically to binary feature masks via a strict thresholded Heaviside step function $x_{i,j} = \mathbb{I}(p_{i,j} \ge \theta)$ with $\theta = 0.60$, eliminating stochastic binarization variance.
+
+\subsection{Mutual information}\label{sec:mi-relevance}
+
+Mutual information (MI), rooted in Shannon's information theory~\cite{cover1991}, quantifies the mutual dependence and reduction in uncertainty between two random variables. For a feature variable $f_j$ and the discrete class label $Y \in \{1, \ldots, C\}$, the mutual information $I(f_j; Y)$ is defined as:
+\begin{equation}
+\begin{split}
+I(f_j; Y) &= H(Y) - H(Y \mid f_j) \\
+&= \sum_{v \in \mathrm{Val}(f_j)} \sum_{c=1}^C P(f_j = v, Y = c) \log_2 \frac{P(f_j = v, Y = c)}{P(f_j = v) P(Y = c)},
+\end{split}
+\label{eq:mi}
+\end{equation}
+where $H(Y)$ is the marginal Shannon entropy of the class labels and $H(Y \mid f_j)$ is the conditional entropy given feature $f_j$. High values of $I(f_j; Y)$ indicate strong discriminative relevance to classification targets.
+
+Conventional filter feature selection methods~\cite{peng2005,deng2025nns} evaluate $I(f_j; Y)$ across all $D$ dimensions and execute a hard truncation:
+\begin{equation}
+\mathcal{S}_{\mathrm{Filter}} = \bigl\{\mathrm{IDX}(1), \mathrm{IDX}(2), \ldots, \mathrm{IDX}(\lfloor k \cdot D \rfloor)\bigr\},
+\label{eq:hard_filter}
+\end{equation}
+where $\mathrm{IDX}$ denotes the feature indices sorted in descending order of $I(f_j; Y)$ and $k \in (0, 1]$ represents the retention ratio, permanently discarding all features outside the top-$k$ ranking. While computationally rapid ($O(D \log D)$), hard truncation fundamentally ignores multi-feature interactions: individual features with moderate MI scores that are collectively decisive when combined are permanently eliminated. Rather than using hard truncation, KDS-EL utilizes normalized MI scores as a soft prior to construct continuous initial population seeds (Section~\ref{sec:mi}), injecting filter knowledge into the evolutionary wrapper without irreversibly shrinking the search space.
+
+\subsection{Multi-task evolutionary learning}\label{sec:mel}
+
+Evolutionary Multi-Task Optimization (EMTO) aims to solve multiple distinct optimization tasks simultaneously by facilitating inter-task knowledge transfer through a unified chromosomal representation~\cite{zhang2021mtl}. In feature selection, EMTO frameworks partition the global population into collaborative subpopulations to explore complementary search subspaces, including minion-assisted multi-tasking~\cite{zhang2021minion}, evolutionary multi-task PSO for hyperspectral and gene expression data~\cite{chen2020emfs,chen2021emfs}, multi-task bee colony band selection~\cite{he2022}, and large-scale multi-objective multi-tasking~\cite{liu2022}.
+
+Most notably, Zhang et al.~\cite{mel2024} introduced Multi-Task Evolutionary Learning (MEL), which establishes a dual-subpopulation PSO framework. In MEL, a population of $N$ particles is partitioned into two collaborative subpopulations, $\mathcal{P}_1$ and $\mathcal{P}_2$ ($|\mathcal{P}_1| = |\mathcal{P}_2| = N/2$), operating on dual complementary search tasks:
+
+\textit{Subpopulation~1 ($\mathcal{P}_1$): Continuous swarm exploration.} Particles update continuous velocities and positions using PSO dynamics, augmented with an inter-task knowledge transfer channel directing particles toward the historical global best of Subpopulation~2 ($\mathbf{g}_{\mathrm{best},2}$):
+\begin{equation}
+\mathbf{v}_{1,i}^{(t+1)} = \omega \mathbf{v}_{1,i}^{(t)} + c_1 r_1 (\mathbf{p}_{\mathrm{best},1,i} - \mathbf{p}_{1,i}^{(t)}) + c_2 r_2 (\mathbf{g}_{\mathrm{best},1} - \mathbf{p}_{1,i}^{(t)}) + c_3 r_3 (\mathbf{g}_{\mathrm{best},2} - \mathbf{p}_{1,i}^{(t)}).
+\label{eq:mel_sub1}
+\end{equation}
+
+\textit{Subpopulation~2 ($\mathcal{P}_2$): Importance-guided discrete sampling.} Rather than continuous mechanics, $\mathcal{P}_2$ samples binary feature masks directly based on a shared feature-importance matrix $W_{\mathrm{MEL}} \in \mathbb{R}^D$.
+
+In MEL, both subpopulations share a scalar fitness function combining classification error and feature subset ratio via static weights:
+\begin{equation}
+f_{\mathrm{MEL}}(\mathbf{x}) = \alpha \cdot \bigl(1 - \mathrm{Acc}(\mathbf{x})\bigr) + \beta \cdot \left(\frac{\|\mathbf{x}\|_0}{D}\right),
+\label{eq:fitness_mel}
+\end{equation}
+where $\mathrm{Acc}(\mathbf{x})$ is the 5-fold cross-validation accuracy of a $k\text{-NN}$ classifier ($k=3$), and $\alpha = 0.90, \beta = 0.10$ are fixed constants~\cite{mel2024}.
+
+While MEL demonstrates the utility of cross-task knowledge transfer, its reliance on uniform random initialization, unconstrained importance accumulation without memory discounting, and rigid static weighting creates substantial search inefficiencies in ultra-high-dimensional spaces. The proposed KDS-EL framework directly inherits this dual-subpopulation backbone while resolving these deficiencies through three complementary mechanisms detailed in Section~\ref{sec:proposed}.
+
+\subsection{Multi-objective feature selection}\label{sec:mofs_vs_sofs}
+
+Feature selection naturally involves two competing criteria: minimizing classification error and minimizing the number of selected features. Multi-Objective Feature Selection (MOFS) algorithms model this trade-off by searching for a Pareto front of non-dominated solutions. Pioneered by Xue et al.~\cite{xue2012mopso}, diverse multi-objective evolutionary algorithms have been adapted to feature selection, including NSGA-II-FS~\cite{deb2002}, MOEA/D-FS~\cite{zhang2007}, MOPSO-FS~\cite{coello2004}, and hybrid filter-wrapper multi-objective architectures~\cite{hu2020,hancer2023}.
+
+Despite their theoretical appeal, MOFS methods encounter severe operational limitations when scaled to ultra-high-dimensional biomedical data ($D > 10^3$). First, maintaining an external non-dominated archive and executing Pareto ranking over dense high-dimensional vectors incurs substantial computational overhead, often exceeding 110--140~seconds in wall-clock time (Section~\ref{sec:efficiency}). Second, in extreme $p \gg n$ regimes, non-dominated sorting tends to produce large, diffused Pareto fronts populated by non-sparse candidate subsets, often retaining 2{,}000--5{,}000 active features and failing to deliver the ultra-sparse compact biomarker signatures with fewer than 100 features required for clinical interpretability.
 
 To circumvent Pareto archive bloat and achieve extreme subset sparsity within tight computational budgets, weighted single-objective scalarization remains the preferred formulation in high-dimensional biomarker discovery~\cite{miao2024,mel2024}. However, conventional weighted frameworks enforce fixed static weights throughout search, such as $\mathbf{w} = [0.90, 0.10]$, which fails to adapt to the distinct evolutionary phases of feature selection. KDS-EL overcomes this limitation by introducing a dynamic Two-Phase Weight Scheduling strategy that aggressively eliminates noise features early and fine-tunes classification accuracy late.
 
-\subsection{Evolutionary Multi-Task Optimization in Feature Selection}\label{sec:emto}
+\subsection{Knowledge-guided search}\label{sec:knowledge_guided}
 
-Evolutionary Multi-Task Optimization (EMTO) aims to solve multiple distinct optimization tasks simultaneously by facilitating inter-task knowledge transfer through a unified chromosomal representation~\cite{zhang2021mtl}. In feature selection, EMTO frameworks partition the global population into collaborative subpopulations to explore complementary search subspaces. Prominent multi-task feature selection frameworks include minion-assisted multi-tasking~\cite{zhang2021minion}, evolutionary multi-task PSO for hyperspectral and gene expression data~\cite{chen2020emfs,chen2021emfs}, multi-task bee colony band selection~\cite{he2022}, and large-scale multi-objective multi-tasking~\cite{liu2022}.
+Integrating domain-specific prior knowledge into meta-heuristics has attracted surging attention as a means to escape the blindness of black-box search~\cite{ye2026,mimpode2025,deng2025nns}. In high-dimensional feature selection, mutual information serves as the primary information-theoretic metric to quantify non-linear feature relevance~\cite{cover1991}. 
 
-Most notably, Zhang et al.~\cite{mel2024} introduced Multi-Task Evolutionary Learning (MEL), which establishes a dual-subpopulation PSO framework. In MEL, Subpopulation~1 performs continuous swarm exploration guided by inter-task attractors, while Subpopulation~2 conducts discrete feature sampling based on a shared feature-importance matrix. While MEL successfully demonstrates the power of cross-task knowledge transfer, its unguided multi-task formulation suffers from three critical bottlenecks: (i) random uniform initialization that causes unguided early-stage exploration in sparse spaces, (ii) unconstrained feature importance accumulation without memory discounting, and (iii) rigid static objective weights that delay early dimensionality reduction.
+Existing knowledge-guided evolutionary algorithms typically adopt one-shot offline injection via either static filter pre-filtering or static velocity biasing. In static filter pre-filtering (e.g., MI-MPODE~\cite{mimpode2025} and NNS-DFPG-CSA~\cite{deng2025nns}), algorithms compute MI rankings offline and initialize the population or restrict the search space to the top-$k$ ranked features. In static velocity biasing (e.g., FWPSO~\cite{wangjia2022}), static feature-weight vectors are incorporated to bias particle velocity equations throughout evolution. While beneficial, one-shot knowledge injection lacks online adaptability: once injected, the static prior is never updated or refined by the empirical trial-and-error feedback generated during subsequent wrapper evaluations. Conversely, learning-based surrogates, such as neural networks~\cite{xuezhang2024} or Gaussian processes~\cite{liu2024}, introduce severe surrogate training overhead and risk model misspecification in extreme $p \gg n$ regimes.
 
-\subsection{Knowledge-Guided Meta-Heuristics and Information-Theoretic Hybridization}\label{sec:knowledge_guided}
+\subsection{Taxonomic comparison}\label{sec:positioning}
 
-Integrating domain-specific prior knowledge into meta-heuristics has attracted surging attention as a means to escape the blindness of black-box search~\cite{ye2026,mimpode2025,deng2025nns}. In high-dimensional feature selection, mutual information (MI) serves as the primary information-theoretic metric to quantify non-linear feature relevance~\cite{cover1991}. 
-
-Existing knowledge-guided evolutionary algorithms typically adopt one-shot offline injection:
-\begin{enumerate}
-    \item \textbf{Static filter pre-filtering}: Algorithms such as MI-MPODE~\cite{mimpode2025} and NNS-DFPG-CSA~\cite{deng2025nns} compute MI rankings offline and initialize the population or restrict the search space to the top-$k$ ranked features.
-    \item \textbf{Static velocity biasing}: Frameworks such as FWPSO~\cite{wangjia2022} incorporate static feature-weight vectors to bias particle velocity equations throughout evolution.
-\end{enumerate}
-
-While beneficial, one-shot knowledge injection lacks online adaptability: once injected, the static prior is never updated or refined by the empirical trial-and-error feedback generated during subsequent wrapper evaluations. Conversely, learning-based surrogates, such as neural networks~\cite{xuezhang2024} or Gaussian processes~\cite{liu2024}, introduce severe surrogate training overhead and risk model misspecification in extreme $p \gg n$ regimes.
-
-\subsection{Unique Positioning and Structural Advancements of KDS-EL}\label{sec:positioning}
-
-To overcome the collective limitations identified in the existing literature, KDS-EL establishes a closed-loop, knowledge-guided evolutionary learning framework that unifies offline domain priors, online memory harvesting, and stage-aware objective scheduling:
-\begin{enumerate}
-    \item \textbf{Soft filter-wrapper seeding vs.\ hard truncation}: Unlike conventional filter wrappers that permanently eliminate features via hard truncation, KDS-EL uses normalized MI scores as continuous Gaussian-perturbed seeds, preserving the full search space while ensuring an informative, sparse starting basin with $\|\mathbf{x}\|_0 \ll D/2$.
-    \item \textbf{Online cumulative knowledge distillation vs.\ memoryless perturbation}: In contrast to black-box swarm mutations, KDS-EL dynamically harvests evolutionary fitness feedback into a cumulative importance matrix $W$, regulated by an exponential forgetting factor $\gamma=0.99$. The KER operator re-deploys this accumulated knowledge to execute targeted, directional elite flips within a strictly bounded computational budget with $k_e=3 \ll N$.
-    \item \textbf{Dynamic stage-aware objective scheduling vs.\ static weights}: Unlike rigid static weighting with $\mathbf{w} = [0.90, 0.10]$, KDS-EL's Two-Phase Weight Scheduling temporally decouples coarse feature pruning in Phase~1 ($w_f=0.30$) from fine accuracy refinement in Phase~2 ($w_a=0.95$), achieving simultaneous gains in accuracy, feature compactness, and runtime efficiency.
-\end{enumerate}
-Table~\ref{tab:comparison_literature} summarizes the structural comparison between KDS-EL and representative state-of-the-art evolutionary feature selection frameworks.
+To overcome the collective limitations identified in the existing literature, KDS-EL establishes a closed-loop, knowledge-guided evolutionary learning framework that unifies offline domain priors, online memory harvesting, and stage-aware objective scheduling. Specifically, unlike conventional filter wrappers that permanently eliminate features via hard truncation, KDS-EL uses normalized MI scores as continuous Gaussian-perturbed seeds, preserving the full search space while ensuring an informative, sparse starting basin with $\|\mathbf{x}\|_0 \ll D/2$. In contrast to black-box swarm mutations, KDS-EL dynamically harvests evolutionary fitness feedback into a cumulative importance matrix $W$, regulated by an exponential forgetting factor $\gamma=0.99$. The KER operator re-deploys this accumulated knowledge to execute targeted, directional elite flips within a strictly bounded computational budget ($k_e=3 \ll N$). Furthermore, unlike rigid static weighting with $\mathbf{w} = [0.90, 0.10]$, KDS-EL's Two-Phase Weight Scheduling temporally decouples coarse feature pruning in Phase~1 ($w_f=0.30$) from fine accuracy refinement in Phase~2 ($w_a=0.95$), achieving simultaneous gains in accuracy, feature compactness, and runtime efficiency. Table~\ref{tab:comparison_literature} summarizes the structural comparison between KDS-EL and representative state-of-the-art evolutionary feature selection frameworks.
 

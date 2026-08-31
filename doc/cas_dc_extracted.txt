@@ -1,0 +1,2202 @@
+--- Page 1 ---
+Highlights
+Elite-Guided Dynamic Feature Probability Sparrow Search Algorithm for High-Dimensional
+Feature Selection
+Ying Zhang
+•Dynamic feature probability with Bernoulli sampling bypasses the 0.5 bottleneck.
+•Elite consensus tuning with delayed activation corrects probabilities by voting.
+•A time-varying producer ratio smoothly shifts the exploration-exploitation balance.
+•EDP-SSA attains 91.88% accuracy selecting only 1.04% features on 16 datasets.
+•Wilcoxon, Friedman and ablation studies confirm significance of components.
+--- Page 2 ---
+Elite-Guided Dynamic Feature Probability Sparrow Search Algorithm
+for High-Dimensional Feature Selection
+Ying Zhanga,∗
+aSchool of Information Engineering, Jiangxi University of Water Resources and Electric Power, No. 289 Tianxiang Avenue, High-tech Development
+Zone, Nanchang, 330099, Jiangxi, China
+ARTICLE INFO
+Keywords:
+Feature selection
+Sparrow search algorithm
+Dynamic feature probability
+Elite consensus
+High-dimensional microarray data
+Swarm intelligence
+ABSTRACT
+High-dimensionalmicroarraydata,characterizedbythousandsoffeaturesbutonlytensorhundredsof
+samples, impose severe computational and generalization burdens on classification models. Feature
+selection has become an essential preprocessing step to build accurate and interpretable classifiers
+from such data. Among metaheuristic approaches, the Sparrow Search Algorithm (SSA) has shown
+promiseforwrapper-basedfeatureselection,yetexistingbinarySSAvariantsrelyontransferfunctions
+that create an inherent probability bottleneck near 0.5, making it difficult to decisively exclude
+irrelevant features from high-dimensional spaces. This paper proposes an Elite-Guided Dynamic
+Feature Probability Sparrow Search Algorithm (EDP-SSA) that replaces the conventional transfer-
+function binarization with a dynamic feature probability (DFP) vector directly updated through
+Bernoulli sampling. The DFP vector is initialized at a low value (0.1) and adjusted at each iteration
+based on the observed selection frequency across the population, implementing a frequency-driven
+elimination mechanism. An elite consensus tuning (ECT) strategy with delayed activation maintains
+a sliding window of the best binary masks from recent generations and applies majority voting to
+reinforce features consistently selected by high-quality solutions. A time-varying adaptive producer
+ratio increases linearly from 15% to 35% during evolution to balance exploration and exploitation,
+and a greedy single-feature flipping local search refines the final subset under a bounded evaluation
+budget. Experiments on 16 high-dimensional microarray datasets (2,000–22,283 features) against 10
+competingalgorithmsdemonstratethatEDP-SSAachievesthehighestaverageclassificationaccuracy
+of 91.88% while selecting only 1.04% of features on average, compared with 89.27% accuracy and
+7.98% features for the best competitor (bIRIME). Wilcoxon signed-rank tests at the 0.05 significance
+level confirm statistically significant improvements in 140 of 160 pairwise comparisons, and the
+Friedman test ranks EDP-SSA first with an average rank of 1.125. Ablation experiments quantify the
+progressive contribution of each component: the DFP mechanism raises the average accuracy from
+85.30% (basic SSA) to 88.03%, the ECT provides an additional improvement to 89.19%, and the full
+model reaches 91.88%.
+1. Introduction
+Therapidadvancementofhigh-throughputtechnologies
+hasledtoanincreasingnumberofapplicationscharacterized
+by high-dimensional data, including genomics, proteomics,
+medicalimageanalysis,andtextclassification.Suchdatasets
+typically contain thousands or even tens of thousands of
+features, while the number of available samples remains
+relatively small. This “large𝑝, small𝑛” characteristic poses
+significant challenges for machine learning algorithms, in-
+cluding increased computational cost, overfitting risk, and
+degraded generalization performance [14, 23]. Feature se-
+lection, which aims to identify the most discriminative sub-
+setoffeatureswhileremovingredundantandirrelevantones,
+hasthereforebecomeanindispensablepreprocessingstepin
+high-dimensional data analysis.
+Featureselectionmethodsaregenerallycategorizedinto
+three groups: filter, wrapper, and embedded approaches.
+Filter methods evaluate features based on statistical mea-
+sures such as mutual information, correlation, or the𝑡-test,
+independently of any classifier. Although computationally
+efficient, they typically ignore feature interactions and may
+∗Corresponding author
+2583733854@qq.com(Y. Zhang)
+ORCID(s):
+miss complementary feature combinations. Wrapper meth-
+odsemployaspecificclassifiertoevaluatecandidatefeature
+subsets and generally achieve higher classification accuracy
+at the cost of greater computational demand. Embedded
+methods integrate feature selection into the model training
+process, as exemplified by LASSO and decision-tree-based
+approaches.Amongthese,wrappermethodscombinedwith
+metaheuristic optimization have attracted considerable at-
+tention owing to their flexibility and strong search capabili-
+ties.
+Metaheuristic algorithms, particularly swarm intelli-
+gence methods, have been extensively applied to wrapper-
+based feature selection. Representative algorithms include
+genetic algorithms (GA), particle swarm optimization
+(PSO), ant colony optimization (ACO), grey wolf optimizer
+(GWO), and the sparrow search algorithm (SSA). The
+SSA, proposed by Xue and Shen [42], is a nature-inspired
+optimization algorithm that simulates the foraging and anti-
+predation behaviors of sparrows. It has gained popularity
+in feature selection due to its fast convergence, few control
+parameters, and ease of implementation. Several binary
+variants of SSA have been developed for feature selection,
+typically employing transfer functions—such as sigmoid,
+V-shaped, or U-shaped functions—to map continuous
+positions to binary solutions.
+Y. Zhang:Preprint submitted to ElsevierPage 1 of 28
+--- Page 3 ---
+Despite these efforts, existing binary SSA variants suf-
+fer from three fundamental limitations when applied to
+high-dimensionalfeatureselection.First,thedependenceon
+transferfunctionscreatesaninherentprobabilitybottleneck:
+selection probabilities tend to cluster around 0.5, making it
+difficult to decisively exclude irrelevant features from high-
+dimensional spaces. Second, the producer–scrounger ratio
+instandardSSAremainsfixedthroughoutthesearch,which
+prevents a dynamic balance between global exploration and
+local exploitation. Third, the scrounger update mechanism
+relies largely on random perturbations, which limits the
+algorithm’s ability to refine solutions in later evolutionary
+stages.
+To overcome these limitations, this paper proposes an
+Elite-Guided Dynamic Feature Probability Sparrow Search
+Algorithm (EDP-SSA) for high-dimensional feature selec-
+tion. The core idea is to replace the conventional transfer-
+function-based binarization with a dynamic feature proba-
+bility (DFP) mechanism that directly maintains and evolves
+a probability vector over the feature space. Specifically, the
+DFP vector is initialized at a low value (0.1) and updated
+at each iteration based on the observed selection frequency
+of each feature across the population. Features that are
+frequentlyselected (abovea high-frequencythreshold)have
+their probabilities decreased, while rarely selected features
+(belowalow-frequencythreshold)alsohavetheirprobabili-
+tiesreduced,therebyimplementingafrequency-basedelim-
+ination strategy. Binary masks are generated by Bernoulli
+sampling from the DFP vector, enabling the algorithm to
+naturally converge toward compact feature subsets without
+being constrained by any transfer function.
+To further strengthen the search guidance, an elite con-
+sensus tuning (ECT) mechanism is introduced. A sliding
+window maintains the best binary masks from the most
+recentgenerations.Afterapredefineddelayperiod,majority
+votingacrosstheelitepoolidentifiesfeaturesthatareconsis-
+tentlyselectedbyhigh-qualitysolutions,andtheirprobabili-
+tiesarereinforced.Conversely,featuresthatareunanimously
+excluded across all elite solutions have their probabilities
+furthersuppressed.Thedelayedactivationensuressufficient
+exploration in the early stage before the elite information
+is trusted. A time-varying adaptive producer ratio increases
+linearly from 15% to 35% over the course of evolution, en-
+abling broader exploration initially and progressively more
+exploitation. Finally, a greedy single-feature flipping local
+search is applied to the best solution after the evolutionary
+process, subject to a bounded evaluation budget, to further
+refine the selected subset.
+The proposed algorithm is evaluated on 16 high-
+dimensional microarray datasets, with feature dimensions
+ranging from 2,000 to 22,283, and compared against 10
+well-established feature selection algorithms, including
+three SSA-based methods (SSA, iBSSA, and ESSSO)
+and seven other metaheuristic or filter approaches (BPSO,
+BGWO, BPSO-V, BinCOA, bIRIME, BMPA-TVSinV, and
+SVM-RFE). All algorithms are evaluated under identical
+experimental conditions: a population size of 100, 100
+iterations, KNN with𝑘= 5as the base classifier, 5-fold
+cross-validation during the search phase, and 10-fold
+cross-validation for final performance assessment. Each
+algorithm is executed with 10 different random seeds to
+ensure statistical reliability.
+EDP-SSA achieves the highest average classification
+accuracy of 91.88% across all 16 datasets, outperforming
+the second-best method (bIRIME, 89.27%) by 2.61 per-
+centage points. More importantly, EDP-SSA selects only
+1.04% of features on average, compared to 7.98% for the
+nearestcompetitor,confirmingitssuperiorfeaturecompres-
+sion capability. The algorithm also obtains the best average
+fitness value of 0.0436, substantially lower than competing
+methods.Wilcoxonsigned-ranktestsatthe0.05significance
+levelconfirmstatisticallysignificantimprovementsin140of
+the160pairwisecomparisons,withonlyonesignificantloss
+(againstbIRIMEonlung).Ablationexperimentsfurtherver-
+ifythateachproposedmechanismcontributesindispensably,
+with the DFP mechanism raising the average accuracy from
+85.30% for basic SSA to 88.03%, the elite consensus tuning
+providinganadditionalimprovementto89.19%,andthefull
+model reaching 91.88%.
+The main contributions of this paper are summarized as
+follows:
+1. A dynamic feature probability mechanism that di-
+rectly evolves a probability vector via Bernoulli sam-
+pling,breakingthroughthe0.5bottleneckimposedby
+conventionaltransferfunctionsandenablingeffective
+feature elimination in high-dimensional spaces.
+2. An elite consensus tuning strategy with delayed acti-
+vation that exploits historical best solutions through
+majority voting, providing robust macro-level proba-
+bility correction without premature convergence.
+3. A time-varying adaptive producer ratio that smoothly
+transitions the search balance from exploration to
+exploitation, complemented by a greedy local search
+post-processing step.
+4. Evaluation on 16 high-dimensional microarray
+datasets against 10 competing algorithms, with
+ablation studies and parameter sensitivity analysis.
+The remainder of this paper is organized as follows.
+Section2reviewsrelatedworkonfeatureselectionmethods
+and swarm intelligence approaches. Section 3 presents the
+proposed EDP-SSA algorithm in detail. Section 4 describes
+the experimental setup and discusses the results. Section 5
+concludes the paper and outlines future research directions.
+2. Related Work
+2.1. Feature Selection Methods
+Featureselectionaimstoidentifyacompactanddiscrim-
+inativesubsetoffeaturesfromtheoriginalhigh-dimensional
+space. Classical filter methods, such as mutual information
+(MI)[30],chi-squaretest[23],andRelief[21],evaluateeach
+feature independently based on its statistical relationship
+with the class labels. While computationally efficient, filter
+Y. Zhang:Preprint submitted to ElsevierPage 2 of 28
+--- Page 4 ---
+methods generally ignore feature–feature interactions and
+may fail to identify complementary feature combinations
+that are jointly informative but individually weak.
+Wrapper methods address this limitation by employing
+a learning algorithm to evaluate candidate feature subsets.
+Common search strategies include forward selection, back-
+ward elimination, and recursive feature elimination (RFE)
+[22]. Support vector machine recursive feature elimination
+(SVM-RFE) [16] has been widely used in bioinformatics
+for gene selection from microarray data. Although wrap-
+permethodstypicallyachievehigherclassificationaccuracy
+thanfiltermethods,theircomputationalcostgrowsexponen-
+tiallywiththenumberoffeatures,makingthemlesspractical
+forveryhigh-dimensionalproblemswithoutefficientsearch
+strategies.
+Embedded methods, such as LASSO [38], elastic net
+[43], and tree-based feature importance [4], perform feature
+selection as part of the model training process. These meth-
+odsofferagoodbalancebetweenefficiencyandaccuracybut
+may be limited by the specific model assumptions and may
+not generalize well across different classification tasks.
+2.2. Swarm Intelligence for Feature Selection
+In recent years, swarm intelligence algorithms have
+emerged as a popular choice for wrapper-based feature
+selection due to their ability to explore large combinatorial
+search spaces efficiently. Genetic algorithms (GA) [17]
+use selection, crossover, and mutation operators to evolve
+a population of feature subsets. Binary particle swarm
+optimization (BPSO) [19] adapts the continuous PSO
+frameworktobinaryspacesusingtransferfunctions.Binary
+grey wolf optimizer (BGWO) [8] and binary ant colony
+optimization (ACO) [7] have also been applied to feature
+selection with promising results.
+The sparrow search algorithm (SSA), proposed by Xue
+and Shen [42], is a relatively recent swarm intelligence
+method inspired by the foraging and anti-predation behav-
+iors of sparrows. The algorithm divides the population into
+producers, which are responsible for exploring new food
+sources, and scroungers, which follow the producers to ob-
+tain food. A fraction of sparrows are also assigned as scouts
+that perform anti-predation behaviors. SSA has attracted
+attention in feature selection due to its fast convergence,
+simple structure, and few control parameters.
+Several binary variants of SSA have been developed
+for feature selection. Gad et al. [11] proposed an improved
+binary SSA (iBSSA) for feature selection in data classifi-
+cation. Liang et al. [24] introduced an enhanced sparrow
+search swarm optimizer (ESSSO) that integrates multiple
+searchstrategiesforhigh-dimensionalcontinuousoptimiza-
+tion problems. Tang et al. [37] proposed a chaotic SSA
+(CSSA) that introduces chaotic maps to enhance population
+diversity and escape local optima. Despite these improve-
+ments, binary SSA variants for feature selection share the
+samefundamentallimitation:theyrelyontransferfunctions
+to convert continuous positions into binary decisions.
+2.3. Limitations of Existing Approaches
+The most prevalent approach for binarizing continu-
+ous swarm intelligence algorithms is the use of transfer
+functions.Sigmoidfunctions[19],V-shapedfunctions[26],
+and U-shaped functions [28] have been proposed to map
+continuous values to selection probabilities. However, these
+functions impose an inherent constraint: when a continuous
+position is near zero, the selection probability approaches
+0.5,meaningeachfeaturehasroughlyequalchancesofbeing
+selected or excluded. In high-dimensional feature selection,
+where the goal is to identify a small discriminative subset
+from thousands of candidates, this 0.5 bottleneck severely
+limits the algorithm’s ability to eliminate irrelevant features
+effectively.
+To address this issue, several alternative strategies have
+been explored. Sun et al. [36] developed a binary SSA
+(BSSFS) for feature selection, yet it still relies on transfer
+functions for binarization and thus inherits the probability
+bottleneck.Huangetal.[18]introducedbIRIMEtomitigate
+the exploitation–exploration imbalance of the RIME opti-
+mizer for feature selection, but its binarization is likewise
+transfer-function based. Shikoun et al. [32] proposed a bi-
+nary crayfish optimization algorithm (BinCOA) for feature
+selection, and Beheshti [3] combined time-varying sine and
+V-shaped transfer functions in a binary marine predators
+algorithm; both still convert continuous positions through
+fixed mappings and cannot decisively eliminate irrelevant
+features.
+Another limitation of existing SSA variants is the fixed
+producer–scrounger ratio. In standard SSA, approximately
+20%ofthepopulationservesasproducersthroughouttheen-
+tireevolutionaryprocess.Thisstaticallocationcannotadapt
+to different search stages: early iterations may benefit from
+more producers for broader exploration, while later itera-
+tionsmayrequiremorescroungersforfine-grainedexploita-
+tion. Several adaptive strategies have been proposed for
+relatedalgorithms.Mengetal.[25]proposedthebirdswarm
+algorithm, which employs adaptive control of flight behav-
+iors to balance exploration and exploitation. Mirjalili et al.
+[27] proposed the grey wolf optimizer, whose exploration–
+exploitationbalanceiscontrolledbyaparameterthatdecays
+linearly over iterations. Wang et al. [39] combined multiple
+search strategies in a multi-strategy SSA variant, demon-
+stratingthathybridapproachescanimproveperformanceon
+complex optimization problems.
+These observations motivate the design of the proposed
+EDP-SSA, which addresses all three limitations simultane-
+ously through a dynamic feature probability mechanism, an
+elite consensus tuning strategy, and a time-varying adaptive
+producer ratio.
+Y. Zhang:Preprint submitted to ElsevierPage 3 of 28
+--- Page 5 ---
+3. Proposed EDP-SSA Algorithm
+3.1. Overview
+TheproposedEDP-SSArestructuresthebinarymapping
+pipeline of conventional SSA-based feature selection meth-
+ods.Insteadofconvertingcontinuouspositionstobinaryde-
+cisionsthroughtransferfunctions,EDP-SSAmaintainsady-
+namicfeatureprobability(DFP)vector𝐏=[𝑃 1,𝑃2,…,𝑃 𝐷]
+of dimension𝐷, where each𝑃 𝑗 represents the selection
+probability of the𝑗-th feature. Binary masks are generated
+directly by Bernoulli sampling:𝑋𝑖,𝑗 ∼Bernoulli(𝑃 𝑗)for
+the𝑖-th individual and𝑗-th feature. This design allows the
+probabilityvectortoevolveindependentlyofthecontinuous
+positions used by the SSA update equations, enabling more
+precise control over feature selection behavior.
+The overall framework of EDP-SSA is illustrated in
+Fig.1.Thealgorithmconsistsoffourkeycomponents:(1)a
+DFPmechanismwithfrequency-basedfeedbackthatadjusts
+selection probabilities according to observed feature usage;
+(2) an elite consensus tuning (ECT) strategy with delayed
+activation that reinforces features consistently selected by
+historical best solutions; (3) a time-varying adaptive pro-
+ducer ratio that linearly increases from 15% to 35% during
+evolution;and(4)agreedylocalsearchpost-processingstep
+that refines the final feature subset through single-feature
+flipping.
+3.2. Fitness Evaluation
+Each candidate solution is represented as a binary mask
+𝐱=[𝑥 1,𝑥2,…,𝑥 𝐷]∈{0,1} 𝐷, where𝑥𝑗 =1indicates that
+the𝑗-th feature is selected and𝑥𝑗 = 0indicates exclusion.
+Thequalityofeachmaskisevaluatedusingafitnessfunction
+that simultaneously considers classification accuracy and
+feature subset size:
+Fitness(𝐱)=𝛼⋅𝐸(𝐱)+(1−𝛼)⋅ |𝐱|
+𝐷,(1)
+where𝐸(𝐱)denotes the classification error rate computed
+via𝐾-fold cross-validation with a𝑘-nearest neighbors
+(KNN) classifier (𝑘= 5),|𝐱|= ∑𝐷
+𝑗=1𝑥𝑗 is the number
+of selected features,𝐷is the total number of features,
+and𝛼∈ [0,1]is a user-defined weight that controls the
+trade-off between accuracy and feature reduction. In this
+study,𝛼=0.8is adopted following common practice in the
+literature [23, 41], giving higher priority to classification
+accuracywhilestillencouragingcompactfeaturesubsets.A
+lower fitness value indicates a better solution.
+3.3. Probability Bottleneck of Transfer Functions
+Conventional binary SSA variants convert the contin-
+uous position of each feature into a selection probability
+through a transfer function and then apply probabilistic
+rounding [26]. For the widely used S-shaped family,
+𝑇(𝑥)= 1
+1+𝑒 −𝑥,(2)
+the mapping satisfies the anti-symmetry property𝑇(−𝑥) =
+1−𝑇(𝑥)with𝑇(0)=0.5.Ifthecontinuouspositionsfollow
+a distribution symmetric around zero, then
+𝔼[𝑇(𝑥)]= ∫
+∞
+−∞
+𝑇(𝑥)𝑓(𝑥)𝑑𝑥
+= 1
+2 ∫
+∞
+−∞
+[𝑇(𝑥)+𝑇(−𝑥) ]𝑓(𝑥)𝑑𝑥= 1
+2,
+(3)
+i.e., every feature is expected to be selected with probabil-
+ity0.5regardless of its relevance. Two properties of the
+SSA update equations keep this symmetry intact in high-
+dimensionalspaces.First,positionsareinitializeduniformly
+in a symmetric interval (in our implementation,[−6,6]),
+andtheproducer/scroungerperturbationsarezero-meanand
+symmetric (the Gaussian walk𝑄and the random vector
+𝐴∈{−1,+1} 𝐷 in Eqs. 13–14). Second, the scrounger step
+|||𝑥𝑖,𝑗−𝑥𝑝,𝑗
+|||𝐴𝑗∕𝐷shrinks with the feature dimension𝐷, so
+with𝐷in the thousands the coordinate distribution remains
+nearlysymmetricaroundzeroforalongtime,and𝑇(𝑥)stays
+close to0.5because the sigmoid saturates only when|𝑥|
+exceeds approximately4. Consequently, transfer-function-
+based binarization generates dense, nearly random masks,
+and the swarm must fight an inherent bias toward selecting
+roughly half of the features. This prediction is consistent
+with the empirical FSR of the transfer-function-based SSA
+variants in Tables 5 and 6 (e.g.,0.42–0.49for basic SSA,
+iBSSA, and ESSSO), and it explains why these methods
+stagnateatmoderateaccuracyonhigh-dimensionalmicroar-
+ray data. The DFP mechanism proposed next removes this
+bottleneck by evolving the probability vector directly, so
+each coordinate is free to drift toward0or1based on
+empirical evidence instead of being pinned near0.5by the
+geometry of the transfer function.
+3.4. Dynamic Feature Probability (DFP)
+The DFP mechanism is the key component of EDP-
+SSA, replacing the conventional transfer-function-based bi-
+narizationwithadirectprobabilityevolutionscheme.Atthe
+beginning of the algorithm, each feature is assigned a low
+initial selection probability:
+𝑃(0)
+𝑗 =𝑃 init, 𝑗=1,2,…,𝐷,(4)
+where𝑃 init = 0.1is adopted in this study. This low initial
+valuereflectsthepriorassumptionthat,inhigh-dimensional
+feature selection, only a small fraction of features are truly
+informative.
+At each iteration𝑡, binary masks are generated by inde-
+pendent Bernoulli sampling:
+𝑋(𝑡)
+𝑖,𝑗 =
+{
+1if𝑟 𝑖,𝑗 <𝑃 (𝑡)
+𝑗 ,
+0otherwise, (5)
+where𝑟𝑖,𝑗 ∼𝑈(0,1)isauniformlydistributedrandomnum-
+ber.Unliketransferfunctionapproaches,wheretheselection
+probabilityisdeterminedbythecontinuouspositionthrough
+a fixed mapping, the DFP values are directly updated based
+on population-level feedback.
+Y. Zhang:Preprint submitted to ElsevierPage 4 of 28
+--- Page 6 ---
+Fig. 1:Flowchart of EDP-SSA.
+Y. Zhang:Preprint submitted to ElsevierPage 5 of 28
+--- Page 7 ---
+/uni00000029/uni00000014/uni00000029/uni00000015/uni00000029/uni00000016/uni00000029/uni00000017/uni00000029/uni00000018/uni00000029/uni00000019/uni00000029/uni0000001a/uni00000029/uni0000001b/uni00000029/uni0000001c/uni00000029/uni00000014/uni00000013
+/uni00000029/uni00000048/uni00000044/uni00000057/uni00000058/uni00000055/uni00000048/uni00000003/uni0000002c/uni00000051/uni00000047/uni00000048/uni0000005b
+/uni0000002a/uni00000048/uni00000051/uni00000003/uni00000014
+/uni0000002a/uni00000048/uni00000051/uni00000003/uni00000018/uni00000013
+/uni0000002a/uni00000048/uni00000051/uni00000003/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000036/uni00000057/uni00000044/uni0000004a/uni00000048
+/uni00000013/uni00000011/uni00000014/uni00000013/uni00000013/uni00000011/uni00000014/uni00000013/uni00000013/uni00000011/uni00000014/uni00000013/uni00000013/uni00000011/uni00000014/uni00000013/uni00000013/uni00000011/uni00000014/uni00000013/uni00000013/uni00000011/uni00000014/uni00000013/uni00000013/uni00000011/uni00000014/uni00000013/uni00000013/uni00000011/uni00000014/uni00000013/uni00000013/uni00000011/uni00000014/uni00000013/uni00000013/uni00000011/uni00000014/uni00000013
+/uni00000013/uni00000011/uni00000014/uni00000018/uni00000013/uni00000011/uni0000001a/uni00000015/uni00000013/uni00000011/uni00000014/uni0000001b/uni00000013/uni00000011/uni00000019/uni0000001b/uni00000013/uni00000011/uni00000015/uni00000015/uni00000013/uni00000011/uni0000001b/uni00000014/uni00000013/uni00000011/uni00000014/uni0000001c/uni00000013/uni00000011/uni0000001a/uni00000018/uni00000013/uni00000011/uni00000014/uni00000019/uni00000013/uni00000011/uni00000015/uni00000018
+/uni00000013/uni00000011/uni00000013/uni00000017/uni00000013/uni00000011/uni0000001c/uni00000015/uni00000013/uni00000011/uni00000013/uni00000019/uni00000013/uni00000011/uni00000019/uni00000014/uni00000013/uni00000011/uni00000013/uni00000015/uni00000013/uni00000011/uni0000001b/uni0000001b/uni00000013/uni00000011/uni00000013/uni00000016/uni00000013/uni00000011/uni00000017/uni0000001b/uni00000013/uni00000011/uni00000013/uni00000015/uni00000013/uni00000011/uni0000001b/uni00000019
+/uni00000027/uni0000005c/uni00000051/uni00000044/uni00000050/uni0000004c/uni00000046/uni00000003/uni00000029/uni00000048/uni00000044/uni00000057/uni00000058/uni00000055/uni00000048/uni00000003/uni00000033/uni00000055/uni00000052/uni00000045/uni00000044/uni00000045/uni0000004c/uni0000004f/uni0000004c/uni00000057/uni0000005c/uni00000003/uni00000028/uni00000059/uni00000052/uni0000004f/uni00000058/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni0000004c/uni00000051/uni00000003/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni00000013/uni00000011/uni00000013
+/uni00000013/uni00000011/uni00000015
+/uni00000013/uni00000011/uni00000017
+/uni00000013/uni00000011/uni00000019
+/uni00000013/uni00000011/uni0000001b
+/uni00000014/uni00000011/uni00000013
+/uni00000029/uni00000048/uni00000044/uni00000057/uni00000058/uni00000055/uni00000048/uni00000003/uni00000033/uni00000055/uni00000052/uni00000045/uni00000044/uni00000045/uni0000004c/uni0000004f/uni0000004c/uni00000057/uni0000005c
+Fig. 2:DFP evolution heatmap.
+After evaluating all individuals, the selection frequency
+of each feature is computed as:
+𝑓(𝑡)
+𝑗 = 1
+𝑁
+𝑁∑
+𝑖=1
+𝑋(𝑡)
+𝑖,𝑗,(6)
+where𝑁is the population size. The DFP vector is then
+updated according to the following rule:
+𝑃(𝑡+1)
+𝑗 =
+⎧
+⎪
+⎨
+⎪⎩
+max(𝑃min, 𝑃(𝑡)
+𝑗 −𝑙𝑟)if𝑓 (𝑡)
+𝑗 >𝑓 high,
+max(𝑃min, 𝑃(𝑡)
+𝑗 −𝑙𝑟)if𝑓 (𝑡)
+𝑗 <𝑓 low,
+𝑃(𝑡)
+𝑗 otherwise,
+(7)
+where𝑓 high = 0.8and𝑓 low = 0.2are the high- and
+low-frequency thresholds,𝑙𝑟= 0.05is the learning rate,
+and𝑃 min = 0.01and𝑃 max = 0.95are the probability
+bounds. A single symmetric learning rate is deliberately
+adopted for both branches: preliminary experiments with
+asymmetricsettings(alargerrateforlow-frequencyfeatures
+toacceleratetheirelimination)didnotbringconsistentgains
+across datasets, whereas the single-parameter formulation
+simplifies the design and makes the sensitivity analysis in
+Section 4 more tractable.
+The rationale behind this update rule is as follows. The
+DFP mechanism acts exclusively as a pruning operator: it
+never increases a probability on its own. Features with high
+selection frequency (𝑓𝑗 > 𝑓high) are already included in
+most candidate solutions. Reducing their probabilities is
+an exploration-oriented penalty rather than a judgment of
+irrelevance: when a feature is ubiquitous in the population,
+theswarmhaslostdiversitywithrespecttothatfeature,and
+a temporary suppression forces the algorithm to re-examine
+itinsteadofconvergingprematurelytoalocaloptimum.This
+penalty does not harm genuinely important features: they
+are protected by the elite consensus tuning (ECT) described
+next. A feature that keeps appearing in the elite solutions is
+re-reinforced by ECT with an increment ofΔinc =0.10per
+iteration,whichexceedstheDFPdecrementof𝑙𝑟=0.05,so
+thenetdriftofsuchfeaturesremainspositive.Featureswith
+low selection frequency (𝑓𝑗 < 𝑓low) are rarely selected and
+likely irrelevant; further reducing their probabilities accel-
+erates their elimination. Features with moderate frequency
+remain unchanged, allowing the algorithm to continue eval-
+uating their usefulness. Fig. 2 illustrates the evolution of
+the DFP vector across iterations on a representative dataset,
+showing how informative features gradually acquire higher
+probabilities while irrelevant ones are suppressed.
+TheconvergencebehavioroftheDFPvectorcanalsobe
+characterized analytically. Without ECT, every coordinate
+of𝐏is monotone non-increasing: Eq. 7 either keeps𝑃𝑗 un-
+changedorreducesitby𝑙𝑟,and𝑃 𝑗 isboundedbelowby𝑃 min.
+By the monotone convergence theorem, each𝑃𝑗 therefore
+converges to a limit in[𝑃min,𝑃 (0)
+𝑗 ], so the probability vector
+cannot oscillate. When ECT is active, coordinates may ad-
+ditionally increase byΔinc or decrease byΔdec, but remain
+confinedto[𝑃 min,𝑃max].Oncethebestmaskstabilizesinthe
+latestageofthesearch,theelitepoolbecomesstationary,the
+consensus frequencies ̄𝑓𝑗 stop changing, and the composite
+update reaches a fixed point in which informative features
+are reinforced toward𝑃max while irrelevant ones are driven
+toward𝑃 min. This polarization—rather than the0.5bottle-
+neckoftransferfunctions—isexactlythebehaviorvisiblein
+Fig. 2.
+3.5. Elite Consensus Tuning
+WhiletheDFPmechanismprovideseffectivefrequency-
+basedprobabilityadjustment,itoperatessolelyonaggregate
+populationstatisticsandmaylacksufficientguidancetoward
+high-qualityregionsofthesearchspace.Toaddressthis,the
+eliteconsensustuning(ECT)strategyexploitshistoricalbest
+solutions to provide macro-level probability correction.
+A sliding elite poolmaintains the best binary masks
+from the most recent𝑀generations:
+(𝑡)={𝐱 (𝑡−𝑀+1)
+best ,…,𝐱 (𝑡)
+best},(8)
+where𝑀= 3is the elite pool size and𝐱 (𝑡)
+best denotes the
+best binary mask at iteration𝑡. The pool is updated at every
+iteration by appending the current best mask and removing
+the oldest entry.
+Y. Zhang:Preprint submitted to ElsevierPage 6 of 28
+--- Page 8 ---
+/uni00000028/uni0000004f/uni0000004c/uni00000057/uni00000048/uni00000003/uni00000033/uni00000052/uni00000052/uni0000004f/uni00000003/uni0000000b/uni00000035/uni00000048/uni00000046/uni00000048/uni00000051/uni00000057/uni00000003/uni00000016/uni00000003/uni0000002a/uni00000048/uni00000051/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000056/uni0000000c
+/uni00000028/uni0000004f/uni0000004c/uni00000057/uni00000048/uni00000003/uni00000014
+/uni0000003e/uni00000014/uni0000000f/uni00000003/uni00000014/uni0000000f/uni00000003/uni00000013/uni0000000f/uni00000003/uni00000014/uni0000000f/uni00000003/uni00000011/uni00000011/uni00000011/uni00000040
+/uni00000028/uni0000004f/uni0000004c/uni00000057/uni00000048/uni00000003/uni00000015
+/uni0000003e/uni00000014/uni0000000f/uni00000003/uni00000013/uni0000000f/uni00000003/uni00000014/uni0000000f/uni00000003/uni00000013/uni0000000f/uni00000003/uni00000011/uni00000011/uni00000011/uni00000040
+/uni00000028/uni0000004f/uni0000004c/uni00000057/uni00000048/uni00000003/uni00000016
+/uni0000003e/uni00000013/uni0000000f/uni00000003/uni00000014/uni0000000f/uni00000003/uni00000014/uni0000000f/uni00000003/uni00000013/uni0000000f/uni00000003/uni00000011/uni00000011/uni00000011/uni00000040
+/uni00000039/uni00000052/uni00000057/uni00000048/uni00000056/uni00000003/uni00000049/uni00000052/uni00000055/uni00000003/uni00000029/uni00000048/uni00000044/uni00000057/uni00000058/uni00000055/uni00000048/uni00000003Fj/uni0000001d
+/uni0000003e/uni00000003/uni00000014/uni0000000f/uni00000003/uni00000014/uni0000000f/uni00000003/uni00000013/uni00000003/uni00000040/uni00000003/uni00000003/uni00000020/uni00000021/uni00000003/uni00000003/uni00000026/uni00000052/uni00000058/uni00000051/uni00000057/uni00000003/uni00000020/uni00000003/uni00000015
+/uni00000026/uni00000052/uni00000058/uni00000051/uni00000057
+/uni00000021/uni00000020/uni00000003/uni00000015/uni00000003/uni00000022
+/uni0000003c /uni00000048/uni00000056/uni00000003/uni0000000b/uni00000021/uni00000020/uni00000003/uni00000015/uni00000003/uni00000059/uni00000052/uni00000057/uni00000048/uni00000056/uni0000000c/uni00000026/uni00000052/uni00000058/uni00000051/uni00000057/uni00000003/uni00000020/uni00000003/uni00000014
+/uni0000000b/uni00000031/uni00000052/uni00000003/uni00000046/uni0000004b/uni00000044/uni00000051/uni0000004a/uni00000048/uni0000000c
+/uni00000031/uni00000052/uni00000003/uni0000000b/uni00000013/uni00000003/uni00000059/uni00000052/uni00000057/uni00000048/uni00000056/uni0000000c
+/uni00000035/uni00000048/uni0000004c/uni00000051/uni00000049/uni00000052/uni00000055/uni00000046/uni00000048/uni00000050/uni00000048/uni00000051/uni00000057
+Pj = Pj + 0.10
+/uni00000031/uni00000052/uni00000003/uni00000026/uni0000004b/uni00000044/uni00000051/uni0000004a/uni00000048
+Pj = Pj
+/uni00000036/uni00000058/uni00000053/uni00000053/uni00000055/uni00000048/uni00000056/uni00000056/uni0000004c/uni00000052/uni00000051
+Pj = Pj 0.15
+/uni00000038/uni00000053/uni00000047/uni00000044/uni00000057/uni00000048/uni00000003/uni00000027/uni00000029/uni00000033/uni00000003/uni00000039/uni00000048/uni00000046/uni00000057/uni00000052/uni00000055/uni00000003P/uni00000003/uni00000049/uni00000052/uni00000055/uni00000003/uni00000029/uni00000048/uni00000044/uni00000057/uni00000058/uni00000055/uni00000048/uni00000003Fj
+/uni0000002f/uni00000048/uni0000004a/uni00000048/uni00000051/uni00000047/uni0000001d
+/uni00000035/uni00000048/uni0000004c/uni00000051/uni00000049/uni00000052/uni00000055/uni00000046/uni00000048/uni00000050/uni00000048/uni00000051/uni00000057/uni00000003/uni0000000b/uni00000021/uni00000020/uni00000015/uni0000000c
+/uni00000036/uni00000058/uni00000053/uni00000053/uni00000055/uni00000048/uni00000056/uni00000056/uni0000004c/uni00000052/uni00000051/uni00000003/uni0000000b/uni00000013/uni0000000c
+/uni00000031/uni00000052/uni00000003/uni00000046/uni0000004b/uni00000044/uni00000051/uni0000004a/uni00000048/uni00000003/uni0000000b/uni00000014/uni0000000c
+/uni0000000d/uni00000003/uni00000028/uni0000004f/uni0000004c/uni00000057/uni00000048/uni00000003/uni00000046/uni00000052/uni00000051/uni00000056/uni00000048/uni00000051/uni00000056/uni00000058/uni00000056/uni00000003/uni0000004c/uni00000056/uni00000003/uni00000044/uni00000046/uni00000057/uni0000004c/uni00000059/uni00000044/uni00000057/uni00000048/uni00000047/uni00000003/uni00000044/uni00000049/uni00000057/uni00000048/uni00000055/uni00000003/uni0000004a/uni00000048/uni00000051/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000015/uni00000013/uni00000011
+Fig. 3:Elite consensus tuning mechanism.
+To avoid premature convergence in the early search
+stage, the ECT mechanism is activated only after a delay
+period of𝑇 delay = 20iterations. Once activated, the elite
+pool frequency is computed as:
+̄𝑓𝑗 = 1
+𝑀
+∑
+𝐦∈
+𝑚𝑗.(9)
+Based on ̄𝑓𝑗, the DFP vector is adjusted as follows:
+𝑃𝑗 ←
+⎧
+⎪
+⎨
+⎪⎩
+min(𝑃max, 𝑃𝑗+Δ inc)if ̄𝑓𝑗 >0.5,
+max(𝑃min, 𝑃𝑗−Δ dec)if ̄𝑓𝑗 =0,
+𝑃𝑗 otherwise,
+(10)
+whereΔ inc = 0.10andΔ dec = 0.15are the increment and
+decrement steps, respectively.
+The majority voting rule (̄𝑓𝑗 >0.5) reinforces features
+that are selected by more than half of the elite solutions,
+reflecting a consensus among high-quality individuals. The
+unanimous exclusion rule (̄𝑓𝑗 = 0) suppresses features that
+are never selected by any elite solution, providing a strong
+signal of irrelevance. The asymmetric step sizes (Δdec >
+Δinc) ensure that irrelevant features are eliminated more ag-
+gressively than relevant features are reinforced, maintaining
+selectivepressuretowardcompactsubsets.Fig.3providesa
+visual illustration of this mechanism.
+Interaction between DFP and ECT.Within each itera-
+tion, the two mechanisms are applied in a fixed order: the
+frequency-based DFP update (Eq. 7) is executed first, and
+the consensus-based ECT correction (Eq. 10) is applied
+afterwards. This ordering makes ECT the final authority:
+whenever the two mechanisms disagree on a feature, the
+elite-consensus verdict prevails, which resolves the conflict
+deterministicallyratherthanthroughaveragingoradditional
+arbitration parameters. The two operators act on largely
+disjoint regions of the frequency spectrum: DFP penalizes
+features whose population frequency is extreme (above0.8
+or below0.2), whereas ECT reinforces features with elite
+consensus above0.5and suppresses features unanimously
+excluded from the elite pool. Because the DFP decrement
+(𝑙𝑟=0.05)issmallerthantheECTincrement(Δ inc=0.10),
+afeaturethatissimultaneouslyover-representedinthepopu-
+lationandsupportedbytheeliteconsensusexperiencesanet
+positive drift, which implements the protection mechanism
+for important features discussed above. The fixed execution
+order and the magnitude relation𝑙𝑟<Δinc together prevent
+oscillatory behavior of the probability vector.
+3.6. Adaptive Producer Ratio
+InstandardSSA,theproportionofproducers(alsocalled
+discoverers)isfixedatapproximately20%ofthepopulation
+throughout the entire evolutionary process. This static allo-
+cationcannotadapttodifferentsearchstages:earlyiterations
+benefit from a larger proportion of producers for broader
+exploration, while later iterations require more scroungers
+for fine-grained exploitation around promising solutions.
+To address this limitation, EDP-SSA employs a time-
+varying adaptive producer ratio that increases linearly over
+the course of evolution:
+𝑅𝑝(𝑡)=𝑅 min
+𝑝 +(𝑅max
+𝑝 −𝑅min
+𝑝 )⋅ 𝑡
+𝑇max
+,(11)
+Y. Zhang:Preprint submitted to ElsevierPage 7 of 28
+--- Page 9 ---
+where𝑅min
+𝑝 =0.15and𝑅 max
+𝑝 =0.35arethelowerandupper
+bounds of the producer ratio,𝑡is the current iteration, and
+𝑇max is the maximum number of iterations. The number of
+producers at iteration𝑡is then:
+𝑁𝑝(𝑡)=max (1,min(𝑁−1,round(𝑁⋅𝑅 𝑝(𝑡)))),(12)
+where𝑁is the population size.
+This design ensures that in the early stage (e.g.,𝑡= 0),
+only15%ofthepopulationservesasproducers,allowingthe
+majoritytoactasscroungersthatexploitthemostpromising
+regions identified so far. As the evolution proceeds, the
+producerratiograduallyincreasesto35%,introducingmore
+exploratory behavior to escape local optima and discover
+new promising regions. This smooth transition avoids the
+abruptchangesthatdiscreteswitchingstrategiesmightcause
+and provides a natural balance between exploration and
+exploitation throughout the search process.
+The standard SSA producer and scrounger update equa-
+tions are retained:
+𝑥(𝑡+1)
+𝑖,𝑗 =
+{
+𝑥(𝑡)
+𝑖,𝑗 ⋅exp
+(
+− 𝑖+1
+𝛼𝑠⋅(𝑇max+𝜖)
+)
+if𝑅2<𝑆𝑇,
+𝑥(𝑡)
+𝑖,𝑗+𝑄otherwise,
+(13)
+where𝑖∈ {1,…,𝑁 𝑝(𝑡)},𝑅 2 ∈ [0,1]is a random number,
+𝑆𝑇= 0.8is the safety threshold,𝛼 𝑠 ∈ [0,1]is a random
+parameter,𝑄∼(0,1)is a random walk, and𝜖is a small
+constant to prevent division by zero.
+𝑥(𝑡+1)
+𝑖,𝑗 =
+⎧
+⎪
+⎨
+⎪⎩
+𝑄⋅exp
+(
+𝑥(𝑡)
+worst−𝑥(𝑡)
+𝑖,𝑗
+𝑖2+𝜖
+)
+if𝑖>𝑁∕2,
+𝑥(𝑡)
+𝑝 +|𝑥(𝑡)
+𝑖,𝑗−𝑥(𝑡)
+𝑝 |⋅ 𝐴
+𝐷 otherwise,
+(14)
+where𝑥 (𝑡)
+𝑝 is the current best position,𝑥 (𝑡)
+worst is the cur-
+rent worst position, and𝐴is a vector of random values in
+{−1,+1}.
+3.7. Local Search Post-processing
+Aftertheevolutionaryprocessterminates,agreedylocal
+searchprocedureisappliedtothebestbinarymasktofurther
+refine the selected feature subset. The local search operates
+by iteratively flipping a single feature (changing𝑥𝑗 from 0
+to 1 or from 1 to 0) and evaluating the resulting fitness.
+At each step, a random permutation of all𝐷features
+is generated, and each feature is flipped one at a time. If
+flippingfeature𝑗improvesthefitness,thechangeisaccepted
+immediately and the procedure restarts from a new random
+permutation. If no improvement is found after a complete
+passthroughallfeatures,thelocalsearchterminates.Topre-
+vent excessive computation on high-dimensional datasets,
+the total number of fitness evaluations during local search
+is bounded by𝐸max = 5000. The procedure is summarized
+as follows:
+1. Initialize𝐱 ∗ ←𝐱 best,𝑓 ∗ ←Fitness(𝐱 ∗), count←1.
+2. Generate a random permutation𝜋of{1,2,…,𝐷}.
+3. For each𝑗∈𝜋: flip𝑥 ∗
+𝑗, evaluate fitness, if improved
+accept and go to Step 2; otherwise revert.
+4. If count<𝐸 max, go to Step 2; otherwise return𝐱∗.
+This single-feature flipping neighborhood is computation-
+ally efficient and has been shown to be effective for binary
+feature selection problems [22].
+It is important to clarify the evaluation protocol behind
+the local search to rule out overfitting concerns. The local
+searchoptimizesexactlythesamefitnessfunctionastheevo-
+lutionarysearchphase,i.e.,5-foldstratifiedcross-validation
+with a fixed fold partition (a fixed random state), so it never
+observes the final evaluation folds. The final reported ac-
+curacy of every algorithm—including EDP-SSA after local
+search—is always recomputed with an independent 10-fold
+stratified cross-validation. The bounded evaluation budget
+(𝐸max = 5000) further limits the degree to which the
+local search can adapt to the search-phase partitions. In the
+ablationstudy,variant(iii)(SSA+DFP+Elite)excludesboth
+theadaptiveproducerratioandthelocalsearch,soitsgapof
+2.69percentage points to the full EDP-SSA quantifies the
+combined contribution of these two components. To isolate
+thecontributionofthelocalsearchalone,weadditionallyran
+thefullmodelwiththelocal-searchpost-processingdisabled
+on three representative datasets (colon, SRBCT, and lung)
+under the same 10 random seeds. The local search adds
+an average of1.45percentage points of accuracy on these
+datasets (from94.01%to95.46%), with the largest gain of
+2.82percentage points on SRBCT and the smallest of0.39
+percentage points on lung, which confirms that the fourth
+component contributes measurably to the final performance
+withoutinflatingthereportedaccuracybeyonditslegitimate
+improvement.
+3.8. Complete Algorithm
+The complete EDP-SSA algorithm is summarized in
+Algorithm 1. The algorithm begins by initializing the DFP
+vector at a low value (0.1) for all features and generating
+the initial population of sparrow continuous positions ran-
+domly (Lines 1–3). In each iteration, the adaptive producer
+ratio is computed and the producer/scrounger positions are
+updated(Line5),afterwhichbinarymasksaregeneratedvia
+BernoullisamplingfromtheDFPvectorandevaluatedusing
+thefitnessfunction(Line6).TheDFPvectoristhenupdated
+via frequency-based feedback (Line 7), and the current best
+mask is appended to the elite pool (Line 8); if the delay
+period has passed, the elite consensus tuning adjusts the
+DFPvectorbasedonmajorityvoting(Lines9–10).Notethat
+ECT is applied after the DFP update within each iteration,
+so the elite consensus acts as the final correction whenever
+the two mechanisms disagree. After the maximum number
+of iterations is reached, a greedy local search is applied to
+refinethebestmask(Line12),andthealgorithmreturnsthe
+best mask and the converged DFP vector (Line 13).
+3.9. Computational Complexity Analysis
+The computational cost of EDP-SSA per iteration
+is dominated by fitness evaluation, which is inherent to
+wrapper-basedfeatureselection.Let𝑁,𝐷,and𝑇 max denote
+thepopulationsize,thefeaturedimension,andthemaximum
+Y. Zhang:Preprint submitted to ElsevierPage 8 of 28
+--- Page 10 ---
+Algorithm 1EDP-SSA
+Require:𝑋,𝑦,𝑁,𝑇 max=100,𝑇 delay=20
+1:Initialize𝐏=0.1for all𝐷dimensions
+2:Initialize sparrow continuous positions randomly
+3:←∅
+4:for𝑡=1to𝑇 max do
+5:Compute𝑅 𝑝(𝑡); update producer/scrounger posi-
+tions (Eqs. 13–14)
+6:Generate masks𝐗via𝐗 𝑖,𝑗 ∼Bernoulli(𝑃 𝑗)and
+evaluate fitness
+7:Update𝐏via DFP frequency feedback (Eq. 7)
+8:Append best mask to elite pool
+9:if𝑡>𝑇 delay then
+10:Update𝐏via elite consensus tuning (Eq. 10)
+11:end if
+12:end for
+13:Apply greedy local search to best mask
+14:returnbest mask and𝐏
+number of iterations, respectively, and let𝑇fit denote the
+cost of a single fitness evaluation (one 5-fold KNN cross-
+validation). In each iteration, the following operations are
+performed: (i) Bernoulli mask generation, which costs
+𝑂(𝑁𝐷); (ii) fitness evaluation of all individuals, which
+costs𝑂(𝑁⋅𝑇 fit); (iii) elite pool maintenance and elite
+consensustuning,whichcost𝑂(𝑀𝐷+𝐷)with𝑀=3;(iv)
+producer/scrounger position updates, which cost𝑂(𝑁𝐷);
+and (v) DFP frequency statistics and probability updates,
+whichcost𝑂(𝑁𝐷+𝐷).Theoverallper-iterationcomplexity
+is therefore𝑂(𝑁𝐷+𝑁⋅𝑇 fit), and the total evolutionary
+cost is𝑂(𝑇max ⋅(𝑁𝐷+𝑁⋅𝑇 fit)). The greedy local search
+adds at most𝐸max = 5000extra fitness evaluations, i.e.,
+𝑂(𝐸max ⋅𝑇 fit). Compared with the basic SSA, whose per-
+iteration complexity is also𝑂(𝑁𝐷+𝑁⋅𝑇 fit), the DFP
+andECTmechanismsintroduceonlylow-order𝑂(𝑁𝐷+𝐷)
+overhead;theasymptoticcomplexityisthereforeunchanged,
+which is consistent with the comparable runtimes reported
+in Tables 9 and 10.
+4. Experiments and Discussion
+4.1. Experimental Setup
+4.2. Datasets and Comparison Algorithms
+Datasets.The proposed algorithm is evaluated on
+16 widely used high-dimensional microarray datasets,
+summarized in Table 1. These datasets cover tumor
+classification (11_Tumors, SRBCT), leukemia subtyping
+(ALLAML, Leukemia-3, leukemia, CLL_SUB_111), lung
+cancer (lung, SMK_CAN_187), and other cancer types
+(colon, GLI_85, Prostate_GE, DLBCL, TOX_171, and
+arcene). The number of samples ranges from 62 (colon) to
+468(AP_Breast_UterusandLeukemia-3),whilethenumber
+of original features varies from 2,000 (colon) to 22,283
+(GLI_85). The number of classes ranges from 2 (binary
+classification) to 11 (multi-class tumor classification),
+providing a diverse benchmark for evaluating feature
+Table 1
+Summary of the 16 high-dimensional datasets.
+No. Dataset Samples Features Classes Ref.
+1 colon 62 2000 2 [1]
+2 leukemia 72 7070 2 [12]
+3 lung 203 3312 5 [13]
+4 GLI_85 85 22283 2 [29]
+5 ALLAML 72 7129 2 [2]
+6 Prostate_GE 102 5966 2 [34]
+7 DLBCL 77 5469 2 [33]
+8 SRBCT 83 2308 4 [20]
+9 11_Tumors 174 12533 11 [31]
+10 AP_Breast_Uterus 468 10936 2 [9]
+11 Leukemia-3 468 10936 2 [9]
+12 AP_Lung_Kidney 386 10936 2 [9]
+13 SMK_CAN_187 187 19993 2 [35]
+14 CLL_SUB_111 111 11340 3 [9]
+15 arcene 200 10000 2 [15]
+16 TOX_171 171 5748 4 [9]
+Table 2
+Default parameters of EDP-SSA.
+Parameter Value
+Population size𝑁100
+Maximum iterations𝑇 max 100
+Fitness weight𝛼0.8
+𝑘for KNN 5
+Search CV folds 5
+Final evaluation CV folds 10
+Seeds{7,11,13,17,19,23,29,31,37,41}
+𝑙𝑟(DFP step) 0.05
+Elite pool size 3
+Elite delay𝑇 delay 20
+Producer ratio𝑅 𝑝 range[0.15,0.35]
+Local search max evaluations 5000
+selection algorithms. All datasets are preprocessed with
+standard normalization to zero mean and unit variance.
+Comparison algorithms.EDP-SSA is compared
+against10featureselectionalgorithms,whichcanbedivided
+into two groups. The first group comprises three SSA-based
+methods:thebasicSSA[42],improvedbinarySSA(iBSSA)
+[11], and enhanced sparrow search swarm optimizer
+(ESSSO) [24]. The second group includes seven other well-
+established methods: binary particle swarm optimization
+(BPSO) [19], binary grey wolf optimizer (BGWO) [8],
+binary PSO with V-shaped transfer function (BPSO-V)
+[26],binarycrayfishoptimizationalgorithm(BinCOA)[32],
+improved binary RIME algorithm (bIRIME) [18], binary
+marine predators algorithm with time-varying sine and V-
+shapedtransferfunctions(BMPA-TVSinV)[3],andsupport
+vector machine recursive feature elimination (SVM-RFE)
+[16].
+Parameter settings.For fair comparison, all
+metaheuristic algorithms share the following common
+parameters: population size𝑁= 100, maximum iterations
+𝑇max = 100, and fitness weight𝛼= 0.8. The algorithm-
+specific parameters of the competing methods (e.g., the
+inertia weight and acceleration coefficients of BPSO, the
+transfer function settings of BGWO and BPSO-V) follow
+Y. Zhang:Preprint submitted to ElsevierPage 9 of 28
+--- Page 11 ---
+the values recommended in their original papers, and no
+dataset-specific tuning is performed for any algorithm. The
+parametersofEDP-SSAarefixedonceforalldatasets,based
+on the sensitivity analysis reported in Section 4. The KNN
+classifierwith𝑘=5isusedforfitnessevaluationduringthe
+searchphasewith5-foldstratifiedcross-validation[5].Final
+performance assessment employs 10-fold stratified cross-
+validation to provide a more reliable accuracy estimate.
+Each algorithm is executed with 10 different random seeds
+{7,11,13,17,19,23,29,31,37,41}, and the mean and
+standard deviation are reported. The default parameters
+specific to EDP-SSA are listed in Table 2.
+Implementation environment.All algorithms are im-
+plemented in Python 3.10 with the scikit-learn library for
+the KNN classifier and cross-validation procedures, and the
+SciPy library for the statistical tests. The experiments are
+conducted on a server equipped with a 32-core CPU and
+64GB of RAM.
+Evaluation metrics.Three main metrics are used to
+evaluate the performance: (1) classification accuracy, com-
+puted as the proportion of correctly classified samples; (2)
+featureselectionratio(FSR),definedastheratioofselected
+features to the total number of features; and (3) fitness
+value, computed according to Eq. 1. Additionally, runtime
+is recorded to assess computational efficiency.
+4.3. Overall Performance Comparison
+Classification accuracy.Tables 3 and 4 present the
+mean and standard deviation of classification accuracy for
+all algorithms across the 16 datasets. EDP-SSA achieves
+the best average accuracy of 0.9188, outperforming all
+competing methods. Among the SSA-based methods
+(Table 3), EDP-SSA surpasses the basic SSA (0.8530),
+iBSSA (0.8610), and ESSSO (0.8609) by margins of 6.58,
+5.78, and 5.79 percentage points, respectively. Among
+the other comparison methods (Table 4), the second-best
+averageaccuracyisachievedbybIRIME(0.8927),followed
+by BPSO (0.8657), BinCOA (0.8629), BMPA-TVSinV
+(0.8628), and BGWO (0.8624). EDP-SSA outperforms
+bIRIME by 2.61 percentage points on average. EDP-SSA
+showsitslargestgainsonthemostchallengingbenchmarks:
+on CLL_SUB_111, it achieves 80.07% accuracy, exceeding
+the second-best method bIRIME (69.64%) by 10.43
+percentage points—the widest margin observed across
+all datasets. On SRBCT, a four-class problem, EDP-SSA
+reaches 97.64%, compared to 95.68% for bIRIME. On the
+colon dataset, EDP-SSA attains 93.36%, outperforming
+bIRIME (89.76%) by 3.60 percentage points. On the
+SMK_CAN_187 dataset, EDP-SSA achieves 75.40%,
+surpassingallcompetingmethodsbyatleast3.3percentage
+points. The only dataset where EDP-SSA does not achieve
+thebestresultislung,wherebIRIME(97.59%)andBinCOA
+(96.89%) slightly outperform EDP-SSA (96.80%); the
+difference is marginal (0.79 and 0.09 percentage points,
+respectively). The “+” markers in Tables 3 and 4 indicate
+that EDP-SSA is significantly better than the corresponding
+algorithm according to the Wilcoxon signed-rank test at the
+0.05 significance level [6, 40].
+Featureselectionratio.Tables5and6reportthefeature
+selection ratio (FSR) results. EDP-SSA achieves the lowest
+averageFSRof0.0104(i.e.,selectingonly1.04%offeatures
+onaverage),which issubstantiallylowerthanallcompeting
+methods. Among the SSA-based methods (Table 5), the
+basicSSAselects42.18%offeatures,iBSSAselects37.49%,
+and ESSSO selects 49.33%. Among the other methods (Ta-
+ble6),SVM-RFEachievesthesecond-lowestFSRof1.67%,
+followed by bIRIME (7.98%) and BMPA-TVSinV (9.85%).
+However,SVM-RFEachievesthislowFSRatthecostofsig-
+nificantly lower accuracy (average 81.88%), whereas EDP-
+SSA simultaneously achieves the highest accuracy with the
+lowest FSR.
+Onindividualdatasets,EDP-SSAcompressesthefeature
+space substantially. On the colon dataset, EDP-SSA selects
+only18featuresfrom2,000originalfeatures(FSR=0.009)
+while achieving 93.36% accuracy. On ALLAML, it selects
+60 features from 7,129 (FSR = 0.0084) with 96.29% accu-
+racy. On DLBCL, only 40 features are selected from 5,469
+(FSR = 0.0073) with 96.13% accuracy. On SRBCT, EDP-
+SSA selects merely 24 features from 2,308 (FSR = 0.0104)
+while achieving the highest accuracy of 97.64%. These
+results confirm that the DFP mechanism effectively drives
+selection probabilities toward zero for irrelevant features,
+enabling the algorithm to identify extremely compact yet
+highly discriminative feature subsets.
+Fitnessvalue.Tables7and8comparethefitnessvalues,
+which jointly consider accuracy and feature subset size.
+EDP-SSA achieves the best average fitness of 0.0436, sub-
+stantially lower than all competing methods. The nearest
+competitor is bIRIME with an average fitness of 0.0794;
+however, this comparison must be interpreted carefully be-
+cause bIRIME selects far more features (FSR = 7.98%),
+which inflates the feature reduction term in the fitness func-
+tion. Among the SSA-based methods, EDP-SSA (0.0436)
+dramatically outperforms SSA (0.1926), iBSSA (0.1769),
+and ESSSO (0.2007), confirming that the DFP mechanism
+and elite consensus tuning significantly improve the multi-
+objective optimization capability.
+Runtime analysis.Tables 9 and 10 compare the run-
+time (in seconds) of all algorithms. EDP-SSA requires an
+average runtime of approximately 482 seconds, which is
+comparable to other metaheuristic wrapper methods. SSA-
+based methods range from 195 seconds (ESSSO) to 669
+seconds (basic SSA), while other methods range from a few
+seconds (SVM-RFE) to 841 seconds (bIRIME on GLI_85).
+SVM-RFE is the fastest method (average 8.93 seconds) due
+to its deterministic ranking-and-elimination nature, but at
+the cost of substantially lower accuracy. The runtime of
+EDP-SSAisprimarilydeterminedbythefitnessevaluations
+(KNNcross-validation)ateachiteration,andthelocalsearch
+post-processing adds a bounded overhead of at most 5,000
+evaluations.GiventhatEDP-SSAachievesthebestaccuracy
+and FSR simultaneously,the computational cost isjustified.
+Y. Zhang:Preprint submitted to ElsevierPage 10 of 28
+--- Page 12 ---
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001b/uni00000014
+/uni00000013/uni00000011/uni0000001b/uni00000017
+/uni00000013/uni00000011/uni0000001b/uni0000001a
+/uni00000013/uni00000011/uni0000001c/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000016/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000046/uni00000052/uni0000004f/uni00000052/uni00000051
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001c/uni00000013/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000015/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000018/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni0000001a/uni00000018/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni0000004f/uni00000048/uni00000058/uni0000004e/uni00000048/uni00000050/uni0000004c/uni00000044
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001b/uni00000019
+/uni00000013/uni00000011/uni0000001b/uni0000001b
+/uni00000013/uni00000011/uni0000001c/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000015
+/uni00000013/uni00000011/uni0000001c/uni00000017/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni0000002a/uni0000002f/uni0000002c/uni00000042/uni0000001b/uni00000018
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001b/uni0000001b
+/uni00000013/uni00000011/uni0000001c/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000015
+/uni00000013/uni00000011/uni0000001c/uni00000017
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000033/uni00000055/uni00000052/uni00000056/uni00000057/uni00000044/uni00000057/uni00000048/uni00000042/uni0000002a/uni00000028
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+Fig. 4:Comparison of the accuracy of each comparison algorithm.
+4.4. Statistical Significance Analysis
+To rigorously assess whether the performance
+improvements of EDP-SSA over competing algorithms
+are statistically significant, the two-sided Wilcoxon signed-
+rank test [40] is applied at the 0.05 significance level. For
+each dataset, the 10 accuracy values of EDP-SSA (one
+per independent run) and the 10 accuracy values of each
+competing algorithm form two paired samples of size 10,
+and the test is performed on these paired vectors rather than
+on the aggregate means. The Wilcoxon signed-rank test is
+a non-parametric statistical test suitable for comparing two
+related samples, and it does not require the assumption of
+normal distribution. The null hypothesis is that there is no
+significant difference between the two algorithms.
+In Tables 3 and 4, the “+” marker indicates that EDP-
+SSAissignificantlybetterthanthecorrespondingalgorithm
+atthe𝑝<0.05level,the“≈”markerindicatesnostatistically
+significant difference, and the “−” marker indicates that
+EDP-SSA is significantly worse. Across all 16 datasets and
+10 competing algorithms, a total of 160 pairwise compar-
+isons are conducted, among which EDP-SSA achieves sta-
+tisticallysignificantwinsin140cases,tiesin19cases,anda
+significant loss in only 1 case. Among the SSA-based com-
+parisons (Table 3), EDP-SSA is significantly better on all
+16 datasets against SSA Basic, and on 13 out of 16 datasets
+againstbothiBSSAandESSSO,withtheremainingcompar-
+isonsbeingties;nosignificantlossoccurswithinthisgroup.
+Among the other comparisons (Table 4), EDP-SSA signif-
+icantly outperforms bIRIME on 11 out of 16 datasets and
+ties on 4 datasets (DLBCL, SRBCT, arcene, and leukemia);
+the only dataset on which EDP-SSA is significantly worse
+is lung, where bIRIME achieves 97.59% versus 96.80%
+for EDP-SSA. Against BPSO, BGWO, BPSO-V, BinCOA,
+BMPA-TVSinV,andSVM-RFE,EDP-SSAachievessignifi-
+cantwinsortiesoneverydataset,withnosignificantlosses.
+TheFriedmantestisalsoconductedasanon-parametric
+multiple comparison test across all 16 datasets simultane-
+ously, treating the 11 algorithms as 11 treatments [10]. The
+average rank of EDP-SSA is 1.125 (the best among all 11
+algorithms), followed by bIRIME (2.000), BPSO (4.875),
+BMPA-TVSinV (5.406), and BinCOA (5.469). The basic
+SSAranks9.219andSVM-RFErankslastat9.438,confirm-
+ingthattheproposedimprovementssubstantiallyelevatethe
+algorithm’s performance. The Friedman statistic is𝜒2 =
+105.952with𝑑𝑓= 10, yielding𝑝 <0.001and rejecting
+the null hypothesis that all algorithms perform equally.
+Since the Friedman test rejects the null hypothesis, the
+Nemenyi post-hoc test [6] is further applied to identify
+which pairs of algorithms differ significantly. With𝑘= 11
+algorithms and𝑁= 16datasets, the critical difference
+at𝛼= 0.05is𝐶𝐷=𝑞 0.05
+√
+𝑘(𝑘+1)∕(6𝑁) = 3.219 ×
+Y. Zhang:Preprint submitted to ElsevierPage 11 of 28
+--- Page 13 ---
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001b/uni00000018/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni0000001a/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000013/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000015/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000018/uni00000013/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000024/uni0000002f/uni0000002f/uni00000024/uni00000030/uni0000002f
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni00000019/uni0000001a/uni00000018
+/uni00000013/uni00000011/uni00000019/uni0000001c/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni00000013/uni00000018
+/uni00000013/uni00000011/uni0000001a/uni00000015/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni00000016/uni00000018
+/uni00000013/uni00000011/uni0000001a/uni00000018/uni00000013/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000036/uni00000030/uni0000002e/uni00000042/uni00000026/uni00000024/uni00000031/uni00000042/uni00000014/uni0000001b/uni0000001a
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni00000019/uni00000013
+/uni00000013/uni00000011/uni00000019/uni00000017
+/uni00000013/uni00000011/uni00000019/uni0000001b
+/uni00000013/uni00000011/uni0000001a/uni00000015
+/uni00000013/uni00000011/uni0000001a/uni00000019/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000026/uni0000002f/uni0000002f/uni00000042/uni00000036/uni00000038/uni00000025/uni00000042/uni00000014/uni00000014/uni00000014
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001a/uni0000001b/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni0000001c/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni00000014/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni00000015/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni00000017/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni00000018/uni00000018/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000037/uni00000032/uni0000003b/uni00000042/uni00000014/uni0000001a/uni00000014
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+Fig. 5:Comparison of the accuracy of each comparison algorithm.
+√
+132∕96 ≈ 3.78, where𝑞 0.05 = 3.219is the critical
+value of the studentized range statistic for𝑘= 11. Fig. 13
+presents the critical difference diagram. EDP-SSA is signif-
+icantly better than 8 of the 10 competitors (BMPA-TVSinV,
+BinCOA, BGWO, ESSSO, iBSSA, BPSO-V, basic SSA,
+and SVM-RFE), whose rank differences from EDP-SSA all
+exceed the CD. The rank differences of bIRIME (0.875)
+and BPSO (3.750) remain within the CD; for bIRIME, the
+per-dataset Wilcoxon test still reports significant wins on
+11 of 16 datasets, which is consistent because the Nemenyi
+test is a conservative test that aggregates over all datasets
+simultaneously.
+ThesestatisticaltestsconfirmthattheadvantageofEDP-
+SSA reflects genuine algorithmic differences rather than
+random fluctuations.
+4.5. Convergence, Stability and Sensitivity
+Analysis
+Convergence analysis.Figs. 4–7 display the conver-
+gencecurvesofclassificationaccuracyforall11algorithms
+across the 16 datasets. Each curve plots the best accuracy
+achieved up to each iteration, averaged over 10 random
+seeds.Theconvergencecurvesrevealseveralpatterns.First,
+EDP-SSAconsistentlyreacheshigherfinalaccuracythanall
+competing methods on the majority of datasets, particularly
+on challenging problems such as CLL_SUB_111 (80.07%
+vs. 69.64% for bIRIME), SRBCT (97.64% vs. 95.68%), and
+SMK_CAN_187 (75.40% vs. 71.57%). Second, EDP-SSA
+exhibits rapid convergence in the early iterations (approx-
+imately the first 20–30 iterations), which can be attributed
+to the DFP mechanism quickly identifying and reinforc-
+ing informative features through frequency-based feedback.
+Third, in the later iterations, EDP-SSA continues to show
+gradualimprovement,reflectingthecontributionoftheelite
+consensus tuning and adaptive producer ratio in fine-tuning
+the search. By contrast, most competing methods plateau
+earlier and fail to achieve further improvement, indicating
+premature convergence. Among the SSA-based methods,
+the basic SSA shows the slowest convergence and lowest
+final accuracy, while iBSSA and ESSSO show moderate
+improvement but remain far below EDP-SSA. Among the
+other methods, bIRIME and BMPA-TVSinV show compet-
+itive convergence on some datasets but lack the consistency
+of EDP-SSA across all 16 datasets.
+Stability analysis.Fig. 8 presents box plots of the ac-
+curacy distributions across 10 independent runs for each
+algorithm on representative datasets. The box plots reveal
+therobustnessandconsistencyofeachalgorithm.EDP-SSA
+exhibitsnarrowinterquartilerangesandfewoutliersonmost
+datasets, indicating stable performance across different ran-
+dom initializations. On datasets such as AP_Breast_Uterus
+Y. Zhang:Preprint submitted to ElsevierPage 12 of 28
+--- Page 14 ---
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001b/uni00000015/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni00000017/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni00000018/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni0000001a/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni0000001b/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000013/uni00000013/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000044/uni00000055/uni00000046/uni00000048/uni00000051/uni00000048
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001c/uni00000018/uni00000015
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni0000001b
+/uni00000013/uni00000011/uni0000001c/uni0000001a/uni00000019
+/uni00000013/uni00000011/uni0000001c/uni0000001b/uni00000017/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni0000004f/uni00000058/uni00000051/uni0000004a
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001c/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000015
+/uni00000013/uni00000011/uni0000001c/uni00000017
+/uni00000013/uni00000011/uni0000001c/uni00000019
+/uni00000013/uni00000011/uni0000001c/uni0000001b/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000027/uni0000002f/uni00000025/uni00000026/uni0000002f
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001b/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni00000017
+/uni00000013/uni00000011/uni0000001b/uni0000001b
+/uni00000013/uni00000011/uni0000001c/uni00000015
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000036/uni00000035/uni00000025/uni00000026/uni00000037
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+Fig. 6:Comparison of the accuracy of each comparison algorithm.
+and AP_Lung_Kidney, EDP-SSA achieves tight distribu-
+tions with standard deviations of 0.0038 and 0.0039, re-
+spectively (see Tables 3 and 4). In contrast, the basic SSA
+shows wider spreads on the same datasets (std 0.0051 and
+0.0046) and notably larger variability on difficult problems
+such as SRBCT (std 0.0315 vs. 0.0194 for EDP-SSA) and
+colon (std 0.0222 vs. 0.0225 for EDP-SSA). The stability of
+EDP-SSA can be attributed to the DFP mechanism, which
+provides a consistent search direction through probability
+guidance, and the elite consensus tuning, which reinforces
+reliable feature selections across generations.
+Ablation study.To verify the contribution of each pro-
+posedcomponent,anablationstudyisconductedbycompar-
+ingEDP-SSAwithseveralvariants:(i)SSABasic(theorig-
+inalSSAwithoutanyproposedmechanism);(ii)SSA+DFP,
+whichusesonlytheDFPmechanismwithouteliteconsensus
+tuning; (iii) SSA+DFP+Elite, which further incorporates
+theeliteconsensustuning.Fig.14visualizestheaverageac-
+curacy of EDP-SSA and each variant across all 16 datasets.
+The ablation results reveal several important findings.
+First, all DFP-based variants dramatically outperform the
+basic SSA in both accuracy and feature reduction, confirm-
+ing that the dynamic feature probability mechanism is the
+most fundamental contribution of this work. The basic SSA
+selects an average of 3,943.2 features (an FSR of 42.18%),
+while all DFP-based variants reduce this to fewer than 106
+features on average (an FSR below 1.19%). Second, the full
+EDP-SSAachievesthehighestaccuracyamongallvariants,
+with an average accuracy of 91.88% across the 16 datasets,
+compared to 88.03% for the DFP-only variant and 89.19%
+fortheDFP+Elitevariant.TheDFPmechanismaloneraises
+the average accuracy from 85.30% (basic SSA) to 88.03%,
+a gain of 2.73 percentage points, while the elite consensus
+tuning contributes a further 1.16 percentage points, and
+the adaptive producer ratio with local search together raise
+the accuracy to 91.88%. Third, the adaptive producer ratio
+and local search post-processing provide additional gains,
+particularly on datasets such as colon and leukemia, where
+thefullmodelselectssubstantiallyfewerfeatures(averaging
+18.0 and 61.6 features, respectively, compared to 897.2 and
+3,286.4 for the basic SSA) while maintaining or improving
+accuracy. These results confirm that each proposed mecha-
+nism is essential to the overall performance of EDP-SSA.
+Parameter sensitivity analysis.Fig. 15 presents the
+parameter sensitivity analysis of EDP-SSA with respect to
+three key parameters: the DFP learning rate (𝑙𝑟), the elite
+pool size (𝑀), and the elite delay (𝑇delay). Fig. 15a shows
+the heatmap of accuracy across different parameter com-
+binations, Fig. 15b shows the corresponding feature count,
+andFig.15cplotsaccuracyversusfeaturecount.Theresults
+indicate that EDP-SSA achieves consistently high accuracy
+across a wide range of learning rates (𝑙𝑟∈ [0.02,0.10]),
+Y. Zhang:Preprint submitted to ElsevierPage 13 of 28
+--- Page 15 ---
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001a/uni00000016/uni00000018
+/uni00000013/uni00000011/uni0000001a/uni00000018/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni00000019/uni00000018
+/uni00000013/uni00000011/uni0000001a/uni0000001b/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni0000001c/uni00000018/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000014/uni00000014/uni00000042/uni00000037/uni00000058/uni00000050/uni00000052/uni00000055/uni00000056
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001c/uni00000017/uni00000017
+/uni00000013/uni00000011/uni0000001c/uni00000018/uni00000015
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni0000001b
+/uni00000013/uni00000011/uni0000001c/uni0000001a/uni00000019/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000024/uni00000033/uni00000042/uni00000025/uni00000055/uni00000048/uni00000044/uni00000056/uni00000057/uni00000042/uni00000038/uni00000057/uni00000048/uni00000055/uni00000058/uni00000056
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001c/uni00000017/uni00000017
+/uni00000013/uni00000011/uni0000001c/uni00000018/uni00000015
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni0000001b
+/uni00000013/uni00000011/uni0000001c/uni0000001a/uni00000019/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni0000002f/uni00000048/uni00000058/uni0000004e/uni00000048/uni00000050/uni0000004c/uni00000044/uni00000010/uni00000016
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+/uni00000013/uni00000015/uni00000013/uni00000017/uni00000013/uni00000019/uni00000013/uni0000001b/uni00000013/uni00000014/uni00000013/uni00000013
+/uni0000002c/uni00000057/uni00000048/uni00000055/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000057/uni0000004c/uni00000050/uni00000048/uni00000056
+/uni00000013/uni00000011/uni0000001c/uni00000017/uni00000017
+/uni00000013/uni00000011/uni0000001c/uni00000018/uni00000015
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000019/uni0000001b
+/uni00000013/uni00000011/uni0000001c/uni0000001a/uni00000019
+/uni00000013/uni00000011/uni0000001c/uni0000001b/uni00000017/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000024/uni00000033/uni00000042/uni0000002f/uni00000058/uni00000051/uni0000004a/uni00000042/uni0000002e/uni0000004c/uni00000047/uni00000051/uni00000048/uni0000005c
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024
+/uni00000025/uni00000033/uni00000036/uni00000032
+/uni00000025/uni0000002a/uni0000003a/uni00000032
+Fig. 7:Comparison of the accuracy of each comparison algorithm.
+suggesting that the algorithm is not overly sensitive to this
+parameter. Very small learning rates (𝑙𝑟<0.01) slow down
+the probability adaptation and reduce accuracy, while very
+large rates (𝑙𝑟 >0.15) cause excessive oscillation in the
+probability vector. The elite pool size𝑀= 2–4yields the
+bestresults,with𝑀=3providingthebestbalancebetween
+guidance quality and diversity. The elite delay𝑇delay =15–
+25isrecommended,asshorterdelaysmayleadtopremature
+consensus and longer delays may waste valuable iterations
+without elite guidance. Overall, the parameter sensitivity
+analysis confirms that EDP-SSA performs robustly with the
+default parameter settings (𝑙𝑟= 0.05,𝑀= 3,𝑇delay = 20)
+adopted in this study. The symmetric setting (the same𝑙𝑟
+forbothfrequencybranchesofEq.7)wascomparedagainst
+an asymmetric variant that accelerates the elimination of
+low-frequency features, and no consistent advantage of the
+asymmetric variant was observed, supporting the single-
+parameter design.
+5. Conclusion and Future Work
+This paper proposed an Elite-Guided Dynamic Feature
+ProbabilitySparrowSearchAlgorithm(EDP-SSA)forhigh-
+dimensional feature selection. The algorithm addresses
+three fundamental limitations of existing binary SSA
+variants through four complementary mechanisms. First,
+the dynamic feature probability (DFP) mechanism replaces
+conventional transfer functions with a directly evolving
+probability vector, enabling Bernoulli sampling to generate
+binary masks without the 0.5 probability bottleneck.
+Second, the elite consensus tuning (ECT) strategy with
+delayed activation exploits historical best solutions through
+majority voting, providing robust probability correction
+that reinforces consistently selected features and suppresses
+unanimously excluded ones. Third, a time-varying adaptive
+producer ratio increases linearly from 15% to 35% during
+evolution, enabling a smooth transition from exploration
+to exploitation. Fourth, a greedy single-feature flipping
+local search refines the final feature subset under a bounded
+evaluation budget. By shifting the binarization paradigm
+from position-dependent transfer functions to evidence-
+driven probability evolution, EDP-SSA offers a new
+perspective for high-dimensional discrete optimization
+beyond conventional swarm intelligence.
+Experiments on the 16 microarray benchmarks against
+10 competing algorithms show the effectiveness of the
+proposed approach. EDP-SSA achieved the highest average
+classification accuracy of 91.88%, outperforming the
+second-best method bIRIME (89.27%) by 2.61 percentage
+points. More importantly, EDP-SSA selected only 1.04%
+of features on average, compared to 7.98% for the nearest
+competitor, confirming its superior feature compression
+capability. The algorithm also obtained the best average
+Y. Zhang:Preprint submitted to ElsevierPage 14 of 28
+--- Page 16 ---
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000025/uni0000002a/uni0000003a/uni00000032/uni00000028/uni00000036/uni00000036/uni00000036/uni00000032/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000010/uni00000039/uni00000025/uni0000004c/uni00000051/uni00000026/uni00000032/uni00000024/uni00000045/uni0000002c/uni00000035/uni0000002c/uni00000030/uni00000028/uni00000025/uni00000030/uni00000033/uni00000024
+/uni00000036/uni00000039/uni00000030/uni00000010/uni00000035/uni00000029/uni00000028
+/uni00000013/uni00000011/uni00000019/uni00000018
+/uni00000013/uni00000011/uni0000001a/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000018
+/uni00000014/uni00000011/uni00000013/uni00000013/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000046/uni00000052/uni0000004f/uni00000052/uni00000051
+/uni00000030/uni00000048/uni00000047/uni0000004c/uni00000044/uni00000051/uni00000003/uni0000002f/uni0000004c/uni00000051/uni00000048
+/uni00000024/uni00000059/uni00000048/uni00000055/uni00000044/uni0000004a/uni00000048/uni00000003/uni00000039 /uni00000044/uni0000004f/uni00000058/uni00000048
+/uni00000024/uni00000045/uni00000051/uni00000052/uni00000055/uni00000050/uni00000044/uni0000004f/uni00000003/uni00000039 /uni00000044/uni0000004f/uni00000058/uni00000048
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000025/uni0000002a/uni0000003a/uni00000032/uni00000028/uni00000036/uni00000036/uni00000036/uni00000032/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000010/uni00000039/uni00000025/uni0000004c/uni00000051/uni00000026/uni00000032/uni00000024/uni00000045/uni0000002c/uni00000035/uni0000002c/uni00000030/uni00000028/uni00000025/uni00000030/uni00000033/uni00000024
+/uni00000036/uni00000039/uni00000030/uni00000010/uni00000035/uni00000029/uni00000028
+/uni00000013/uni00000011/uni0000001b/uni00000015/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni00000018/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni0000001a/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000013/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000015/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000018/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni0000001a/uni00000018
+/uni00000014/uni00000011/uni00000013/uni00000013/uni00000013/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni0000004f/uni00000048/uni00000058/uni0000004e/uni00000048/uni00000050/uni0000004c/uni00000044
+/uni00000030/uni00000048/uni00000047/uni0000004c/uni00000044/uni00000051/uni00000003/uni0000002f/uni0000004c/uni00000051/uni00000048
+/uni00000024/uni00000059/uni00000048/uni00000055/uni00000044/uni0000004a/uni00000048/uni00000003/uni00000039 /uni00000044/uni0000004f/uni00000058/uni00000048
+/uni00000024/uni00000045/uni00000051/uni00000052/uni00000055/uni00000050/uni00000044/uni0000004f/uni00000003/uni00000039 /uni00000044/uni0000004f/uni00000058/uni00000048
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000025/uni0000002a/uni0000003a/uni00000032/uni00000028/uni00000036/uni00000036/uni00000036/uni00000032/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000010/uni00000039/uni00000025/uni0000004c/uni00000051/uni00000026/uni00000032/uni00000024/uni00000045/uni0000002c/uni00000035/uni0000002c/uni00000030/uni00000028/uni00000025/uni00000030/uni00000033/uni00000024
+/uni00000036/uni00000039/uni00000030/uni00000010/uni00000035/uni00000029/uni00000028
+/uni00000013/uni00000011/uni0000001b/uni00000013/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni00000015/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni00000018/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni0000001a/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000013/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000015/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000018/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni0000001a/uni00000018
+/uni00000014/uni00000011/uni00000013/uni00000013/uni00000013/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni0000002a/uni0000002f/uni0000002c/uni00000010/uni0000001b/uni00000018
+/uni00000030/uni00000048/uni00000047/uni0000004c/uni00000044/uni00000051/uni00000003/uni0000002f/uni0000004c/uni00000051/uni00000048
+/uni00000024/uni00000059/uni00000048/uni00000055/uni00000044/uni0000004a/uni00000048/uni00000003/uni00000039 /uni00000044/uni0000004f/uni00000058/uni00000048
+/uni00000024/uni00000045/uni00000051/uni00000052/uni00000055/uni00000050/uni00000044/uni0000004f/uni00000003/uni00000039 /uni00000044/uni0000004f/uni00000058/uni00000048
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000025/uni0000002a/uni0000003a/uni00000032/uni00000028/uni00000036/uni00000036/uni00000036/uni00000032/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000010/uni00000039/uni00000025/uni0000004c/uni00000051/uni00000026/uni00000032/uni00000024/uni00000045/uni0000002c/uni00000035/uni0000002c/uni00000030/uni00000028/uni00000025/uni00000030/uni00000033/uni00000024
+/uni00000036/uni00000039/uni00000030/uni00000010/uni00000035/uni00000029/uni00000028
+/uni00000013/uni00000011/uni0000001a/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000013/uni00000026/uni0000004f/uni00000044/uni00000056/uni00000056/uni0000004c/uni00000049/uni0000004c/uni00000046/uni00000044/uni00000057/uni0000004c/uni00000052/uni00000051/uni00000003/uni00000044/uni00000046/uni00000046/uni00000058/uni00000055/uni00000044/uni00000046/uni0000005c
+/uni00000037/uni00000032/uni0000003b/uni00000010/uni00000014/uni0000001a/uni00000014
+/uni00000030/uni00000048/uni00000047/uni0000004c/uni00000044/uni00000051/uni00000003/uni0000002f/uni0000004c/uni00000051/uni00000048
+/uni00000024/uni00000059/uni00000048/uni00000055/uni00000044/uni0000004a/uni00000048/uni00000003/uni00000039 /uni00000044/uni0000004f/uni00000058/uni00000048
+/uni00000024/uni00000045/uni00000051/uni00000052/uni00000055/uni00000050/uni00000044/uni0000004f/uni00000003/uni00000039 /uni00000044/uni0000004f/uni00000058/uni00000048
+Fig. 8:Stability comparison through box plots.
+fitness value of 0.0436 and the best Friedman rank of
+1.125 across all 16 datasets. Wilcoxon signed-rank tests
+confirmed statistically significant improvements in 140 of
+the 160 pairwise comparisons, with only one significant
+loss (against bIRIME on lung), and the Nemenyi post-hoc
+test further confirmed that EDP-SSA is significantly better
+than 8 of the 10 competitors across all datasets. Ablation
+experiments on the 16 datasets quantified the progressive
+contribution of each component: the DFP mechanism
+raised the average accuracy from 85.30% (basic SSA) to
+88.03%, the elite consensus tuning provided an additional
+improvementto89.19%,andthefullmodelwiththeadaptive
+producer ratio and local search reached 91.88%. Parameter
+sensitivity analysis demonstrated that EDP-SSA performs
+robustly across a wide range of parameter settings, with
+stable accuracy over𝑙𝑟∈[0.02,0.10].
+Despitethepromisingresults,EDP-SSAhascertainlim-
+itations.Thecomputationalcostishigherthanfiltermethods
+such as SVM-RFE due to the wrapper-based evaluation
+strategy, which requires repeated KNN cross-validation at
+eachiteration.Thecurrentimplementationusesasinglebase
+classifier (KNN), and the selected feature subsets may not
+generalizeequallywelltootherclassifiers.Additionally,the
+algorithmisdesignedforsingle-objectiveoptimizationwith
+a fixed accuracy–FSR trade-off weight (𝛼=0.8).
+Two directions deserve further investigation. First, ex-
+tendingEDP-SSAtoamulti-objectiveframeworkthattreats
+accuracyandfeaturecountasseparateobjectives,combined
+withself-adaptivetrade-offweights,wouldprovideaPareto
+front of solutions and remove the need for manual weight
+selection. Second, applying the evidence-driven probability
+paradigm to broader settings—multi-omics data integration
+and feature selection for deep learning models—offers a
+natural path beyond the microarray benchmarks considered
+here.
+Y. Zhang:Preprint submitted to ElsevierPage 15 of 28
+--- Page 17 ---
+Table 3
+Comparison of EDP-SSA and SSA based methods in terms of
+average and std of accuracy.
+Datasets Stat. EDP-SSA SSA based
+measure SSA Basic iBSSA ESSSO
+11_Tumors mean0.83660.7422 0.7447 0.7437
+(+) (+) (+)
+std 0.0217 0.0104 0.0120 0.0148
+ALLAML mean0.96290.8641 0.8752 0.8811
+(+) (+) (+)
+std 0.0258 0.0194 0.0155 0.0096
+AP_Breast
+Uterus
+mean0.97520.9562 0.9532 0.9570
+(+) (+) (+)
+std 0.0038 0.0051 0.0039 0.0038
+AP_Lung
+Kidney
+mean0.98480.9573 0.9581 0.9593
+(+) (+) (+)
+std 0.0039 0.0046 0.0021 0.0029
+CLL_SUB
+111
+mean0.80070.5977 0.6134 0.6245
+(+) (+) (+)
+std 0.0307 0.0308 0.0144 0.0123
+DLBCL mean0.96130.9280 0.9404 0.9430
+(+)(≈) (≈)
+std 0.0239 0.0213 0.0112 0.0067
+GLI_85 mean0.92100.8882 0.8808 0.8882
+(+) (+) (+)
+std 0.0125 0.0106 0.0090 0.0121
+Leukemia-3 mean0.97330.9562 0.9532 0.9570
+(+) (+) (+)
+std 0.0034 0.0051 0.0039 0.0038
+Prostate_GE mean0.94230.8668 0.8726 0.8709
+(+) (+) (+)
+std 0.0147 0.0180 0.0127 0.0047
+SMK_CAN
+187
+mean0.75400.6768 0.6912 0.6965
+(+) (+) (+)
+std 0.0220 0.0187 0.0109 0.0090
+SRBCT mean0.97640.8676 0.9025 0.8761
+(+) (+) (+)
+std 0.0194 0.0315 0.0265 0.0272
+TOX_171 mean0.85220.7791 0.7931 0.7896
+(+) (+) (+)
+std 0.0255 0.0139 0.0167 0.0120
+arcene mean0.88250.8670 0.8705 0.8670
+(+)(≈) (≈)
+std 0.0169 0.0101 0.0148 0.0109
+colon mean0.93360.8269 0.8545 0.8362
+(+) (+) (+)
+std 0.0225 0.0222 0.0248 0.0169
+leukemia mean0.97640.9130 0.9095 0.9189
+(+) (+) (+)
+std 0.0215 0.0202 0.0186 0.0090
+lung mean 0.9680 0.9611 0.9626 0.9650
+(+)(≈) (≈)
+std 0.0086 0.0067 0.0067 0.0043
+Avg. Accuracy0.91880.8530 0.8610 0.8609
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024/uni00000036/uni00000036/uni00000024/uni00000028/uni00000036/uni00000036/uni00000036/uni00000032/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024/uni00000013/uni00000011/uni00000013
+/uni00000013/uni00000011/uni00000014
+/uni00000013/uni00000011/uni00000015
+/uni00000013/uni00000011/uni00000016
+/uni00000013/uni00000011/uni00000017
+/uni00000013/uni00000011/uni00000018
+/uni00000013/uni00000011/uni00000019
+/uni00000024/uni00000059/uni00000048/uni00000055/uni00000044/uni0000004a/uni00000048/uni00000003/uni00000029/uni00000036/uni00000035
+Fig. 9:Average FSR comparison of EDP-SSA and SSA-based
+algorithms across 16 datasets.
+Y. Zhang:Preprint submitted to ElsevierPage 16 of 28
+--- Page 18 ---
+Table 4
+Comparison of EDP-SSA and other methods in terms of average and std of accuracy.
+Datasets Stat. measure EDP-SSA Other methods
+BPSO BGWO BPSO-V BinCOA bIRIME BMPA-TVSinV SVM-RFE
+11_Tumors mean0.83660.7493 (+) 0.7440(+) 0.7425(+) 0.7540(+) 0.7853(+) 0.7509(+) 0.5928(+)
+std 0.0217 0.0120 0.0115 0.0112 0.0134 0.0227 0.0077 0.0000
+ALLAML mean0.96290.8823 (+) 0.8825(+) 0.8725(+) 0.8825(+) 0.9280(+) 0.8752(+) 0.9161(+)
+std 0.0258 0.0072 0.0074 0.0096 0.0074 0.0257 0.0170 0.0000
+AP_Breast
+Uterus
+mean0.97520.9600 (+) 0.9570(+) 0.9553(+) 0.9579(+) 0.9667(+) 0.9577(+) 0.9273(+)
+std 0.0038 0.0029 0.0026 0.0034 0.0032 0.0053 0.0040 0.0000
+AP_Lung
+Kidney
+mean0.98480.9599 (+) 0.9596(+) 0.9593(+) 0.9591(+) 0.9712(+) 0.9606(+) 0.9250(+)
+std 0.0039 0.0018 0.0024 0.0029 0.0023 0.0062 0.0034 0.0000
+CLL_SUB
+111
+mean0.80070.6273 (+) 0.6264(+) 0.6001(+) 0.6092(+) 0.6964(+) 0.6282(+) 0.5848(+)
+std 0.0307 0.0212 0.0147 0.0145 0.0209 0.0253 0.0265 0.0000
+DLBCL mean0.96130.9416 (≈) 0.9439(+) 0.9348(≈) 0.9427(≈) 0.9466(≈) 0.9387(+) 0.9107(+)
+std 0.0239 0.0132 0.0096 0.0090 0.0072 0.0168 0.0123 0.0000
+GLI_85 mean0.92100.8882 (+) 0.8831(+) 0.8832(+) 0.8856(+) 0.9029(+) 0.8893(+) 0.8583(+)
+std 0.0125 0.0066 0.0106 0.0092 0.0085 0.0112 0.0230 0.0000
+Leukemia-3 mean0.97330.9600 (+) 0.9570(+) 0.9553(+) 0.9579(+) 0.9667(+) 0.9577(+) 0.9273(+)
+std 0.0034 0.0029 0.0026 0.0034 0.0032 0.0053 0.0040 0.0000
+Prostate_GE mean0.94230.8718 (+) 0.8755(+) 0.8736(+) 0.8777(+) 0.9225(+) 0.8771(+) 0.8900(+)
+std 0.0147 0.0109 0.0104 0.0079 0.0067 0.0158 0.0132 0.0000
+SMK_CAN
+187
+mean0.75400.6999 (+) 0.7002(+) 0.6938(+) 0.7031(+) 0.7157(+) 0.6850(+) 0.7208(+)
+std 0.0220 0.0073 0.0112 0.0096 0.0069 0.0186 0.0185 0.0000
+SRBCT mean0.97640.9056 (+) 0.8890(+) 0.8738(+) 0.8990(+) 0.9568(≈) 0.9089(+) 0.8194(+)
+std 0.0194 0.0264 0.0123 0.0143 0.0232 0.0277 0.0195 0.0000
+TOX_171 mean0.85220.7896 (+) 0.7837(+) 0.7787(+) 0.7813(+) 0.8134(+) 0.7975(+) 0.7546(+)
+std 0.0255 0.0127 0.0172 0.0120 0.0159 0.0142 0.0151 0.0000
+arcene mean0.88250.8680 (+) 0.8685(≈) 0.8640(+) 0.8655(+) 0.8720(≈) 0.8425(+) 0.7600(+)
+std 0.0169 0.0075 0.0113 0.0102 0.0098 0.0175 0.0111 0.0000
+colon mean0.93360.8533 (+) 0.8433(+) 0.8126(+) 0.8407(+) 0.8976(+) 0.8462(+) 0.6929(+)
+std 0.0225 0.0134 0.0208 0.0168 0.0193 0.0285 0.0217 0.0000
+leukemia mean0.97640.9284 (+) 0.9175(+) 0.9136(+) 0.9218(+) 0.9661(≈) 0.9243(+) 0.8750(+)
+std 0.0215 0.0140 0.0117 0.0098 0.0090 0.0256 0.0245 0.0000
+lung mean 0.9680 0.9660 (≈) 0.9674(≈) 0.9660(≈) 0.9689(≈) 0.9759(−) 0.9651(≈) 0.9457(+)
+std 0.0086 0.0044 0.0059 0.0043 0.0046 0.0036 0.0104 0.0000
+Avg. Accuracy0.91880.8657 0.8624 0.8549 0.8629 0.8927 0.8628 0.8188
+Y. Zhang:Preprint submitted to ElsevierPage 17 of 28
+--- Page 19 ---
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000025/uni0000002a/uni0000003a/uni00000032/uni00000025/uni00000033/uni00000036/uni00000032/uni00000010/uni00000039/uni00000025/uni0000004c/uni00000051/uni00000026/uni00000032/uni00000024/uni00000045/uni0000002c/uni00000035/uni0000002c/uni00000030/uni00000028/uni00000025/uni00000030/uni00000033/uni00000024/uni00000036/uni00000039/uni00000030/uni00000010/uni00000035/uni00000029/uni00000028/uni00000013/uni00000011/uni00000013
+/uni00000013/uni00000011/uni00000014
+/uni00000013/uni00000011/uni00000015
+/uni00000013/uni00000011/uni00000016
+/uni00000013/uni00000011/uni00000017
+/uni00000013/uni00000011/uni00000018
+/uni00000013/uni00000011/uni00000019
+/uni00000024/uni00000059/uni00000048/uni00000055/uni00000044/uni0000004a/uni00000048/uni00000003/uni00000029/uni00000036/uni00000035
+Fig. 10:Average FSR comparison of EDP-SSA and other compared algorithms across 16 datasets.
+Y. Zhang:Preprint submitted to ElsevierPage 18 of 28
+--- Page 20 ---
+Table 5
+Comparison of EDP-SSA and SSA based methods in terms of
+average and std of FSR.
+Datasets Stat. EDP-SSA SSA based
+measure SSA Basic iBSSA ESSSO
+11_Tumors mean0.01170.4223 0.4237 0.4997
+(+) (+) (+)
+std 0.0010 0.1287 0.0113 0.0089
+ALLAML mean0.00840.3825 0.3777 0.4897
+(+) (+) (+)
+std 0.0009 0.1662 0.0124 0.0117
+AP_Breast
+Uterus
+mean0.01060.4499 0.3730 0.4921
+(+) (+) (+)
+std 0.0010 0.0951 0.0211 0.0049
+AP_Lung
+Kidney
+mean0.00890.4172 0.3657 0.4884
+(+) (+) (+)
+std 0.0009 0.1101 0.0311 0.0050
+CLL_SUB
+111
+mean0.01120.4397 0.4193 0.5125
+(+) (+) (+)
+std 0.0012 0.1459 0.0369 0.0216
+DLBCL mean0.00730.3558 0.3531 0.4909
+(+)(≈) (≈)
+std 0.0012 0.1861 0.0398 0.0070
+GLI_85 mean0.00920.4472 0.4221 0.4883
+(+) (+) (+)
+std 0.0007 0.0732 0.0494 0.0052
+Leukemia-3 mean0.01070.4499 0.3730 0.4921
+(+) (+) (+)
+std 0.0012 0.0951 0.0211 0.0049
+Prostate_GE mean0.00830.4237 0.3574 0.4836
+(+) (+) (+)
+std 0.0010 0.1322 0.0319 0.0066
+SMK_CAN
+187
+mean0.01070.3991 0.4304 0.5017
+(+) (+) (+)
+std 0.0009 0.1473 0.0409 0.0090
+SRBCT mean0.01040.4271 0.3091 0.4883
+(+) (+) (+)
+std 0.0026 0.0938 0.0236 0.0163
+TOX_171 mean0.01430.4314 0.3925 0.5009
+(+) (+) (+)
+std 0.0021 0.1275 0.0094 0.0106
+arcene mean0.01680.4490 0.4235 0.5024
+(+)(≈) (≈)
+std 0.0190 0.1148 0.0075 0.0048
+colon mean0.00900.4486 0.3114 0.4955
+(+) (+) (+)
+std 0.0025 0.0900 0.0174 0.0235
+leukemia mean0.00870.4648 0.3667 0.4907
+(+) (+) (+)
+std 0.0009 0.0652 0.0400 0.0122
+lung mean0.01000.3400 0.3000 0.4768
+(+)(≈) (≈)
+std 0.0017 0.1522 0.0171 0.0100
+Avg. FSR0.01040.4218 0.3749 0.4933
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024/uni00000036/uni00000036/uni00000024/uni00000028/uni00000036/uni00000036/uni00000036/uni00000032/uni0000004c/uni00000025/uni00000036/uni00000036/uni00000024/uni00000013/uni00000011/uni00000013/uni00000013
+/uni00000013/uni00000011/uni00000013/uni00000018
+/uni00000013/uni00000011/uni00000014/uni00000013
+/uni00000013/uni00000011/uni00000014/uni00000018
+/uni00000013/uni00000011/uni00000015/uni00000013
+/uni00000013/uni00000011/uni00000015/uni00000018
+/uni00000024/uni00000059/uni00000048/uni00000055/uni00000044/uni0000004a/uni00000048/uni00000003/uni00000029/uni0000004c/uni00000057/uni00000051/uni00000048/uni00000056/uni00000056
+Fig. 11:Average fitness comparison of EDP-SSA and SSA-
+based algorithms across 16 datasets.
+Y. Zhang:Preprint submitted to ElsevierPage 19 of 28
+--- Page 21 ---
+Table 6
+Comparison of EDP-SSA and other methods in terms of average and std of FSR.
+Datasets Stat. measure EDP-SSA Other methods
+BPSO BGWO BPSO-V BinCOA bIRIME BMPA-TVSinV SVM-RFE
+11_Tumors mean0.01170.4938 (+) 0.4933(+) 0.4988(+) 0.4963(+) 0.1196(+) 0.1045(+) 0.0156(+)
+std 0.0010 0.0065 0.0055 0.0042 0.0047 0.0323 0.0540 0.0000
+ALLAML mean0.00840.4659 (+) 0.4817(+) 0.4940(+) 0.4864(+) 0.0494(+) 0.0985(+) 0.0006(+)
+std 0.0009 0.0086 0.0054 0.0078 0.0037 0.0204 0.0249 0.0000
+AP_Breast
+Uterus
+mean0.01060.4795 (+) 0.4874(+) 0.4916(+) 0.4853(+) 0.0411(+) 0.0385(+) 0.0156(+)
+std 0.0010 0.0079 0.0049 0.0050 0.0052 0.0100 0.0088 0.0000
+AP_Lung
+Kidney
+mean0.00890.4752 (+) 0.4862(+) 0.4930(+) 0.4864(+) 0.0338(+) 0.0348(+) 0.0130(+)
+std 0.0009 0.0114 0.0055 0.0052 0.0035 0.0116 0.0100 0.0000
+CLL_SUB
+111
+mean0.01120.4902 (+) 0.4962(+) 0.4972(+) 0.4971(+) 0.1240(+) 0.1291(+) 0.0042(+)
+std 0.0012 0.0044 0.0051 0.0066 0.0054 0.0392 0.0503 0.0000
+DLBCL mean0.00730.4704 (≈) 0.4846(+) 0.4955(≈) 0.4824(≈) 0.0573(≈) 0.1549(+) 0.0005(+)
+std 0.0012 0.0168 0.0060 0.0094 0.0086 0.0202 0.0575 0.0000
+GLI_85 mean0.00920.4730 (+) 0.4845(+) 0.4942(+) 0.4878(+) 0.0624(+) 0.0762(+) 0.0004(+)
+std 0.0007 0.0094 0.0041 0.0046 0.0039 0.0198 0.0253 0.0000
+Leukemia-3 mean0.01070.4795 (+) 0.4874(+) 0.4916(+) 0.4853(+) 0.0411(+) 0.0385(+) 0.0156(+)
+std 0.0012 0.0079 0.0049 0.0050 0.0052 0.0100 0.0088 0.0000
+Prostate_GE mean0.00830.4668 (+) 0.4816(+) 0.4923(+) 0.4814(+) 0.0828(+) 0.0885(+) 0.0013(+)
+std 0.0010 0.0121 0.0068 0.0066 0.0067 0.0459 0.0329 0.0000
+SMK_CAN
+187
+mean0.01070.4912 (+) 0.4942(+) 0.4973(+) 0.4941(+) 0.0750(+) 0.0871(+) 0.0004(+)
+std 0.0009 0.0043 0.0038 0.0042 0.0047 0.0304 0.0366 0.0000
+SRBCT mean0.01040.4766 (+) 0.4818(+) 0.4958(+) 0.4855(+) 0.1114(≈) 0.1509(+) 0.0659(+)
+std 0.0026 0.0077 0.0109 0.0093 0.0112 0.0510 0.0573 0.0000
+TOX_171 mean0.01430.4847 (+) 0.4933(+) 0.4937(+) 0.4950(+) 0.1219(+) 0.1122(+) 0.0157(+)
+std 0.0021 0.0034 0.0062 0.0097 0.0059 0.0360 0.0492 0.0000
+arcene mean0.01680.4970 (+) 0.4954(≈) 0.5014(+) 0.4947(+) 0.1524(≈) 0.1441(+) 0.0021(+)
+std 0.0190 0.0060 0.0053 0.0049 0.0041 0.0274 0.0527 0.0000
+colon mean0.00900.4631 (+) 0.4844(+) 0.4851(+) 0.4913(+) 0.1113(+) 0.1442(+) 0.0685(+)
+std 0.0025 0.0102 0.0075 0.0074 0.0137 0.0753 0.0414 0.0000
+leukemia mean0.00870.4792 (+) 0.4827(+) 0.4918(+) 0.4845(+) 0.0554(≈) 0.1035(+) 0.0003(+)
+std 0.0009 0.0071 0.0038 0.0088 0.0057 0.0338 0.0300 0.0000
+lung mean0.01000.4436 (≈) 0.4666(≈) 0.4808(≈) 0.4659(≈) 0.0382(−) 0.0703(≈) 0.0471(+)
+std 0.0017 0.0191 0.0095 0.0067 0.0104 0.0115 0.0184 0.0000
+Avg. FSR0.01040.4769 0.4863 0.4934 0.4875 0.0798 0.0985 0.0167
+Y. Zhang:Preprint submitted to ElsevierPage 20 of 28
+--- Page 22 ---
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024/uni00000025/uni00000033/uni00000036/uni00000032/uni00000025/uni0000002a/uni0000003a/uni00000032/uni00000025/uni00000033/uni00000036/uni00000032/uni00000010/uni00000039/uni00000025/uni0000004c/uni00000051/uni00000026/uni00000032/uni00000024/uni00000045/uni0000002c/uni00000035/uni0000002c/uni00000030/uni00000028/uni00000025/uni00000030/uni00000033/uni00000024/uni00000036/uni00000039/uni00000030/uni00000010/uni00000035/uni00000029/uni00000028/uni00000013/uni00000011/uni00000013/uni00000013
+/uni00000013/uni00000011/uni00000013/uni00000018
+/uni00000013/uni00000011/uni00000014/uni00000013
+/uni00000013/uni00000011/uni00000014/uni00000018
+/uni00000013/uni00000011/uni00000015/uni00000013
+/uni00000013/uni00000011/uni00000015/uni00000018
+/uni00000024/uni00000059/uni00000048/uni00000055/uni00000044/uni0000004a/uni00000048/uni00000003/uni00000029/uni0000004c/uni00000057/uni00000051/uni00000048/uni00000056/uni00000056
+Fig. 12:Average fitness comparison of EDP-SSA and other compared algorithms across 16 datasets.
+Y. Zhang:Preprint submitted to ElsevierPage 21 of 28
+--- Page 23 ---
+Table 7
+Comparison of EDP-SSA and SSA based methods in terms of
+average and std of fitness.
+Datasets Stat. EDP-SSA SSA based
+measure SSA Basic iBSSA ESSSO
+11_Tumors mean0.09890.2739 0.2687 0.2847
+(+) (+) (+)
+std 0.0153 0.0236 0.0091 0.0061
+ALLAML mean0.01680.1828 0.1806 0.1965
+(+) (+) (+)
+std 0.0116 0.0196 0.0080 0.0066
+AP_Breast
+Uterus
+mean0.01730.1235 0.1110 0.1309
+(+) (+) (+)
+std 0.0030 0.0160 0.0025 0.0012
+AP_Lung
+Kidney
+mean0.00920.1163 0.1070 0.1291
+(+) (+) (+)
+std 0.0020 0.0205 0.0057 0.0014
+CLL_SUB
+111
+mean0.10920.3855 0.3693 0.3849
+(+) (+) (+)
+std 0.0230 0.0170 0.0086 0.0137
+DLBCL mean0.00460.1214 0.1165 0.1380
+(+)(≈) (≈)
+std 0.0050 0.0169 0.0056 0.0057
+GLI_85 mean0.04140.1930 0.1879 0.1955
+(+) (+) (+)
+std 0.0107 0.0106 0.0055 0.0041
+Leukemia-3 mean0.01890.1235 0.1110 0.1309
+(+) (+) (+)
+std 0.0023 0.0160 0.0025 0.0012
+Prostate_GE mean0.02960.1747 0.1583 0.1804
+(+) (+) (+)
+std 0.0066 0.0141 0.0042 0.0034
+SMK_CAN
+187
+mean0.15670.3227 0.3226 0.3299
+(+) (+) (+)
+std 0.0082 0.0192 0.0082 0.0043
+SRBCT mean0.00300.2060 0.1523 0.2093
+(+) (+) (+)
+std 0.0032 0.0142 0.0190 0.0141
+TOX_171 mean0.07390.2291 0.2124 0.2374
+(+) (+) (+)
+std 0.0173 0.0156 0.0088 0.0043
+arcene mean0.06420.1878 0.1711 0.1961
+(+)(≈) (≈)
+std 0.0092 0.0180 0.0056 0.0055
+colon mean0.03090.1904 0.1394 0.1907
+(+) (+) (+)
+std 0.0102 0.0132 0.0128 0.0113
+leukemia mean0.00720.1583 0.1388 0.1592
+(+) (+) (+)
+std 0.0058 0.0098 0.0112 0.0062
+lung mean0.01660.0932 0.0840 0.1174
+(+)(≈) (≈)
+std 0.0051 0.0278 0.0022 0.0019
+Avg. Fitness0.04360.1926 0.1769 0.2007
+Fig. 13:Critical difference diagram of the Nemenyi post-hoc
+test (𝛼= 0.05) over the average ranks of the 11 algorithms
+across the 16 datasets.
+Y. Zhang:Preprint submitted to ElsevierPage 22 of 28
+--- Page 24 ---
+Table 8
+Comparison of EDP-SSA and other methods in terms of average and std of fitness.
+Datasets Stat. measure EDP-SSA Other methods
+BPSO BGWO BPSO-V BinCOA bIRIME BMPA-TVSinV SVM-RFE
+11_Tumors mean0.09890.2734 (+) 0.2830(+) 0.2961(+) 0.2759(+) 0.1554(+) 0.2062(+) 0.3569(+)
+std 0.0153 0.0088 0.0048 0.0031 0.0077 0.0218 0.0151 0.0000
+ALLAML mean0.01680.1829 (+) 0.1892(+) 0.2026(+) 0.1870(+) 0.0494(+) 0.1118(+) 0.0656(+)
+std 0.0116 0.0083 0.0066 0.0051 0.0080 0.0234 0.0084 0.0000
+AP_Breast
+Uterus
+mean0.01730.1267 (+) 0.1288(+) 0.1318(+) 0.1283(+) 0.0299(+) 0.0393(+) 0.0578(+)
+std 0.0030 0.0028 0.0019 0.0006 0.0013 0.0046 0.0035 0.0000
+AP_Lung
+Kidney
+mean0.00920.1254 (+) 0.1274(+) 0.1306(+) 0.1266(+) 0.0256(+) 0.0369(+) 0.0688(+)
+std 0.0020 0.0024 0.0017 0.0007 0.0013 0.0052 0.0035 0.0000
+CLL_SUB
+111
+mean0.10920.3688 (+) 0.3817(+) 0.4072(+) 0.3806(+) 0.2256(+) 0.3178(+) 0.2876(+)
+std 0.0230 0.0176 0.0096 0.0068 0.0079 0.0249 0.0160 0.0000
+DLBCL mean0.00460.1298 (≈) 0.1337(+) 0.1439(≈) 0.1302(≈) 0.0236(≈) 0.0719(+) 0.0841(+)
+std 0.0050 0.0056 0.0075 0.0062 0.0039 0.0099 0.0101 0.0000
+GLI_85 mean0.04140.1934 (+) 0.1938(+) 0.1977(+) 0.1917(+) 0.0633(+) 0.1103(+) 0.1130(+)
+std 0.0107 0.0076 0.0057 0.0041 0.0008 0.0067 0.0104 0.0000
+Leukemia-3 mean0.01890.1267 (+) 0.1288(+) 0.1318(+) 0.1283(+) 0.0299(+) 0.0393(+) 0.0578(+)
+std 0.0023 0.0028 0.0019 0.0006 0.0013 0.0046 0.0035 0.0000
+Prostate_GE mean0.02960.1747 (+) 0.1777(+) 0.1845(+) 0.1767(+) 0.0633(+) 0.1023(+) 0.0784(+)
+std 0.0066 0.0071 0.0041 0.0025 0.0045 0.0179 0.0058 0.0000
+SMK_CAN
+187
+mean0.15670.3257 (+) 0.3263(+) 0.3347(+) 0.3254(+) 0.2159(+) 0.2535(+) 0.2230(+)
+std 0.0082 0.0052 0.0044 0.0026 0.0022 0.0170 0.0091 0.0000
+SRBCT mean0.00300.1796 (+) 0.1928(+) 0.2255(+) 0.1923(+) 0.0380(≈) 0.1299(+) 0.1308(+)
+std 0.0032 0.0206 0.0127 0.0042 0.0138 0.0275 0.0192 0.0000
+TOX_171 mean0.07390.2211 (+) 0.2326(+) 0.2453(+) 0.2334(+) 0.1302(+) 0.1760(+) 0.2231(+)
+std 0.0173 0.0093 0.0058 0.0033 0.0051 0.0112 0.0082 0.0000
+arcene mean0.06420.1930 (+) 0.1955(≈) 0.2035(+) 0.1961(+) 0.1121(≈) 0.1436(+) 0.1884(+)
+std 0.0092 0.0080 0.0050 0.0035 0.0024 0.0116 0.0075 0.0000
+colon mean0.03090.1630 (+) 0.1847(+) 0.2149(+) 0.1797(+) 0.0651(+) 0.1347(+) 0.2342(+)
+std 0.0102 0.0118 0.0137 0.0097 0.0085 0.0227 0.0109 0.0000
+leukemia mean0.00720.1460 (+) 0.1541(+) 0.1691(+) 0.1526(+) 0.0221(≈) 0.0737(+) 0.1006(+)
+std 0.0058 0.0072 0.0101 0.0047 0.0034 0.0134 0.0158 0.0000
+lung mean0.01660.1120 (≈) 0.1130(≈) 0.1190(≈) 0.1125(≈) 0.0206(−) 0.0361(≈) 0.0410(+)
+std 0.0051 0.0048 0.0025 0.0010 0.0022 0.0037 0.0026 0.0000
+Avg. Fitness0.04360.1901 0.1964 0.2086 0.1948 0.0794 0.1240 0.1445
+Y. Zhang:Preprint submitted to ElsevierPage 23 of 28
+--- Page 25 ---
+/uni00000026/uni00000052/uni0000004f/uni00000052/uni00000051
+/uni0000002f/uni00000048/uni00000058/uni0000004e/uni00000048/uni00000050/uni0000004c/uni00000044
+/uni0000002f/uni00000058/uni00000051/uni0000004a
+/uni0000002a/uni0000002f/uni0000002c
+/uni00000024/uni0000002f/uni0000002f/uni00000024/uni00000030/uni0000002f
+/uni00000033/uni00000055/uni00000052/uni00000056/uni00000057/uni00000044/uni00000057/uni00000048
+/uni00000027/uni0000002f/uni00000025/uni00000026/uni0000002f
+/uni00000036/uni00000035/uni00000025/uni00000026/uni00000037
+/uni00000014/uni00000014/uni00000010/uni00000037/uni00000058/uni00000050/uni00000052/uni00000055/uni00000056
+/uni00000025/uni00000055/uni00000048/uni00000044/uni00000056/uni00000057/uni00000026/uni00000044/uni00000051/uni00000046/uni00000048/uni00000055
+/uni0000002f/uni00000048/uni00000058/uni0000004e/uni00000048/uni00000050/uni0000004c/uni00000044/uni00000010/uni00000016
+/uni0000002f/uni00000058/uni00000051/uni0000004a/uni00000026/uni00000044/uni00000051/uni00000046/uni00000048/uni00000055
+/uni00000036/uni00000030/uni0000002e/uni00000026/uni00000024/uni00000031
+/uni00000026/uni0000002f/uni0000002f/uni00000010/uni00000036/uni00000038/uni00000025/uni00000010/uni00000014/uni00000014/uni00000014
+/uni00000024/uni00000055/uni00000046/uni00000048/uni00000051/uni00000048
+/uni00000037/uni00000032/uni0000003b/uni00000042/uni00000014/uni0000001a/uni00000014
+/uni00000013/uni00000011/uni00000019/uni00000018
+/uni00000013/uni00000011/uni0000001a/uni00000013
+/uni00000013/uni00000011/uni0000001a/uni00000018
+/uni00000013/uni00000011/uni0000001b/uni00000013
+/uni00000013/uni00000011/uni0000001b/uni00000018
+/uni00000013/uni00000011/uni0000001c/uni00000013
+/uni00000013/uni00000011/uni0000001c/uni00000018
+/uni00000014/uni00000011/uni00000013/uni00000013
+/uni00000028/uni00000027/uni00000033/uni00000010/uni00000036/uni00000036/uni00000024
+/uni00000039 /uni00000044/uni00000055/uni0000004c/uni00000044/uni00000051/uni00000057/uni00000003/uni00000014
+/uni00000039 /uni00000044/uni00000055/uni0000004c/uni00000044/uni00000051/uni00000057/uni00000003/uni00000015
+/uni00000039 /uni00000044/uni00000055/uni0000004c/uni00000044/uni00000051/uni00000057/uni00000003/uni00000016
+Fig. 14:Radar chart comparing the average accuracy of EDP-SSA and its ablation variants across the 16 datasets.
+(a) Accuracy
+ (b) Feature count
+ (c) Accuracy vs. feature count
+Fig. 15:EDP-SSA parameter sensitivity analysis.
+Y. Zhang:Preprint submitted to ElsevierPage 24 of 28
+--- Page 26 ---
+Table 9
+Comparison of EDP-SSA and SSA based methods in terms of
+average and std of runtime.
+Datasets Stat. EDP-SSA SSA based
+measure SSA Basic iBSSA ESSSO
+11_Tumors mean 482.35 557.26 326.08199.81
+std 9.36 2.15 15.49 33.50
+ALLAML mean 651.59 561.81 236.11150.66
+std 0.66 6.99 10.50 30.59
+AP_Breast
+Uterus
+mean 485.92 811.04 455.99318.34
+std 3.02 32.31 12.11 54.61
+AP_Lung
+Kidney
+mean 428.96 664.80 413.03278.88
+std 39.66 11.48 12.32 46.34
+CLL_SUB
+111
+mean 441.52 425.33 284.39171.18
+std 9.30 2.05 11.31 31.37
+DLBCL mean 473.20 414.78 226.95149.34
+std 1.14 2.59 8.75 32.49
+GLI_85 mean 654.73 659.93 380.95180.78
+std 0.92 7.42 8.52 25.44
+Leukemia-3 mean 427.52 751.52 460.54317.92
+std 45.44 26.43 9.95 55.15
+Prostate_GE mean 473.96 428.23 233.03153.23
+std 1.48 1.55 11.30 32.82
+SMK_CAN
+187
+mean 430.01 620.63 454.94256.26
+std 39.75 5.28 18.07 34.57
+SRBCT mean 424.73 2654.72 216.49145.61
+std 93.27 1942.41 0.68 37.05
+TOX_171 mean 440.31 405.23 244.89162.30
+std 11.45 4.94 8.45 35.62
+arcene mean 438.31 468.89 305.63193.70
+std 17.81 3.48 9.38 36.71
+colon mean 491.87 436.22 213.60143.53
+std 27.32 2.92 0.92 37.36
+leukemia mean 531.91 457.53 243.47149.96
+std 5.67 3.05 6.03 30.97
+lung mean 440.05 381.61 228.98153.82
+std 8.30 4.68 3.26 37.64
+Y. Zhang:Preprint submitted to ElsevierPage 25 of 28
+--- Page 27 ---
+Table 10
+Comparison of EDP-SSA and other methods in terms of average and std of runtime.
+Datasets Stat. measure EDP-SSA Other methods
+BPSO BGWO BPSO-V BinCOA bIRIME BMPA-TVSinV SVM-RFE
+11_Tumors mean 482.35 282.70 285.77 276.37 565.08 672.87 445.9219.38
+std 9.36 0.83 1.99 2.85 9.01 14.08 105.43 1.34
+ALLAML mean 651.59 281.05 281.01 208.60 419.54 597.10 349.060.93
+std 0.66 0.68 1.21 1.49 2.84 11.47 75.82 0.01
+AP_Breast
+Uterus
+mean 485.92 495.51 504.30 497.66 895.42 568.84 800.2523.73
+std 3.02 8.65 2.07 6.14 136.05 15.86 47.82 2.08
+AP_Lung
+Kidney
+mean 428.96 335.11 344.14 337.20 682.95 557.37 693.7814.43
+std 39.66 2.90 1.80 5.12 15.26 13.05 38.07 0.14
+CLL_SUB
+111
+mean 441.52 210.67 212.20 196.09 420.88 561.94 379.115.52
+std 9.30 2.01 1.02 6.03 1.39 13.97 53.07 0.04
+DLBCL mean 473.20 207.60 207.88 204.09 415.53 595.61 368.930.90
+std 1.14 1.60 1.67 2.01 2.79 9.83 40.21 0.01
+GLI_85 mean 654.73 328.56 330.53 303.49 657.43 841.36 519.535.19
+std 0.92 2.61 1.10 8.28 2.85 7.27 121.98 0.12
+Leukemia-3 mean 427.52 374.90 388.24 394.71 786.13 573.94 779.2224.05
+std 45.44 5.93 1.71 4.02 30.05 19.14 62.35 0.16
+Prostate_GE mean 473.96 215.17 215.49 212.10 420.74 604.25 387.210.99
+std 1.48 1.44 1.25 1.82 13.23 6.05 35.40 0.03
+SMK_CAN
+187
+mean 430.01 306.47 294.19 275.05 624.18 569.32 653.4128.68
+std 39.75 9.83 3.50 5.04 8.57 23.68 33.08 0.33
+SRBCT mean 424.73 198.34 196.58 196.06 393.31 564.03 340.754.16
+std 93.27 3.58 0.62 1.37 1.54 81.72 45.23 0.92
+TOX_171 mean 440.31 198.91 198.67 190.34 387.56 552.69 356.792.85
+std 11.45 1.77 0.71 2.97 5.85 4.81 31.16 0.03
+arcene mean 438.31 234.22 235.39 221.67 464.66 576.23 451.884.13
+std 17.81 2.16 2.03 6.23 1.28 15.75 36.51 0.10
+colon mean 491.87 217.61 217.80 215.85 435.27 657.25 410.482.43
+std 27.32 1.13 0.68 1.11 0.92 8.25 22.99 0.08
+leukemia mean 531.91 228.37 229.46 221.62 424.29 544.84 339.341.19
+std 5.67 1.29 1.23 1.08 26.99 7.71 40.64 0.03
+lung mean 440.05 283.72 284.21 280.48 566.87 689.42 419.024.36
+std 8.30 0.81 1.22 1.18 1.97 207.45 95.33 1.13
+Y. Zhang:Preprint submitted to ElsevierPage 26 of 28
+--- Page 28 ---
+References
+[1] Alon,U.,Barkai,N.,Notterman,D.A.,etal.,1999. Broadpatternsof
+gene expression revealed by clustering analysis of tumor and normal
+colon tissues probed by oligonucleotide arrays. Proceedings of the
+National Academy of Sciences 96, 6745–6750. doi:10.1073/pnas.96.
+12.6745.
+[2] Armstrong, S.A., Staunton, J.E., Silverman, L.B., et al., 2002. MLL
+translocations specify a distinct gene expression profile that distin-
+guishes a unique leukemia. Nature Genetics 30, 41–47. doi:10.1038/
+ng765.
+[3] Beheshti, Z., 2022. BMPA-TVSinV: A binary marine predators
+algorithm using time-varying sine and V-shaped transfer functions
+for wrapper-based feature selection. Knowledge-Based Systems 252,
+109446. doi:10.1016/j.knosys.2022.109446.
+[4] Breiman, L., 2001. Random forests. Machine Learning 45, 5–32.
+doi:10.1023/A:1010933404324.
+[5] Cover, T., Hart, P., 1967. Nearest neighbor pattern classification.
+IEEE Transactions on Information Theory 13, 21–27. doi:10.1109/
+TIT.1967.1053964.
+[6] Demšar, J., 2006. Statistical comparisons of classifiers over multiple
+data sets. Journal of Machine Learning Research 7, 1–30. URL:
+https://jmlr.org/papers/v7/demsar06a.html.
+[7] Dorigo, M., Maniezzo, V., Colorni, A., 1996. Ant system: opti-
+mization by a colony of cooperating agents. IEEE Transactions on
+Systems, Man, and Cybernetics, Part B (Cybernetics) 26, 29–41.
+doi:10.1109/3477.484436.
+[8] Emary, E., Zawbaa, H.M., Hassanien, A.E., 2016. Binary grey wolf
+optimization approaches for feature selection. Neurocomputing 172,
+371–381. doi:10.1016/j.neucom.2015.06.083.
+[9] Feltes,B.C.,Chandelier,E.B.,Grisci,B.I.,Dorn,M.,2019. CuMiDa:
+An extensively curated microarray database for benchmarking and
+testing of machine learning approaches in cancer research. Journal
+of Computational Biology 26, 376–386. doi:10.1089/cmb.2018.0238.
+[10] Friedman, M., 1937. The use of ranks to avoid the assumption
+of normality implicit in the analysis of variance. Journal of the
+AmericanStatisticalAssociation32,675–701. doi:10.1080/01621459.
+1937.10503522.
+[11] Gad, A.G., Sallam, K.M., Chakrabortty, R.K., Ryan, M.J., Abohany,
+A.A.,2022. Animprovedbinarysparrowsearchalgorithmforfeature
+selection in data classification. Neural Computing and Applications
+34, 15705–15752. doi:10.1007/s00521-022-07203-7.
+[12] Golub, T.R., Slonim, D.K., Tamayo, P., et al., 1999. Molecular
+classification of cancer: class discovery and class prediction by gene
+expression monitoring. Science 286, 531–537. doi:10.1126/science.
+286.5439.531.
+[13] Gordon, G.J., Jensen, R.V., Hsiao, L.L., et al., 2002. Translation of
+microarray data into clinically relevant cancer diagnostic tests using
+gene expression ratios in lung cancer and mesothelioma. Cancer
+Research 62, 4963–4967.
+[14] Guyon,I.,Elisseeff,A.,2003. Anintroductiontovariableandfeature
+selection. Journal of Machine Learning Research 3, 1157–1182.
+URL:https://www.jmlr.org/papers/v3/guyon03a.html.
+[15] Guyon, I., Gunn, S., Ben-Hur, A., Dror, G., 2004. Result analysis
+of the NIPS 2003 feature selection challenge, in: Advances in Neural
+Information Processing Systems 17, pp. 545–552.
+[16] Guyon, I., Weston, J., Barnhill, S., Vapnik, V., 2002. Gene selection
+for cancer classification using support vector machines. Machine
+Learning 46, 389–422. doi:10.1023/A:1012487302797.
+[17] Holland, J.H., 1992. Genetic algorithms. Scientific American 267,
+66–73.
+[18] Huang,J.,Chen,Y.,Heidari,A.A.,Liu,L.,Chen,H.,Liang,G.,2024.
+IRIME: Mitigating exploitation-exploration imbalance in RIME op-
+timization for feature selection. iScience 27, 110561. doi:10.1016/j.
+isci.2024.110561.
+[19] Kennedy, J., Eberhart, R.C., 1997. A discrete binary version of
+the particle swarm algorithm, in: Proceedings of the 1997 IEEE
+International Conference on Systems, Man, and Cybernetics, IEEE.
+pp. 4104–4108. doi:10.1109/ICSMC.1997.637339.
+[20] Khan, J., Wei, J.S., Ringnér, M., et al., 2001. Classification and
+diagnostic prediction of cancers using gene expression profiling and
+artificialneuralnetworks. NatureMedicine7,673–679. doi:10.1038/
+89044.
+[21] Kira, K., Rendell, L.A., 1992. A practical approach to feature
+selection, in: Proceedings of the Ninth International Workshop on
+Machine Learning, Morgan Kaufmann. pp. 249–256.
+[22] Kohavi, R., John, G.H., 1997. Wrappers for feature subset selec-
+tion. ArtificialIntelligence97,273–324. doi:10.1016/S0004-3702(97)
+00043-X.
+[23] Li,J.,Cheng,K.,Wang,S.,Morstatter,F.,Trevino,R.P.,Tang,J.,Liu,
+H., 2017. Feature selection: A data perspective. ACM Computing
+Surveys 50, 1–45. doi:10.1145/3136625.
+[24] Liang, S., Yin, M., Sun, G., Li, J., Li, H., Lang, Q., 2024. An
+enhanced sparrow search swarm optimizer via multi-strategies for
+high-dimensional optimization problems. Swarm and Evolutionary
+Computation 88, 101603. doi:10.1016/j.swevo.2024.101603.
+[25] Meng, X.B., Gao, X.Z., Lu, L., Liu, Y., Zhang, H., 2016. A new
+bio-inspiredoptimisationalgorithm:BirdSwarmAlgorithm. Journal
+of Experimental & Theoretical Artificial Intelligence 28, 673–687.
+doi:10.1080/0952813X.2015.1042530.
+[26] Mirjalili, S., Lewis, A., 2013. S-shaped versus v-shaped transfer
+functions for binary particle swarm optimization. Swarm and Evo-
+lutionary Computation 9, 1–14. doi:10.1016/j.swevo.2012.09.002.
+[27] Mirjalili, S., Mirjalili, S.M., Lewis, A., 2014. Grey wolf opti-
+mizer. Advances in Engineering Software 69, 46–61. doi:10.1016/
+j.advengsoft.2013.12.007.
+[28] Mirjalili, S., Zhang, H., Mirjalili, S.Z., Chalup, S., Noman, N., 2020.
+A novel u-shaped transfer function for binary particle swarm optimi-
+sation,in:AdvancesinIntelligentSystemsandComputing,Springer.
+pp. 241–259. doi:10.1007/978-981-15-3290-0_19.
+[29] Nutt,C.L.,Mani,D.R.,Betensky,R.A.,etal.,2003. Geneexpression-
+based classification of malignant gliomas correlates better with sur-
+vival than histological classification. Cancer Research 63, 1602–
+1607.
+[30] Peng,H.,Long,F.,Ding,C.,2005. Featureselectionbasedonmutual
+information: criteria of max-dependency, max-relevance, and min-
+redundancy. IEEE Transactions on Pattern Analysis and Machine
+Intelligence 27, 1226–1238. doi:10.1109/TPAMI.2005.159.
+[31] Ramaswamy,S.,Tamayo,P.,Rifkin,R.,etal.,2001.Multiclasscancer
+diagnosisusingtumorgeneexpressionsignatures. Proceedingsofthe
+National Academy of Sciences 98, 15149–15154. doi:10.1073/pnas.
+211566398.
+[32] Shikoun, N.H., Al-Eraqi, A.S., Fathi, I.S., 2024. BinCOA: An
+efficient binary crayfish optimization algorithm for feature selection.
+IEEE Access 12, 28621–28635. doi:10.1109/ACCESS.2024.3366495.
+[33] Shipp, M.A., Ross, K.N., Tamayo, P., et al., 2002. Diffuse large b-
+cell lymphoma outcome prediction by gene-expression profiling and
+supervisedmachinelearning.NatureMedicine8,68–74.doi:10.1038/
+nm0102-68.
+[34] Singh, D., Febbo, P.G., Ross, K., et al., 2002. Gene expression
+correlates of clinical prostate cancer behavior. Cancer Cell 1, 203–
+209. doi:10.1016/S1535-6108(02)00030-2.
+[35] Spira, A., Beane, J.E., Shah, V., et al., 2007. Airway epithelial gene
+expression in the diagnostic evaluation of smokers with suspect lung
+cancer. Nature Medicine 13, 361–366. doi:10.1038/nm1556.
+[36] Sun, L., Si, S., Ding, W., Xu, J., Zhang, Y., 2023. BSSFS: binary
+sparrow search algorithm for feature selection. International Journal
+of Machine Learning and Cybernetics 14, 2633–2657. doi:10.1007/
+s13042-023-01788-8.
+[37] Tang, A., Han, T., Xu, D., Xie, L., 2021. Path planning method of
+unmanned aerial vehicle based on chaos sparrow search algorithm.
+Journal of Computer Applications 41, 2128–2136. doi:10.11772/j.
+issn.1001-9081.2020091513.
+[38] Tibshirani,R.,1996.Regressionshrinkageandselectionviathelasso.
+JournaloftheRoyalStatisticalSociety:SeriesB(Methodological)58,
+267–288. doi:10.1111/j.2517-6161.1996.tb02080.x.
+Y. Zhang:Preprint submitted to ElsevierPage 27 of 28
+--- Page 29 ---
+[39] Wang, Z., Peng, Q., Rao, W., Li, D., 2025. An improved sparrow
+search algorithm with multi-strategy integration. Scientific Reports
+15, 3314. doi:10.1038/s41598-025-86298-z.
+[40] Wilcoxon, F., 1945. Individual comparisons by ranking methods.
+Biometrics Bulletin 1, 80–83. doi:10.2307/3001968.
+[41] Xue, B., Zhang, M., Browne, W.N., Yao, X., 2016. A survey on
+evolutionary computation approaches to feature selection. IEEE
+Transactions on Evolutionary Computation 20, 606–626. doi:10.
+1109/TEVC.2015.2504420.
+[42] Xue, J., Shen, B., 2020. A novel swarm intelligence optimization
+approach: sparrow search algorithm. Systems Science & Control
+Engineering 8, 22–34. doi:10.1080/21642583.2019.1708830.
+[43] Zou, H., Hastie, T., 2005. Regularization and variable selection
+via the elastic net. Journal of the Royal Statistical Society: Series
+B (Statistical Methodology) 67, 301–320. doi:10.1111/j.1467-9868.
+2005.00503.x.
+Declaration of competing interest
+The authors declare that they have no known competing
+financial interests or personal relationships that could have
+appeared to influence the work reported in this paper.
+Data availability
+The datasets used in this study are publicly available
+microarray datasets, as summarized in Table 1. The source
+references are provided in the dataset descriptions and bib-
+liography.
+CRediT authorship contribution statement
+Ying Zhang:Conceptualization, Methodology, Soft-
+ware, Validation, Formal analysis, Investigation, Writing –
+Original Draft, Visualization.
+Y. Zhang:Preprint submitted to ElsevierPage 28 of 28

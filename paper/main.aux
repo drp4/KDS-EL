@@ -20,17 +20,18 @@
 \citation{miao2024}
 \citation{mel2024}
 \citation{guyon2003,lili2017}
+\citation{miao2024,deng2025nns}
+\citation{guyon2003}
 \citation{peng2005}
 \citation{yu2003}
 \citation{roffo2016}
-\citation{kohavi1997}
 \citation{bach2008}
 \citation{zhang2021fsgbdt}
-\citation{xue2016survey,liang2025}
-\citation{kennedy1997}
+\citation{kohavi1997}
 \citation{huang2006}
 \citation{aghdam2009}
 \citation{karaboga2007}
+\citation{xue2016survey,liang2025}
 \citation{xue2019}
 \citation{prasad2015}
 \citation{wang2022}
@@ -38,26 +39,36 @@
 \citation{wei2025}
 \citation{weil2025}
 \citation{chen2025}
-\citation{xue2012mopso}
-\citation{deb2002}
-\citation{zhang2007}
-\citation{coello2004}
-\citation{hu2020,hancer2023}
-\citation{miao2024,mel2024}
+\citation{kennedy1995}
+\citation{shi1998}
+\citation{kennedy1997}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Taxonomic and methodological comparison between KDS-EL and representative evolutionary feature selection algorithms.}}{2}{table.1}\protected@file@percent }
 \newlabel{tab:comparison_literature}{{1}{2}{Taxonomic and methodological comparison between KDS-EL and representative evolutionary feature selection algorithms}{table.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
-\newlabel{sec:related}{{2}{2}{Related Work}{section.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Evolutionary Swarm Intelligence for Feature Selection}{2}{subsection.2.1}\protected@file@percent }
-\newlabel{sec:fs-paradigms}{{2.1}{2}{Evolutionary Swarm Intelligence for Feature Selection}{subsection.2.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Multi-Objective versus Single-Objective Formulations at Scale}{2}{subsection.2.2}\protected@file@percent }
-\newlabel{sec:mofs_vs_sofs}{{2.2}{2}{Multi-Objective versus Single-Objective Formulations at Scale}{subsection.2.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work and Background}{2}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{2}{Related Work and Background}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Problem formulation of feature selection}{2}{subsection.2.1}\protected@file@percent }
+\newlabel{sec:problem_formulation}{{2.1}{2}{Problem formulation of feature selection}{subsection.2.1}{}}
+\newlabel{eq:binary_decision}{{1}{2}{Problem formulation of feature selection}{equation.1}{}}
+\newlabel{eq:fs_formulation}{{2}{2}{Problem formulation of feature selection}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Particle swarm optimization}{2}{subsection.2.2}\protected@file@percent }
+\newlabel{sec:pso}{{2.2}{2}{Particle swarm optimization}{subsection.2.2}{}}
+\newlabel{eq:pso_velocity}{{3}{2}{Particle swarm optimization}{equation.3}{}}
+\newlabel{eq:pso_position}{{4}{2}{Particle swarm optimization}{equation.4}{}}
+\citation{cover1991}
+\citation{peng2005,deng2025nns}
 \citation{zhang2021mtl}
 \citation{zhang2021minion}
 \citation{chen2020emfs,chen2021emfs}
 \citation{he2022}
 \citation{liu2022}
 \citation{mel2024}
+\citation{mel2024}
+\citation{xue2012mopso}
+\citation{deb2002}
+\citation{zhang2007}
+\citation{coello2004}
+\citation{hu2020,hancer2023}
+\citation{miao2024,mel2024}
 \citation{ye2026,mimpode2025,deng2025nns}
 \citation{cover1991}
 \citation{mimpode2025}
@@ -65,80 +76,64 @@
 \citation{wangjia2022}
 \citation{xuezhang2024}
 \citation{liu2024}
-\citation{kennedy1995}
-\citation{shi1998}
-\citation{kennedy1997}
-\citation{cover1991}
-\citation{peng2005,deng2025nns}
+\newlabel{eq:bpsosigmoid}{{5}{3}{Particle swarm optimization}{equation.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Mutual information}{3}{subsection.2.3}\protected@file@percent }
+\newlabel{sec:mi-relevance}{{2.3}{3}{Mutual information}{subsection.2.3}{}}
+\newlabel{eq:mi}{{6}{3}{Mutual information}{equation.6}{}}
+\newlabel{eq:hard_filter}{{7}{3}{Mutual information}{equation.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Multi-task evolutionary learning}{3}{subsection.2.4}\protected@file@percent }
+\newlabel{sec:mel}{{2.4}{3}{Multi-task evolutionary learning}{subsection.2.4}{}}
+\newlabel{eq:mel_sub1}{{8}{3}{Multi-task evolutionary learning}{equation.8}{}}
+\newlabel{eq:fitness_mel}{{9}{3}{Multi-task evolutionary learning}{equation.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Multi-objective feature selection}{3}{subsection.2.5}\protected@file@percent }
+\newlabel{sec:mofs_vs_sofs}{{2.5}{3}{Multi-objective feature selection}{subsection.2.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Knowledge-guided search}{3}{subsection.2.6}\protected@file@percent }
+\newlabel{sec:knowledge_guided}{{2.6}{3}{Knowledge-guided search}{subsection.2.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Taxonomic comparison}{3}{subsection.2.7}\protected@file@percent }
+\newlabel{sec:positioning}{{2.7}{3}{Taxonomic comparison}{subsection.2.7}{}}
 \citation{mel2024}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Evolutionary Multi-Task Optimization in Feature Selection}{3}{subsection.2.3}\protected@file@percent }
-\newlabel{sec:emto}{{2.3}{3}{Evolutionary Multi-Task Optimization in Feature Selection}{subsection.2.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Knowledge-Guided Meta-Heuristics and Information-Theoretic Hybridization}{3}{subsection.2.4}\protected@file@percent }
-\newlabel{sec:knowledge_guided}{{2.4}{3}{Knowledge-Guided Meta-Heuristics and Information-Theoretic Hybridization}{subsection.2.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Unique Positioning and Structural Advancements of KDS-EL}{3}{subsection.2.5}\protected@file@percent }
-\newlabel{sec:positioning}{{2.5}{3}{Unique Positioning and Structural Advancements of KDS-EL}{subsection.2.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Preliminaries}{3}{section.3}\protected@file@percent }
-\newlabel{sec:preliminaries}{{3}{3}{Preliminaries}{section.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Particle Swarm Optimization and Binary Formulations}{3}{subsection.3.1}\protected@file@percent }
-\newlabel{sec:pso}{{3.1}{3}{Particle Swarm Optimization and Binary Formulations}{subsection.3.1}{}}
-\newlabel{eq:pso_velocity}{{1}{3}{Particle Swarm Optimization and Binary Formulations}{equation.1}{}}
-\newlabel{eq:pso_position}{{2}{3}{Particle Swarm Optimization and Binary Formulations}{equation.2}{}}
-\newlabel{eq:bpsosigmoid}{{3}{3}{Particle Swarm Optimization and Binary Formulations}{equation.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Mutual Information for Information-Theoretic Feature Relevance}{3}{subsection.3.2}\protected@file@percent }
-\newlabel{sec:mi-relevance}{{3.2}{3}{Mutual Information for Information-Theoretic Feature Relevance}{subsection.3.2}{}}
-\newlabel{eq:mi}{{4}{3}{Mutual Information for Information-Theoretic Feature Relevance}{equation.4}{}}
-\newlabel{eq:hard_filter}{{5}{3}{Mutual Information for Information-Theoretic Feature Relevance}{equation.5}{}}
-\citation{mel2024}
-\citation{mel2024}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Dual-Subpopulation Multi-Task Swarm Framework (MEL)}{4}{subsection.3.3}\protected@file@percent }
-\newlabel{sec:mel}{{3.3}{4}{Dual-Subpopulation Multi-Task Swarm Framework (MEL)}{subsection.3.3}{}}
-\newlabel{eq:mel_sub1}{{6}{4}{Dual-Subpopulation Multi-Task Swarm Framework (MEL)}{equation.6}{}}
-\newlabel{eq:fitness_mel}{{7}{4}{Dual-Subpopulation Multi-Task Swarm Framework (MEL)}{equation.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Proposed KDS-EL Algorithm}{4}{section.4}\protected@file@percent }
-\newlabel{sec:proposed}{{4}{4}{Proposed KDS-EL Algorithm}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Overall Algorithmic Architecture}{4}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}The Proposed KDS-EL Method}{4}{section.3}\protected@file@percent }
+\newlabel{sec:proposed}{{3}{4}{The Proposed KDS-EL Method}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The framework of KDS-EL}{4}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:framework}{{3.1}{4}{The framework of KDS-EL}{subsection.3.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Overall framework of the proposed KDS-EL algorithm.}}{4}{figure.1}\protected@file@percent }
 \newlabel{F1}{{1}{4}{Overall framework of the proposed KDS-EL algorithm}{figure.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}MI-Prior Seeding and Adaptive Re-injection Strategy}{4}{subsection.4.2}\protected@file@percent }
-\newlabel{sec:mi}{{4.2}{4}{MI-Prior Seeding and Adaptive Re-injection Strategy}{subsection.4.2}{}}
-\newlabel{eq:mi_norm}{{8}{4}{MI-Prior Seeding and Adaptive Re-injection Strategy}{equation.8}{}}
-\newlabel{eq:mi_seeding}{{9}{4}{MI-Prior Seeding and Adaptive Re-injection Strategy}{equation.9}{}}
-\newlabel{eq:binarize}{{10}{4}{MI-Prior Seeding and Adaptive Re-injection Strategy}{equation.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Population initialization strategy}{4}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:mi}{{3.2}{4}{Population initialization strategy}{subsection.3.2}{}}
+\newlabel{eq:mi_norm}{{10}{4}{Population initialization strategy}{equation.10}{}}
+\newlabel{eq:mi_seeding}{{11}{4}{Population initialization strategy}{equation.11}{}}
+\newlabel{eq:binarize}{{12}{4}{Population initialization strategy}{equation.12}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Adaptive re-initialization}{4}{subsubsection.3.2.1}\protected@file@percent }
+\newlabel{eq:reinit_formula}{{13}{4}{Adaptive re-initialization}{equation.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Feature importance learning}{4}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:importance}{{3.3}{4}{Feature importance learning}{subsection.3.3}{}}
+\newlabel{eq:changed_features}{{14}{4}{Feature importance learning}{equation.14}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Schematic diagram of the MI-prior seeding and adaptive re-injection mechanism.}}{5}{figure.2}\protected@file@percent }
 \newlabel{fig:mi_seeding}{{2}{5}{Schematic diagram of the MI-prior seeding and adaptive re-injection mechanism}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Adaptive Stagnation Re-initialization}{5}{subsubsection.4.2.1}\protected@file@percent }
-\newlabel{eq:reinit_formula}{{11}{5}{Adaptive Stagnation Re-initialization}{equation.11}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Cumulative Feature-Importance Matrix with Exponential Memory Decay}{5}{subsection.4.3}\protected@file@percent }
-\newlabel{sec:importance}{{4.3}{5}{Cumulative Feature-Importance Matrix with Exponential Memory Decay}{subsection.4.3}{}}
-\newlabel{eq:changed_features}{{12}{5}{Cumulative Feature-Importance Matrix with Exponential Memory Decay}{equation.12}{}}
-\newlabel{eq:importance_update}{{13}{5}{Cumulative Feature-Importance Matrix with Exponential Memory Decay}{equation.13}{}}
-\newlabel{eq:decay}{{14}{5}{Cumulative Feature-Importance Matrix with Exponential Memory Decay}{equation.14}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Knowledge-guided Elite Refinement (KER) Strategy}{5}{subsection.4.4}\protected@file@percent }
-\newlabel{sec:ker}{{4.4}{5}{Knowledge-guided Elite Refinement (KER) Strategy}{subsection.4.4}{}}
-\newlabel{eq:ker_rand}{{15}{5}{Knowledge-guided Elite Refinement (KER) Strategy}{equation.15}{}}
-\newlabel{eq:flip_score}{{16}{5}{Knowledge-guided Elite Refinement (KER) Strategy}{equation.16}{}}
-\newlabel{eq:top_scores}{{17}{5}{Knowledge-guided Elite Refinement (KER) Strategy}{equation.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Flowchart of the Knowledge-Guided Elite Refinement (KER) strategy.}}{6}{figure.3}\protected@file@percent }
-\newlabel{F3}{{3}{6}{Flowchart of the Knowledge-Guided Elite Refinement (KER) strategy}{figure.3}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}1-to-1 In-Place Replacement and Bounded Evaluation Budget}{6}{subsubsection.4.4.1}\protected@file@percent }
-\newlabel{eq:inplace}{{18}{6}{1-to-1 In-Place Replacement and Bounded Evaluation Budget}{equation.18}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Knowledge-guided Elite Refinement (KER) strategy}}{6}{algorithm.1}\protected@file@percent }
-\newlabel{alg:ker}{{1}{6}{1-to-1 In-Place Replacement and Bounded Evaluation Budget}{algorithm.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Two-Phase Dynamic Objective Weight Scheduling Strategy}{6}{subsection.4.5}\protected@file@percent }
-\newlabel{sec:twophase}{{4.5}{6}{Two-Phase Dynamic Objective Weight Scheduling Strategy}{subsection.4.5}{}}
-\newlabel{eq:twophase}{{19}{6}{Two-Phase Dynamic Objective Weight Scheduling Strategy}{equation.19}{}}
-\newlabel{eq:fitness}{{20}{6}{Two-Phase Dynamic Objective Weight Scheduling Strategy}{equation.20}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Integrated KDS-EL Main Algorithm}{6}{subsection.4.6}\protected@file@percent }
-\newlabel{sec:main_algo}{{4.6}{6}{Integrated KDS-EL Main Algorithm}{subsection.4.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Asymptotic Computational and Space Complexity Analysis}{6}{subsection.4.7}\protected@file@percent }
-\newlabel{sec:complexity}{{4.7}{6}{Asymptotic Computational and Space Complexity Analysis}{subsection.4.7}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.7.1}Time Complexity Decomposition}{6}{subsubsection.4.7.1}\protected@file@percent }
-\newlabel{eq:t_pre}{{21}{6}{Time Complexity Decomposition}{equation.21}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Pseudo-code of the proposed KDS-EL algorithm}}{7}{algorithm.2}\protected@file@percent }
-\newlabel{alg:kds_el}{{2}{7}{Integrated KDS-EL Main Algorithm}{algorithm.2}{}}
-\newlabel{eq:t_eval}{{22}{7}{Time Complexity Decomposition}{equation.22}{}}
-\newlabel{eq:total_complexity}{{23}{7}{Time Complexity Decomposition}{equation.23}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.7.2}Theoretical Complexity Equivalence and Practical Acceleration}{7}{subsubsection.4.7.2}\protected@file@percent }
+\newlabel{eq:importance_update}{{15}{5}{Feature importance learning}{equation.15}{}}
+\newlabel{eq:decay}{{16}{5}{Feature importance learning}{equation.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Elite refinement strategy}{5}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:ker}{{3.4}{5}{Elite refinement strategy}{subsection.3.4}{}}
+\newlabel{eq:ker_rand}{{17}{5}{Elite refinement strategy}{equation.17}{}}
+\newlabel{eq:flip_score}{{18}{5}{Elite refinement strategy}{equation.18}{}}
+\newlabel{eq:top_scores}{{19}{5}{Elite refinement strategy}{equation.19}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}In-place replacement}{5}{subsubsection.3.4.1}\protected@file@percent }
+\newlabel{eq:inplace}{{20}{5}{In-place replacement}{equation.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Two-phase weight scheduling}{5}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:twophase}{{3.5}{5}{Two-phase weight scheduling}{subsection.3.5}{}}
+\newlabel{eq:twophase}{{21}{5}{Two-phase weight scheduling}{equation.21}{}}
+\newlabel{eq:fitness}{{22}{5}{Two-phase weight scheduling}{equation.22}{}}
+\citation{mel2024}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Flowchart of the KER strategy.}}{6}{figure.3}\protected@file@percent }
+\newlabel{F3}{{3}{6}{Flowchart of the KER strategy}{figure.3}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Knowledge-guided elite refinement (KER)}}{6}{algorithm.1}\protected@file@percent }
+\newlabel{alg:ker}{{1}{6}{In-place replacement}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Main algorithm}{6}{subsection.3.6}\protected@file@percent }
+\newlabel{sec:main_algo}{{3.6}{6}{Main algorithm}{subsection.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Complexity analysis}{6}{subsection.3.7}\protected@file@percent }
+\newlabel{sec:complexity}{{3.7}{6}{Complexity analysis}{subsection.3.7}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces The framework of the proposed KDS-EL algorithm}}{6}{algorithm.2}\protected@file@percent }
+\newlabel{alg:kds_el}{{2}{6}{Main algorithm}{algorithm.2}{}}
 \citation{mel2024}
 \citation{mel2024}
 \citation{wangjia2022}
@@ -154,6 +149,21 @@
 \citation{friedman1940}
 \citation{demsar2006}
 \citation{holm1979}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.7.1}Time complexity decomposition}{7}{subsubsection.3.7.1}\protected@file@percent }
+\newlabel{eq:t_pre}{{23}{7}{Time complexity decomposition}{equation.23}{}}
+\newlabel{eq:t_eval}{{24}{7}{Time complexity decomposition}{equation.24}{}}
+\newlabel{eq:total_complexity}{{25}{7}{Time complexity decomposition}{equation.25}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.7.2}Theoretical complexity equivalence and practical acceleration}{7}{subsubsection.3.7.2}\protected@file@percent }
+\newlabel{eq:dominant_complexity}{{26}{7}{Theoretical complexity equivalence and practical acceleration}{equation.26}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.7.3}Space complexity}{7}{subsubsection.3.7.3}\protected@file@percent }
+\newlabel{eq:space_complexity}{{27}{7}{Space complexity}{equation.27}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental results and discussion}{7}{section.4}\protected@file@percent }
+\newlabel{sec:results}{{4}{7}{Experimental results and discussion}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental setup}{7}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:setup}{{4.1}{7}{Experimental setup}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}High-dimensional benchmark datasets}{7}{subsubsection.4.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Comparison algorithms and parameter settings}{7}{subsubsection.4.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.3}Evaluation metrics and statistical test protocols}{7}{subsubsection.4.1.3}\protected@file@percent }
 \citation{mel2024}
 \citation{wangjia2022}
 \citation{wei2025}
@@ -166,86 +176,57 @@
 \citation{coello2004}
 \citation{mel2024}
 \citation{wangjia2022,wei2025,wang2022,xuezhang2024,kennedy1997,han2024,deb2002,zhang2007,coello2004}
-\citation{mel2024}
-\citation{wangjia2022}
-\citation{wei2025}
-\citation{wang2022}
-\citation{xuezhang2024}
-\citation{kennedy1997}
-\citation{han2024}
-\citation{deb2002}
-\citation{zhang2007}
-\citation{coello2004}
-\newlabel{eq:dominant_complexity}{{24}{8}{Theoretical Complexity Equivalence and Practical Acceleration}{equation.24}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.7.3}Space Complexity}{8}{subsubsection.4.7.3}\protected@file@percent }
-\newlabel{eq:space_complexity}{{25}{8}{Space Complexity}{equation.25}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Results and Analysis}{8}{section.5}\protected@file@percent }
-\newlabel{sec:results}{{5}{8}{Experimental Results and Analysis}{section.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Experimental Setup}{8}{subsection.5.1}\protected@file@percent }
-\newlabel{sec:setup}{{5.1}{8}{Experimental Setup}{subsection.5.1}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.1}Benchmark Datasets and Domain Characteristics}{8}{subsubsection.5.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.2}Comparison Algorithms and Methodological Categorization}{8}{subsubsection.5.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3}Parameter Configurations and Experimental Environment}{8}{subsubsection.5.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.4}Performance Metrics and Statistical Significance Framework}{8}{subsubsection.5.1.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Overall Classification Accuracy and Comparative Analysis}{8}{subsection.5.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Summary of the 14 compared methods investigated in this study.}}{9}{table.2}\protected@file@percent }
-\newlabel{T1}{{2}{9}{Summary of the 14 compared methods investigated in this study}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Characteristics of the 20 benchmark datasets.}}{9}{table.3}\protected@file@percent }
-\newlabel{T2}{{3}{9}{Characteristics of the 20 benchmark datasets}{table.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Hyper-parameter configurations and experimental settings.}}{9}{table.4}\protected@file@percent }
-\newlabel{T3}{{4}{9}{Hyper-parameter configurations and experimental settings}{table.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Feature-Selection Compactness and Pareto Dominance}{9}{subsection.5.3}\protected@file@percent }
-\newlabel{sec:features}{{5.3}{9}{Feature-Selection Compactness and Pareto Dominance}{subsection.5.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Summary of the 14 compared methods investigated in this study.}}{8}{table.2}\protected@file@percent }
+\newlabel{T1}{{2}{8}{Summary of the 14 compared methods investigated in this study}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Characteristics of the 20 benchmark datasets.}}{8}{table.3}\protected@file@percent }
+\newlabel{T2}{{3}{8}{Characteristics of the 20 benchmark datasets}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Experimental analysis}{8}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:analysis}{{4.2}{8}{Experimental analysis}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Comparison of classification accuracy}{8}{subsubsection.4.2.1}\protected@file@percent }
+\newlabel{sec:accuracy}{{4.2.1}{8}{Comparison of classification accuracy}{subsubsection.4.2.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Hyper-parameter configurations and experimental settings.}}{8}{table.4}\protected@file@percent }
+\newlabel{T3}{{4}{8}{Hyper-parameter configurations and experimental settings}{table.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Comparison of the number of selected features}{8}{subsubsection.4.2.2}\protected@file@percent }
+\newlabel{sec:features}{{4.2.2}{8}{Comparison of the number of selected features}{subsubsection.4.2.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Comparison of classification accuracy (mean $\pm $ std) across 20 benchmark datasets.}}{9}{table.5}\protected@file@percent }
+\newlabel{T4}{{5}{9}{Comparison of classification accuracy (mean $\pm $ std) across 20 benchmark datasets}{table.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Comparison of the average number of selected features across 20 benchmark datasets.}}{9}{table.6}\protected@file@percent }
+\newlabel{T5}{{6}{9}{Comparison of the average number of selected features across 20 benchmark datasets}{table.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}Fitness value and convergence analysis}{9}{subsubsection.4.2.3}\protected@file@percent }
+\newlabel{sec:convergence}{{4.2.3}{9}{Fitness value and convergence analysis}{subsubsection.4.2.3}{}}
 \citation{demsar2006}
 \citation{holm1979}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Comparison of classification accuracy (mean $\pm $ std) across 20 benchmark datasets.}}{10}{table.5}\protected@file@percent }
-\newlabel{T4}{{5}{10}{Comparison of classification accuracy (mean $\pm $ std) across 20 benchmark datasets}{table.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Comparison of the average number of selected features across 20 benchmark datasets.}}{10}{table.6}\protected@file@percent }
-\newlabel{T5}{{6}{10}{Comparison of the average number of selected features across 20 benchmark datasets}{table.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Statistical Significance and Hypothesis Testing}{10}{subsection.5.4}\protected@file@percent }
-\newlabel{sec:stats}{{5.4}{10}{Statistical Significance and Hypothesis Testing}{subsection.5.4}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.1}Pairwise Wilcoxon Signed-Rank Tests}{10}{subsubsection.5.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.2}Holm--Bonferroni Step-Down Correction}{10}{subsubsection.5.4.2}\protected@file@percent }
 \citation{friedman1940}
+\citation{deng2025nns,miao2024}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Convergence curves of KDS-EL and its ablative variants: (a) overall mean, and (b)--(i) eight representative benchmark datasets.}}{10}{figure.4}\protected@file@percent }
+\newlabel{F8}{{4}{10}{Convergence curves of KDS-EL and its ablative variants: (a) overall mean, and (b)--(i) eight representative benchmark datasets}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}Statistical significance analysis via Wilcoxon test}{10}{subsubsection.4.2.4}\protected@file@percent }
+\newlabel{sec:stats}{{4.2.4}{10}{Statistical significance analysis via Wilcoxon test}{subsubsection.4.2.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Average Friedman ranks of the 14 compared methods across 20 benchmark datasets.}}{10}{figure.5}\protected@file@percent }
+\newlabel{F13}{{5}{10}{Average Friedman ranks of the 14 compared methods across 20 benchmark datasets}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.5}Performance comparison before and after algorithm improvement}{10}{subsubsection.4.2.5}\protected@file@percent }
+\newlabel{sec:improvement}{{4.2.5}{10}{Performance comparison before and after algorithm improvement}{subsubsection.4.2.5}{}}
+\citation{mel2024}
 \@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Win counts of pairwise Wilcoxon signed-rank tests ($p < 0.05$) across 20 benchmark datasets.}}{11}{table.7}\protected@file@percent }
 \newlabel{T6}{{7}{11}{Win counts of pairwise Wilcoxon signed-rank tests ($p < 0.05$) across 20 benchmark datasets}{table.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Holm--Bonferroni corrected pairwise comparisons across 20 benchmark datasets.}}{11}{table.8}\protected@file@percent }
 \newlabel{T6b}{{8}{11}{Holm--Bonferroni corrected pairwise comparisons across 20 benchmark datasets}{table.8}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.3}Friedman Rank Test}{11}{subsubsection.5.4.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Average Friedman ranks of the 14 compared methods across 20 benchmark datasets.}}{11}{figure.4}\protected@file@percent }
-\newlabel{F13}{{4}{11}{Average Friedman ranks of the 14 compared methods across 20 benchmark datasets}{figure.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Ceiling-Effect Analysis on Biomedical Gene-Expression Datasets}{11}{subsection.5.5}\protected@file@percent }
-\newlabel{sec:ceiling}{{5.5}{11}{Ceiling-Effect Analysis on Biomedical Gene-Expression Datasets}{subsection.5.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}Convergence Dynamics and Search Trajectories}{11}{subsection.5.6}\protected@file@percent }
-\newlabel{sec:convergence}{{5.6}{11}{Convergence Dynamics and Search Trajectories}{subsection.5.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Convergence curves of KDS-EL and its ablative variants: (a) overall mean, and (b)--(i) eight representative benchmark datasets.}}{12}{figure.5}\protected@file@percent }
-\newlabel{F8}{{5}{12}{Convergence curves of KDS-EL and its ablative variants: (a) overall mean, and (b)--(i) eight representative benchmark datasets}{figure.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Computational Efficiency and Complexity Analysis}{12}{subsection.5.7}\protected@file@percent }
-\newlabel{sec:efficiency}{{5.7}{12}{Computational Efficiency and Complexity Analysis}{subsection.5.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Multi-objective Pareto efficiency across 20 benchmark datasets.}}{12}{figure.6}\protected@file@percent }
-\newlabel{F11}{{6}{12}{Multi-objective Pareto efficiency across 20 benchmark datasets}{figure.6}{}}
-\citation{deng2025nns,miao2024}
-\citation{mel2024}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Results of subtractive component contribution analysis across 20 benchmark datasets.}}{11}{table.9}\protected@file@percent }
+\newlabel{T7}{{9}{11}{Results of subtractive component contribution analysis across 20 benchmark datasets}{table.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Performance radar chart of KDS-EL and its constituent variants across 20 benchmark datasets.}}{11}{figure.6}\protected@file@percent }
+\newlabel{fig:ablation_radar}{{6}{11}{Performance radar chart of KDS-EL and its constituent variants across 20 benchmark datasets}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.6}Computational efficiency and runtime analysis}{11}{subsubsection.4.2.6}\protected@file@percent }
+\newlabel{sec:efficiency}{{4.2.6}{11}{Computational efficiency and runtime analysis}{subsubsection.4.2.6}{}}
 \citation{mimpode2025}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.8}Component Contribution Analysis}{13}{subsection.5.8}\protected@file@percent }
-\newlabel{sec:ablation}{{5.8}{13}{Component Contribution Analysis}{subsection.5.8}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.8.1}Subtractively-Read Global Ablation Chain}{13}{subsubsection.5.8.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Results of subtractive component contribution analysis across 20 benchmark datasets.}}{13}{table.9}\protected@file@percent }
-\newlabel{T7}{{9}{13}{Results of subtractive component contribution analysis across 20 benchmark datasets}{table.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Ablation radar chart of KDS-EL and its variants across 20 benchmark datasets.}}{13}{figure.7}\protected@file@percent }
-\newlabel{fig:ablation_radar}{{7}{13}{Ablation radar chart of KDS-EL and its variants across 20 benchmark datasets}{figure.7}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.8.2}Per-Dataset Component Contribution Dynamics}{13}{subsubsection.5.8.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.8.3}Validation of In-Place Replacement versus Pooling Selection}{13}{subsubsection.5.8.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Parameter sensitivity analysis of KDS-EL across five key hyper-parameters. Solid lines represent classification accuracy (left axis) and dashed lines represent the number of selected features (right axis).}}{14}{figure.8}\protected@file@percent }
-\newlabel{fig:param_sensitivity}{{8}{14}{Parameter sensitivity analysis of KDS-EL across five key hyper-parameters. Solid lines represent classification accuracy (left axis) and dashed lines represent the number of selected features (right axis)}{figure.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.9}Parameter Sensitivity Analysis and Algorithmic Robustness}{14}{subsection.5.9}\protected@file@percent }
-\newlabel{sec:parametric}{{5.9}{14}{Parameter Sensitivity Analysis and Algorithmic Robustness}{subsection.5.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Summary of parameter sensitivity analysis across four representative datasets.}}{14}{table.10}\protected@file@percent }
-\newlabel{T8}{{10}{14}{Summary of parameter sensitivity analysis across four representative datasets}{table.10}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.9.1}Parametric Dynamics and Mechanism-Level Insights}{14}{subsubsection.5.9.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.9.2}Plug-and-Play Generalization}{14}{subsubsection.5.9.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{14}{section.6}\protected@file@percent }
-\newlabel{sec:conclusion}{{6}{14}{Conclusion}{section.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Multi-objective Pareto efficiency across 20 benchmark datasets.}}{12}{figure.7}\protected@file@percent }
+\newlabel{F11}{{7}{12}{Multi-objective Pareto efficiency across 20 benchmark datasets}{figure.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.7}Parameter sensitivity and robustness analysis}{12}{subsubsection.4.2.7}\protected@file@percent }
+\newlabel{sec:parametric}{{4.2.7}{12}{Parameter sensitivity and robustness analysis}{subsubsection.4.2.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Summary of parameter sensitivity analysis across four representative datasets.}}{12}{table.10}\protected@file@percent }
+\newlabel{T8}{{10}{12}{Summary of parameter sensitivity analysis across four representative datasets}{table.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.8}Discussion}{12}{subsubsection.4.2.8}\protected@file@percent }
+\newlabel{sec:discussion}{{4.2.8}{12}{Discussion}{subsubsection.4.2.8}{}}
+\newlabel{sec:ceiling}{{4.2.8}{12}{Discussion}{subsubsection.4.2.8}{}}
 \bibstyle{elsarticle-num}
 \bibdata{references}
 \bibcite{lili2017}{{1}{}{{}}{{}}}
@@ -266,37 +247,38 @@
 \bibcite{miao2024}{{16}{}{{}}{{}}}
 \bibcite{peng2005}{{17}{}{{}}{{}}}
 \bibcite{yu2003}{{18}{}{{}}{{}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Parameter sensitivity analysis of KDS-EL across five key hyperparameters. Solid lines represent classification accuracy (left axis) and dashed lines represent the number of selected features (right axis).}}{13}{figure.8}\protected@file@percent }
+\newlabel{fig:param_sensitivity}{{8}{13}{Parameter sensitivity analysis of KDS-EL across five key hyperparameters. Solid lines represent classification accuracy (left axis) and dashed lines represent the number of selected features (right axis)}{figure.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{13}{section.5}\protected@file@percent }
+\newlabel{sec:conclusion}{{5}{13}{Conclusion}{section.5}{}}
 \bibcite{roffo2016}{{19}{}{{}}{{}}}
 \bibcite{bach2008}{{20}{}{{}}{{}}}
 \bibcite{zhang2021fsgbdt}{{21}{}{{}}{{}}}
-\bibcite{xue2016survey}{{22}{}{{}}{{}}}
-\bibcite{huang2006}{{23}{}{{}}{{}}}
-\bibcite{aghdam2009}{{24}{}{{}}{{}}}
-\bibcite{karaboga2007}{{25}{}{{}}{{}}}
+\bibcite{huang2006}{{22}{}{{}}{{}}}
+\bibcite{aghdam2009}{{23}{}{{}}{{}}}
+\bibcite{karaboga2007}{{24}{}{{}}{{}}}
+\bibcite{xue2016survey}{{25}{}{{}}{{}}}
 \bibcite{xue2019}{{26}{}{{}}{{}}}
 \bibcite{prasad2015}{{27}{}{{}}{{}}}
 \bibcite{weil2025}{{28}{}{{}}{{}}}
 \bibcite{chen2025}{{29}{}{{}}{{}}}
-\bibcite{deb2002}{{30}{}{{}}{{}}}
-\bibcite{zhang2007}{{31}{}{{}}{{}}}
-\bibcite{coello2004}{{32}{}{{}}{{}}}
-\bibcite{hu2020}{{33}{}{{}}{{}}}
-\bibcite{hancer2023}{{34}{}{{}}{{}}}
-\bibcite{zhang2021mtl}{{35}{}{{}}{{}}}
-\bibcite{zhang2021minion}{{36}{}{{}}{{}}}
-\bibcite{chen2020emfs}{{37}{}{{}}{{}}}
-\bibcite{chen2021emfs}{{38}{}{{}}{{}}}
-\bibcite{he2022}{{39}{}{{}}{{}}}
-\bibcite{liu2022}{{40}{}{{}}{{}}}
-\bibcite{ye2026}{{41}{}{{}}{{}}}
-\bibcite{cover1991}{{42}{}{{}}{{}}}
+\bibcite{cover1991}{{30}{}{{}}{{}}}
+\bibcite{zhang2021mtl}{{31}{}{{}}{{}}}
+\bibcite{zhang2021minion}{{32}{}{{}}{{}}}
+\bibcite{chen2020emfs}{{33}{}{{}}{{}}}
+\bibcite{chen2021emfs}{{34}{}{{}}{{}}}
+\bibcite{he2022}{{35}{}{{}}{{}}}
+\bibcite{liu2022}{{36}{}{{}}{{}}}
+\bibcite{deb2002}{{37}{}{{}}{{}}}
+\bibcite{zhang2007}{{38}{}{{}}{{}}}
+\bibcite{coello2004}{{39}{}{{}}{{}}}
+\bibcite{hu2020}{{40}{}{{}}{{}}}
+\bibcite{hancer2023}{{41}{}{{}}{{}}}
+\bibcite{ye2026}{{42}{}{{}}{{}}}
 \bibcite{liu2024}{{43}{}{{}}{{}}}
 \bibcite{han2024}{{44}{}{{}}{{}}}
 \bibcite{demsar2006}{{45}{}{{}}{{}}}
 \bibcite{friedman1940}{{46}{}{{}}{{}}}
 \bibcite{holm1979}{{47}{}{{}}{{}}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
-\newlabel{LastPage}{{6}{16}{Data Availability}{page.16}{}}
-\gdef\lastpage@lastpage{16}
-\gdef\lastpage@lastpageHy{16}
-\gdef \@abspage@last{17}
+\gdef \@abspage@last{15}

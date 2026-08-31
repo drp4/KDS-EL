@@ -9,21 +9,18 @@
 % Double-blind note: the author/affiliation block below is MASKED for review.
 % Restore the real author list (and delete this note) upon acceptance.
 % -----------------------------------------------------------------------------
-\documentclass[final,5p,times,fleqn]{elsarticle}
+\documentclass[final,5p,times]{elsarticle}
 
 \frenchspacing
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
-\setlength{\mathindent}{0pt}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{stfloats}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage[figuresright]{rotating}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
 \setlength{\emergencystretch}{3em}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \renewcommand{\bibfont}{\footnotesize}
@@ -40,15 +37,8 @@
   bottom=42pt,
   headheight=12pt,
   headsep=6pt,
-  footskip=14pt%
+  footskip=12pt%
 }
-
-\pagestyle{fancy}
-\fancyhf{}
-\fancyfoot[L]{\footnotesize Anonymous Author: \textit{Preprint submitted to Elsevier}}
-\fancyfoot[R]{\footnotesize Page \thepage\ of \pageref{LastPage}}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0.2pt}
 
 \makeatletter
 \renewcommand\normalsize{%
@@ -212,19 +202,16 @@
 % --------------------------- 1. Introduction ---------------------------
 \input{sections/01_introduction}
 
-% --------------------------- 2. Related work ---------------------------
+% --------------------------- 2. Related Work and Background -----------
 \input{sections/02_related_work}
 
-% --------------------------- 3. Preliminaries --------------------------
-\input{sections/03_preliminaries}
-
-% --------------------------- 4. Proposed algorithm ---------------------
+% --------------------------- 3. The Proposed Method -------------------
 \input{sections/04_kds_el}
 
-% ------------ 5. Experimental Results and Analysis (原 5-8 节合并) -------
-\section{Experimental Results and Analysis}\label{sec:results}
+% ------------ 4. Experimental Results and Discussion --------------------
+\section{Experimental results and discussion}\label{sec:results}
 
-This section reports the experimental outcomes across six complementary perspectives: overall classification accuracy, feature-selection compactness, statistical significance, ceiling-effect behavior, convergence dynamics, and computational efficiency. All aggregate numbers are computed over the 20 benchmark datasets described in Section~\ref{sec:setup}. We then quantify the contribution of each mechanism in Section~\ref{sec:ablation} and assess the sensitivity of KDS-EL to its hyper-parameters in Section~\ref{sec:parametric}.
+This section outlines the experimental framework and presents a comprehensive empirical evaluation of KDS-EL across eight analytical dimensions: classification accuracy, feature subset compactness, fitness convergence dynamics, statistical significance, performance progression before and after algorithmic improvement, computational efficiency, hyperparameter sensitivity, and in-depth discussion on biomedical ceiling effects. All aggregate numbers are computed over the 20 benchmark datasets described in Section~\ref{sec:setup}.
 
 \input{sections/05_experimental_setup}
 
@@ -232,13 +219,9 @@ This section reports the experimental outcomes across six complementary perspect
 \input{../output/tables/T2_datasets}
 \input{../output/tables/T3_params}
 
-\input{sections/06_results_and_discussion}
+\input{sections/06_experimental_analysis}
 
-\input{sections/07_component_contribution_analysis}
-
-\input{sections/08_parameter_sensitivity}
-
-% --------------------------- 6. Conclusion ----------------------------
+% --------------------------- 5. Conclusion ----------------------------
 \section{Conclusion}\label{sec:conclusion}
 
 \input{sections/09_conclusion}

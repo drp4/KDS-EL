@@ -147,13 +147,6 @@ J.~Zhang, D.~Xu, K.~Hao, Y.~Zhang, W.~Chen, J.~Liu, R.~Gao, C.~Wu, Y.~D.
 \newblock \href {https://doi.org/10.1093/bib/bbaa189}
   {\path{doi:10.1093/bib/bbaa189}}.
 
-\bibitem{xue2016survey}
-B.~Xue, M.~Zhang, W.~N. Browne, X.~Yao, A survey on evolutionary computation
-  approaches to feature selection, IEEE Transactions on Evolutionary
-  Computation 20~(4) (2016) 606--626.
-\newblock \href {https://doi.org/10.1109/TEVC.2015.2504420}
-  {\path{doi:10.1109/TEVC.2015.2504420}}.
-
 \bibitem{huang2006}
 C.-L. Huang, C.-J. Wang, A {GA}-based feature selection and parameters
   optimization for support vector machines, Expert Systems with Applications
@@ -174,6 +167,13 @@ D.~Karaboga, B.~Basturk, A powerful and efficient algorithm for numerical
   Global Optimization 39~(3) (2007) 459--471.
 \newblock \href {https://doi.org/10.1007/s10898-007-9149-x}
   {\path{doi:10.1007/s10898-007-9149-x}}.
+
+\bibitem{xue2016survey}
+B.~Xue, M.~Zhang, W.~N. Browne, X.~Yao, A survey on evolutionary computation
+  approaches to feature selection, IEEE Transactions on Evolutionary
+  Computation 20~(4) (2016) 606--626.
+\newblock \href {https://doi.org/10.1109/TEVC.2015.2504420}
+  {\path{doi:10.1109/TEVC.2015.2504420}}.
 
 \bibitem{xue2019}
 Y.~Xue, B.~Xue, M.~Zhang, Self-adaptive particle swarm optimization for
@@ -203,40 +203,11 @@ K.~Chen, K.~Liu, P.~Wang, J.~Liang, Z.~Yang, K.~Yu, An efficient evolutionary
 \newblock \href {https://doi.org/10.1016/j.eswa.2025.130416}
   {\path{doi:10.1016/j.eswa.2025.130416}}.
 
-\bibitem{deb2002}
-K.~Deb, A.~Pratap, S.~Agarwal, T.~Meyarivan, A fast and elitist multiobjective
-  genetic algorithm: {NSGA-II}, IEEE Transactions on Evolutionary Computation
-  6~(2) (2002) 182--197.
-\newblock \href {https://doi.org/10.1109/4235.996017}
-  {\path{doi:10.1109/4235.996017}}.
-
-\bibitem{zhang2007}
-Q.~Zhang, H.~Li, {MOEA/D}: A multiobjective evolutionary algorithm based on
-  decomposition, IEEE Transactions on Evolutionary Computation 11~(6) (2007)
-  712--731.
-\newblock \href {https://doi.org/10.1109/TEVC.2007.892759}
-  {\path{doi:10.1109/TEVC.2007.892759}}.
-
-\bibitem{coello2004}
-C.~A.~C. Coello, G.~T. Pulido, M.~S. Lechuga, Handling multiple objectives with
-  particle swarm optimization, IEEE Transactions on Evolutionary Computation
-  8~(3) (2004) 256--279.
-\newblock \href {https://doi.org/10.1109/TEVC.2004.826067}
-  {\path{doi:10.1109/TEVC.2004.826067}}.
-
-\bibitem{hu2020}
-Y.~Hu, Y.~Zhang, D.~Gong, Multiobjective particle swarm optimization for
-  feature selection with fuzzy cost, IEEE Transactions on Cybernetics 51~(2)
-  (2020) 874--888.
-\newblock \href {https://doi.org/10.1109/TCYB.2019.2946898}
-  {\path{doi:10.1109/TCYB.2019.2946898}}.
-
-\bibitem{hancer2023}
-E.~Hancer, B.~Xue, M.~Zhang, An evolutionary filter approach to feature
-  selection in classification for both single- and multi-objective scenarios,
-  Knowledge-Based Systems 280 (2023) 111008.
-\newblock \href {https://doi.org/10.1016/j.knosys.2023.111008}
-  {\path{doi:10.1016/j.knosys.2023.111008}}.
+\bibitem{cover1991}
+T.~M. Cover, J.~A. Thomas, Elements of Information Theory, John Wiley \& Sons,
+  New York, NY, USA, 1991.
+\newblock \href {https://doi.org/10.1002/0471200611}
+  {\path{doi:10.1002/0471200611}}.
 
 \bibitem{zhang2021mtl}
 Y.~Zhang, Q.~Yang, A survey on multi-task learning, IEEE Transactions on
@@ -279,6 +250,41 @@ S.~Liu, Q.~Lin, L.~Feng, K.-C. Wong, K.~C. Tan, Evolutionary multitasking for
 \newblock \href {https://doi.org/10.1109/TEVC.2022.3166482}
   {\path{doi:10.1109/TEVC.2022.3166482}}.
 
+\bibitem{deb2002}
+K.~Deb, A.~Pratap, S.~Agarwal, T.~Meyarivan, A fast and elitist multiobjective
+  genetic algorithm: {NSGA-II}, IEEE Transactions on Evolutionary Computation
+  6~(2) (2002) 182--197.
+\newblock \href {https://doi.org/10.1109/4235.996017}
+  {\path{doi:10.1109/4235.996017}}.
+
+\bibitem{zhang2007}
+Q.~Zhang, H.~Li, {MOEA/D}: A multiobjective evolutionary algorithm based on
+  decomposition, IEEE Transactions on Evolutionary Computation 11~(6) (2007)
+  712--731.
+\newblock \href {https://doi.org/10.1109/TEVC.2007.892759}
+  {\path{doi:10.1109/TEVC.2007.892759}}.
+
+\bibitem{coello2004}
+C.~A.~C. Coello, G.~T. Pulido, M.~S. Lechuga, Handling multiple objectives with
+  particle swarm optimization, IEEE Transactions on Evolutionary Computation
+  8~(3) (2004) 256--279.
+\newblock \href {https://doi.org/10.1109/TEVC.2004.826067}
+  {\path{doi:10.1109/TEVC.2004.826067}}.
+
+\bibitem{hu2020}
+Y.~Hu, Y.~Zhang, D.~Gong, Multiobjective particle swarm optimization for
+  feature selection with fuzzy cost, IEEE Transactions on Cybernetics 51~(2)
+  (2020) 874--888.
+\newblock \href {https://doi.org/10.1109/TCYB.2019.2946898}
+  {\path{doi:10.1109/TCYB.2019.2946898}}.
+
+\bibitem{hancer2023}
+E.~Hancer, B.~Xue, M.~Zhang, An evolutionary filter approach to feature
+  selection in classification for both single- and multi-objective scenarios,
+  Knowledge-Based Systems 280 (2023) 111008.
+\newblock \href {https://doi.org/10.1016/j.knosys.2023.111008}
+  {\path{doi:10.1016/j.knosys.2023.111008}}.
+
 \bibitem{ye2026}
 Z.~Ye, Y.~Zeng, T.~Cai, J.~Shen, W.~Zhou, Q.~He, M.~Mei, Y.~Cen, {KMHBO}: A
   knowledge-guided multi-niche hybrid breeding optimization algorithm for
@@ -286,12 +292,6 @@ Z.~Ye, Y.~Zeng, T.~Cai, J.~Shen, W.~Zhou, Q.~He, M.~Mei, Y.~Cen, {KMHBO}: A
   Applications 298 (2026) 129911.
 \newblock \href {https://doi.org/10.1016/j.eswa.2025.129911}
   {\path{doi:10.1016/j.eswa.2025.129911}}.
-
-\bibitem{cover1991}
-T.~M. Cover, J.~A. Thomas, Elements of Information Theory, John Wiley \& Sons,
-  New York, NY, USA, 1991.
-\newblock \href {https://doi.org/10.1002/0471200611}
-  {\path{doi:10.1002/0471200611}}.
 
 \bibitem{liu2024}
 S.~Liu, H.~Wang, W.~Peng, W.~Yao, Surrogate-assisted evolutionary algorithms
