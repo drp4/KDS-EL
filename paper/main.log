@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  1 SEP 2026 20:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  1 SEP 2026 20:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1210,24 +1210,25 @@ r/m/it/8 ALL1\T1/txr/m/n/8 , \T1/txr/m/it/8 ALL_AML\T1/txr/m/n/8 ,
  []
 
 ) (sections/09_conclusion.tex
-Underfull \hbox (badness 2073) in paragraph at lines 3--4
-\T1/txr/m/n/8 multi-objective com-peti-tor W-MOPSO-FS by +4.42 pp, while re-duc
--ing
- []
+Underfull \hbox (badness 3386) in paragraph at lines 1--2
+[]\T1/txr/m/n/8 In this pa-per, the KDS-EL frame-work is pro-posed to solve the
 
-[12 <../output/figures/F14_parameter_sensitivity.pdf>])
-Underfull \hbox (badness 3068) in paragraph at lines 5--229
-[]\T1/txr/m/n/8 Despite these promis-ing out-comes, sev-eral lim-i-ta-tions of-
-fer fer-tile
  []
 
 
-Underfull \hbox (badness 1558) in paragraph at lines 5--229
-\T1/txr/m/n/8 re-fine-ment and stage-aware ob-jec-tive schedul-ing to multi-lab
-el learn-ing,
+Underfull \hbox (badness 1014) in paragraph at lines 1--2
+\T1/txr/m/n/8 guided ini-tial-iza-tion and adap-tive re-initialization are firs
+t con-structed to
  []
 
-(main.bbl [13]) [14
+
+Underfull \hbox (badness 1845) in paragraph at lines 1--2
+\T1/txr/m/n/8 knowledge-guided elite re-fine-ment strat-egy to ac-cu-mu-late cr
+oss-iteration
+ []
+
+[12 <../output/figures/F14_parameter_sensitivity.pdf>]) (main.bbl [13])
+[14
 
 ] (main.aux)
  ***********
@@ -1244,7 +1245,7 @@ Here is how much of TeX's memory you used:
  42411 multiletter control sequences out of 15000+600000
  786941 words of font info for 319 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,79p,2273b,739s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,15n,79p,2273b,743s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi525\ectt
 0800.pk><E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam7.pfb><E:/MiKTeX/fon
 ts/type1/public/amsfonts/symbols/msbm10.pfb><E:/MiKTeX/fonts/type1/public/amsfo
@@ -1256,7 +1257,7 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (15 pages, 656742 bytes).
+Output written on main.pdf (15 pages, 656295 bytes).
 PDF statistics:
  1179 PDF objects out of 1200 (max. 8388607)
  152 named destinations out of 1000 (max. 500000)
