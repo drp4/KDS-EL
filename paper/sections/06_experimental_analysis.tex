@@ -18,9 +18,9 @@ The KDS-EL framework was evaluated against 13 comparison algorithms across 20 hi
 
 \input{../output/tables/T5_features}
 
-First, comparing the KDS-EL algorithm to the 13 comparison algorithms overall, KDS-EL achieved the most compact feature subset on all 20 benchmark datasets, selecting an overall mean of only 87.8 features, corresponding to approximately 2\%--3\% of the original feature space. The feature reduction capability of KDS-EL is particularly evident on ultra-high-dimensional datasets such as \textit{ALL1}, \textit{Colon}, \textit{Gastric1}, and \textit{Prostate}, where KDS-EL extracts minimal biomarker signatures of merely 39, 14, 31, and 26 features while achieving superior classification accuracies between 0.9500 and 0.9998. Secondly, compared to the single-objective evolutionary algorithms, even the most compact competitor, FWPSO, which retains 1{,}068.9 features on average, selects over 12 times more features than KDS-EL, indicating that two-phase weight scheduling effectively enforces aggressive dimensionality reduction in the early evolutionary phase. Compared with the original MEL algorithm, which retains 2{,}722.2 features, KDS-EL achieves a 31-fold reduction in feature subset size, which indicates that mutual information initialization and knowledge-guided elite refinement effectively steer the swarm toward sparse, informative subspaces rather than dense redundant regions. Furthermore, although multi-objective algorithms such as NSGA-II-FS and fMOPSO-FS obtain competitive accuracy on certain datasets, they universally retain extensive subsets ranging from 2{,}960.0 to 5{,}263.3 features, failing to deliver the ultra-sparse biomarker signatures required for biomedical interpretability. Overall, the KDS-EL algorithm searches for a significantly more compact subset of features while maintaining higher classification accuracy.
+First, comparing the KDS-EL algorithm to the 13 comparison algorithms overall, KDS-EL achieves the most compact feature subsets across the entire benchmark suite, selecting an overall mean of only 87.8 features and compressing the search space down to approximately 2\%--3\% of its original dimension. This extreme dimensionality reduction capability is especially pronounced on challenging biomedical microarrays such as \textit{ALL1}, \textit{Colon}, \textit{Gastric1}, and \textit{Prostate}, where KDS-EL isolates minimal biomarker signatures of fewer than 40 genes, notably 14 on \textit{Colon} and 26 on \textit{Prostate}, while delivering near-perfect classification accuracies between 0.9500 and 0.9998. Secondly, compared to specialized single-objective evolutionary algorithms, even the most compact competitor, FWPSO, retains an average of 1{,}068.9 features---over 12 times the subset size of KDS-EL---demonstrating that Two-Phase Weight Scheduling successfully enforces aggressive feature elimination during early iterations. Against the original MEL baseline with 2{,}722.2 features, KDS-EL achieves a remarkable 31-fold reduction in feature count, confirming that mutual information initialization and knowledge-guided elite refinement effectively steer particles into highly sparse, discriminative subspaces rather than dense noisy regions. Furthermore, while multi-objective paradigms like NSGA-II-FS and fMOPSO-FS attain competitive accuracy on certain benchmarks, they universally suffer from severe feature bloat, retaining extensive subsets ranging from 2{,}960.0 to 5{,}263.3 features that lack practical diagnostic viability. Overall, KDS-EL discovers substantially more compact feature subsets while simultaneously securing superior classification accuracy.
 
-From the perspective of algorithmic components, the mean feature count exhibits a strictly monotonic reduction across the ablative progression: from 2{,}722.2 for MEL, down to 290.5 for KDS-EL w/o TPS\&KER, 121.7 for KDS-EL w/o TPS, and finally 87.8 for KDS-EL. This progressive compression demonstrates that each proposed strategy plays an indispensable role in eliminating non-informative and redundant dimensions: MI initialization provides an informative sparse starting basin, KER directs targeted elite flips toward high-potential biomarker dimensions, and TPS dynamically decouples coarse feature pruning from fine accuracy refinement. Consequently, KDS-EL establishes clear Pareto dominance over existing evolutionary feature selection methods by simultaneously maximizing classification performance and minimizing feature redundancy.
+From the perspective of algorithmic components, the ablative progression reveals a systematic and monotonic reduction in feature redundancy. Starting from 2{,}722.2 features in baseline MEL, the feature count drops by an order of magnitude to 290.5 with mutual information seeding, further contracts to 121.7 through knowledge-guided elite refinement, and ultimately converges to an ultra-compact signature of 87.8 features under two-phase weight scheduling. This step-wise compression demonstrates that each proposed strategy plays an indispensable role in eliminating non-informative dimensions: MI initialization provides an informative sparse starting basin, KER directs targeted elite flips toward high-potential biomarker candidates, and TPS dynamically decouples coarse feature pruning from fine accuracy refinement. Consequently, KDS-EL establishes clear Pareto dominance over existing evolutionary feature selection methods by simultaneously maximizing classification performance and minimizing feature redundancy.
 
 \subsubsection{Fitness value and convergence analysis}\label{sec:convergence}
 
@@ -29,7 +29,7 @@ The fitness value represents the algorithm's comprehensive trade-off between cla
 \begin{figure*}[!htb]
 \centering
 \includegraphics[width=0.92\linewidth]{F8_convergence.pdf}
-\caption{Convergence curves of KDS-EL and its constituent variants across the overall benchmark suite and eight representative datasets.}
+\caption{Convergence curves of fitness values across the benchmark suite and representative datasets.}
 \label{F8}
 \end{figure*}
 
@@ -52,7 +52,7 @@ To establish comprehensive global algorithmic rankings, the non-parametric Fried
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.82\linewidth]{F13_friedman_rank.pdf}
-\caption{Average Friedman ranks of the 14 compared methods across 20 benchmark datasets.}
+\caption{Average Friedman ranks of the compared algorithms.}
 \label{F13}
 \end{figure}
 
@@ -65,7 +65,7 @@ To systematically quantify the empirical contributions of the constituent mechan
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.88\linewidth]{F6_ablation_radar.pdf}
-\caption{Performance radar chart of KDS-EL and its constituent variants across 20 benchmark datasets.}
+\caption{Radar charts of classification accuracy for different algorithm variants.}
 \label{fig:ablation_radar}
 \end{figure}
 
@@ -80,7 +80,7 @@ Computational efficiency is a critical evaluation criterion for high-dimensional
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.88\linewidth]{F11_runtime_scatter.pdf}
-\caption{Multi-objective Pareto efficiency across 20 benchmark datasets.}
+\caption{Multi-objective Pareto efficiency and runtime trade-off.}
 \label{F11}
 \end{figure}
 
@@ -97,7 +97,7 @@ To evaluate the algorithmic robustness of KDS-EL and justify its default paramet
 \begin{figure*}[!htb]
 \centering
 \includegraphics[width=\linewidth]{F14_parameter_sensitivity.pdf}
-\caption{Parameter sensitivity analysis of KDS-EL across five key hyperparameters. Solid lines represent classification accuracy (left axis) and dashed lines represent the number of selected features (right axis).}
+\caption{Parameter sensitivity analysis of KDS-EL across five key hyperparameters.}
 \label{fig:param_sensitivity}
 \end{figure*}
 

@@ -243,7 +243,7 @@ def fig_f8_convergence(out_dir):
                      linewidth=ABL_PLOT_WIDTHS[v], marker=ABL_PLOT_MARKERS[v],
                      markevery=15, markersize=4.0)
 
-    ax0.set_title("(a) Overall Mean (20 Datasets)", fontsize=8.0, fontweight="bold", pad=3)
+    ax0.set_title("(a) Overall Mean", fontsize=8.0, fontweight="bold", pad=3)
     ax0.set_xlabel("Iteration", fontsize=7.0, labelpad=2)
     ax0.set_ylabel("Mean Accuracy", fontsize=7.0, labelpad=2)
     ax0.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
@@ -275,18 +275,18 @@ def fig_f8_convergence(out_dir):
         ax.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
         ax.axvline(x=70, color="#718096", linestyle=":", linewidth=0.8, alpha=0.8)
 
-    # ── 全局统一顶部图例 (Elsevier 标准规范) ──
+    # ── 全局统一底部图例 (与 F14 保持一致) ──
     handles = [
         Line2D([0], [0], color=ABL_PLOT_COLORS[v], linestyle=ABL_PLOT_STYLES[v],
                linewidth=1.6 if "TwoPhase" in v else 1.2, marker=ABL_PLOT_MARKERS[v],
                markersize=4.5, label=ABL_PLOT_LABELS[v])
         for v in F8_ABL_VERSIONS
     ]
-    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 1.02),
+    fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.015),
                ncol=4, frameon=True, facecolor="#ffffff", edgecolor="#CBD5E0",
                fontsize=7.5, handlelength=2.2, columnspacing=1.4, framealpha=0.95)
 
-    plt.tight_layout(rect=[0, 0, 1, 0.965])
+    plt.tight_layout(rect=[0, 0.035, 1, 1])
     save_fig(fig, "F8_convergence", out_dir)
     plt.close(fig)
 

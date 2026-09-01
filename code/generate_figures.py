@@ -510,11 +510,18 @@ def fig_f6_radar(df_detail, out_dir):
     ax.spines["polar"].set_color("#A0AEC0")
     ax.spines["polar"].set_linewidth(0.7)
 
-    ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.14),
+    # Bottom legend in descending superiority order: KDS-EL -> w/o TPS -> w/o TPS&KER -> MEL
+    handles = [
+        mpl.lines.Line2D([0], [0], color=radar_styles[v]["color"], linestyle=radar_styles[v]["ls"],
+                         linewidth=radar_styles[v]["lw"], marker=radar_styles[v]["marker"],
+                         markersize=radar_styles[v]["ms"], label=ABL_LABELS[v])
+        for v in ABL_VERSIONS
+    ]
+    ax.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.15),
               ncol=4, frameon=True, facecolor="#ffffff", edgecolor="#CBD5E0",
               fontsize=7.5, handlelength=2.2, columnspacing=1.3, framealpha=0.95)
 
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0.04, 1, 1])
     save_fig(fig, "F6_ablation_radar", out_dir)
     save_fig(fig, "F6_ablation_heatmap", out_dir)
     plt.close(fig)
@@ -962,7 +969,7 @@ def fig_f13_friedman_rank(df_detail, out_dir):
     avg_ranks = {v: np.mean(ranks[v]) for v in versions if ranks[v]}
     sorted_methods = sorted(avg_ranks, key=avg_ranks.get)
 
-    fig, ax = plt.subplots(figsize=(7.5, 4.5))
+    fig, ax = plt.subplots(figsize=(6.8, 3.8))
     y_pos = range(len(sorted_methods))
     values = [avg_ranks[v] for v in sorted_methods]
     colors = [COLORS[v] for v in sorted_methods]
@@ -980,9 +987,7 @@ def fig_f13_friedman_rank(df_detail, out_dir):
     ax.set_yticks(y_pos)
     ax.set_yticklabels(labels, fontsize=7.5)
     ax.invert_yaxis()
-    ax.set_xlabel("Average Friedman Rank (lower = better)", fontsize=9)
-    ax.set_title("F13: Friedman Test — Average Rank (14 methods, 20 datasets)",
-                 fontsize=9, pad=5)
+    ax.set_xlabel("Average Friedman rank (lower is better)", fontsize=8.0)
     ax.grid(axis="x", linestyle="--", alpha=0.35)
     ax.set_xlim(0, max(values) + 2)
 
@@ -1012,44 +1017,44 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
             "xlabel": r"Decay factor $\gamma$",
         },
         {
-            "name": r"(b) Phase Split $\tau$",
+            "name": r"(b) Phase Split $\kappa$",
             "key": "PhaseSplit",
             "x": [0.3, 0.5, 0.6, 0.7, 0.8, 0.9],
             "acc": [0.940, 0.942, 0.943, 0.944, 0.943, 0.937],
             "feat": [189, 146, 124, 107, 98, 94],
             "default_idx": 3,
             "stable_range": [0.60, 0.80],
-            "xlabel": r"Split ratio $\tau$",
+            "xlabel": r"Split ratio $\kappa$",
         },
         {
-            "name": r"(c) KER Flip Fraction $\delta$",
+            "name": r"(c) Perturbation Fraction $\phi$",
             "key": "flip_frac",
             "x": [0.005, 0.01, 0.02, 0.05, 0.10],
             "acc": [0.939, 0.944, 0.942, 0.937, 0.931],
             "feat": [96, 107, 118, 156, 203],
             "default_idx": 1,
             "stable_range": [0.005, 0.02],
-            "xlabel": r"Flip fraction $\delta$",
+            "xlabel": r"Perturbation fraction $\phi$",
         },
         {
-            "name": r"(d) MI Init Ratio $r_{\mathrm{init}}$",
+            "name": r"(d) MI Initialization Ratio $\rho$",
             "key": "MI_init_ratio",
             "x": [0.0, 0.25, 0.50, 0.75, 1.00],
             "acc": [0.932, 0.940, 0.944, 0.942, 0.936],
             "feat": [184, 137, 107, 101, 96],
             "default_idx": 2,
             "stable_range": [0.25, 0.75],
-            "xlabel": r"MI ratio $r_{\mathrm{init}}$",
+            "xlabel": r"MI ratio $\rho$",
         },
         {
-            "name": r"(e) Elite Pool Size $k_{\mathrm{elite}}$",
+            "name": r"(e) Elite Pool Size $k_e$",
             "key": "elite_k",
             "x": [1, 2, 3, 5, 10],
             "acc": [0.938, 0.942, 0.944, 0.941, 0.935],
             "feat": [124, 115, 107, 118, 141],
             "default_idx": 2,
             "stable_range": [2, 5],
-            "xlabel": r"Elite count $k$",
+            "xlabel": r"Elite pool size $k_e$",
         },
     ]
 
@@ -1102,10 +1107,10 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
         ax2.spines['top'].set_visible(False)
 
     handles = [
-        mpl.lines.Line2D([0], [0], color=color_acc, marker="o", lw=1.4, markersize=4.2, label="Accuracy (Left axis)"),
-        mpl.lines.Line2D([0], [0], color=color_feat, marker="s", linestyle="--", lw=1.2, markersize=3.8, label="Selected Features (Right axis)"),
-        mpl.patches.Patch(facecolor="#F1F5F9", edgecolor="#CBD5E0", label="Stable Operating Band"),
-        mpl.lines.Line2D([0], [0], color="black", marker="*", markersize=7.5, lw=0, label="Default Setting (Table 3)"),
+        mpl.lines.Line2D([0], [0], color=color_acc, marker="o", lw=1.4, markersize=4.2, label="Classification accuracy"),
+        mpl.lines.Line2D([0], [0], color=color_feat, marker="s", linestyle="--", lw=1.2, markersize=3.8, label="Selected features"),
+        mpl.patches.Patch(facecolor="#F1F5F9", edgecolor="#CBD5E0", label="Stable band"),
+        mpl.lines.Line2D([0], [0], color="black", marker="*", markersize=7.5, lw=0, label="Default configuration"),
     ]
     fig.legend(handles=handles, loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.15),
                frameon=True, fontsize=7.0, framealpha=0.95, edgecolor="#CBD5E0")

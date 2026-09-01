@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  1 SEP 2026 20:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  1 SEP 2026 21:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1102,29 +1102,23 @@ Underfull \hbox (badness 2165) in paragraph at lines 11--12
  []
 
 [7] (../output/tables/T5_features.tex)
-Underfull \hbox (badness 1087) in paragraph at lines 23--24
-\T1/txr/m/n/8 demon-strates that each pro-posed strat-egy plays an in-dis-pens-
-able role in
+Underfull \hbox (badness 1527) in paragraph at lines 21--22
+\T1/txr/m/n/8 over-all, KDS-EL achieves the most com-pact fea-ture sub-sets acr
+oss the
  []
 
 
-Underfull \hbox (badness 1968) in paragraph at lines 23--24
-\T1/txr/m/n/8 elim-i-nat-ing non-informative and re-dun-dant di-men-sions: MI i
-ni-tial-iza-tion
+Underfull \hbox (badness 3679) in paragraph at lines 21--22
+\T1/txr/m/n/8 Two-Phase Weight Schedul-ing suc-cess-fully en-forces ag-gres-siv
+e fea-ture
  []
 
-
-Underfull \hbox (badness 1616) in paragraph at lines 23--24
-\T1/txr/m/n/8 flips to-ward high-potential biomarker di-men-sions, and TPS dy-n
-am-i-cally
- []
-
-<../output/figures/F8_convergence.pdf, id=757, 636.01959pt x 469.69603pt>
+<../output/figures/F8_convergence.pdf, id=757, 636.01959pt x 467.09317pt>
 File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
 ne 31.
-(pdftex.def)             Requested size: 480.23904pt x 354.65775pt.
+(pdftex.def)             Requested size: 480.23904pt x 352.69238pt.
 [8] (../output/tables/T6_wilcoxon.tex)
 (../output/tables/T6b_holm_bonferroni.tex)
 Underfull \hbox (badness 3601) in paragraph at lines 50--51
@@ -1132,19 +1126,19 @@ Underfull \hbox (badness 3601) in paragraph at lines 50--51
 , the non-
  []
 
-<../output/figures/F13_friedman_rank.pdf, id=773, 527.6394pt x 310.65373pt>
+<../output/figures/F13_friedman_rank.pdf, id=773, 477.05038pt x 260.23975pt>
 File: ../output/figures/F13_friedman_rank.pdf Graphic file (type pdf)
 <use ../output/figures/F13_friedman_rank.pdf>
 Package pdftex.def Info: ../output/figures/F13_friedman_rank.pdf  used on input
  line 54.
-(pdftex.def)             Requested size: 206.64185pt x 121.66165pt.
-(../output/tables/T7_ablation.tex [9])
-<../output/figures/F6_ablation_radar.pdf, id=787, 415.46979pt x 422.26967pt>
+(pdftex.def)             Requested size: 206.64185pt x 112.72685pt.
+[9] (../output/tables/T7_ablation.tex)
+<../output/figures/F6_ablation_radar.pdf, id=787, 394.7861pt x 402.05098pt>
 File: ../output/figures/F6_ablation_radar.pdf Graphic file (type pdf)
 <use ../output/figures/F6_ablation_radar.pdf>
 Package pdftex.def Info: ../output/figures/F6_ablation_radar.pdf  used on input
  line 67.
-(pdftex.def)             Requested size: 221.76123pt x 225.3869pt.
+(pdftex.def)             Requested size: 221.76123pt x 225.84024pt.
 
 Underfull \hbox (badness 5417) in paragraph at lines 72--73
 []\T1/txr/m/n/8 The step-wise per-for-mance pro-gres-sion re-veals clear, quan-
@@ -1158,6 +1152,10 @@ irst, re-gard-ing
  []
 
 [10 <../output/figures/F8_convergence.pdf>]
+
+LaTeX Warning: Text page 11 contains only floats.
+
+
 Underfull \hbox (badness 1796) in paragraph at lines 78--79
 []\T1/txr/m/n/8 Computational ef-fi-ciency is a crit-i-cal eval-u-a-tion cri-te
 -rion for high-
@@ -1241,7 +1239,7 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  13820 strings out of 467690
  208284 string characters out of 5431801
- 722860 words of memory out of 5000000
+ 720348 words of memory out of 5000000
  42411 multiletter control sequences out of 15000+600000
  786941 words of font info for 319 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1257,9 +1255,9 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (15 pages, 656295 bytes).
+Output written on main.pdf (15 pages, 645224 bytes).
 PDF statistics:
- 1179 PDF objects out of 1200 (max. 8388607)
+ 1172 PDF objects out of 1200 (max. 8388607)
  152 named destinations out of 1000 (max. 500000)
  329 words of extra memory for PDF output out of 10000 (max. 10000000)
 
