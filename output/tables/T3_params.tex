@@ -1,43 +1,51 @@
 \begin{table}[!htb]
 \centering
-\ktablecaption
-\small
-\caption{Hyper-parameter configurations and experimental settings.}
+\caption{Relevant parameter settings for all algorithms.}
 \label{T3}
-\renewcommand{\arraystretch}{1.15}
-\setlength{\tabcolsep}{4pt}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lr@{}}
 \toprule
-Parameter / Setting & Value / Configuration \\
+Algorithm / Component & Parameter setting \\
 \midrule
-\multicolumn{2}{@{}l}{\textit{Common experimental setup:}} \\
-Population size ($N$)              & 20 \\
-Maximum iterations ($T$)           & 100 \\
-$k$-NN classifier neighborhood ($k$) & 3 \\
-Real-to-binary threshold ($\theta$) & 0.60 \\
-Cross-validation scheme            & 5-fold stratified, shuffled \\
-Number of independent runs        & 10 \\
+\multicolumn{2}{@{}l}{\textit{Common experimental parameters:}} \\
+Population size $N$ & 20 \\
+Maximum generations $T_{\max}$ & 100 \\
+Classifier & 3-NN with 5-fold stratified CV \\
+Binarization threshold $\theta$ & 0.60 \\
+Independent runs & 10 \\
 \midrule
-\multicolumn{2}{@{}l}{\textit{KDS-EL (full framework):}} \\
-Inertia weight ($\omega$)          & 0.90 \\
-Acceleration coefficients ($c_1, c_2, c_3$) & 2.0, 2.0, 2.0 \\
-Knowledge weight decay factor ($\gamma$) & 0.99 \\
-Elite perturbation fraction ($\phi$) & 0.01 \\
-Elite pool size ($k_e$)            & 3 \\
-Random exploration probability ($p_{\mathrm{rand}}$) & 0.10 \\
-MI-guided initialization ratio ($\rho$) & 0.50 \\
-Stagnation patience threshold ($\tau$) & 20 generations \\
-Phase split ratio ($\alpha$)       & 0.70 \\
-Phase-1 objective weights ($\mathbf{w}_1$) & $[0.70, \; 0.30]$ \\
-Phase-2 objective weights ($\mathbf{w}_2$) & $[0.95, \; 0.05]$ \\
+\multicolumn{2}{@{}l}{\textit{Proposed KDS-EL framework:}} \\
+Subpopulations & $N_1 = 10, \; N_2 = 10$ \\
+Inertia weight $\omega$ & 0.90 \\
+Acceleration coefficients $c_1, c_2, c_3$ & 2.0, 2.0, 2.0 \\
+Knowledge decay factor $\gamma$ & 0.99 \\
+Perturbation fraction $\phi$ & 0.01 \\
+Elite pool size $k_e$ & 3 \\
+Random exploration rate $p_{\mathrm{rand}}$ & 0.10 \\
+MI initialization ratio $\rho$ & 0.50 \\
+Stagnation threshold $\tau$ & 20 generations \\
+Phase split ratio $\kappa$ & 0.70 \\
+Phase-1 weights $\mathbf{w}_1$ & $[0.70, \; 0.30]$ \\
+Phase-2 weights $\mathbf{w}_2$ & $[0.95, \; 0.05]$ \\
 \midrule
-\multicolumn{2}{@{}l}{\textit{Ablative configurations:}} \\
-Fixed weights (KDS-EL w/o TPS)    & $\mathbf{w}_s = [0.90, \; 0.10]$ \\
-Parameters (KDS-EL w/o TPS\&KER)   & $\omega=0.90, \; c_{1,2,3}=2.0, \; \rho=0.50, \; \tau=20$ \\
-Parameters (Standard MEL~\cite{mel2024}) & $\omega=0.90, \; c_{1,2,3}=2.0, \; \mathbf{w}_s = [0.90, \; 0.10]$ \\
+\multicolumn{2}{@{}l}{\textit{Ablative variants:}} \\
+KDS-EL w/o TPS & Static weights $\mathbf{w}_s = [0.90, \; 0.10]$ \\
+KDS-EL w/o TPS\&KER & Without KER and TPS, $\mathbf{w}_s = [0.90, \; 0.10]$ \\
+Original MEL~\cite{mel2024} & Uniform init, $\mathbf{w}_s = [0.90, \; 0.10]$ \\
 \midrule
-\multicolumn{2}{@{}l}{\textit{Benchmark competitor algorithms:}} \\
-Competitor algorithms~\cite{wangjia2022,wei2025,wang2022,xuezhang2024,kennedy1997,han2024,deb2002,zhang2007,coello2004} & Per original literature ($N=20, T=100$) \\
+\multicolumn{2}{@{}l}{\textit{Competitor algorithms:}} \\
+FWPSO~\cite{wangjia2022} & $\omega \in [0.4, 0.9], \; c_1=c_2=2.0, \; \alpha_{\mathrm{sa}}=0.95$ \\
+PSO-CSM~\cite{wei2025} & $\omega=0.7298, \; c_1=c_2=1.49618, \; p_m=0.05$ \\
+SaWDE~\cite{wang2022} & $F \in [0.1, 0.9], \; CR \in [0.1, 0.9]$ \\
+IGPSO~\cite{xuezhang2024} & $\omega \in [0.4, 0.9], \; c_1=c_2=2.0$, IG scoring \\
+BPSO~\cite{kennedy1997} & $\omega \in [0.4, 0.9], \; c_1=c_2=2.0, \; V_{\max}=6.0$ \\
+NSGA-II-FS~\cite{deb2002} & $p_c=0.9, \; \eta_c=20, \; p_m=1/D, \; \eta_m=20$ \\
+MOEA/D-FS~\cite{zhang2007} & Neighborhood $T_n=5$, Tchebycheff \\
+MOPSO-FS~\cite{coello2004} & Archive $100$, grid inflation $\alpha_g=0.1$ \\
+fMOPSO-FS~\cite{han2024} & Archive $100, \; \omega=0.7298, \; c_{1,2}=1.49618$ \\
+W-MOPSO-FS & Archive $100$, dynamic filter--wrapper \\
 \bottomrule
 \end{tabular*}
 \end{table}
