@@ -15,8 +15,9 @@ Every generation and modification must strictly comply with all criteria outline
 
 ---
 
-### Pillar 2: Natural Pipeline Narrative & Temporal Transitions
-- **Avoid Mechanical Ordinal Lists**: Do not construct paragraphs with repetitive, rigid ordinals (`First, ... Second, ... Third, ... Finally, ...`).
+### Pillar 2: Natural Pipeline Narrative & Paragraph Density (Zero Bullet-Point Syndrome)
+- **Eliminate Mechanical Bullet Lists & Itemize Environments**: In main text and conceptual reviews (especially Section 2), strictly avoid breaking text into bulleted `\begin{itemize}` / `\begin{enumerate}` lists or short, choppy 1--2 sentence paragraphs. Maintain dense, coherent, narrative-driven paragraphs (strictly 3 to 4 substantial paragraphs per subsection, perfectly mirroring EMSWOA).
+- **Prohibit Continuous Bullet-Point Responses in Dialogue**: In all agent-user interactions, avoid mechanical bullet-point itemization (`1. ... 2. ... 3. ...`); articulate explanations, comparisons, and rationale through structured, analytical prose paragraphs.
 - **Use Dynamic Pipeline Verbs**: Drive the narrative using progressive, cause-and-effect pipeline verbs:
   $$\text{quantify} \longrightarrow \text{normalize} \longrightarrow \text{construct / initialize} \longrightarrow \text{transform / binarize} \longrightarrow \text{harvest / accumulate} \longrightarrow \text{refine} \longrightarrow \text{recover}$$
 - **Natural Temporal Connectors**: Use phrases such as *"The search begins by..."*, *"An initial population is subsequently generated via..."*, *"Throughout evolution, the subpopulations undergo..."*, *"Upon meeting the stopping criterion, the algorithm outputs..."*.
@@ -117,9 +118,50 @@ Every generation and modification must strictly comply with all criteria outline
 
 ---
 
+## 📌 Section III: Specialized Protocols for Section 2 (Related Work & Background)
+
+*These protocols must be strictly enforced whenever drafting, modifying, or reviewing Section 2.*
+
+### 🎯 Core Mission & Philosophical Positioning
+- **Not a Bibliographic Catalog**: Related Work must never read like a passive list of disconnected summaries ("Author A did X; Author B did Y").
+- **Target-Setting & Runway-Building**: The primary function of Section 2 is to construct the motivation landscape, pinpoint the exact structural bottlenecks of existing paradigms under ultra-high-dimensional and sample-scarce regimes ($D \gg 10^3, N_{\mathrm{samp}} \ll 100$), and establish the theoretical necessity of KDS-EL.
+
+### 🔑 Critical Operational Protocols
+
+#### Protocol RW-1: Critical 4-Step Narrative Chain (Narrative over Listing)
+Every thematic subsection must execute a coherent 4-step progressive narrative:
+1. **Mainstream Paradigm & Merits**: What is the core mechanism and theoretical advantage of this class of methods?
+2. **Physical/Mathematical Bottleneck in Ultra-High Dimensions ($D \gg 10^3$)**: Why does it degrade or fail under $D \gg 10^3$ and small sample sizes? (e.g., filter hard truncation permanently discards feature synergy; standard BPSO with Sigmoid mapping generates overly dense subsets $d \approx D/2$; MOFS non-dominated sorting suffers Pareto archive bloat and retains thousands of redundant features).
+3. **Limitations of Existing Remedies**: Why do previous incremental fixes (e.g., one-shot offline MI injection, static filter pre-selection, black-box surrogate models) remain insufficient? (e.g., lacking online feedback adaptation, high surrogate training overhead, severe model misspecification risk).
+4. **Theoretical Rationale for the Proposed Design**: How does KDS-EL's design philosophy fundamentally resolve this specific dilemma?
+
+#### Protocol RW-2: Exact 1-to-1 Problem-Solution Closed Loop
+Section 2 must establish three explicit, non-overlapping motivation gaps that directly map to the three core components in Sections 3 and 4:
+- **Gap 1 (Initial Search Blindness & Diversity Loss)** $\longleftrightarrow$ **MII + AIR**: Mutual-information continuous soft prior initialization coupled with adaptive diversity re-initialization upon stagnation.
+- **Gap 2 (Discarded Iteration Feedback & Memoryless Perturbation)** $\longleftrightarrow$ **Dynamic Feature Importance Memory + KER**: Closed-loop accumulation of historical fitness feedback with exponential forgetting, driving targeted directional elite refinement within bounded computation ($k_e \ll N$).
+- **Gap 3 (Rigid Static Weighting & Evolutionary Phase Misalignment)** $\longleftrightarrow$ **Two-Phase Weight Scheduling (TPS)**: Temporally decoupling coarse dimensional pruning in Phase 1 from fine accuracy refinement in Phase 2.
+
+#### Protocol RW-3: 100% Benchmark Baseline Anchoring
+- **Zero Orphan Baselines**: All 13 comparison algorithms evaluated in the experimental sections (BPSO, FWPSO, SaWDE, W-MOPSO-FS, NNS-DFPG-CSA, MI-MPODE, EMSWOA, MEL, NSGA-II-FS, MOEA/D-FS, etc.) must be explicitly classified, contextualized, and cited in Section 2.
+- No competitor algorithm may appear in Section 5 or Section 6 without prior taxonomic grounding in Section 2.
+
+#### Protocol RW-4: Measured Academic Critique & Structural Trade-Offs
+- **No Subjective Dismissals**: Avoid non-academic assertions such as "fails completely" or "is useless".
+- **Mathematical & Structural Grounding**: Frame all critiques through precise algorithmic trade-offs (e.g., *"incurs Pareto archive bloat"*, *"discards subtle feature synergy"*, *"lacks online dynamic adaptability"*, *"exhibits severe variance in stochastic binarization"*).
+
+#### Protocol RW-5: Orthogonal Taxonomy Table Design (Table 1)
+- **Multi-Dimensional Orthogonality**: The taxonomy table (`tab:comparison_literature`) must systematically contrast algorithms across mutually independent technical dimensions: *Paradigm, Prior Seeding, Online Memory, Memory Decay, Elite Refinement, Dynamic Weighting, and Computational Complexity*.
+- **Elsevier Compliance**: Strict three-line table format (`\toprule`, `\midrule`, `\bottomrule`), zero vertical lines, with standardized indicators ($\checkmark$: Fully supported, $\circ$: Partially supported, $\times$: Absent / not supported).
+
+#### Protocol RW-6: Zero Premature Parameter Dumping & Math Purposefulness
+- **No Hardcoded Hyperparameters**: Do not leak specific internal tuning values (e.g., $\theta=0.60, w_f=0.30, k_e=3, \gamma=0.99$) into Section 2 prose. Use conceptual and mathematical terms; save numerical specifications for Sections 3, 4, and 5.
+- **Formulas Must Serve the Critique**: Mathematical equations (e.g., standard PSO velocity/position, mutual information) must immediately connect to the structural failure mode analysis rather than functioning as isolated textbook filler.
+
+---
+
 ## 🔍 Automated Pre-Response & Pre-Compilation Verification Checklist
 
-For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 12-point internal audit before outputting:
+For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 12-point internal audit before outputting (with special attention to Items 13–16 when revising Section 2):
 
 1. [ ] **Acronym Check**: Are there duplicate acronym expansions (e.g., `(KER)`, `(TPS)`)?
 2. [ ] **Parameter Leakage Check**: Are specific numbers/parameters prematurely leaked into high-level descriptive sections?
@@ -133,3 +175,9 @@ For **every user prompt, LaTeX edit, or section rewriting**, the agent must exec
 10. [ ] **Vector Graphic Check**: Are all embedded figures in pure vector `.pdf` format?
 11. [ ] **Highlight Length Check**: Are Research Highlights strictly between 3–5 bullets and under 85 characters each?
 12. [ ] **BibTeX Integrity Check**: Are all `\cite{...}` keys resolved without undefined reference warnings?
+
+### 🔬 Additional Section 2 (Related Work) Specific Audit Items:
+13. [ ] **Section 2 Narrative Chain**: Does each subsection follow the 4-step chain (*Merits $\to$ High-D Bottleneck $\to$ Remedy Limits $\to$ Proposed Rationale*) rather than mechanical literature listing?
+14. [ ] **Section 2 Closed-Loop Check**: Are the three core gaps in Related Work in 1-to-1 correspondence with MII+AIR, KER, and TPS?
+15. [ ] **Section 2 Baseline Coverage**: Are all 13 experimental competitor algorithms explicitly introduced and taxonomically categorized?
+16. [ ] **Section 2 No Parameter Dump**: Are specific tuning constants ($\theta=0.60, w_f=0.30, k_e=3, \gamma=0.99$) completely absent from Section 2 high-level narrative?
