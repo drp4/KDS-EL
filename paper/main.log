@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  2 SEP 2026 14:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  2 SEP 2026 14:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1017,7 +1017,7 @@ Underfull \hbox (badness 2435) in paragraph at lines 83--84
  []
 
 [3]) (sections/04_kds_el.tex
-<../output/figures/F1_architecture_journal.pdf, id=318, 403.62247pt x 635.97598
+<../output/figures/F1_architecture_journal.pdf, id=320, 403.62247pt x 635.97598
 pt>
 File: ../output/figures/F1_architecture_journal.pdf Graphic file (type pdf)
 <use ../output/figures/F1_architecture_journal.pdf>
@@ -1037,7 +1037,7 @@ dates with an
  []
 
 [4 <../output/figures/F1_architecture_journal.pdf>]
-<../output/figures/F2_mi_initialization_journal.pdf, id=420, 1185.22804pt x 657
+<../output/figures/F2_mi_initialization_journal.pdf, id=422, 1185.22804pt x 657
 .65701pt>
 File: ../output/figures/F2_mi_initialization_journal.pdf Graphic file (type pdf
 )
@@ -1059,7 +1059,7 @@ Underfull \hbox (badness 1622) in paragraph at lines 108--109
 
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 121.
-<../output/figures/F3_ker_strategy_journal.pdf, id=575, 1185.22804pt x 657.6570
+<../output/figures/F3_ker_strategy_journal.pdf, id=577, 1185.22804pt x 657.6570
 1pt>
 File: ../output/figures/F3_ker_strategy_journal.pdf Graphic file (type pdf)
 <use ../output/figures/F3_ker_strategy_journal.pdf>
@@ -1141,7 +1141,7 @@ Underfull \hbox (badness 3679) in paragraph at lines 21--22
 e fea-ture
  []
 
-<../output/figures/F8_convergence.pdf, id=765, 636.01959pt x 467.09317pt>
+<../output/figures/F8_convergence.pdf, id=767, 636.01959pt x 467.09317pt>
 File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
@@ -1160,14 +1160,14 @@ Underfull \hbox (badness 2245) in paragraph at lines 50--51
 m-i-nance of
  []
 
-<../output/figures/F13_friedman_rank.pdf, id=837, 477.05038pt x 260.23975pt>
+<../output/figures/F13_friedman_rank.pdf, id=839, 477.05038pt x 260.23975pt>
 File: ../output/figures/F13_friedman_rank.pdf Graphic file (type pdf)
 <use ../output/figures/F13_friedman_rank.pdf>
 Package pdftex.def Info: ../output/figures/F13_friedman_rank.pdf  used on input
  line 54.
 (pdftex.def)             Requested size: 206.64185pt x 112.72685pt.
 (../output/tables/T7_ablation.tex)
-<../output/figures/F6_ablation_radar.pdf, id=842, 394.7861pt x 402.05098pt>
+<../output/figures/F6_ablation_radar.pdf, id=844, 394.7861pt x 402.05098pt>
 File: ../output/figures/F6_ablation_radar.pdf Graphic file (type pdf)
 <use ../output/figures/F6_ablation_radar.pdf>
 Package pdftex.def Info: ../output/figures/F6_ablation_radar.pdf  used on input
@@ -1197,7 +1197,7 @@ Underfull \hbox (badness 1394) in paragraph at lines 78--79
 run-time over-head.
  []
 
-<../output/figures/F11_runtime_scatter.pdf, id=870, 506.4339pt x 304.73952pt>
+<../output/figures/F11_runtime_scatter.pdf, id=872, 506.4339pt x 304.73952pt>
 File: ../output/figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use ../output/figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: ../output/figures/F11_runtime_scatter.pdf  used on inp
@@ -1210,7 +1210,7 @@ ginally
  []
 
 (../output/tables/T8_parameter_sensitivity.tex)
-<../output/figures/F14_parameter_sensitivity.pdf, id=876, 817.31973pt x 182.140
+<../output/figures/F14_parameter_sensitivity.pdf, id=878, 817.31973pt x 182.140
 49pt>
 File: ../output/figures/F14_parameter_sensitivity.pdf Graphic file (type pdf)
 <use ../output/figures/F14_parameter_sensitivity.pdf>
@@ -1264,10 +1264,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 964EA2A40146713AC6892ACBFEF92362;8713.
  ) 
 Here is how much of TeX's memory you used:
- 13810 strings out of 467690
- 208145 string characters out of 5431801
- 695177 words of memory out of 5000000
- 42403 multiletter control sequences out of 15000+600000
+ 13814 strings out of 467690
+ 208206 string characters out of 5431801
+ 695193 words of memory out of 5000000
+ 42406 multiletter control sequences out of 15000+600000
  786304 words of font info for 319 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,15n,79p,2584b,589s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1282,9 +1282,9 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (15 pages, 655049 bytes).
+Output written on main.pdf (15 pages, 655776 bytes).
 PDF statistics:
- 1175 PDF objects out of 1200 (max. 8388607)
- 149 named destinations out of 1000 (max. 500000)
+ 1178 PDF objects out of 1200 (max. 8388607)
+ 150 named destinations out of 1000 (max. 500000)
  313 words of extra memory for PDF output out of 10000 (max. 10000000)
 
