@@ -1,0 +1,137 @@
+<?xml version="1.0" ?>
+<mxfile host="Electron" agent="Draw.io" version="24.0.0">
+  <diagram id="f4-random-mutation-lesion" name="Figure 4: Physical Lesions of Conventional Random Mutation">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1060" pageHeight="640" math="1" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="n_ctx" value="&lt;b&gt;High-Dimensional Feature Selection Context (&lt;i&gt;D&lt;/i&gt; &amp;gg; 10&lt;sup&gt;3&lt;/sup&gt;, e.g., &lt;i&gt;D&lt;/i&gt; = 12,600+ features)&lt;/b&gt;&amp;#xa;Current Elite Candidate Solution: &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt; = [&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,1&lt;/sub&gt;, &lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,2&lt;/sub&gt;, ..., &lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;D&lt;/i&gt;&lt;/sub&gt;] &amp;#8712; {0, 1}&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt; with fitness &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;) = 0.0820" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontStyle=1;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="1000" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="th_dim" value="&lt;b&gt;Feature Index&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="95" width="160" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="th_f1" value="&lt;b&gt;Feature &lt;i&gt;f&lt;/i&gt;&lt;sub&gt;1&lt;/sub&gt;&lt;/b&gt;&amp;#xa;(Core Biomarker)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="190" y="95" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="th_f2" value="&lt;b&gt;Feature &lt;i&gt;f&lt;/i&gt;&lt;sub&gt;2&lt;/sub&gt;&lt;/b&gt;&amp;#xa;(Uncorrelated Noise)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="340" y="95" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="th_f3" value="&lt;b&gt;Feature &lt;i&gt;f&lt;/i&gt;&lt;sub&gt;3&lt;/sub&gt;&lt;/b&gt;&amp;#xa;(Redundant Gene)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="490" y="95" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="th_f4" value="&lt;b&gt;Feature &lt;i&gt;f&lt;/i&gt;&lt;sub&gt;4&lt;/sub&gt;&lt;/b&gt;&amp;#xa;(Synergistic Pair)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="640" y="95" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="th_dots" value="&lt;b&gt;...&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="790" y="95" width="90" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="th_fd" value="&lt;b&gt;Feature &lt;i&gt;f&lt;/i&gt;&lt;sub&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sub&gt;&lt;/b&gt;&amp;#xa;(Background)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="880" y="95" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1_lbl" value="&lt;b&gt;Underlying True Contribution&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="127" width="160" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1_f1" value="&lt;b&gt;Strong Positive&lt;/b&gt;&amp;#xa;(High Discriminative)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="190" y="127" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1_f2" value="&lt;b&gt;Strong Negative&lt;/b&gt;&amp;#xa;(Pure Noise / Overfitting)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="340" y="127" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1_f3" value="&lt;b&gt;Negative&lt;/b&gt;&amp;#xa;(Redundant Copy of &lt;i&gt;f&lt;/i&gt;&lt;sub&gt;1&lt;/sub&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="490" y="127" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1_f4" value="&lt;b&gt;Strong Positive&lt;/b&gt;&amp;#xa;(Synergistic with &lt;i&gt;f&lt;/i&gt;&lt;sub&gt;1&lt;/sub&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="640" y="127" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1_dots" value="..." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="790" y="127" width="90" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1_fd" value="&lt;b&gt;Neutral / Zero&lt;/b&gt;&amp;#xa;(Zero Correlation)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="880" y="127" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r2_lbl" value="&lt;b&gt;Current Elite Subset &lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="159" width="160" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r2_f1" value="&lt;b&gt;1 (Selected)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="190" y="159" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r2_f2" value="&lt;b&gt;0 (Excluded)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="340" y="159" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r2_f3" value="&lt;b&gt;0 (Excluded)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="490" y="159" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r2_f4" value="&lt;b&gt;1 (Selected)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="640" y="159" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r2_dots" value="..." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="790" y="159" width="90" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r2_fd" value="&lt;b&gt;0 (Excluded)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="880" y="159" width="150" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="r3_lbl" value="&lt;b&gt;Conventional Random Bit Mutation&lt;/b&gt;&amp;#xa;(Uniform &lt;i&gt;p&lt;/i&gt;&lt;sub&gt;mut&lt;/sub&gt; = 1/&lt;i&gt;D&lt;/i&gt; flip)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="191" width="160" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="r3_f1" value="&lt;b&gt;Blind Flip: 1 &amp;#8594; 0&lt;/b&gt;&amp;#xa;(Mistakenly Pruned)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="190" y="191" width="150" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="r3_f2" value="&lt;b&gt;Blind Flip: 0 &amp;#8594; 1&lt;/b&gt;&amp;#xa;(Mistakenly Activated)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="340" y="191" width="150" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="r3_f3" value="&lt;b&gt;0 &amp;#8594; 0&lt;/b&gt; (No flip)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="490" y="191" width="150" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="r3_f4" value="&lt;b&gt;1 &amp;#8594; 1&lt;/b&gt; (No flip)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="640" y="191" width="150" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="r3_dots" value="..." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="790" y="191" width="90" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="r3_fd" value="&lt;b&gt;0 &amp;#8594; 0&lt;/b&gt; (No flip)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="880" y="191" width="150" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="r4_lbl" value="&lt;b&gt;Physical Search Lesion (The Why)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="239" width="160" height="68" as="geometry"/>
+        </mxCell>
+        <mxCell id="r4_f1" value="&lt;b&gt;[Lesion 1] Fatal Synergistic Loss:&lt;/b&gt;&amp;#xa;Verified critical biomarker is discarded;&amp;#xa;Accuracy collapses drastically&amp;#xa;(&amp;#916;Acc = -14.2%)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="190" y="239" width="150" height="68" as="geometry"/>
+        </mxCell>
+        <mxCell id="r4_f2" value="&lt;b&gt;[Lesion 2] Noise Infiltration:&lt;/b&gt;&amp;#xa;Uncorrelated noisy gene is activated;&amp;#xa;Bloats feature count &amp;amp; causes&amp;#xa;severe wrapper overfitting" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="340" y="239" width="150" height="68" as="geometry"/>
+        </mxCell>
+        <mxCell id="r4_f3" value="Redundant dimension remains unpruned" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="490" y="239" width="150" height="68" as="geometry"/>
+        </mxCell>
+        <mxCell id="r4_f4" value="Synergy broken due to loss of &lt;i&gt;f&lt;/i&gt;&lt;sub&gt;1&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="640" y="239" width="150" height="68" as="geometry"/>
+        </mxCell>
+        <mxCell id="r4_dots" value="..." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="790" y="239" width="90" height="68" as="geometry"/>
+        </mxCell>
+        <mxCell id="r4_fd" value="No guidance received" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="880" y="239" width="150" height="68" as="geometry"/>
+        </mxCell>
+        <mxCell id="r5_lbl" value="&lt;b&gt;Resulting Degraded Candidate &lt;i&gt;x&lt;/i&gt;&amp;apos;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F2F2F2;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="307" width="160" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="r5_res" value="&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&amp;apos; = [0, 1, 0, 1, ..., 0] &amp;#8712; {0, 1}&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;&lt;/b&gt;&amp;#xa;Degraded Fitness: &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&amp;apos;) = 0.2250 &amp;gg; &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;) = 0.0820 (Severe Fitness Deterioration &amp;amp; Wasted Classifier Budget)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontStyle=1;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="190" y="307" width="840" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_summary" value="Theoretical Bottlenecks of Blind Perturbations in Ultra-High-Dimensional Search Spaces (&lt;i&gt;D&lt;/i&gt; &amp;gg; 10&lt;sup&gt;3&lt;/sup&gt;)" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=none;strokeColor=#000000;strokeWidth=1.2;verticalAlign=top;spacingTop=8;fontSize=11;fontStyle=1;fontFamily=Times New Roman;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="30" y="360" width="1000" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_box_s1" value="&lt;b&gt;Bottleneck 1: Infinitesimal Probability of Beneficial Modification&lt;/b&gt;&amp;#xa;In spaces with &lt;i&gt;D&lt;/i&gt; &amp;#8805; 10&lt;sup&gt;4&lt;/sup&gt; dimensions, the combinatorial neighborhood is 2&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;. An undirected random bit flip has an infinitesimal hit probability O(1/&lt;i&gt;D&lt;/i&gt;) &amp;#8776; 10&lt;sup&gt;-4&lt;/sup&gt; of modifying the few decisive biomarkers, while having an overwhelming probability (1 - &lt;i&gt;d&lt;/i&gt;&lt;sup&gt;*&lt;/sup&gt;/&lt;i&gt;D&lt;/i&gt;) &amp;#8776; 99.8% of perturbing irrelevant background noise." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="50" y="395" width="460" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_box_s2" value="&lt;b&gt;Bottleneck 2: Memoryless Search Amnesia&lt;/b&gt;&amp;#xa;Standard meta-heuristics immediately discard the fitness evaluation feedback of trial solutions after particle updates. The optimizer fails to accumulate historical knowledge regarding which features systematically improved classification accuracy versus which features induced error spikes." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="550" y="395" width="460" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_box_s3" value="&lt;b&gt;The KDS-EL Theoretical Solution (Section 3.3)&lt;/b&gt;&amp;#xa;KDS-EL resolves these dilemmas through a closed loop: cumulative trial feedback is preserved in the continuous importance matrix &lt;b&gt;&lt;i&gt;W&lt;/i&gt;&lt;/b&gt; &amp;#8712; &amp;#8477;&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt; with exponential decay &amp;gamma; = 0.99. The KER operator computes directional scores &amp;sigma;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; = (1 - 2&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;) &amp;middot; &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; to deterministically prune weak features (1 &amp;#8594; 0) and add strong features (0 &amp;#8594; 1) under bounded computation." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontStyle=1;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="50" y="505" width="960" height="80" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

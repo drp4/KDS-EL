@@ -1,101 +1,337 @@
-<?xml version='1.0' encoding='utf-8'?>
-<mxfile host="drawio" version="30.4.1">
-  <diagram name="output\figures\F1_kds_el_framework.drawio" id="f1-kds-el">
-    <mxGraphModel dx="1280" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="650" math="0" shadow="0">
+<?xml version="1.0" ?>
+<mxfile host="Electron" agent="Draw.io" version="24.0.0">
+  <diagram id="f1-kds-el-architecture" name="Figure 1: KDS-EL Architecture">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1050" pageHeight="1000" math="1" shadow="0">
       <root>
-        <mxCell id="0" style="" />
-        <mxCell id="1" parent="0" style="" />
-        <mxCell id="aRaw" value="Raw data X (D)" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#eef4fb;strokeColor=#2f5d8a;strokeWidth=1.5;fontSize=14;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="1">
-          <mxGeometry x="540.0" y="45.0" width="200" height="38" as="geometry" />
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="n_begin" value="Begin" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=12;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="190" y="10" width="100" height="25" as="geometry"/>
         </mxCell>
-        <mxCell id="aMI" value="MI-guided hybrid init" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#dbe7f6;strokeColor=#2f5d8a;strokeWidth=1.5;fontSize=14;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="1">
-          <mxGeometry x="540.0" y="115.0" width="200" height="44" as="geometry" />
+        <mxCell id="n_params" value="Set related parameters" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="110" y="52" width="260" height="33" as="geometry"/>
         </mxCell>
-        <mxCell id="aMIpar" value="N=20 · 50% MI · θ=0.6" style="text;html=1;align=center;verticalAlign=middle;fontSize=10;fontColor=#2f5d8a;fontFamily=Helvetica;" vertex="1" parent="1">
-          <mxGeometry x="540.0" y="161.0" width="200" height="16" as="geometry" />
+        <mxCell id="e_begin_params" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_begin" target="n_params">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="aReinit" value="Adaptive MI re-init" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#fdebd0;strokeColor=#b45309;strokeWidth=1.5;fontSize=14;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="1">
-          <mxGeometry x="1010.0" y="115.0" width="210" height="44" as="geometry" />
+        <mxCell id="n_init_seed" value="Initialize candidate solutions&amp;#xa;based on prior knowledge" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="75" y="115" width="155" height="36" as="geometry"/>
         </mxCell>
-        <mxCell id="aReinitPar" value="stall≥20 → re-seed half" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#b45309;fontFamily=Helvetica;" vertex="1" parent="1">
-          <mxGeometry x="1010.0" y="161.0" width="210" height="16" as="geometry" />
+        <mxCell id="n_init_bin" value="Convert continuous particles&amp;#xa;to binary decision space" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="250" y="115" width="155" height="36" as="geometry"/>
         </mxCell>
-        <mxCell id="aLoopBox" value="Main loop t=1..T" style="rounded=1;arcSize=4;dashed=1;fillColor=#f8fafc;strokeColor=#475569;verticalAlign=top;html=1;fontSize=15;fontStyle=1;spacingTop=8;container=1;pointerEvents=0;fontFamily=Helvetica;" vertex="1" parent="1">
-          <mxGeometry x="250.0" y="215.0" width="780" height="410" as="geometry" />
+        <mxCell id="n_init_tps" value="Calculate objective fitness&amp;#xa;under two-phase scheduling" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="250" y="187" width="155" height="36" as="geometry"/>
         </mxCell>
-        <mxCell id="aPhase" value="Two-phase weights&#10;[.7,.3] → [.95,.05]" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#d1f2eb;strokeColor=#0f766e;strokeWidth=1.5;fontSize=13;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="aLoopBox">
-          <mxGeometry x="280.0" y="40.0" width="220" height="50" as="geometry" />
+        <mxCell id="n_init_opt" value="Obtain initial personal&amp;#xa;and global best solutions" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="75" y="187" width="155" height="36" as="geometry"/>
         </mxCell>
-        <mxCell id="aSub1" value="Sub1 PSO + Sub2-best" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#334155;strokeWidth=1.3;fontSize=13;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="aLoopBox">
-          <mxGeometry x="40.0" y="130.0" width="220" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="aSub2" value="Sub2 P(j)∝W_j" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#334155;strokeWidth=1.3;fontSize=13;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="aLoopBox">
-          <mxGeometry x="520.0" y="130.0" width="220" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="aEval" value="Fitness eval" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#334155;strokeWidth=1.3;fontSize=13;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="aLoopBox">
-          <mxGeometry x="280.0" y="210.0" width="220" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="aWupd" value="W update + decay&#10;W_j += δ(2x_j−1);  W ← 0.99W" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#d1f2eb;strokeColor=#0f766e;strokeWidth=1.5;fontSize=13;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="aLoopBox">
-          <mxGeometry x="280.0" y="280.0" width="220" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="aKER" value="KER top-3&#10;W-guided / random flips" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#fdebd0;strokeColor=#b45309;strokeWidth=1.5;fontSize=14;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="aLoopBox">
-          <mxGeometry x="280.0" y="350.0" width="220" height="52" as="geometry" />
-        </mxCell>
-        <mxCell id="aOut" value="Compact feature subset" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#eef4fb;strokeColor=#2f5d8a;strokeWidth=1.5;fontSize=14;fontColor=#111111;fontFamily=Helvetica;" vertex="1" parent="1">
-          <mxGeometry x="1040.0" y="560.0" width="200" height="44" as="geometry" />
-        </mxCell>
-        <mxCell id="aLoop1" value="t+1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontStyle=2;fontColor=#334155;fontFamily=Helvetica;" vertex="1" parent="1">
-          <mxGeometry x="120.0" y="420.0" width="55" height="18" as="geometry" />
-        </mxCell>
-        <mxCell id="aLoop2" value="stall≥20" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#b45309;fontFamily=Helvetica;" vertex="1" parent="1">
-          <mxGeometry x="1080.0" y="185.0" width="120" height="18" as="geometry" />
-        </mxCell>
-        <mxCell id="ae1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="aRaw" target="aMI">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ae2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="aMI" target="aPhase">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ae3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=block;exitX=0.3;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="aPhase" target="aSub1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ae4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=block;exitX=0.7;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="aPhase" target="aSub2">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ae5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=block;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="aSub1" target="aEval">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ae6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=block;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="aSub2" target="aEval">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ae7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="aEval" target="aWupd">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ae8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="aWupd" target="aKER">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ae9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#334155;strokeWidth=1.5;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="aKER" target="aOut">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="ae10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b45309;strokeWidth=1.5;dashed=1;endArrow=block;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="aKER" target="aPhase">
+        <mxCell id="e_params_init" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_params" target="n_init_seed">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="180.0" y="591.0" />
-              <mxPoint x="180.0" y="280.0" />
+              <mxPoint x="240" y="98"/>
+              <mxPoint x="152.5" y="98"/>
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="ae11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b45309;strokeWidth=1.5;dashed=1;endArrow=block;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="aKER" target="aReinit">
+        <mxCell id="e_init_bin" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_init_seed" target="n_init_bin">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_bin_tps" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_init_bin" target="n_init_tps">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_tps_opt" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_init_tps" target="n_init_opt">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_coevol" value="Constructing and updating dual subpopulations&amp;#xa;using collaborative co-evolution mechanism" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="80" y="245" width="320" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_opt_coevol" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_init_opt" target="n_coevol">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="750.0" y="617.0" />
-              <mxPoint x="1260.0" y="617.0" />
-              <mxPoint x="1260.0" y="137.0" />
+              <mxPoint x="152.5" y="235"/>
+              <mxPoint x="240" y="235"/>
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="ae12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b45309;strokeWidth=1.5;dashed=1;endArrow=block;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="aReinit" target="aMI">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e_callout_top" value="" style="shape=flexArrow;endArrow=classic;startArrow=none;html=1;fillColor=#000000;strokeColor=#000000;width=3.5;endSize=7;exitX=1;exitY=0.5;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" edge="1" source="n_coevol" target="c_top_swarm">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_dia_tps" value="&lt;i&gt;t&lt;/i&gt; &amp;le; &amp;tau;&lt;i&gt;T&lt;/i&gt;&lt;sub&gt;max&lt;/sub&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="170" y="345" width="140" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_coevol_tps" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_coevol" target="n_dia_tps">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_tps_prune" value="Feature pruning phase:&amp;#xa;penalize redundant dimensions" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="75" y="403" width="155" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_tps_tune" value="Accuracy tuning phase:&amp;#xa;refine classification accuracy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="250" y="403" width="155" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_tps_prune" value="&lt;b&gt;Y&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_tps" target="n_tps_prune">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="170" y="367"/>
+              <mxPoint x="152.5" y="367"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_tps_tune" value="&lt;b&gt;N&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_tps" target="n_tps_tune">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="367"/>
+              <mxPoint x="327.5" y="367"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_mem_w" value="Updating cumulative feature-importance matrix &lt;b&gt;&lt;i&gt;W&lt;/i&gt;&lt;/b&gt;&amp;#xa;with evolutionary fitness feedback and memory decay" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="80" y="475" width="320" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_prune_mem" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_tps_prune" target="n_mem_w">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="152.5" y="455"/>
+              <mxPoint x="240" y="455"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_tune_mem" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_tps_tune" target="n_mem_w">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="327.5" y="455"/>
+              <mxPoint x="240" y="455"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_ker_anchor" value="Updating candidate feature subsets using&amp;#xa;knowledge-guided elite refinement strategy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="80" y="655" width="320" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_mem_ker" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_mem_w" target="n_ker_anchor">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_callout_bot" value="" style="shape=flexArrow;endArrow=classic;startArrow=none;html=1;fillColor=#000000;strokeColor=#000000;width=3.5;endSize=7;exitX=1;exitY=0.5;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" edge="1" source="n_ker_anchor" target="c_bot_ker">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_dia_stag" value="&lt;i&gt;t&lt;/i&gt;&lt;sub&gt;stag&lt;/sub&gt; &amp;ge; &amp;tau;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="170" y="725" width="140" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ker_stag" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_ker_anchor" target="n_dia_stag">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_air" value="Adaptive stagnation recovery:&amp;#xa;re-initialize lower-half particles" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="325" y="727" width="155" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_stag_air" value="&lt;b&gt;Y&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_stag" target="n_air">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_dia_term" value="&lt;i&gt;t&lt;/i&gt; &amp;ge; &lt;i&gt;T&lt;/i&gt;&lt;sub&gt;max&lt;/sub&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="170" y="805" width="140" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_stag_term" value="&lt;b&gt;N&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="n_dia_stag" target="n_dia_term">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_air_term" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" parent="1" edge="1" source="n_air" target="n_dia_term">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="402.5" y="826"/>
+              <mxPoint x="310" y="826"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_loopback" value="&lt;b&gt;N&lt;/b&gt; &amp;nbsp; &lt;i&gt;t&lt;/i&gt; &amp;larr; &lt;i&gt;t&lt;/i&gt; + 1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" parent="1" edge="1" source="n_dia_term" target="n_coevol">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="170" y="826"/>
+              <mxPoint x="35" y="826"/>
+              <mxPoint x="35" y="270"/>
+              <mxPoint x="80" y="270"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_output" value="Obtaining the subset of&amp;#xa;optimal features &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sup&gt;&amp;lowast;&lt;/sup&gt; and &lt;i&gt;f&lt;/i&gt;&lt;sub&gt;gbest&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="110" y="868" width="260" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_term_out" value="&lt;b&gt;Y&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" edge="1" source="n_dia_term" target="n_output">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_end" value="End" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=12;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="190" y="920" width="100" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_out_end" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_output" target="n_end">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_top_swarm" value="Dual-swarm collaborative co-evolution mechanism" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=none;strokeColor=#000000;strokeWidth=1.2;verticalAlign=top;spacingTop=6;fontSize=11;fontStyle=1;fontFamily=Times New Roman;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="480" y="105" width="500" height="330" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_swarm_part" value="Swarm partitioning: &amp;Pscr;&lt;sub&gt;1&lt;/sub&gt; (Continuous Explorer) &amp;longleftrightarrow; &amp;Pscr;&lt;sub&gt;2&lt;/sub&gt; (Discrete Exploiter)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="500" y="139" width="460" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_part_sub" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_swarm_part" target="n_p1_update">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="607.5" y="173"/>
+              <mxPoint x="607.5" y="193"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_part_p2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_swarm_part" target="n_p2_update">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="852.5" y="173"/>
+              <mxPoint x="852.5" y="193"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_p1_update" value="Continuous velocity &amp;amp; position update&amp;#xa;with inter-task knowledge transfer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="500" y="193" width="215" height="54" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_p2_update" value="Dynamic selection probability&amp;#xa;transformation derived from memory &lt;b&gt;&lt;i&gt;W&lt;/i&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="745" y="193" width="215" height="54" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_trans_gbest2" value="&lt;b&gt;&lt;i&gt;g&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;best,2&lt;/sub&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_p2_update" target="n_p1_update">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_p1_bin" value="Deterministic Heaviside step&amp;#xa;binarization mapping" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="500" y="267" width="215" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_p2_sample" value="Discrete Bernoulli feature&amp;#xa;sampling and bit mutation" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="745" y="267" width="215" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_p1_up_bin" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_p1_update" target="n_p1_bin">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_p2_up_samp" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_p2_update" target="n_p2_sample">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_joint_eval" value="Evaluate objective fitness of combined population &amp;Pscr;&lt;sub&gt;1&lt;/sub&gt; &amp;cup; &amp;Pscr;&lt;sub&gt;2&lt;/sub&gt;&amp;#xa;under dynamic two-phase scheduling" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="500" y="337" width="460" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_p1_eval" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_p1_bin" target="n_joint_eval">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="607.5" y="317"/>
+              <mxPoint x="607.5" y="327"/>
+              <mxPoint x="730" y="327"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_p2_eval" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_p2_sample" target="n_joint_eval">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="852.5" y="317"/>
+              <mxPoint x="852.5" y="327"/>
+              <mxPoint x="730" y="327"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_bot_ker" value="Knowledge-guided elite refinement strategy" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=none;strokeColor=#000000;strokeWidth=1.2;verticalAlign=top;spacingTop=6;fontSize=11;fontStyle=1;fontFamily=Times New Roman;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="480" y="440" width="500" height="480" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_ker_input" value="Data inputs required for the knowledge-guided elite refinement strategy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="500" y="464" width="460" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_dia_rand" value="&lt;i&gt;r&lt;/i&gt; &amp;lt; &lt;i&gt;p&lt;/i&gt;&lt;sub&gt;rand&lt;/sub&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="650" y="522" width="160" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ker_in_dia" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_ker_input" target="n_dia_rand">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_ker_rand_mut" value="Update candidate features via&amp;#xa;ergodic random bit perturbation" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="500" y="576" width="215" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_rand_y" value="&lt;b&gt;Y&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_rand" target="n_ker_rand_mut">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="650" y="542"/>
+              <mxPoint x="607.5" y="542"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_dia_dir" value="&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;(&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;)&lt;/sub&gt; == 1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="777.5" y="576" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_rand_n" value="&lt;b&gt;N&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_rand" target="n_dia_dir">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="542"/>
+              <mxPoint x="852.5" y="542"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_ker_prune" value="Prune weak features:&amp;#xa;&lt;i&gt;x&lt;/i&gt;&amp;apos;&lt;sub&gt;(&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;)&lt;/sub&gt; &amp;larr; 0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="745" y="646" width="104" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_ker_add" value="Add strong features:&amp;#xa;&lt;i&gt;x&lt;/i&gt;&amp;apos;&lt;sub&gt;(&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;)&lt;/sub&gt; &amp;larr; 1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="856" y="646" width="104" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_dir_y" value="&lt;b&gt;Y&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_dir" target="n_ker_prune">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="777.5" y="596"/>
+              <mxPoint x="797" y="596"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_dir_n" value="&lt;b&gt;N&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_dir" target="n_ker_add">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="927.5" y="596"/>
+              <mxPoint x="908" y="596"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_dia_accept" value="&lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;X&lt;/i&gt;&lt;/b&gt;&amp;apos;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;) &amp;lt; &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;X&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="630" y="728" width="200" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_rand_to_acc" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_ker_rand_mut" target="n_dia_accept">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="607.5" y="618"/>
+              <mxPoint x="607.5" y="712"/>
+              <mxPoint x="730" y="712"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_prune_to_acc" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_ker_prune" target="n_dia_accept">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="797" y="688"/>
+              <mxPoint x="797" y="712"/>
+              <mxPoint x="730" y="712"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_add_to_acc" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_ker_add" target="n_dia_accept">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="908" y="688"/>
+              <mxPoint x="908" y="712"/>
+              <mxPoint x="730" y="712"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_ker_acc_y" value="Update candidate elite subset:&amp;#xa;&lt;b&gt;&lt;i&gt;X&lt;/i&gt;&lt;/b&gt;&lt;sup&gt;&amp;lowast;&lt;/sup&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt; &amp;larr; &lt;b&gt;&lt;i&gt;X&lt;/i&gt;&lt;/b&gt;&amp;apos;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="500" y="792" width="215" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_ker_acc_n" value="Retain current elite subset:&amp;#xa;&lt;b&gt;&lt;i&gt;X&lt;/i&gt;&lt;/b&gt;&lt;sup&gt;&amp;lowast;&lt;/sup&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt; &amp;larr; &lt;b&gt;&lt;i&gt;X&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="745" y="792" width="215" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_acc_y" value="&lt;b&gt;Y&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_accept" target="n_ker_acc_y">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="630" y="748"/>
+              <mxPoint x="607.5" y="748"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_acc_n" value="&lt;b&gt;N&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_accept" target="n_ker_acc_n">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="830" y="748"/>
+              <mxPoint x="852.5" y="748"/>
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>

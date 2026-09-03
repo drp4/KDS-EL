@@ -1,0 +1,193 @@
+<?xml version="1.0" ?>
+<mxfile host="Electron" agent="Draw.io" version="24.0.0">
+  <diagram id="f2-mi-initialization-recovery" name="Figure 2: MII Seeding and Adaptive Stagnation Recovery">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1060" pageHeight="720" math="1" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="c_panel_a" value="(a) Prior-guided sparse population initialization" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=none;strokeColor=#000000;strokeWidth=1.2;verticalAlign=top;spacingTop=8;fontSize=11;fontStyle=1;fontFamily=Times New Roman;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="30" y="20" width="490" height="660" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_data" value="Training dataset &lt;i&gt;D&lt;/i&gt; = {(&lt;b&gt;&lt;i&gt;f&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;, &lt;i&gt;y&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;)} with &lt;i&gt;N&lt;/i&gt;&lt;sub&gt;samp&lt;/sub&gt; samples &amp;amp; &lt;i&gt;D&lt;/i&gt; features" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="60.0" y="60" width="430" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_mi" value="Mutual information quantification &amp;amp; normalization to prior relevance profile &lt;b&gt;&lt;i&gt;m&lt;/i&gt;&lt;/b&gt; &amp;in; [0, 1]&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="60.0" y="122" width="430" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="ea_data_mi" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_data" target="na_mi">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_seed_disp" value="Hybrid population seeding strategy (Swarm size &lt;i&gt;N&lt;/i&gt;, seeding ratio &amp;rho; &amp;in; (0, 1))" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="60.0" y="184" width="430" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="ea_mi_disp" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_mi" target="na_seed_disp">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_guided_title" value="Prior-guided candidate seeding&amp;#xa;(&amp;lfloor;&amp;rho;&lt;i&gt;N&lt;/i&gt;&amp;rfloor; particles)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="60" y="246" width="205" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_guided_pert" value="Gaussian continuous coordinate perturbation:&amp;#xa;&lt;b&gt;&lt;i&gt;p&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt; = clip(&lt;b&gt;&lt;i&gt;m&lt;/i&gt;&lt;/b&gt; + &lt;b&gt;&lt;i&gt;&amp;epsilon;&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;, 0, 1), &lt;b&gt;&lt;i&gt;&amp;epsilon;&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt; ~ &amp;Nscr;(&lt;b&gt;0&lt;/b&gt;, &amp;sigma;&lt;sup&gt;2&lt;/sup&gt;&lt;b&gt;&lt;i&gt;I&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sub&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="60" y="308" width="205" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="ea_disp_guided" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_seed_disp" target="na_guided_title">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="275.0" y="230"/>
+              <mxPoint x="162.5" y="230"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ea_gtitle_pert" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_guided_title" target="na_guided_pert">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_unif_title" value="Uniform stochastic exploration&amp;#xa;(&lt;i&gt;N&lt;/i&gt; - &amp;lfloor;&amp;rho;&lt;i&gt;N&lt;/i&gt;&amp;rfloor; particles)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="285" y="246" width="205" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_unif_samp" value="Uniform random continuous coordinate sampling:&amp;#xa;&lt;b&gt;&lt;i&gt;p&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt; = &lt;b&gt;&lt;i&gt;u&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;, &lt;b&gt;&lt;i&gt;u&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt; ~ &amp;Uscr;(0, 1)&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="285" y="308" width="205" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="ea_disp_unif" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_seed_disp" target="na_unif_title">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="275.0" y="230"/>
+              <mxPoint x="387.5" y="230"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ea_utitle_samp" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_unif_title" target="na_unif_samp">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_bin" value="Deterministic Heaviside step binarization with threshold &amp;theta; &amp;gt; 0.50:&amp;#xa;&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; = 1 if &lt;i&gt;p&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;ge; &amp;theta;, else 0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="60.0" y="390" width="430" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="ea_gpert_bin" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_guided_pert" target="na_bin">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="162.5" y="375"/>
+              <mxPoint x="275.0" y="375"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ea_usamp_bin" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_unif_samp" target="na_bin">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="387.5" y="375"/>
+              <mxPoint x="275.0" y="375"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="na_pop" value="Initial sparse population matrix &lt;b&gt;&lt;i&gt;X&lt;/i&gt;&lt;/b&gt; &amp;in; {0, 1}&lt;sup&gt;&lt;i&gt;N&lt;/i&gt; &amp;times; &lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;&amp;#xa;(&lt;i&gt;d&lt;/i&gt; &amp;ll; &lt;i&gt;D&lt;/i&gt;/2, focused biomarker subspace)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="60.0" y="460" width="430" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="ea_bin_pop" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_bin" target="na_pop">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_eval" value="Evaluate initial candidate fitness under TPS objective weights &lt;b&gt;&lt;i&gt;w&lt;/i&gt;&lt;/b&gt;(1)&amp;#xa;and initialize personal bests {&lt;b&gt;&lt;i&gt;p&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;best,&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;} and global best &lt;b&gt;&lt;i&gt;g&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;best&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="60.0" y="530" width="430" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="ea_pop_eval" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_pop" target="na_eval">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="na_ready" value="Transfer sparse initialized population into dual collaborative subpopulations &amp;Pscr;&lt;sub&gt;1&lt;/sub&gt; &amp;amp; &amp;Pscr;&lt;sub&gt;2&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="60.0" y="600" width="430" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="ea_eval_ready" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="na_eval" target="na_ready">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_panel_b" value="(b) Adaptive stagnation recovery via diversity re-injection" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=none;strokeColor=#000000;strokeWidth=1.2;verticalAlign=top;spacingTop=8;fontSize=11;fontStyle=1;fontFamily=Times New Roman;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="540" y="20" width="490" height="660" as="geometry"/>
+        </mxCell>
+        <mxCell id="nb_stag_eval" value="Evolutionary progress monitoring: global best fitness fails to improve" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="570.0" y="60" width="430" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="nb_dia_stag" value="&lt;i&gt;t&lt;/i&gt;&lt;sub&gt;stag&lt;/sub&gt; &amp;ge; &amp;tau;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="715.0" y="116" width="140" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="eb_eval_dia" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_stag_eval" target="nb_dia_stag">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="nb_sort" value="Sort all &lt;i&gt;N&lt;/i&gt; particles in ascending order of personal-best fitness values &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;p&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;best,&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="570.0" y="184" width="430" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="eb_dia_sort" value="&lt;b&gt;Y&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_dia_stag" target="nb_sort">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="nb_elite_title" value="Superior half sub-swarm&amp;#xa;(Top &lt;i&gt;N&lt;/i&gt;/2 elite particles)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="570" y="246" width="205" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="nb_elite_keep" value="Retain intact without modification:&amp;#xa;safeguard verified biomarker combinations&amp;#xa;and historical optimization trajectory" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="570" y="308" width="205" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="eb_sort_elite" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_sort" target="nb_elite_title">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="785.0" y="230"/>
+              <mxPoint x="672.5" y="230"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb_etitle_keep" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_elite_title" target="nb_elite_keep">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="nb_stagnant_title" value="Inferior half sub-swarm&amp;#xa;(Bottom &lt;i&gt;N&lt;/i&gt;/2 stagnant particles)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="795" y="246" width="205" height="38" as="geometry"/>
+        </mxCell>
+        <mxCell id="nb_stagnant_reseed" value="Targeted Gaussian prior re-injection:&amp;#xa;&lt;b&gt;&lt;i&gt;p&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt; &amp;larr; clip(&lt;b&gt;&lt;i&gt;m&lt;/i&gt;&lt;/b&gt; + &lt;b&gt;&lt;i&gt;&amp;epsilon;&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;, 0, 1), &lt;b&gt;&lt;i&gt;&amp;epsilon;&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt; ~ &amp;Nscr;(&lt;b&gt;0&lt;/b&gt;, &amp;sigma;&lt;sup&gt;2&lt;/sup&gt;&lt;b&gt;&lt;i&gt;I&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sub&gt;)&amp;#xa;&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;larr; 1 if &lt;i&gt;p&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;ge; &amp;theta;, else 0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="795" y="308" width="205" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="eb_sort_stag" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_sort" target="nb_stagnant_title">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="785.0" y="230"/>
+              <mxPoint x="897.5" y="230"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb_stitle_reseed" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_stagnant_title" target="nb_stagnant_reseed">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="nb_recombine" value="Recombine retained elite half and refreshed prior half into recovered population &amp;Pscr;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="570.0" y="390" width="430" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="eb_elite_recomb" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_elite_keep" target="nb_recombine">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="672.5" y="375"/>
+              <mxPoint x="785.0" y="375"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eb_reseed_recomb" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_stagnant_reseed" target="nb_recombine">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="897.5" y="375"/>
+              <mxPoint x="785.0" y="375"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nb_reeval" value="Re-evaluate objective fitness of refreshed candidate particles&amp;#xa;and reset stagnation counter: &lt;i&gt;t&lt;/i&gt;&lt;sub&gt;stag&lt;/sub&gt; &amp;larr; 0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="570.0" y="460" width="430" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="eb_recomb_reeval" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_recombine" target="nb_reeval">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="nb_restored" value="Exploratory diversity successfully restored within high-potential subspace;&amp;#xa;swarm resumes dual collaborative co-evolution" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="570.0" y="530" width="430" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="eb_reeval_restored" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_reeval" target="nb_restored">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="eb_dia_bypass" value="&lt;b&gt;N&lt;/b&gt; (Continue normal evolution)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="nb_dia_stag" target="nb_restored">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="855.0" y="138"/>
+              <mxPoint x="1015" y="138"/>
+              <mxPoint x="1015" y="551"/>
+              <mxPoint x="1000.0" y="551"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

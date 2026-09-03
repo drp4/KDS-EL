@@ -1,0 +1,93 @@
+<?xml version="1.0" ?>
+<mxfile host="Electron" agent="Draw.io" version="24.0.0">
+  <diagram id="f1-dataflow-problem-mapping" name="Figure 1: Macro Data Flow and Problem Mapping">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1060" pageHeight="580" math="1" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="n_raw_data" value="&lt;b&gt;High-dimensional dataset&lt;/b&gt;&amp;#xa;&lt;i&gt;D&lt;/i&gt; = {(&lt;b&gt;&lt;i&gt;f&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;, &lt;i&gt;y&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;)}&amp;#xa;Samples: &lt;i&gt;N&lt;/i&gt;&lt;sub&gt;samp&lt;/sub&gt; &amp;ll; 100&amp;#xa;Features: &lt;i&gt;D&lt;/i&gt; &amp;gg; 10&lt;sup&gt;3&lt;/sup&gt; (up to 12,600+)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontStyle=1;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="60" width="200" height="75" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_swarm_pos" value="&lt;b&gt;Continuous swarm matrix&lt;/b&gt;&amp;#xa;&lt;b&gt;&lt;i&gt;P&lt;/i&gt;&lt;/b&gt; = [&lt;b&gt;&lt;i&gt;p&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;1&lt;/sub&gt;, ..., &lt;b&gt;&lt;i&gt;p&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;N&lt;/i&gt;&lt;/sub&gt;]&lt;sup&gt;&lt;i&gt;T&lt;/i&gt;&lt;/sup&gt; &amp;in; [0, 1]&lt;sup&gt;&lt;i&gt;N&lt;/i&gt; &amp;times; &lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;&amp;#xa;Swarm size: &lt;i&gt;N&lt;/i&gt; particles" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="175" width="200" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_raw_swarm" value="Prior MI Seeding&amp;#xa;&lt;b&gt;&lt;i&gt;m&lt;/i&gt;&lt;/b&gt; &amp;in; [0, 1]&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_raw_data" target="n_swarm_pos">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_bin_trans" value="&lt;b&gt;Step binarization&lt;/b&gt;&amp;#xa;&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; = 1 if &lt;i&gt;p&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;ge; &amp;theta;, else 0&amp;#xa;Threshold: &amp;theta; &amp;gt; 0.50" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="280" width="200" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_swarm_bin" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_swarm_pos" target="n_bin_trans">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_bin_masks" value="&lt;b&gt;Binary decision matrix&lt;/b&gt;&amp;#xa;&lt;b&gt;&lt;i&gt;X&lt;/i&gt;&lt;/b&gt; = [&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;1&lt;/sub&gt;, ..., &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;N&lt;/i&gt;&lt;/sub&gt;]&lt;sup&gt;&lt;i&gt;T&lt;/i&gt;&lt;/sup&gt; &amp;in; {0, 1}&lt;sup&gt;&lt;i&gt;N&lt;/i&gt; &amp;times; &lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;&amp;#xa;Candidate feature subsets" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="30" y="385" width="200" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_bin_masks" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_bin_trans" target="n_bin_masks">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_engine" value="KDS-EL Feature Selection Optimization Engine" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=none;strokeColor=#000000;strokeWidth=1.2;verticalAlign=top;spacingTop=8;fontSize=11;fontStyle=1;fontFamily=Times New Roman;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="270" y="30" width="480" height="430" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_dualswarm" value="&lt;b&gt;Dual-swarm collaborative co-evolution mechanism&lt;/b&gt;&amp;#xa;&amp;Pscr;&lt;sub&gt;1&lt;/sub&gt; (Continuous Explorer in [0, 1]&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;) &amp;harr; &amp;Pscr;&lt;sub&gt;2&lt;/sub&gt; (Discrete Exploiter in {0, 1}&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;)&amp;#xa;Inter-task knowledge transfer guided by global elite &lt;b&gt;&lt;i&gt;g&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;best,2&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="290" y="70" width="440" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_tps" value="&lt;b&gt;Dynamic two-phase weight scheduling strategy (TPS)&lt;/b&gt;&amp;#xa;Phase 1 (&lt;i&gt;t&lt;/i&gt; &amp;le; &amp;tau;&lt;i&gt;T&lt;/i&gt;&lt;sub&gt;max&lt;/sub&gt;): Coarse dimensional pruning (&lt;i&gt;w&lt;/i&gt;&lt;sub&gt;&lt;i&gt;f&lt;/i&gt;,1&lt;/sub&gt; = 0.30, &lt;i&gt;w&lt;/i&gt;&lt;sub&gt;&lt;i&gt;a&lt;/i&gt;,1&lt;/sub&gt; = 0.70)&amp;#xa;Phase 2 (&lt;i&gt;t&lt;/i&gt; &amp;gt; &amp;tau;&lt;i&gt;T&lt;/i&gt;&lt;sub&gt;max&lt;/sub&gt;): Fine accuracy refinement (&lt;i&gt;w&lt;/i&gt;&lt;sub&gt;&lt;i&gt;a&lt;/i&gt;,2&lt;/sub&gt; = 0.95, &lt;i&gt;w&lt;/i&gt;&lt;sub&gt;&lt;i&gt;f&lt;/i&gt;,2&lt;/sub&gt; = 0.05)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="290" y="145" width="440" height="58" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_mem_w" value="&lt;b&gt;Cumulative feature-importance learning with exponential memory decay&lt;/b&gt;&amp;#xa;Online feedback accumulation: &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;larr; &amp;gamma;&lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; + &amp;delta;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt; &amp;middot; (2&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt; - 1)&amp;#xa;Importance matrix &lt;b&gt;&lt;i&gt;W&lt;/i&gt;&lt;/b&gt; = [&lt;i&gt;W&lt;/i&gt;&lt;sub&gt;1&lt;/sub&gt;, ..., &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sub&gt;]&lt;sup&gt;&lt;i&gt;T&lt;/i&gt;&lt;/sup&gt; &amp;in; &amp;Ropf;&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt; (decay factor &amp;gamma; = 0.99)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="290" y="223" width="440" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_ker" value="&lt;b&gt;Knowledge-guided elite refinement strategy (KER)&lt;/b&gt;&amp;#xa;State-dependent directional flip score: &amp;sigma;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; = (1 - 2&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;) &amp;middot; &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;&amp;#xa;Positive &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;: Directional add (0 &amp;rarr; 1) &amp;bull; Negative &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;: Directional prune (1 &amp;rarr; 0)&amp;#xa;1-to-1 greedy replacement: Accept &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&amp;prime;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt; only if &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&amp;prime;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;) &amp;lt; &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="290" y="305" width="440" height="72" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_air" value="&lt;b&gt;Adaptive stagnation recovery (AIR)&lt;/b&gt;&amp;#xa;Trigger: &lt;i&gt;t&lt;/i&gt;&lt;sub&gt;stag&lt;/sub&gt; &amp;ge; &amp;tau; &amp;bull; Elite retention (Top &lt;i&gt;N&lt;/i&gt;/2) + Targeted prior re-injection (Bottom &lt;i&gt;N&lt;/i&gt;/2)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="290" y="395" width="440" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_eng_1_2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dualswarm" target="n_tps">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_eng_2_3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_tps" target="n_mem_w">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_eng_3_4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_mem_w" target="n_ker">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_eng_4_5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_ker" target="n_air">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_masks_engine" value="Evaluate &amp;amp; Optimize" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_bin_masks" target="n_dualswarm">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="240" y="417"/>
+              <mxPoint x="240" y="97"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_classifier" value="&lt;b&gt;Wrapper classification &amp;amp; multi-objective fitness evaluation engine&lt;/b&gt;&amp;#xa;Classifier: &lt;i&gt;k&lt;/i&gt;-NN (&lt;i&gt;k&lt;/i&gt;=5, LOOCV / 10-fold CV) &amp;bull; Objective: min &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;, &lt;b&gt;&lt;i&gt;w&lt;/i&gt;&lt;/b&gt;) = &lt;i&gt;w&lt;/i&gt;&lt;sub&gt;&lt;i&gt;a&lt;/i&gt;&lt;/sub&gt; &amp;middot; Err(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;) + &lt;i&gt;w&lt;/i&gt;&lt;sub&gt;&lt;i&gt;f&lt;/i&gt;&lt;/sub&gt; &amp;middot; (|&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;| / &lt;i&gt;D&lt;/i&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="270" y="480" width="480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_engine_eval" value="Bi-directional fitness feedback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;startArrow=classic;endArrow=classic;startFill=1;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_air" target="n_classifier">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_opt_features" value="&lt;b&gt;Optimal compact feature subset&lt;/b&gt;&amp;#xa;&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sup&gt;*&lt;/sup&gt; &amp;in; {0, 1}&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt; with active count &lt;i&gt;d&lt;/i&gt;&lt;sup&gt;*&lt;/sup&gt; = |&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sup&gt;*&lt;/sup&gt;|&amp;#xa;Drastic compression: &lt;b&gt;&lt;i&gt;d&lt;/i&gt;&lt;sup&gt;*&lt;/sup&gt; &amp;ll; &lt;i&gt;D&lt;/i&gt;&lt;/b&gt;&amp;#xa;(e.g., &lt;i&gt;D&lt;/i&gt; = 12,600+ &amp;rarr; &lt;b&gt;&lt;i&gt;d&lt;/i&gt;&lt;sup&gt;*&lt;/sup&gt; &amp;approx; 20 ~ 80&lt;/b&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontStyle=1;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="790" y="140" width="240" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_perf_output" value="&lt;b&gt;Classification performance&lt;/b&gt;&amp;#xa;Significantly improved accuracy Acc(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sup&gt;*&lt;/sup&gt;)&amp;#xa;Zero redundant/noisy dimensions&amp;#xa;Minimal computational evaluation latency" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="790" y="280" width="240" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_engine_opt" value="Convergence output" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_ker" target="n_opt_features">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="341"/>
+              <mxPoint x="760" y="187"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_opt_perf" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_opt_features" target="n_perf_output">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

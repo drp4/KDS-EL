@@ -1,0 +1,154 @@
+<?xml version="1.0" ?>
+<mxfile host="Electron" agent="Draw.io" version="24.0.0">
+  <diagram id="f5-ker-refinement-dataflow" name="Figure 5: KER Directional Refinement Data Flow">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1060" pageHeight="700" math="1" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="c_mem_accum" value="Stage 1: Closed-Loop Feature-Importance Learning &amp;amp; Accumulation (W Matrix)" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=none;strokeColor=#000000;strokeWidth=1.2;verticalAlign=top;spacingTop=8;fontSize=11;fontStyle=1;fontFamily=Times New Roman;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="30" y="20" width="1000" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_step_eval" value="&lt;b&gt;Swarm Trial Evaluation&lt;/b&gt;&amp;#xa;Particle &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt; improves over personal best &lt;b&gt;&lt;i&gt;p&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;best,&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;:&amp;#xa;&amp;delta;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt; = &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;p&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;best,&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;, &lt;b&gt;&lt;i&gt;w&lt;/i&gt;&lt;/b&gt;) - &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt;, &lt;b&gt;&lt;i&gt;w&lt;/i&gt;&lt;/b&gt;) &amp;gt; 0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="50" y="55" width="290" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_diff_feat" value="&lt;b&gt;Differential Feature Mask Extraction&lt;/b&gt;&amp;#xa;Harvest features whose selection status changed:&amp;#xa;&lt;i&gt;C&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt; = { &lt;i&gt;j&lt;/i&gt; &amp;#8712; {1, ..., &lt;i&gt;D&lt;/i&gt;} | &lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt; &amp;#8800; &lt;i&gt;p&lt;/i&gt;&lt;sub&gt;best,&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; }" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="380" y="55" width="290" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_eval_diff" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_step_eval" target="n_diff_feat">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_mem_update" value="&lt;b&gt;Importance Update with Decay &amp;gamma; = 0.99&lt;/b&gt;&amp;#xa;&lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;larr; &amp;gamma;&lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; + &amp;delta;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt; &amp;middot; (2&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt; - 1),  &amp;forall;&lt;i&gt;j&lt;/i&gt; &amp;#8712; &lt;i&gt;C&lt;/i&gt;&lt;sub&gt;&lt;i&gt;i&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;(&lt;i&gt;t&lt;/i&gt;)&lt;/sup&gt;&amp;#xa;&lt;b&gt;&lt;i&gt;W&lt;/i&gt;&lt;/b&gt; = [&lt;i&gt;W&lt;/i&gt;&lt;sub&gt;1&lt;/sub&gt;, ..., &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sub&gt;]&lt;sup&gt;&lt;i&gt;T&lt;/i&gt;&lt;/sup&gt; &amp;#8712; &amp;#8477;&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontStyle=1;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="710" y="55" width="300" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_diff_mem" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_diff_feat" target="n_mem_update">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_ker_exec" value="Stage 2: Knowledge-Guided Elite Refinement Operator (KER State Machine)" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=none;strokeColor=#000000;strokeWidth=1.2;verticalAlign=top;spacingTop=8;fontSize=11;fontStyle=1;fontFamily=Times New Roman;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="30" y="180" width="1000" height="350" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_ker_input" value="&lt;b&gt;Inputs to KER Operator:&lt;/b&gt;  Elite candidate &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt; &amp;#8712; {0, 1}&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt; (Top &lt;i&gt;k&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt; pool), Importance vector &lt;b&gt;&lt;i&gt;W&lt;/i&gt;&lt;/b&gt; &amp;#8712; &amp;#8477;&lt;sup&gt;&lt;i&gt;D&lt;/i&gt;&lt;/sup&gt;, Dynamic weights &lt;b&gt;&lt;i&gt;w&lt;/i&gt;&lt;/b&gt;(&lt;i&gt;t&lt;/i&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="50" y="215" width="960" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_dia_rand" value="&lt;i&gt;r&lt;/i&gt; &amp;lt; &lt;i&gt;p&lt;/i&gt;&lt;sub&gt;rand&lt;/sub&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="460" y="275" width="140" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_in_dia" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_ker_input" target="n_dia_rand">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_br1_title" value="&lt;b&gt;Branch 1: Ergodic Random Exploration&lt;/b&gt;&amp;#xa;(Probability &lt;i&gt;p&lt;/i&gt;&lt;sub&gt;rand&lt;/sub&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="50" y="340" width="280" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_br1_op" value="Sample &lt;i&gt;k&lt;/i&gt;&lt;sub&gt;flip&lt;/sub&gt; random indices &lt;i&gt;S&lt;/i&gt;&lt;sub&gt;rand&lt;/sub&gt; &amp;#8834; {1, ..., &lt;i&gt;D&lt;/i&gt;}&amp;#xa;Invert bits: &lt;i&gt;x&lt;/i&gt;&amp;apos;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;larr; 1 - &lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;, &amp;forall;&lt;i&gt;j&lt;/i&gt; &amp;#8712; &lt;i&gt;S&lt;/i&gt;&lt;sub&gt;rand&lt;/sub&gt;&amp;#xa;(Preserves search ergodicity &amp;amp; diversity)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="50" y="405" width="280" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_dia_br1" value="&lt;b&gt;Y&lt;/b&gt; (Explore)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_rand" target="n_br1_title">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="296"/>
+              <mxPoint x="190" y="296"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_b1_op" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_br1_title" target="n_br1_op">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_br2_title" value="&lt;b&gt;Branch 2: Knowledge-Guided Directional Refinement&lt;/b&gt;&amp;#xa;(Probability 1 - &lt;i&gt;p&lt;/i&gt;&lt;sub&gt;rand&lt;/sub&gt;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontStyle=1;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="380" y="340" width="630" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_dia_br2" value="&lt;b&gt;N&lt;/b&gt; (Exploit Knowledge)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_rand" target="n_br2_title">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="296"/>
+              <mxPoint x="695" y="296"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_score_calc" value="Compute Directional Flip Score: &lt;b&gt;&amp;sigma;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; = (1 - 2&lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;) &amp;middot; &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt;&lt;/b&gt;,  &amp;forall;&lt;i&gt;j&lt;/i&gt; = 1, ..., &lt;i&gt;D&lt;/i&gt;&amp;#xa;Identify subset &lt;i&gt;S&lt;/i&gt;&lt;sub&gt;know&lt;/sub&gt; of size &lt;i&gt;k&lt;/i&gt;&lt;sub&gt;flip&lt;/sub&gt; with highest &amp;sigma;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; scores" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="380" y="395" width="630" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_b2_calc" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_br2_title" target="n_score_calc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_prune_weak" value="&lt;b&gt;Directional Prune (Weak Features):&lt;/b&gt;&amp;#xa;If &lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; = 1 and &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;lt; 0 (&amp;sigma;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;gt; 0)&amp;#xa;Action: &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&amp;apos;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;larr; 0&lt;/b&gt; (Prune noisy dimension)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="380" y="450" width="305" height="58" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_add_strong" value="&lt;b&gt;Directional Add (Strong Biomarkers):&lt;/b&gt;&amp;#xa;If &lt;i&gt;x&lt;/i&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; = 0 and &lt;i&gt;W&lt;/i&gt;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;gt; 0 (&amp;sigma;&lt;sub&gt;&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;gt; 0)&amp;#xa;Action: &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&amp;apos;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;,&lt;i&gt;j&lt;/i&gt;&lt;/sub&gt; &amp;larr; 1&lt;/b&gt; (Activate synergistic biomarker)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="705" y="450" width="305" height="58" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_calc_prune" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_score_calc" target="n_prune_weak">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="695" y="437"/>
+              <mxPoint x="532" y="437"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_calc_add" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_score_calc" target="n_add_strong">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="695" y="437"/>
+              <mxPoint x="857" y="437"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_greedy" value="Stage 3: Strict 1-to-1 Greedy Replacement" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 4;fillColor=none;strokeColor=#000000;strokeWidth=1.2;verticalAlign=top;spacingTop=8;fontSize=11;fontStyle=1;fontFamily=Times New Roman;pointerEvents=0;" parent="1" vertex="1">
+          <mxGeometry x="30" y="550" width="1000" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_dia_greedy" value="&lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&amp;apos;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;, &lt;b&gt;&lt;i&gt;w&lt;/i&gt;&lt;/b&gt;) &amp;lt; &lt;i&gt;f&lt;/i&gt;(&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;, &lt;b&gt;&lt;i&gt;w&lt;/i&gt;&lt;/b&gt;)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="460" y="580" width="140" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_b1_greedy" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_br1_op" target="n_dia_greedy">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="485"/>
+              <mxPoint x="190" y="565"/>
+              <mxPoint x="530" y="565"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_prune_greedy" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_prune_weak" target="n_dia_greedy">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="532" y="520"/>
+              <mxPoint x="532" y="565"/>
+              <mxPoint x="530" y="565"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_add_greedy" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_add_strong" target="n_dia_greedy">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="857" y="520"/>
+              <mxPoint x="857" y="565"/>
+              <mxPoint x="530" y="565"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n_accept" value="&lt;b&gt;Accept Superior Mutant:&lt;/b&gt;&amp;#xa;&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;*&lt;/sup&gt; &amp;larr; &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&amp;apos;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt; (Update elite candidate)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1.2;fontSize=10;fontStyle=1;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="180" y="605" width="240" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_reject" value="&lt;b&gt;Preserve Existing Elite:&lt;/b&gt;&amp;#xa;&lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt;&lt;sup&gt;*&lt;/sup&gt; &amp;larr; &lt;b&gt;&lt;i&gt;x&lt;/i&gt;&lt;/b&gt;&lt;sub&gt;&lt;i&gt;e&lt;/i&gt;&lt;/sub&gt; (Safeguard convergence)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" parent="1" vertex="1">
+          <mxGeometry x="640" y="605" width="240" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_g_accept" value="&lt;b&gt;Y&lt;/b&gt; (Improved)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_greedy" target="n_accept">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="602"/>
+              <mxPoint x="420" y="602"/>
+              <mxPoint x="420" y="630"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_g_reject" value="&lt;b&gt;N&lt;/b&gt; (Worse/Equal)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" parent="1" edge="1" source="n_dia_greedy" target="n_reject">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="602"/>
+              <mxPoint x="640" y="602"/>
+              <mxPoint x="640" y="630"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

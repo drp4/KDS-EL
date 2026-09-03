@@ -1,19 +1,26 @@
 \section{The Proposed Method}\label{sec:proposed}
 
-To address the challenges of high-dimensional feature selection, this section presents the proposed KDS-EL framework in detail. Specifically, the overall architecture of KDS-EL is outlined in Section~\ref{sec:framework}. The population initialization and adaptive recovery strategies are detailed in Section~\ref{sec:mi}. Section~\ref{sec:ker} formulates the closed-loop mechanism of cumulative importance learning and elite refinement. The dynamic two-phase weight scheduling strategy is presented in Section~\ref{sec:twophase}. Finally, the overall algorithmic procedure and its computational complexity analysis are synthesized in Section~\ref{sec:main_algo}.
+To address the severe challenges of ultra-high-dimensional feature selection ($D \gg 10^3, N_{\mathrm{samp}} \ll 100$), this section presents the proposed KDS-EL framework in detail. Specifically, the macro data-flow architecture and algorithmic flowchart of KDS-EL are outlined in Section~\ref{sec:framework}. The prior-guided sparse initialization and adaptive recovery strategies are detailed in Section~\ref{sec:mi}. Section~\ref{sec:ker} analyzes the search failure of conventional random perturbations, and formulates the closed-loop mechanism of cumulative importance learning and knowledge-guided elite refinement. The dynamic two-phase weight scheduling strategy is presented in Section~\ref{sec:twophase}. Finally, the overall algorithmic procedure and its computational complexity analysis are synthesized in Section~\ref{sec:main_algo}.
 
 \subsection{The framework of KDS-EL}\label{sec:framework}
 
-\begin{figure}[!htb]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=\linewidth]{../output/figures/F1_architecture_journal.pdf}
-\caption{Overall framework of the proposed KDS-EL algorithm.}
-\label{F1}
-\end{figure}
+\includegraphics[width=0.98\textwidth]{../output/figures/F1_dataflow_journal.pdf}
+\caption{Example of the feature selection process via KDS-EL.}
+\label{fig:kds_el_dataflow}
+\end{figure*}
 
-The overall optimization pipeline of KDS-EL for high-dimensional feature selection is illustrated in Fig.~\ref{F1}. The search begins by extracting filter-level mutual information from the training dataset to establish a normalized prior relevance landscape. An initial population of binary candidate subsets is then generated via hybrid prior seeding and partitioned into dual collaborative subpopulations. Throughout evolution, the subpopulations undergo iterative co-evolutionary updates, dynamic two-phase fitness evaluations, continuous feature-importance harvesting, and targeted elite refinement. Upon convergence, the algorithm outputs the optimal compact feature subset alongside its classification performance.
+The macro data-flow architecture and problem mapping of KDS-EL for high-dimensional feature selection are systematically illustrated in Fig.~\ref{fig:kds_el_dataflow}. Given a high-dimensional dataset $\mathcal{D}$, the search pipeline begins by extracting filter-level mutual information to construct a continuous prior relevance landscape. An initial swarm of continuous positions is generated via hybrid prior seeding and deterministically mapped into sparse binary candidate masks. Throughout optimization, these candidate subsets are transferred to the KDS-EL optimization engine, which coordinates collaborative dual-swarm co-evolution, dynamic two-phase fitness evaluations, cumulative feature-importance harvesting, and targeted elite refinement in closed-loop synergy with a wrapper classification evaluation engine. Upon meeting the convergence criterion, the framework outputs the optimal compact biomarker subset $\mathbf{x}^{\star}$ alongside its validated classification performance.
 
-In KDS-EL, a swarm of $N$ candidate solutions across $D$ features is formally represented as an $N \times D$ binary decision matrix $\mathbf{X}$:
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.98\textwidth]{../output/figures/F2_flowchart_journal.pdf}
+\caption{Overall flowchart for feature selection via KDS-EL.}
+\label{fig:kds_el_flowchart}
+\end{figure*}
+
+The execution logic and operational flowchart across evolutionary generations are depicted in Fig.~\ref{fig:kds_el_flowchart}. In KDS-EL, a swarm of $N$ candidate solutions across $D$ features is formally represented as an $N \times D$ binary decision matrix $\mathbf{X}$:
 \begin{equation}
 \mathbf{X} = \begin{bmatrix}
 \mathbf{x}_1 \\
@@ -36,12 +43,12 @@ During iterative optimization, KDS-EL coordinates three complementary mechanisms
 
 \subsection{Population initialization and adaptive recovery}\label{sec:mi}
 
-In ultra-high-dimensional feature selection, standard uniform random initialization activates each feature with equal probability, generating excessively dense candidate subsets with approximately half the features active. Evaluating these dense candidate subsets exhausts computational budgets on non-informative dimensions and traps search trajectories in noisy local basins. To establish an informative yet diverse initial population while mitigating mid-evolution search stagnation, KDS-EL introduces a filter-wrapper hybrid seeding strategy coupled with an adaptive stagnation recovery mechanism, as illustrated in Fig.~\ref{fig:mi_seeding}.
+In ultra-high-dimensional feature selection, standard uniform random initialization activates each feature with equal probability, generating excessively dense candidate subsets with approximately half the features active ($d \approx D/2$). Evaluating these dense candidate subsets exhausts computational budgets on non-informative dimensions and traps search trajectories in noisy local basins. To establish an informative yet diverse initial population while mitigating mid-evolution search stagnation, KDS-EL introduces a filter-wrapper hybrid seeding strategy coupled with an adaptive stagnation recovery mechanism, as illustrated in Fig.~\ref{fig:mi_seeding}.
 
-\begin{figure*}[t]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=0.98\textwidth]{../output/figures/F2_mi_initialization_journal.pdf}
-\caption{Schematic diagram of the mutual-information-guided population initialization and adaptive recovery mechanism.}
+\includegraphics[width=0.98\textwidth]{../output/figures/F3_mi_initialization_journal.pdf}
+\caption{Schematic diagram of the prior-guided sparse population initialization and adaptive stagnation recovery mechanism.}
 \label{fig:mi_seeding}
 \end{figure*}
 
@@ -87,11 +94,27 @@ where $\mathbb{I}(\cdot)$ denotes the indicator function. The refreshed particle
 
 \subsection{Cumulative importance learning and elite refinement}\label{sec:importance}\label{sec:ker}
 
-To overcome the amnesia of conventional meta-heuristics that discard intermediate search feedback, KDS-EL establishes a closed-loop knowledge learning mechanism comprising online importance accumulation and targeted elite refinement.
+To overcome the search amnesia and destructive perturbation bottlenecks of conventional meta-heuristics, KDS-EL establishes a closed-loop knowledge learning mechanism comprising online importance accumulation and targeted directional elite refinement.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.98\textwidth]{../output/figures/F4_lesion_why_journal.pdf}
+\caption{Example of structural search lesions in conventional random perturbation.}
+\label{fig:lesion_mutation}
+\end{figure*}
+
+\subsubsection{Analysis of search lesions in conventional random perturbation}
+
+In ultra-high-dimensional feature selection ($D \gg 10^3$), traditional evolutionary wrappers rely on undirected stochastic bit flips (e.g., bit-flip mutation with rate $p_{\mathrm{mut}} = 1/D$). As illustrated in Fig.~\ref{fig:lesion_mutation}, this blind perturbation mechanism exhibits two fatal structural lesions:
+\begin{enumerate}[(1)]
+    \item \textit{Fatal loss of synergistic biomarkers (Lesion 1)}: When a verified critical feature ($x_{e,1} = 1$) is blindly mutated to $0$, the established biomarker synergy is destroyed, causing a severe drop in classification accuracy ($\Delta\mathrm{Acc} = -14.2\%$).
+    \item \textit{Noise gene infiltration and dimensionality bloat (Lesion 2)}: When an uninformative noise gene ($x_{e,2} = 0$) is randomly flipped to $1$, the feature subset size expands unnecessarily, escalating $k$-NN distance computation time and inducing severe classifier overfitting.
+\end{enumerate}
+Because the hit probability of modifying the few decisive dimensions in a $2^D$ combinatorial neighborhood is infinitesimal ($\mathcal{O}(1/D) \approx 10^{-4}$), undirected mutation wasting the vast majority of function evaluations on destructive trials. Furthermore, traditional algorithms suffer from search amnesia because the evaluation feedback from previous generations is discarded immediately.
 
 \subsubsection{Online feature importance learning}
 
-Conventional evolutionary feature selection algorithms evaluate numerous candidate subsets throughout the search, yet discard the fitness feedback of non-optimal solutions once personal bests are updated. This memoryless characteristic leads to redundant evaluations of ineffective feature combinations and ignores historical evolutionary trajectories. To systematically harvest search experience across generations, KDS-EL maintains a continuous cumulative feature-importance vector $\mathbf{W} = [W_1, \dots, W_D]^T \in \mathbb{R}^D$, initialized to $\mathbf{0}$.
+To systematically harvest search experience across generations, KDS-EL maintains a continuous cumulative feature-importance vector $\mathbf{W} = [W_1, \dots, W_D]^T \in \mathbb{R}^D$, initialized to $\mathbf{0}$.
 
 At generation $t$, whenever a candidate particle $\mathbf{x}_i^{(t)}$ achieves a strict fitness improvement over its historical personal best $\mathbf{p}_{\mathrm{best},i}$, the differential feature set $\mathcal{C}_i^{(t)}$ comprising features whose selection status changed is extracted:
 \begin{equation}
@@ -114,7 +137,14 @@ where $\gamma \in (0, 1)$ is the memory retention factor. Consequently, features
 
 \subsubsection{Knowledge-guided elite refinement}
 
-Elite individuals represent the most promising feature subsets discovered by the swarm; however, they may still retain redundant dimensions or lack subtle synergistic biomarkers. Standard wrapper mutation operators rely on uniform random bit flips, which exhibit an extremely low probability of locating beneficial feature modifications in ultra-high-dimensional spaces ($D \gg 10^3$). To refine elite solutions efficiently, KDS-EL introduces the KER strategy. Rather than blind perturbation, KER exploits the continuous importance landscape $\mathbf{W}$ to guide local mutation toward high-potential dimensions. Because $\mathbf{W}$ is updated directly from regular evaluations performed during swarm evolution, KER incurs zero extra overhead for knowledge acquisition and restricts local exploration to a strictly bounded elite pool of size $k_e \ll N$.
+Elite individuals represent the most promising feature subsets discovered by the swarm; however, they may still retain redundant dimensions or lack subtle synergistic biomarkers. Rather than blind perturbation, the KER operator exploits the continuous importance landscape $\mathbf{W}$ to guide local mutation toward high-potential dimensions under bounded computation ($k_e \ll N$).
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.98\textwidth]{../output/figures/F5_ker_strategy_journal.pdf}
+\caption{Process of the knowledge-guided elite refinement strategy.}
+\label{fig:ker_refinement}
+\end{figure*}
 
 \begin{algorithm}[!htb]
 \small
@@ -146,14 +176,7 @@ Elite individuals represent the most promising feature subsets discovered by the
 \end{algorithmic}
 \end{algorithm}
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.98\textwidth]{../output/figures/F3_ker_strategy_journal.pdf}
-\caption{Flowchart of the KER strategy.}
-\label{F3}
-\end{figure*}
-
-At each generation, the top $k_e$ individuals ranked by fitness are selected into the elite pool. For each elite candidate $\mathbf{x}_e \in \{0, 1\}^D$, the number of perturbed features is set to $k_{\mathrm{flip}} = \max(1, \lfloor \phi D \rfloor)$, where $\phi \in (0, 1)$ represents the perturbation fraction. As depicted in the flowchart in Fig.~\ref{F3}, KER probabilistically executes one of two operational pathways:
+At each generation, the top $k_e$ individuals ranked by fitness are selected into the elite pool. For each elite candidate $\mathbf{x}_e \in \{0, 1\}^D$, the number of perturbed features is set to $k_{\mathrm{flip}} = \max(1, \lfloor \phi D \rfloor)$, where $\phi \in (0, 1)$ represents the perturbation fraction. As depicted in the data-flow diagram in Fig.~\ref{fig:ker_refinement}, KER probabilistically executes one of two operational pathways:
 
 \textit{Branch~1: Ergodic random exploration ($p_{\mathrm{rand}}$)}: To preserve search ergodicity and prevent the elite pool from stagnating in deceptive local optima, a feature index subset $\mathcal{S}_{\mathrm{rand}} \subset \{1, \dots, D\}$ of size $k_{\mathrm{flip}}$ is sampled uniformly at random, and the corresponding bits are inverted:
 \begin{equation}
@@ -248,52 +271,30 @@ Algorithm~\ref{alg:kds_el} synthesizes the overall execution pipeline of KDS-EL 
         \State Re-evaluate refreshed particles and reset $c_{\mathrm{stall}} \leftarrow 0$
     \EndIf
 \EndFor
-\State \Return Optimal feature subset $\mathbf{x}^{\star} \leftarrow \mathbf{g}_{\mathrm{best}}$ and optimal fitness $f_{\mathrm{gbest}} \leftarrow f(\mathbf{g}_{\mathrm{best}}, \mathbf{w}(T))$
+\State \Return $\mathbf{x}^{\star} \leftarrow \mathbf{g}_{\mathrm{best}}$, $f_{\mathrm{gbest}} \leftarrow f(\mathbf{g}_{\mathrm{best}}, \mathbf{w}(T))$
 \end{algorithmic}
 \end{algorithm}
 
-\subsubsection{Time complexity decomposition}
+\subsubsection{Computational complexity analysis}
 
-The computational time complexity of KDS-EL is decomposed into two distinct phases:
+The total computational overhead of KDS-EL is decoupled into two distinct phases: offline preprocessing and online generational evolution.
 
-\textit{Offline preprocessing phase}: Evaluating the mutual information $I(f_j; Y)$ between each feature $f_j$ and class label $Y$ requires $\mathcal{O}(N_{\mathrm{samp}})$ operations per dimension, where $N_{\mathrm{samp}}$ is the number of training samples. For all $D$ features, computing and sorting the prior relevance vector incurs:
+\textit{Offline preprocessing complexity}: Evaluating mutual information scores across $D$ features with $N_{\mathrm{samp}}$ training samples requires $\mathcal{O}(D \cdot N_{\mathrm{samp}})$ operations. Normalizing and sorting these scores incurs $\mathcal{O}(D \log D)$ time. Because this procedure is executed exactly once prior to evolutionary search, the offline preprocessing complexity is $\mathcal{T}_{\mathrm{pre}} = \mathcal{O}(D \cdot N_{\mathrm{samp}} + D \log D)$, which represents a negligible computational fraction when $N_{\mathrm{samp}} \ll 100$.
+
+\textit{Online generational complexity}: In each generation $t \in \{1, \dots, T\}$, the time complexity comprises three components:
+\begin{enumerate}[(1)]
+    \item \textit{Subpopulation updates and knowledge transfer}: Continuous particle updates in $\mathcal{P}_1$ and discrete probability sampling in $\mathcal{P}_2$ both require $\mathcal{O}(N \cdot D)$ arithmetic operations per generation.
+    \item \textit{Classifier wrapper evaluation}: Evaluating candidate feature subsets dominates online computation. For a candidate solution $\mathbf{x}_i$ with active feature count $d_i = \|\mathbf{x}_i\|_0$, computing pairwise Euclidean distances under 5-fold cross-validation with a $k$-NN classifier incurs $\mathcal{O}(N_{\mathrm{samp}}^2 \cdot d_i)$ time. Across the swarm of size $N$, the total generational evaluation cost is $\mathcal{O}(N \cdot N_{\mathrm{samp}}^2 \cdot \bar{d}^{(t)})$, where $\bar{d}^{(t)} = \frac{1}{N} \sum_{i=1}^N d_i$ denotes the average active feature count at generation $t$.
+    \item \textit{Cumulative importance learning and elite refinement}: Extracting differential features and updating $\mathbf{W}$ requires $\mathcal{O}(N \cdot D)$ operations. In KER, computing directional flip scores across $D$ dimensions and identifying the top $k_{\mathrm{flip}}$ features takes $\mathcal{O}(D \log D)$ time using partial quick-sort. Evaluating the $k_e$ mutant candidates incurs $\mathcal{O}(k_e \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{elite}})$ operations. Because $k_e \ll N$ ($k_e = 3$), this overhead remains strictly bounded.
+\end{enumerate}
+
+Combining these components across $T$ generations yields the total asymptotic time complexity of KDS-EL:
 \begin{equation}
-\mathcal{T}_{\mathrm{pre}} = \mathcal{O}(D \cdot N_{\mathrm{samp}} + D \log D).
-\label{eq:t_pre}
+\mathcal{T}_{\mathrm{total}} = \mathcal{O}\left(T \cdot N \cdot N_{\mathrm{samp}}^2 \cdot \bar{d}_{\mathrm{selected}} + T \cdot N \cdot D\right),
+\label{eq:complexity}
 \end{equation}
-Because this step is performed exactly once prior to evolutionary search, its computational footprint is negligible relative to iterative wrapper evaluations.
+where $\bar{d}_{\mathrm{selected}}$ denotes the average active feature count across all evolutionary generations.
 
-\textit{Iterative evolutionary main loop}: Across each of the $T$ generations, computational overhead stems from five primary operations: (1) updating particle continuous coordinates ($\mathcal{O}(N \cdot D)$), (2) updating and decaying the cumulative importance vector ($\mathcal{O}(N \cdot D + D)$), (3) refining $k_e$ elite solutions via KER ($\mathcal{O}(k_e \cdot [D + N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}])$), (4) occasional adaptive stagnation recovery ($\mathcal{O}(\frac{N}{2} \cdot [D + N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}])$), and (5) evaluating candidate particle fitness values via 5-fold cross-validation $k\text{-NN}$ classification:
-\begin{equation}
-\mathcal{T}_{\mathrm{eval}} = \mathcal{O}(N \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}),
-\label{eq:t_eval}
-\end{equation}
-where $d_{\mathrm{selected}} = \|\mathbf{x}\|_0$ denotes the active feature count in candidate subset $\mathbf{x}$.
+\textit{Asymptotic vs. wall-clock speedup}: While KDS-EL exhibits the same asymptotic Big-$\mathcal{O}$ order as standard PSO-based feature selectors ($\mathcal{O}(T N N_{\mathrm{samp}}^2 D)$), it achieves an empirical wall-clock speedup exceeding $3.4\times$ in practice. This dramatic efficiency gain originates directly from the prior-guided sparse initialization and dynamic TPS strategy: rather than evaluating dense subsets ($\bar{d} \approx D/2 \approx 5{,}000+$), KDS-EL aggressively compresses candidate dimensionality to $\bar{d}_{\mathrm{KDS-EL}} \approx 80 \sim 150$ active features starting from the earliest generations. Because the $k$-NN distance computation cost scales strictly linearly with the number of active features $d$, compressing the active dimension by two orders of magnitude reduces the actual floating-point operation volume per evaluation by over $95\%$.
 
-Summing all terms across $T$ iterations yields the total asymptotic time complexity:
-\begin{equation}
-\mathcal{T}_{\mathrm{total}} = \mathcal{O}\Bigl(D \cdot N_{\mathrm{samp}} + D \log D + T \cdot \bigl[N \cdot D + (N + k_e) \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}\bigr]\Bigr).
-\label{eq:total_complexity}
-\end{equation}
-
-\subsubsection{Theoretical complexity equivalence and empirical acceleration}
-
-Because the elite pool size is negligible relative to the total population ($k_e \ll N$) and wrapper classifier evaluations dominate linear coordinate operations ($N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}} \gg D$), the dominant per-generation asymptotic complexity of KDS-EL is strictly governed by wrapper evaluations:
-\begin{equation}
-\mathcal{T}_{\mathrm{KDS-EL}} = \mathcal{O}(T \cdot N \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{selected}}),
-\label{eq:dominant_complexity}
-\end{equation}
-which matches the theoretical Big-$\mathcal{O}$ order of standard multi-task evolutionary learning algorithms~\cite{mel2024} ($\mathcal{O}(T \cdot N \cdot N_{\mathrm{samp}}^2 \cdot d_{\mathrm{MEL}})$).
-
-Crucially, in conventional evolutionary algorithms, uniform random initialization and slow feature reduction generate dense candidate subsets ($d_{\mathrm{MEL}} \gg 10^3$). In contrast, KDS-EL leverages prior-guided seeding and Phase~1 aggressive feature pruning to rapidly compress active feature subsets ($d_{\mathrm{KDS-EL}} \ll d_{\mathrm{MEL}}$). Because $k\text{-NN}$ distance computation scales linearly with the active feature count $d_{\mathrm{selected}}$, evaluating a KDS-EL particle requires substantially fewer floating-point operations. This structural feature compression delivers a pronounced wall-clock speedup (empirically exceeding $3.4\times$), reducing runtime while incorporating richer knowledge operators.
-
-\subsubsection{Space complexity}
-
-The memory footprint of KDS-EL comprises: (1) population continuous and binary decision matrices ($\mathcal{O}(N \cdot D)$), (2) personal-best vectors ($\mathcal{O}(N \cdot D)$), (3) the global-best vector ($\mathcal{O}(D)$), (4) the cumulative importance vector $\mathbf{W}$ ($\mathcal{O}(D)$), (5) the precomputed prior relevance vector $\mathbf{m}$ ($\mathcal{O}(D)$), and (6) the training dataset matrix ($\mathcal{O}(N_{\mathrm{samp}} \cdot D)$). The total space complexity is formulated as:
-\begin{equation}
-\mathcal{S}_{\mathrm{total}} = \mathcal{O}\bigl((N + N_{\mathrm{samp}}) \cdot D\bigr),
-\label{eq:space_complexity}
-\end{equation}
-which scales strictly linearly with feature dimension $D$, ensuring minimal memory overhead in ultra-high-dimensional biomedical applications.
-
-
+\textit{Spatial complexity}: The memory consumption of KDS-EL comprises the population matrix $\mathbf{X} \in \{0, 1\}^{N \times D}$, historical personal bests $\mathbf{P}_{\mathrm{best}} \in \{0, 1\}^{N \times D}$, the continuous importance vector $\mathbf{W} \in \mathbb{R}^D$, and the training dataset $\mathcal{D} \in \mathbb{R}^{N_{\mathrm{samp}} \times D}$. The total spatial complexity is $\mathcal{S}_{\mathrm{total}} = \mathcal{O}\left((2N + N_{\mathrm{samp}} + 1) D\right) = \mathcal{O}\left((N + N_{\mathrm{samp}}) D\right)$, which scales strictly linearly with feature dimensionality $D$ and fits comfortably within standard workstation memory even when $D > 10^5$.
