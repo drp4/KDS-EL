@@ -4,21 +4,9 @@ To address the severe challenges of ultra-high-dimensional feature selection ($D
 
 \subsection{The framework of KDS-EL}\label{sec:framework}
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.98\textwidth]{../output/figures/F1_dataflow_journal.pdf}
-\caption{Example of the feature selection process via KDS-EL.}
-\label{fig:kds_el_dataflow}
-\end{figure*}
 
 The macro data-flow architecture and problem mapping of KDS-EL for high-dimensional feature selection are systematically illustrated in Fig.~\ref{fig:kds_el_dataflow}. Given a high-dimensional dataset $\mathcal{D}$, the search pipeline begins by extracting filter-level mutual information to construct a continuous prior relevance landscape. An initial swarm of continuous positions is generated via hybrid prior seeding and deterministically mapped into sparse binary candidate masks. Throughout optimization, these candidate subsets are transferred to the KDS-EL optimization engine, which coordinates collaborative dual-swarm co-evolution, dynamic two-phase fitness evaluations, cumulative feature-importance harvesting, and targeted elite refinement in closed-loop synergy with a wrapper classification evaluation engine. Upon meeting the convergence criterion, the framework outputs the optimal compact biomarker subset $\mathbf{x}^{\star}$ alongside its validated classification performance.
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.98\textwidth]{../output/figures/F2_flowchart_journal.pdf}
-\caption{Overall flowchart for feature selection via KDS-EL.}
-\label{fig:kds_el_flowchart}
-\end{figure*}
 
 The execution logic and operational flowchart across evolutionary generations are depicted in Fig.~\ref{fig:kds_el_flowchart}. In KDS-EL, a swarm of $N$ candidate solutions across $D$ features is formally represented as an $N \times D$ binary decision matrix $\mathbf{X}$:
 \begin{equation}
@@ -41,14 +29,21 @@ To balance global exploration and local exploitation in sparse high-dimensional 
 
 During iterative optimization, KDS-EL coordinates three complementary mechanisms into a closed loop. First, population initialization injects Gaussian-perturbed mutual information priors to generate sparse candidate masks, while an adaptive re-initialization mechanism recovers population diversity whenever search progress halts. Second, differential fitness improvements across generations are accumulated into a continuous importance matrix under exponential memory decay, which actively guides the KER operator to perform targeted directional bit flips under a greedy one-to-one in-place replacement rule. Third, the dynamic TPS strategy temporally shifts objective weights across evolutionary stages, enforcing aggressive feature pruning in the early phase and fine-grained accuracy tuning in the late phase. By continuously cycling through these coordinated stages, KDS-EL systematically prunes non-informative dimensions while progressively refining compact biomarker signatures.
 
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.72\textwidth]{../output/figures/F2_flowchart_journal.pdf}
+\caption{Overall flowchart for feature selection via KDS-EL.}
+\label{fig:kds_el_flowchart}
+\end{figure*}
+
 \subsection{Population initialization and adaptive recovery}\label{sec:mi}
 
 In ultra-high-dimensional feature selection, standard uniform random initialization activates each feature with equal probability, generating excessively dense candidate subsets with approximately half the features active ($d \approx D/2$). Evaluating these dense candidate subsets exhausts computational budgets on non-informative dimensions and traps search trajectories in noisy local basins. To establish an informative yet diverse initial population while mitigating mid-evolution search stagnation, KDS-EL introduces a filter-wrapper hybrid seeding strategy coupled with an adaptive stagnation recovery mechanism, as illustrated in Fig.~\ref{fig:mi_seeding}.
 
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=0.98\textwidth]{../output/figures/F3_mi_initialization_journal.pdf}
-\caption{Schematic diagram of the prior-guided sparse population initialization and adaptive stagnation recovery mechanism.}
+\includegraphics[width=0.90\textwidth]{../output/figures/F3_mi_initialization_journal.pdf}
+\caption{Process of prior-guided sparse initialization and adaptive recovery.}
 \label{fig:mi_seeding}
 \end{figure*}
 
@@ -127,7 +122,7 @@ Elite individuals represent the most promising feature subsets discovered by the
 
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=0.98\textwidth]{../output/figures/F5_ker_strategy_journal.pdf}
+\includegraphics[width=0.98\textwidth]{../output/figures/F4_ker_strategy_journal.pdf}
 \caption{Process of the knowledge-guided elite refinement strategy.}
 \label{fig:ker_refinement}
 \end{figure*}

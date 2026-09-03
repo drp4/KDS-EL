@@ -91,6 +91,13 @@ Both subpopulations evaluate candidate subsets using a shared scalar fitness fun
 
 While MEL demonstrates the utility of cross-task knowledge transfer, its search dynamics in ultra-high-dimensional spaces where $D \gg 10^3$ suffer from critical structural bottlenecks. Continuous particles in $\mathcal{P}_1$ are initialized uniformly across the unit hypercube, lacking domain-informed guidance toward sparse biomarker subspaces and wasting substantial evaluation budget exploring irrelevant dimensions in early iterations. Moreover, the importance matrix $\mathbf{W}_{\mathrm{MEL}}$ accumulates historical feature frequencies unconditionally without exponential forgetting or elite fitness verification, allowing obsolete early choices to permanently bias subsequent discrete sampling in $\mathcal{P}_2$ and trapping the swarm in local optima. In addition, rigid static weighting prevents the algorithm from dynamically adjusting its selection pressure between early aggressive feature pruning and late high-precision boundary refinement. The proposed KDS-EL framework directly adopts this dual-subpopulation multi-task foundation while resolving each of these structural deficiencies through targeted mechanisms.
 
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.98\textwidth]{../output/figures/F1_dataflow_journal.pdf}
+\caption{Example of the feature selection process via KDS-EL.}
+\label{fig:kds_el_dataflow}
+\end{figure*}
+
 \subsection{Knowledge-guided search and taxonomic positioning}\label{sec:knowledge_guided}
 
 Integrating domain-specific prior knowledge into meta-heuristics has attracted surging attention as an effective means to escape the blindness of black-box search~\cite{ye2026,mimpode2025,deng2025nns}. In high-dimensional feature selection, Mutual Information (MI), rooted in Shannon's information theory~\cite{cover1991}, serves as the primary information-theoretic metric to quantify non-linear feature relevance. For a feature variable $f_j$ and the discrete class label $Y \in \{1, \ldots, C\}$, the mutual information $I(f_j; Y)$ is defined as:
