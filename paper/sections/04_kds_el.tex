@@ -96,21 +96,7 @@ where $\mathbb{I}(\cdot)$ denotes the indicator function. The refreshed particle
 
 To overcome the search amnesia and destructive perturbation bottlenecks of conventional meta-heuristics, KDS-EL establishes a closed-loop knowledge learning mechanism comprising online importance accumulation and targeted directional elite refinement.
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.98\textwidth]{../output/figures/F4_lesion_why_journal.pdf}
-\caption{Example of structural search lesions in conventional random perturbation.}
-\label{fig:lesion_mutation}
-\end{figure*}
-
-\subsubsection{Analysis of search lesions in conventional random perturbation}
-
-In ultra-high-dimensional feature selection ($D \gg 10^3$), traditional evolutionary wrappers rely on undirected stochastic bit flips (e.g., bit-flip mutation with rate $p_{\mathrm{mut}} = 1/D$). As illustrated in Fig.~\ref{fig:lesion_mutation}, this blind perturbation mechanism exhibits two fatal structural lesions:
-\begin{enumerate}[(1)]
-    \item \textit{Fatal loss of synergistic biomarkers (Lesion 1)}: When a verified critical feature ($x_{e,1} = 1$) is blindly mutated to $0$, the established biomarker synergy is destroyed, causing a severe drop in classification accuracy ($\Delta\mathrm{Acc} = -14.2\%$).
-    \item \textit{Noise gene infiltration and dimensionality bloat (Lesion 2)}: When an uninformative noise gene ($x_{e,2} = 0$) is randomly flipped to $1$, the feature subset size expands unnecessarily, escalating $k$-NN distance computation time and inducing severe classifier overfitting.
-\end{enumerate}
-Because the hit probability of modifying the few decisive dimensions in a $2^D$ combinatorial neighborhood is infinitesimal ($\mathcal{O}(1/D) \approx 10^{-4}$), undirected mutation wasting the vast majority of function evaluations on destructive trials. Furthermore, traditional algorithms suffer from search amnesia because the evaluation feedback from previous generations is discarded immediately.
+In ultra-high-dimensional feature selection ($D \gg 10^3$), traditional evolutionary wrappers rely on undirected stochastic bit flips with a uniform mutation probability $p_{\mathrm{mut}} = 1/D$. Under this blind perturbation regime, meta-heuristics inevitably suffer from two fatal structural search lesions. First, when an established, highly informative biomarker ($x_{e,j} = 1$) is blindly mutated to $0$, the delicate multi-feature synergy is abruptly dismantled, inducing severe classification degradation. Second, when an uninformative background noise feature ($x_{e,j} = 0$) is randomly flipped to $1$, the candidate subset expands unnecessarily, escalating distance evaluation latency and precipitating classifier overfitting. Because the probability of hitting the few decisive dimensions within a $2^D$ combinatorial neighborhood is infinitesimal ($\mathcal{O}(1/D) \approx 10^{-4}$), undirected mutation squanders the vast majority of function evaluations on destructive trials. Furthermore, conventional meta-heuristics exhibit severe search amnesia, as historical fitness feedback from intermediate iterations is discarded immediately after particle position updates.
 
 \subsubsection{Online feature importance learning}
 

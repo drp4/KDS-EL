@@ -1,17 +1,20 @@
 <mxfile host="Electron" agent="Draw.io">
   <diagram id="f1-kds-el-architecture" name="Figure 1: KDS-EL Architecture">
-    <mxGraphModel dx="1304" dy="974" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1050" pageHeight="1000" math="1" shadow="0">
+    <mxGraphModel dx="1321" dy="992" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1050" pageHeight="1000" math="1" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="q1wPefOrEkNWgLQ3lotm-1" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;align=center;verticalAlign=middle;fontFamily=Times New Roman;fontSize=10;fontColor=default;labelBackgroundColor=default;endArrow=classic;endFill=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="240" y="34" as="sourcePoint" />
+            <mxPoint x="240" y="51.54" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="n_begin" parent="1" style="rounded=1;arcSize=50;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=12;fontFamily=Times New Roman;" value="Begin" vertex="1">
           <mxGeometry height="25" width="100" x="190" y="10" as="geometry" />
         </mxCell>
         <mxCell id="n_params" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" value="Set related parameters" vertex="1">
           <mxGeometry height="33" width="170" x="155" y="52" as="geometry" />
-        </mxCell>
-        <mxCell id="e_begin_params" edge="1" parent="1" source="n_begin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1;endArrow=classic;endFill=1;fontSize=10;fontFamily=Times New Roman;" target="n_params" value="">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="n_init_seed" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fontSize=10;fontFamily=Times New Roman;" value="Initialize candidate solutions&amp;#xa;based on prior knowledge" vertex="1">
           <mxGeometry height="36" width="155" x="75" y="115" as="geometry" />
