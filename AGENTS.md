@@ -72,6 +72,12 @@ Every generation and modification must strictly comply with all criteria outline
   - *Mitigation*: `effectively mitigates`, `substantially alleviates`, `suppresses`.
   - *Improvement*: `significantly improves`, `consistently outperforms`.
   - *Causality*: `thereby facilitating...`, `consequently avoiding...`, `which in turn accelerates...`.
+- **Strict Prohibition of the Term "Baseline"**: Strictly prohibit the words `baseline` / `baselines` across all LaTeX manuscript text, table captions, table footnotes, and agent dialogue responses. Peer algorithms must never be casually or dismissively labeled as "baselines" or "baseline MEL". Adhere strictly to formal scholarly terminology:
+  - *For peer algorithms*: `competitor algorithms`, `competing methods`, `comparison approaches`, `peer algorithms`, `counterparts`, `benchmark methods`.
+  - *For the predecessor algorithm MEL*: `the original MEL algorithm`, `the precursor MEL framework`, `the foundational multi-task learning method MEL` (never `baseline MEL` or `MEL baseline`).
+  - *For unreduced data / raw feature sets*: `unreduced full-dimensional feature sets`, `raw feature spaces` (never `full-dimensional baselines`).
+  - *For reference fitness / starting levels*: `initial fitness value`, `initial reference fitness` (never `fitness baseline`).
+  - *For algorithmic comparison collections*: `comparison suite`, `benchmark suite`, `competitor suite` (never `baseline suite`).
 
 ---
 
@@ -94,10 +100,10 @@ Every generation and modification must strictly comply with all criteria outline
 
 ---
 
-### Pillar 11: Statistical Testing Gold Standard for Evolutionary Algorithms
-- **Independent Runs**: Report all quantitative metrics across at least 30 independent runs in the standard format: $\mathrm{Mean} \pm \mathrm{Std}$.
-- **Wilcoxon Signed-Rank Test**: Conduct non-parametric Wilcoxon signed-rank tests at significance level $\alpha = 0.05$. Report pairwise statistical counts as $+ / - / \approx$ (win / loss / tie) in table summaries.
-- **Friedman Global Ranking & Post-Hoc Correction**: Apply the Friedman test to establish overall algorithmic rankings across multi-dataset benchmarks, followed by post-hoc **Holm-Bonferroni** or **Nemenyi** corrections to guard against family-wise error accumulation.
+### Pillar 11: Statistical Testing and Evaluation Protocols for Evolutionary Feature Selection
+- **Independent Runs & High-Dimensional Benchmark Alignment**: In ultra-high-dimensional wrapper feature selection ($D \gg 10^3$) where fitness evaluation requires repeated $k$-fold cross-validation across thousands of dimensions, report quantitative metrics across 10 independent runs (corresponding to 50 distinct cross-validation folds per dataset) in the standard format: $\mathrm{Mean} \pm \mathrm{Std}$. This protocol strictly mirrors the benchmark standard established in top-tier high-dimensional feature selection literature (e.g., MEL, *IEEE Transactions on Knowledge and Data Engineering* 2024), ensuring fair and computationally feasible comparisons across extensive comparison suites. For lightweight continuous benchmark suites with low-cost analytical evaluation, 30 runs remains the classical standard.
+- **Multi-Dataset Non-Parametric Testing (Demšar Protocol)**: To evaluate statistical significance across benchmarks, strictly follow the multi-problem statistical framework of Demšar (2006). Pairwise Wilcoxon signed-rank tests at $\alpha = 0.05$ assess directional superiority across the $N=20$ benchmark datasets, reporting pairwise counts as $+ / - / \approx$ (win / tie / loss).
+- **Friedman Global Ranking & Family-Wise Error Correction**: Apply the Friedman test across the multi-dataset benchmark suite to establish omnibus algorithmic rankings, accompanied by post-hoc **Holm-Bonferroni** step-down correction to rigorously guard against family-wise type I error inflation across all competitor comparisons.
 
 ---
 
@@ -109,7 +115,7 @@ Every generation and modification must strictly comply with all criteria outline
 ---
 
 ### Pillar 13: Literature Benchmark Coverage & Citation Freshness
-- **Balanced Baseline Hierarchy**: Benchmark against three distinct categories:
+- **Balanced Competitor Hierarchy**: Benchmark against three distinct categories:
   1. *Classical filter & wrapper methods* (e.g., BPSO, IG-PSO);
   2. *State-of-the-art Single-Objective Swarm Feature Selectors* (e.g., SaWDE, MEL);
   3. *State-of-the-art Multi-Objective Evolutionary Algorithms* (e.g., NSGA-II-FS, MOEA/D-FS, W-MOPSO-FS, fMOPSO-FS).
@@ -141,8 +147,8 @@ Section 2 must establish three explicit, non-overlapping motivation gaps that di
 - **Gap 2 (Discarded Iteration Feedback & Memoryless Perturbation)** $\longleftrightarrow$ **Dynamic Feature Importance Memory + KER**: Closed-loop accumulation of historical fitness feedback with exponential forgetting, driving targeted directional elite refinement within bounded computation ($k_e \ll N$).
 - **Gap 3 (Rigid Static Weighting & Evolutionary Phase Misalignment)** $\longleftrightarrow$ **Two-Phase Weight Scheduling (TPS)**: Temporally decoupling coarse dimensional pruning in Phase 1 from fine accuracy refinement in Phase 2.
 
-#### Protocol RW-3: 100% Benchmark Baseline Anchoring
-- **Zero Orphan Baselines**: All 13 comparison algorithms evaluated in the experimental sections (BPSO, FWPSO, SaWDE, W-MOPSO-FS, NNS-DFPG-CSA, MI-MPODE, EMSWOA, MEL, NSGA-II-FS, MOEA/D-FS, etc.) must be explicitly classified, contextualized, and cited in Section 2.
+#### Protocol RW-3: 100% Benchmark Competitor Anchoring
+- **Zero Orphan Competitor Algorithms**: All comparison algorithms evaluated in the experimental sections (BPSO, FWPSO, PSO-CSM, SaWDE, IGPSO, W-MOPSO-FS, fMOPSO-FS, NSGA-II-FS, MOEA/D-FS, MOPSO-FS, MEL) must be explicitly classified, contextualized, and cited in Section 2.
 - No competitor algorithm may appear in Section 5 or Section 6 without prior taxonomic grounding in Section 2.
 
 #### Protocol RW-4: Measured Academic Critique & Structural Trade-Offs
@@ -161,23 +167,24 @@ Section 2 must establish three explicit, non-overlapping motivation gaps that di
 
 ## 🔍 Automated Pre-Response & Pre-Compilation Verification Checklist
 
-For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 12-point internal audit before outputting (with special attention to Items 13–16 when revising Section 2):
+For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 13-point internal audit before outputting (with special attention to Items 14–17 when revising Section 2):
 
-1. [ ] **Acronym Check**: Are there duplicate acronym expansions (e.g., `(KER)`, `(TPS)`)?
-2. [ ] **Parameter Leakage Check**: Are specific numbers/parameters prematurely leaked into high-level descriptive sections?
-3. [ ] **Parenthetical Scan**: Are there redundant parenthetical explanations or code-like conditions?
-4. [ ] **Narrative Rhythm Check**: Does the text use natural pipeline verbs instead of mechanical bulleted ordinals?
-5. [ ] **Mathematical Rigor Check**: Are all variables given explicit mathematical domains? Are vector orientations consistent?
-6. [ ] **Figure/Equation Cross-Ref Check**: Are all figure, table, and equation references resolved with 0 compilation errors?
-7. [ ] **Causal Logic Check**: Does every proposed design component have a clearly articulated physical motivation?
-8. [ ] **Elsevier Booktabs Check**: Do all tables strictly avoid vertical lines (`|`) and use standard `\toprule`, `\midrule`, `\bottomrule`?
-9. [ ] **Statistical Verification Check**: Are standard deviation ($\pm \mathrm{Std}$) and Wilcoxon $+/-/\approx$ counts properly presented?
-10. [ ] **Vector Graphic Check**: Are all embedded figures in pure vector `.pdf` format?
-11. [ ] **Highlight Length Check**: Are Research Highlights strictly between 3–5 bullets and under 85 characters each?
-12. [ ] **BibTeX Integrity Check**: Are all `\cite{...}` keys resolved without undefined reference warnings?
+1. [ ] **Zero Baseline Terminology Check**: Is the word "baseline" / "baselines" completely eliminated from manuscript text, tables, captions, footnotes, and dialogue responses in favor of "competitor", "comparison method", "peer algorithm", or "benchmark"?
+2. [ ] **Acronym Check**: Are there duplicate acronym expansions (e.g., `(KER)`, `(TPS)`)?
+3. [ ] **Parameter Leakage Check**: Are specific numbers/parameters prematurely leaked into high-level descriptive sections?
+4. [ ] **Parenthetical Scan**: Are there redundant parenthetical explanations or code-like conditions?
+5. [ ] **Narrative Rhythm Check**: Does the text use natural pipeline verbs instead of mechanical bulleted ordinals?
+6. [ ] **Mathematical Rigor Check**: Are all variables given explicit mathematical domains? Are vector orientations consistent?
+7. [ ] **Figure/Equation Cross-Ref Check**: Are all figure, table, and equation references resolved with 0 compilation errors?
+8. [ ] **Causal Logic Check**: Does every proposed design component have a clearly articulated physical motivation?
+9. [ ] **Elsevier Booktabs Check**: Do all tables strictly avoid vertical lines (`|`) and use standard `\toprule`, `\midrule`, `\bottomrule`?
+10. [ ] **Statistical Verification Check**: Are standard deviation ($\pm \mathrm{Std}$) and Wilcoxon $+/-/\approx$ counts properly presented?
+11. [ ] **Vector Graphic Check**: Are all embedded figures in pure vector `.pdf` format?
+12. [ ] **Highlight Length Check**: Are Research Highlights strictly between 3–5 bullets and under 85 characters each?
+13. [ ] **BibTeX Integrity Check**: Are all `\cite{...}` keys resolved without undefined reference warnings?
 
 ### 🔬 Additional Section 2 (Related Work) Specific Audit Items:
-13. [ ] **Section 2 Narrative Chain**: Does each subsection follow the 4-step chain (*Merits $\to$ High-D Bottleneck $\to$ Remedy Limits $\to$ Proposed Rationale*) rather than mechanical literature listing?
-14. [ ] **Section 2 Closed-Loop Check**: Are the three core gaps in Related Work in 1-to-1 correspondence with MII+AIR, KER, and TPS?
-15. [ ] **Section 2 Baseline Coverage**: Are all 13 experimental competitor algorithms explicitly introduced and taxonomically categorized?
-16. [ ] **Section 2 No Parameter Dump**: Are specific tuning constants ($\theta=0.60, w_f=0.30, k_e=3, \gamma=0.99$) completely absent from Section 2 high-level narrative?
+14. [ ] **Section 2 Narrative Chain**: Does each subsection follow the 4-step chain (*Merits $\to$ High-D Bottleneck $\to$ Remedy Limits $\to$ Proposed Rationale*) rather than mechanical literature listing?
+15. [ ] **Section 2 Closed-Loop Check**: Are the three core gaps in Related Work in 1-to-1 correspondence with MII+AIR, KER, and TPS?
+16. [ ] **Section 2 Competitor Coverage**: Are all 13 experimental competitor algorithms explicitly introduced and taxonomically categorized?
+17. [ ] **Section 2 No Parameter Dump**: Are specific tuning constants ($\theta=0.60, w_f=0.30, k_e=3, \gamma=0.99$) completely absent from Section 2 high-level narrative?

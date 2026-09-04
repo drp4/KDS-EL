@@ -3,28 +3,28 @@
 \caption{Holm--Bonferroni procedure for pairwise statistical comparisons.}
 \label{T6b}
 \footnotesize
-\setlength{\tabcolsep}{3.5pt}
-\renewcommand{\arraystretch}{1.1}
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccccc@{}}
 \toprule
-Method & $\Delta$Acc & Combined $p$ & Holm $p$ & Reject $H_0$ \\
+Method & $\Delta\mathrm{Acc}$ & $W$ & $Z$ & $p$ & $\alpha_{\mathrm{Holm}}$ & Reject $H_0$ \\
 \midrule
-KDS-EL w/o TPS & $+0.0086$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-KDS-EL w/o TPS\&KER & $+0.0248$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-MEL & $+0.0706$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-FWPSO & $+0.0396$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-PSO-CSM & $+0.0552$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-SaWDE & $+0.0630$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-IGPSO & $+0.0734$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-BPSO & $+0.0875$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-W-MOPSO-FS & $+0.0442$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-fMOPSO-FS & $+0.0464$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-NSGA-II-FS & $+0.0509$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-MOEA-D-FS & $+0.0532$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
-MOPSO-FS & $+0.0565$ & $<10^{-15}$ & $<10^{-15}$ & \checkmark \\
+BPSO & $+0.0875$ & 0.0 & $-3.92$ & $1.91\times 10^{-6}$ & 0.0038 & \checkmark \\
+IGPSO & $+0.0734$ & 0.0 & $-3.92$ & $1.91\times 10^{-6}$ & 0.0042 & \checkmark \\
+MEL & $+0.0706$ & 0.0 & $-3.92$ & $1.91\times 10^{-6}$ & 0.0045 & \checkmark \\
+PSO-CSM & $+0.0552$ & 0.0 & $-3.92$ & $1.91\times 10^{-6}$ & 0.0050 & \checkmark \\
+FWPSO & $+0.0396$ & 0.0 & $-3.92$ & $1.91\times 10^{-6}$ & 0.0056 & \checkmark \\
+KDS-EL w/o TPS\&KER & $+0.0248$ & 0.0 & $-3.92$ & $1.91\times 10^{-6}$ & 0.0063 & \checkmark \\
+SaWDE & $+0.0630$ & 1.0 & $-3.88$ & $3.81\times 10^{-6}$ & 0.0071 & \checkmark \\
+MOPSO-FS & $+0.0565$ & 3.0 & $-3.81$ & $9.54\times 10^{-6}$ & 0.0083 & \checkmark \\
+fMOPSO-FS & $+0.0464$ & 7.0 & $-3.66$ & $3.62\times 10^{-5}$ & 0.0100 & \checkmark \\
+W-MOPSO-FS & $+0.0442$ & 8.0 & $-3.62$ & $4.77\times 10^{-5}$ & 0.0125 & \checkmark \\
+MOEA-D-FS & $+0.0532$ & 9.0 & $-3.58$ & $6.29\times 10^{-5}$ & 0.0167 & \checkmark \\
+KDS-EL w/o TPS & $+0.0086$ & 5.0 & $-3.51$ & $7.63\times 10^{-5}$ & 0.0250 & \checkmark \\
+NSGA-II-FS & $+0.0509$ & 14.0 & $-3.40$ & $2.10\times 10^{-4}$ & 0.0500 & \checkmark \\
 \bottomrule
 \end{tabular*}
 \vspace{2pt}
 \par\raggedright\footnotesize
-$\Delta\mathrm{Acc}$ denotes the mean accuracy advantage of KDS-EL. Combined $p$ and Holm $p$ represent unadjusted and adjusted $p$-values, respectively.
+\textit{Note}: $\Delta\mathrm{Acc}$ denotes the mean accuracy advantage of KDS-EL over each competitor. $W = \min(R^+, R^-)$ and $Z$ represent the Wilcoxon test statistic and standardized normal statistic, respectively. $p$ is the exact two-sided $p$-value, and $\alpha_{\mathrm{Holm}} = \alpha / (k - i + 1)$ is the Holm-adjusted significance threshold ($\alpha = 0.05, k = 13$).
 \end{table}

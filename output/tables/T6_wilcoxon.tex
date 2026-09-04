@@ -8,26 +8,26 @@
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lcccccccccccccc@{}}
 \toprule
-Method & KDS-EL & w/o TPS & w/o KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO & W-MPSO & fMPSO & NSGA-II & MOEA/D & MOPSO \\
+Method & KDS-EL & w/o TPS & w/o TPS\&KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO & W-MPSO & fMPSO & NSGA-II & MOEA/D & MOPSO \\
 \midrule
-KDS-EL & --- & 13/20 & 19/20 & 20/20 & 19/20 & 20/20 & 19/20 & 20/20 & 20/20 & 14/20 & 15/20 & 16/20 & 16/20 & 18/20 \\
-KDS-EL w/o TPS & \textbf{0/20} & --- & 15/20 & 20/20 & 20/20 & 20/20 & 19/20 & 20/20 & 20/20 & 14/20 & 15/20 & 15/20 & 15/20 & 17/20 \\
-KDS-EL w/o TPS\&KER & \textbf{0/20} & 0/20 & --- & 18/20 & 11/20 & 15/20 & 15/20 & 19/20 & 16/20 & 10/20 & 9/20 & 14/20 & 14/20 & 13/20 \\
-MEL & \textbf{0/20} & 0/20 & 0/20 & --- & 0/20 & 1/20 & 3/20 & 3/20 & 11/20 & 2/20 & 2/20 & 3/20 & 3/20 & 3/20 \\
-FWPSO & \textbf{0/20} & 0/20 & 0/20 & 0/20 & --- & 16/20 & 15/20 & 20/20 & 20/20 & 6/20 & 7/20 & 9/20 & 10/20 & 9/20 \\
-PSO-CSM & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & --- & 12/20 & 20/20 & 16/20 & 2/20 & 2/20 & 5/20 & 5/20 & 6/20 \\
-SaWDE & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- & 10/20 & 20/20 & 2/20 & 2/20 & 3/20 & 3/20 & 6/20 \\
-IGPSO & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- & 14/20 & 0/20 & 0/20 & 2/20 & 1/20 & 2/20 \\
-BPSO & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 \\
-W-MOPSO-FS & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- & 2/20 & 10/20 & 12/20 & 12/20 \\
-fMOPSO-FS & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- & 10/20 & 10/20 & 8/20 \\
-NSGA-II-FS & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- & 6/20 & 5/20 \\
-MOEA-D-FS & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- & 4/20 \\
-MOPSO-FS & \textbf{0/20} & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 & --- \\
+KDS-EL & --- & \textbf{13/20} & \textbf{19/20} & \textbf{20/20} & \textbf{19/20} & \textbf{20/20} & \textbf{19/20} & \textbf{20/20} & \textbf{20/20} & \textbf{14/20} & \textbf{15/20} & \textbf{16/20} & \textbf{16/20} & \textbf{18/20} \\
+KDS-EL w/o TPS & 0/20 & --- & \textbf{15/20} & \textbf{20/20} & \textbf{20/20} & \textbf{20/20} & \textbf{19/20} & \textbf{20/20} & \textbf{20/20} & \textbf{14/20} & \textbf{15/20} & \textbf{15/20} & \textbf{15/20} & \textbf{17/20} \\
+KDS-EL w/o TPS\&KER & 0/20 & 2/20 & --- & \textbf{18/20} & \textbf{11/20} & \textbf{15/20} & \textbf{15/20} & \textbf{19/20} & \textbf{16/20} & \textbf{10/20} & \textbf{9/20} & \textbf{14/20} & \textbf{14/20} & \textbf{13/20} \\
+MEL & 0/20 & 0/20 & 1/20 & --- & 0/20 & 1/20 & 3/20 & 3/20 & \textbf{11/20} & 2/20 & 2/20 & 3/20 & 3/20 & 3/20 \\
+FWPSO & 0/20 & 0/20 & 5/20 & \textbf{17/20} & --- & \textbf{16/20} & \textbf{15/20} & \textbf{20/20} & \textbf{20/20} & 6/20 & \textbf{7/20} & \textbf{9/20} & \textbf{10/20} & \textbf{9/20} \\
+PSO-CSM & 0/20 & 0/20 & 1/20 & \textbf{15/20} & 0/20 & --- & \textbf{12/20} & \textbf{20/20} & \textbf{16/20} & 2/20 & 2/20 & 5/20 & 5/20 & 6/20 \\
+SaWDE & 0/20 & 0/20 & 5/20 & \textbf{14/20} & 3/20 & 4/20 & --- & \textbf{10/20} & \textbf{20/20} & 2/20 & 2/20 & 3/20 & 3/20 & 6/20 \\
+IGPSO & 0/20 & 0/20 & 1/20 & \textbf{9/20} & 0/20 & 0/20 & 7/20 & --- & \textbf{14/20} & 0/20 & 0/20 & 2/20 & 1/20 & 2/20 \\
+BPSO & 0/20 & 0/20 & 1/20 & 5/20 & 0/20 & 0/20 & 0/20 & 4/20 & --- & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 \\
+W-MOPSO-FS & 3/20 & 3/20 & 9/20 & \textbf{16/20} & 6/20 & \textbf{15/20} & \textbf{13/20} & \textbf{20/20} & \textbf{20/20} & --- & \textbf{2/20} & \textbf{10/20} & \textbf{12/20} & \textbf{12/20} \\
+fMOPSO-FS & 3/20 & 3/20 & 8/20 & \textbf{16/20} & 5/20 & \textbf{13/20} & \textbf{13/20} & \textbf{20/20} & \textbf{20/20} & 1/20 & --- & \textbf{10/20} & \textbf{10/20} & \textbf{8/20} \\
+NSGA-II-FS & 4/20 & 5/20 & 6/20 & \textbf{14/20} & 7/20 & \textbf{11/20} & \textbf{14/20} & \textbf{15/20} & \textbf{20/20} & 5/20 & 6/20 & --- & \textbf{6/20} & \textbf{5/20} \\
+MOEA-D-FS & 2/20 & 2/20 & 5/20 & \textbf{15/20} & 7/20 & \textbf{11/20} & \textbf{12/20} & \textbf{16/20} & \textbf{19/20} & 4/20 & 4/20 & 0/20 & --- & 4/20 \\
+MOPSO-FS & 2/20 & 2/20 & 6/20 & \textbf{16/20} & 5/20 & \textbf{12/20} & \textbf{10/20} & \textbf{17/20} & \textbf{20/20} & 1/20 & 2/20 & 3/20 & 4/20 & --- \\
 \bottomrule
 \end{tabular}%
 }
 \vspace{2pt}
 \par\raggedright\footnotesize
-Entries indicate the number of datasets where the row algorithm significantly outperforms the column algorithm ($p < 0.05$).
+Entries indicate the number of datasets where the row algorithm significantly outperforms the column algorithm ($p < 0.05$, paired Wilcoxon signed-rank test). Bold values highlight the statistically dominant algorithm in each pairwise matchup.
 \end{table*}

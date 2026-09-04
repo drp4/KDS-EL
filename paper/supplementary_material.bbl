@@ -76,4 +76,34 @@ C.~A.~C. Coello, G.~T. Pulido, M.~S. Lechuga, Handling multiple objectives with
 \newblock \href {https://doi.org/10.1109/TEVC.2004.826067}
   {\path{doi:10.1109/TEVC.2004.826067}}.
 
+\bibitem{fischer2001}
+H.~Fischer, R.~Stenling, C.~Rubio, A.~Lindblom, Colorectal carcinogenesis is
+  associated with expression of collagen type {XI} alpha 1, Clinical Cancer
+  Research 7~(10) (2001) 3144--3149.
+
+\bibitem{alon1999}
+U.~Alon, N.~Barkai, D.~A. Notterman, K.~Gish, S.~Ybarra, D.~Mack, A.~J. Levine,
+  Broad patterns of gene expression revealed by clustering analysis of tumor
+  and normal colon tissues probed by oligonucleotide arrays, Proceedings of the
+  National Academy of Sciences of the United States of America 96~(12) (1999)
+  6745--6750.
+\newblock \href {https://doi.org/10.1073/pnas.96.12.6745}
+  {\path{doi:10.1073/pnas.96.12.6745}}.
+
+\bibitem{singh2002}
+D.~Singh, P.~G. Febbo, K.~Ross, D.~G. Jackson, J.~Manola, C.~Ladd, P.~Tamayo,
+  A.~A. Renshaw, A.~V. D'Amico, J.~P. Richie, E.~S. Lander, M.~Loda, P.~W.
+  Kantoff, T.~R. Golub, W.~R. Sellers, Gene expression correlates of clinical
+  prostate cancer behavior, Cancer Cell 1~(2) (2002) 203--209.
+\newblock \href {https://doi.org/10.1016/S1535-6108(02)00030-2}
+  {\path{doi:10.1016/S1535-6108(02)00030-2}}.
+
+\bibitem{rubin2002}
+M.~A. Rubin, M.~Zhou, S.~M. Dhanasekaran, S.~Varambally, T.~R. Barrette, M.~G.
+  Sanda, K.~J. Pienta, P.~K. Ghosh, A.~M. Chinnaiyan, $\alpha$-methylacyl-{CoA}
+  racemase as a tissue biomarker for prostate cancer, JAMA 287~(13) (2002)
+  1662--1670.
+\newblock \href {https://doi.org/10.1001/jama.287.13.1662}
+  {\path{doi:10.1001/jama.287.13.1662}}.
+
 \end{thebibliography}

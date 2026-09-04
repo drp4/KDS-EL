@@ -1,6 +1,6 @@
 \begin{table}[!htb]
 \centering
-\caption{Results of performance comparison before and after algorithm improvement.}
+\caption{Results of subtractive component contribution analysis across 20 benchmark datasets.}
 \label{T7}
 \small
 \setlength{\tabcolsep}{6pt}
@@ -10,12 +10,12 @@
 Variant & Accuracy & Features & $\Delta$Acc (pp) \\
 \midrule
 KDS-EL & \textbf{0.9574} & \textbf{87.8} & -- \\
-KDS-EL w/o TPS & 0.9488 & 122 & -0.86 \\
-KDS-EL w/o TPS\&KER & 0.9325 & 291 & -1.63 \\
-MEL & 0.8868 & 2722 & -4.58 \\
+KDS-EL w/o TPS & 0.9488 & 121.7 & -0.86 \\
+KDS-EL w/o TPS\&KER & 0.9325 & 290.6 & -1.63 \\
+MEL & 0.8868 & 2722.2 & -4.58 \\
 \bottomrule
 \end{tabular*}
 \vspace{2pt}
 \par\raggedright\footnotesize
-$\Delta\mathrm{Acc}$ indicates the marginal accuracy degradation when stripping the corresponding mechanism.
+\textit{Note}: $\Delta$Acc indicates the marginal accuracy degradation when stripping the corresponding component. Bold values denote the best performance.
 \end{table}

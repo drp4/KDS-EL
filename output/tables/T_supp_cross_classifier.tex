@@ -1,0 +1,22 @@
+\begin{table*}[!htb]
+\centering
+\caption{Cross-classifier generalization performance (classification accuracy in \%, mean $\pm$ standard deviation over 5-fold cross-validation) comparing full feature sets against KDS-EL compact feature subsets across 3-NN, SVM (RBF kernel), and Random Forest classifiers.}
+\label{T-S9}
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}llccc@{}}
+\toprule
+Dataset & Feature Subset & 3-NN Accuracy & SVM (RBF) Accuracy & Random Forest Accuracy \\
+\midrule
+\textit{Colon} & Full ($D = 2{,}000$) & 79.23 $\pm$ 7.68 & 85.51 $\pm$ 6.13 & 85.38 $\pm$ 6.33 \\
+ & KDS-EL ($d = 14$) & \textbf{88.59 $\pm$ 6.80} & 80.51 $\pm$ 4.53 & 82.18 $\pm$ 10.39 \\
+\midrule
+\textit{Adenoma} & Full ($D = 7{,}457$) & 94.29 $\pm$ 11.43 & 97.14 $\pm$ 5.71 & 97.14 $\pm$ 5.71 \\
+ & KDS-EL ($d = 66$) & \textbf{100.00 $\pm$ 0.00} & \textbf{100.00 $\pm$ 0.00} & \textbf{100.00 $\pm$ 0.00} \\
+\midrule
+\textit{ALL4} & Full ($D = 12{,}625$) & 69.94 $\pm$ 9.28 & 82.63 $\pm$ 8.23 & 78.36 $\pm$ 6.32 \\
+ & KDS-EL ($d = 124$) & \textbf{87.25 $\pm$ 7.85} & \textbf{85.96 $\pm$ 2.88} & \textbf{90.35 $\pm$ 2.06} \\
+\bottomrule
+\end{tabular}
+\end{table*}

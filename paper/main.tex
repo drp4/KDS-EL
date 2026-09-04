@@ -137,11 +137,11 @@
 \vspace{1.8em}
 
 \begin{itemize}\setlength{\itemsep}{10pt}\normalsize
-  \item Closed-loop knowledge-guided swarm learning framework for high-dimensional feature selection.
-  \item MI initialization with adaptive re-initialization restores diversity and prevents search entrapment.
-  \item Knowledge-guided elite refinement accumulates feature-importance signals with exponential decay.
-  \item Two-phase weight scheduling temporally decouples feature compression from accuracy refinement.
-  \item KDS-EL achieves 95.74\% accuracy with 87.8 selected features across 20 benchmark datasets.
+  \item Closed-loop knowledge-guided swarm learning for high-D feature selection.
+  \item MI seeding with adaptive recovery prevents stagnation and restores diversity.
+  \item Knowledge-guided elite refinement accumulates feature signals with decay.
+  \item Two-phase weight scheduling decouples feature pruning from accuracy tuning.
+  \item KDS-EL achieves 95.74\% accuracy with only 87.8 features on 20 benchmarks.
 \end{itemize}
 
 \clearpage
@@ -234,7 +234,7 @@ This section outlines the experimental framework and presents a comprehensive em
 The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
 
 \section*{Data availability}
-Data will be made available on request.
+The 20 high-dimensional benchmark datasets analyzed in this study are publicly accessible from standard machine learning and bioinformatics repositories. The source code of KDS-EL will be made available upon publication. Supplementary experimental records---including granular per-dataset ablation metrics (Table~S4), complete computational runtime measurements (Table~S5), full parameter sensitivity grids (Table~S6), cross-classifier inductive generalization assessments (Table~S9), and biological biomarker target annotations (Table~S10)---are provided in the accompanying Supplementary Material document.
 
 % --------------------------- References --------------------------------
 \bibliographystyle{elsarticle-num}

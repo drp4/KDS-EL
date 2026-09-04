@@ -8,7 +8,7 @@ TAB = r"E:\多目标优化\KDS-EL\output\tables"
 MD = r"E:\多目标优化\KDS-EL\output\实验数据汇总.md"
 
 SHORT_METHODS_14 = [
-    "KDS-EL", "w/o TPS", "w/o KER", "MEL", "FWPSO", "PSO-CSM",
+    "KDS-EL", "w/o TPS", "w/o TPS\\&KER", "MEL", "FWPSO", "PSO-CSM",
     "SaWDE", "IGPSO", "BPSO", "W-MPSO", "fMPSO", "NSGA-II",
     "MOEA/D", "MOPSO"
 ]
@@ -145,7 +145,7 @@ def gen_T6():
     out = [
         r"\begin{table*}[!t]",
         r"\centering",
-        r"\caption{Win counts of pairwise Wilcoxon signed-rank tests ($p < 0.05$) across 20 benchmark datasets.}",
+        r"\caption{Pairwise Wilcoxon signed-rank test results on classification accuracy.}",
         r"\label{T6}",
         r"\scriptsize",
         r"\setlength{\tabcolsep}{3.5pt}",
@@ -156,19 +156,32 @@ def gen_T6():
         r"Method & " + " & ".join(SHORT_METHODS_14) + r" \\",
         r"\midrule"
     ]
-    for row in mat[1:]:
-        name = row[0]
-        cells = row[1:]
-        disp = []
-        for i, c in enumerate(cells):
-            c = c.strip()
-            if c == "—":
-                disp.append("---")
-            elif i == 0:
-                disp.append(r"\textbf{" + c + "}")
+    n_rows = len(mat) - 1
+    wins = {}
+    for r in range(n_rows):
+        for c in range(n_rows):
+            val = mat[1 + r][1 + c].strip()
+            if "/" in val:
+                w, _ = val.split("/")
+                wins[(r, c)] = int(w)
             else:
-                disp.append(c)
-        disp_name = name.replace("KDS_EL_KER", "w/o TPS").replace("MEL+MI", "w/o KER").replace("KDS_EL_TwoPhase", "KDS-EL").replace("_", r"\_")
+                wins[(r, c)] = -1
+
+    for r in range(n_rows):
+        name = mat[1 + r][0]
+        disp = []
+        for c in range(n_rows):
+            cell = mat[1 + r][1 + c].strip()
+            if cell == "—":
+                disp.append("---")
+            else:
+                w_rc = wins.get((r, c), -1)
+                w_cr = wins.get((c, r), -1)
+                if w_rc > w_cr and w_rc > 0:
+                    disp.append(r"\textbf{" + cell + "}")
+                else:
+                    disp.append(cell)
+        disp_name = name.replace("KDS_EL_KER", "w/o TPS").replace("MEL+MI", "w/o TPS\\&KER").replace("KDS_EL_TwoPhase", "KDS-EL").replace("_", r"\_")
         out.append(disp_name + " & " + " & ".join(disp) + r" \\")
     out += [
         r"\bottomrule",
@@ -176,7 +189,7 @@ def gen_T6():
         r"}",
         r"\vspace{2pt}",
         r"\par\raggedright\footnotesize",
-        r"\textit{Note}: Entries indicate the number of datasets where the row algorithm significantly outperforms the column algorithm.",
+        r"Entries indicate the number of datasets where the row algorithm significantly outperforms the column algorithm ($p < 0.05$, paired Wilcoxon signed-rank test). Bold values highlight the statistically dominant algorithm in each pairwise matchup.",
         r"\end{table*}"
     ]
     with open(os.path.join(TAB, "T6_wilcoxon.tex"), "w", encoding="utf-8") as f:
@@ -190,27 +203,33 @@ def gen_T6b():
     out = [
         r"\begin{table}[!htb]",
         r"\centering",
-        r"\caption{Holm--Bonferroni corrected pairwise comparisons across 20 benchmark datasets.}",
+        r"\caption{Holm--Bonferroni procedure for pairwise statistical comparisons.}",
         r"\label{T6b}",
         r"\footnotesize",
-        r"\setlength{\tabcolsep}{3.5pt}",
-        r"\renewcommand{\arraystretch}{1.1}",
-        r"\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}",
+        r"\setlength{\tabcolsep}{2.5pt}",
+        r"\renewcommand{\arraystretch}{1.08}",
+        r"\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccccc@{}}",
         r"\toprule",
-        r"Method & $\Delta$Acc & Combined $p$ & Holm $p$ & Reject $H_0$ \\",
+        r"Method & $\Delta\mathrm{Acc}$ & $W$ & $Z$ & $p$ & $\alpha_{\mathrm{Holm}}$ & Reject $H_0$ \\",
         r"\midrule"
     ]
     for r in rows:
         m = r["Method"].replace("KDS_EL_KER", "KDS-EL w/o TPS").replace("MEL+MI", "KDS-EL w/o TPS\\&KER")
+        if "&" in m and "\\&" not in m:
+            m = m.replace("&", "\\&")
         d = float(r["Mean_ΔAcc"])
+        w_val = float(r["W"]) if "W" in r else 0.0
+        z_val = float(r["Z"]) if "Z" in r else 0.0
+        p_val = float(r["p_value"]) if "p_value" in r else float(r.get("Combined_p", 0.0))
+        alpha = float(r["Holm_alpha"])
         rej = r"\checkmark" if r["Reject_H0"].strip().lower().startswith("y") else "---"
-        out.append(m + f" & $+{d:.4f}$ & " + p_tex(r["Combined_p"]) + " & " + p_tex(r["Adjusted_p"]) + " & " + rej + r" \\")
+        out.append(f"{m} & $+{d:.4f}$ & {w_val:.1f} & ${z_val:.2f}$ & " + p_tex(p_val) + f" & {alpha:.4f} & {rej} \\\\")
     out += [
         r"\bottomrule",
         r"\end{tabular*}",
         r"\vspace{2pt}",
         r"\par\raggedright\footnotesize",
-        r"\textit{Note}: $\Delta$Acc denotes the mean accuracy advantage of KDS-EL. Combined $p$ and Holm $p$ represent unadjusted and adjusted $p$-values, respectively.",
+        r"\textit{Note}: $\Delta\mathrm{Acc}$ denotes the mean accuracy advantage of KDS-EL over each competitor. $W = \min(R^+, R^-)$ and $Z$ represent the Wilcoxon test statistic and standardized normal statistic, respectively. $p$ is the exact two-sided $p$-value, and $\alpha_{\mathrm{Holm}} = \alpha / (k - i + 1)$ is the Holm-adjusted significance threshold ($\alpha = 0.05, k = 13$).",
         r"\end{table}"
     ]
     with open(os.path.join(TAB, "T6b_holm_bonferroni.tex"), "w", encoding="utf-8") as f:
@@ -221,9 +240,9 @@ def gen_T6b():
 def gen_T7():
     data = [
         ("KDS-EL", 0.9574, 87.8, "--"),
-        ("KDS-EL w/o TPS", 0.9488, 122, "-0.86"),
-        ("KDS-EL w/o TPS\\&KER", 0.9325, 291, "-1.63"),
-        ("MEL", 0.8868, 2722, "-4.58")
+        ("KDS-EL w/o TPS", 0.9488, 121.7, "-0.86"),
+        ("KDS-EL w/o TPS\\&KER", 0.9325, 290.6, "-1.63"),
+        ("MEL", 0.8868, 2722.2, "-4.58")
     ]
     out = [
         r"\begin{table}[!htb]",
@@ -241,9 +260,9 @@ def gen_T7():
     for name, acc, feat, d in data:
         bold = name == "KDS-EL"
         if bold:
-            row = name + r" & \textbf{" + f"{acc:.4f}" + r"} & \textbf{" + str(feat) + r"} & " + d + r" \\"
+            row = name + r" & \textbf{" + f"{acc:.4f}" + r"} & \textbf{" + f"{feat:.1f}" + r"} & " + d + r" \\"
         else:
-            row = name + f" & {acc:.4f} & {feat} & {d}" + r" \\"
+            row = name + f" & {acc:.4f} & {feat:.1f} & {d}" + r" \\"
         out.append(row)
     out += [
         r"\bottomrule",

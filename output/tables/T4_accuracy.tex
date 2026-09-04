@@ -1,6 +1,6 @@
 \begin{table*}[!t]
 \centering
-\caption{Comparison of classification accuracy (mean $\pm$ std).}
+\caption{Comparison of classification accuracy (mean $\pm$ std) across 20 benchmark datasets.}
 \label{T4}
 \scriptsize
 \setlength{\tabcolsep}{2.5pt}
@@ -8,7 +8,7 @@
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lcccccccccccccc@{}}
 \toprule
-Dataset & KDS-EL & w/o TPS & w/o KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO & W-MPSO & fMPSO & NSGA-II & MOEA/D & MOPSO \\
+Dataset & KDS-EL & w/o TPS & w/o TPS\&KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO & W-MPSO & fMPSO & NSGA-II & MOEA/D & MOPSO \\
 \midrule
 ALL1 & 0.9998$\pm$0.0001 & 0.9996$\pm$0.0000$^{+}$ & 0.9996$\pm$0.0000$^{+}$ & 0.9664$\pm$0.0023$^{+}$ & 0.9952$\pm$0.0015$^{+}$ & 0.9900$\pm$0.0002$^{+}$ & 0.9710$\pm$0.0011$^{+}$ & 0.9802$\pm$0.0002$^{+}$ & 0.9534$\pm$0.0003$^{+}$ & \textbf{1.0000$\pm$0.0000}$^{-}$ & \textbf{1.0000$\pm$0.0000}$^{-}$ & \textbf{1.0000$\pm$0.0000}$^{-}$ & 0.9985$\pm$0.0031$^{\approx}$ & \textbf{1.0000$\pm$0.0000}$^{-}$ \\
 ALL4 & \textbf{0.9522$\pm$0.0061} & 0.9418$\pm$0.0113$^{\approx}$ & 0.9415$\pm$0.0112$^{+}$ & 0.8704$\pm$0.0661$^{+}$ & 0.8617$\pm$0.0304$^{+}$ & 0.8363$\pm$0.0135$^{+}$ & 0.8062$\pm$0.0217$^{+}$ & 0.7914$\pm$0.0179$^{+}$ & 0.7569$\pm$0.0069$^{+}$ & 0.8068$\pm$0.0047$^{+}$ & 0.8015$\pm$0.0089$^{+}$ & 0.7694$\pm$0.0118$^{+}$ & 0.7737$\pm$0.0184$^{+}$ & 0.7654$\pm$0.0074$^{+}$ \\
@@ -37,5 +37,5 @@ Average & \textbf{0.9574} & 0.9488 & 0.9325 & 0.8868 & 0.9177 & 0.9021 & 0.8944 
 }
 \vspace{2pt}
 \par\raggedright\footnotesize
-Bold indicates the best accuracy. $+$, $\approx$, and $-$ denote that KDS-EL is significantly superior, statistically equivalent, or inferior ($p < 0.05$, paired Wilcoxon signed-rank test), respectively.
+\textit{Note}: Bold values indicate the best performance per dataset. Superscripts $+$, $\approx$, and $-$ denote that KDS-EL is significantly better, statistically comparable, or significantly worse ($p < 0.05$, two-sided Wilcoxon signed-rank test), respectively.
 \end{table*}

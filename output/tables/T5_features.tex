@@ -1,6 +1,6 @@
 \begin{table*}[!t]
 \centering
-\caption{Comparison of the number of selected features.}
+\caption{Comparison of the average number of selected features across 20 benchmark datasets.}
 \label{T5}
 \scriptsize
 \setlength{\tabcolsep}{3.5pt}
@@ -8,7 +8,7 @@
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lcccccccccccccc@{}}
 \toprule
-Dataset & KDS-EL & w/o TPS & w/o KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO & W-MPSO & fMPSO & NSGA-II & MOEA/D & MOPSO \\
+Dataset & KDS-EL & w/o TPS & w/o TPS\&KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO & W-MPSO & fMPSO & NSGA-II & MOEA/D & MOPSO \\
 \midrule
 ALL1 & \textbf{39} & 55 & 55 & 4248 & 612 & 1206 & 3667 & 2501 & 5886 & 2333 & 2339 & 5368 & 5548 & 5920 \\
 ALL4 & 124 & 152 & \textbf{64} & 1082 & 1326 & 1447 & 4581 & 2677 & 6217 & 3645 & 3213 & 5461 & 5736 & 6126 \\
@@ -35,4 +35,7 @@ Average & \textbf{87.8} & 121.7 & 290.6 & 2722.2 & 1068.9 & 1559.3 & 3521.3 & 25
 \bottomrule
 \end{tabular}%
 }
+\vspace{2pt}
+\par\raggedright\footnotesize
+\textit{Note}: Bold values indicate the minimum number of selected features per dataset.
 \end{table*}

@@ -271,30 +271,38 @@ def table_t6_wilcoxon(df_summary, out_dir):
     shared_ds = sorted(set.intersection(*ds_sets)) if ds_sets else []
     print(f"  Shared datasets: {len(shared_ds)}")
 
+    # Pre-index data for fast lookup
+    data_cache = {}
+    for v in versions:
+        for ds in shared_ds:
+            sub = df_detail[(df_detail["Version"] == v) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+            data_cache[(v, ds)] = sub if len(sub) > 0 else np.array([np.nan])
+
     win_matrix = np.zeros((n_v, n_v), dtype=int)
     total_matrix = np.zeros((n_v, n_v), dtype=int)
 
     for ds in shared_ds:
         for i, v1 in enumerate(versions):
-            a1 = g(df_detail, v1, ds)
+            a1 = data_cache.get((v1, ds), np.array([]))
             if len(a1) < 3: continue
             for j, v2 in enumerate(versions):
-                if i >= j: continue
-                a2 = g(df_detail, v2, ds)
+                if i == j: continue
+                a2 = data_cache.get((v2, ds), np.array([]))
                 if len(a2) < 3: continue
                 try:
                     _, p = sp_stats.wilcoxon(a1, a2, alternative='greater') if len(a1)==len(a2) else \
                            sp_stats.mannwhitneyu(a1, a2, alternative='greater')
-                except: continue
-                total_matrix[i,j] += 1; total_matrix[j,i] += 1
-                if p < 0.05 and np.mean(a1) > np.mean(a2): win_matrix[i,j] += 1
-                elif p < 0.05 and np.mean(a2) > np.mean(a1): win_matrix[j,i] += 1
+                except Exception:
+                    continue
+                total_matrix[i, j] += 1
+                if p < 0.05 and np.mean(a1) > np.mean(a2):
+                    win_matrix[i, j] += 1
 
     table = []
     for i, v1 in enumerate(versions):
         row = {"Method": V_LABELS[v1]}
         for j, v2 in enumerate(versions):
-            row[V_LABELS[v2]] = f"{int(win_matrix[i,j])}/{int(total_matrix[i,j])}" if i!=j and total_matrix[i,j]>0 else ("—" if i==j else "—")
+            row[V_LABELS[v2]] = f"{int(win_matrix[i,j])}/{int(total_matrix[i,j])}" if i!=j and total_matrix[i,j]>0 else "—"
         table.append(row)
 
     df_t = pd.DataFrame(table)
@@ -399,66 +407,63 @@ def table_t8_twophase_ablation(out_dir):
 
 # ═══ T6b: Holm-Bonferroni ═══
 def table_holm_bonferroni(df_summary, out_dir):
-    print("T6b: Holm-Bonferroni correction (KDS-EL Proposed vs all)...")
+    print("T6b: Holm-Bonferroni correction (KDS-EL Proposed vs all across 20 datasets)...")
     if sp_stats is None:
         print("  [SKIP] scipy not available")
         return
 
-    df_detail = load_merged_detail()
     kds_name = "KDS_EL_TwoPhase"
+    all_ds = [d for d in MOFS_DATASETS if d in df_summary["Dataset"].unique()]
     others = [v for v in ALL_VERSIONS if v != kds_name and v in df_summary["Version"].unique()]
 
-    ds_with_both = []
-    for ds in sorted(df_summary["Dataset"].unique()):
-        kds_data = df_detail[(df_detail["Version"]==kds_name)&(df_detail["Dataset"]==ds)]["Accuracy"].values
-        if len(kds_data) < 3: continue
-        if all(len(df_detail[(df_detail["Version"]==v)&(df_detail["Dataset"]==ds)]["Accuracy"].values) >= 3 for v in others):
-            ds_with_both.append(ds)
-    print(f"  Shared datasets: {len(ds_with_both)}")
+    kds_means = np.array([
+        df_summary[(df_summary["Version"] == kds_name) & (df_summary["Dataset"] == ds)]["Mean_Acc"].values[0]
+        for ds in all_ds
+    ])
 
     rows = []
     for v in others:
-        diffs = []
-        for ds in ds_with_both:
-            kds_acc = df_detail[(df_detail["Version"]==kds_name)&(df_detail["Dataset"]==ds)]["Accuracy"].values
-            o_acc = df_detail[(df_detail["Version"]==v)&(df_detail["Dataset"]==ds)]["Accuracy"].values
-            try:
-                _, p = sp_stats.wilcoxon(kds_acc, o_acc, alternative='greater') if len(kds_acc)==len(o_acc) else \
-                       sp_stats.mannwhitneyu(kds_acc, o_acc, alternative='greater')
-            except: continue
-            diffs.append((ds, p, kds_acc.mean()-o_acc.mean()))
-        if diffs:
-            avg_diff = np.mean([d[2] for d in diffs])
-            chi2 = -2*np.sum(np.log([max(d[1],1e-300) for d in diffs]))
-            combined_p = 1 - sp_stats.chi2.cdf(chi2, 2*len(diffs))
-            rows.append({
-                "Method": V_LABELS[v],
-                "Mean_ΔAcc": avg_diff,
-                "Wins": sum(1 for d in diffs if d[2] > 0.001),
-                "Ties": sum(1 for d in diffs if abs(d[2]) <= 0.001),
-                "Losses": sum(1 for d in diffs if d[2] < -0.001),
-                "Combined_p": combined_p,
-            })
+        o_means = np.array([
+            df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]["Mean_Acc"].values[0]
+            for ds in all_ds
+        ])
+        diff = kds_means - o_means
+        avg_diff = np.mean(diff)
 
-    rows.sort(key=lambda r: r["Combined_p"])
+        res_exact = sp_stats.wilcoxon(kds_means, o_means, alternative='two-sided', method='exact')
+        res_approx = sp_stats.wilcoxon(kds_means, o_means, alternative='two-sided', method='approx')
+
+        W = res_approx.statistic
+        z = res_approx.zstatistic
+
+        rows.append({
+            "Method": V_LABELS[v],
+            "Mean_ΔAcc": avg_diff,
+            "Wins": int(np.sum(diff > 0.0001)),
+            "Ties": int(np.sum(np.abs(diff) <= 0.0001)),
+            "Losses": int(np.sum(diff < -0.0001)),
+            "W": W,
+            "Z": z,
+            "p_value": res_exact.pvalue,
+            "p_approx": res_approx.pvalue,
+        })
+
+    rows.sort(key=lambda r: (r["p_value"], -r["Mean_ΔAcc"]))
     m = len(rows)
-    prev_adj = 0.0
-    for i, r in enumerate(rows):
-        r["Holm_alpha"] = 0.05 / (m - i)
-        raw_p = float(r["Combined_p"])
-        r["Adjusted_p"] = max(prev_adj, (m - i) * raw_p)
-        prev_adj = r["Adjusted_p"]
-        r["Reject_H0"] = "Yes" if r["Combined_p"] < r["Holm_alpha"] else "No"
+    for i, r in enumerate(rows, 1):
+        r["Rank"] = i
+        r["Holm_alpha"] = 0.05 / (m - i + 1)
+        r["Reject_H0"] = "Yes" if r["p_value"] < r["Holm_alpha"] else "No"
 
-    print(f"\n{'Method':20s} {'ΔAcc':>8s} {'W/T/L':>10s} {'Combined_p':>12s} {'Adjusted_p':>12s} {'α_holm':>10s} {'Reject?':>8s}")
+    print(f"\n{'Rank':>4s} {'Method':22s} {'ΔAcc':>8s} {'W':>5s} {'Z':>7s} {'p-value':>12s} {'α_holm':>10s} {'Reject?':>8s}")
     print("-" * 84)
     for r in rows:
-        wtl = f"{r['Wins']}/{r['Ties']}/{r['Losses']}"
-        print(f"  {r['Method']:18s} {r['Mean_ΔAcc']:+8.4f} {wtl:>10s} {r['Combined_p']:12.2e} {r['Adjusted_p']:12.2e} {r['Holm_alpha']:10.4f} {r['Reject_H0']:>8s}")
+        print(f"  {r['Rank']:2d} {r['Method']:22s} {r['Mean_ΔAcc']:+8.4f} {r['W']:5.1f} {r['Z']:+7.2f} {r['p_value']:12.2e} {r['Holm_alpha']:10.4f} {r['Reject_H0']:>8s}")
 
     outpath = os.path.join(out_dir, "T6b_holm_bonferroni.csv")
     pd.DataFrame(rows).to_csv(outpath, index=False, encoding="utf-8-sig")
     print(f"\n  {outpath}")
+
 
 
 # ═══ Main ═══

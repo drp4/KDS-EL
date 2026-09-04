@@ -1,7 +1,7 @@
 Highlights
 
-- KDS-EL: closed-loop knowledge-guided swarm learning for feature selection.
-- MI and KER keep feature-importance knowledge inside the search loop.
-- KER re-deploys accumulated feature knowledge with a bounded refinement budget.
-- Two-Phase Weight Scheduling aligns knowledge deployment with search stages.
-- KDS-EL ranks first on 20 benchmarks with 0.9574 accuracy and 87.8 features.
+- Closed-loop knowledge-guided swarm learning for high-D feature selection.
+- MI seeding with adaptive recovery prevents stagnation and restores diversity.
+- Knowledge-guided elite refinement accumulates feature signals with decay.
+- Two-phase weight scheduling decouples feature pruning from accuracy tuning.
+- KDS-EL achieves 95.74% accuracy with only 87.8 features on 20 benchmarks.
