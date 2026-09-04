@@ -171,11 +171,71 @@ def save_fig(fig, name, out_dir):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# F8: 适应度收敛曲线 (爱斯维尔顶刊标准: 2×3 平衡网格)
+# F8_sota: SOTA 代表性单目标包装式算法收敛对比 (4×5 全量 20 数据集全景网格)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def fig_sota_convergence(out_dir):
+    """SOTA 5-algorithm convergence panorama across all 20 benchmark datasets (4x5 grid)."""
+    SOTA_ALGOS = [
+        ("KDS_EL_TwoPhase", "KDS-EL", "FINAL", "#C82423", "-", 1.5, "o", 10),
+        ("FWPSO", "FWPSO", "SOTA", "#1E88E5", "--", 1.1, "s", 5),
+        ("SaWDE", "SaWDE", "SOTA", "#00897B", "-.", 1.1, "^", 4),
+        ("MEL", "MEL", "MEL", "#7E57C2", ":", 1.1, "v", 3),
+        ("BPSO", "BPSO", "SOTA", "#475569", (0, (3, 1, 1, 1)), 1.0, "x", 2),
+    ]
+
+    display_names = {
+        "ALL_AML": "ALL-AML",
+        "madelon": "Madelon",
+    }
+
+    print("Generating SOTA 5-algorithm 4x5 convergence panorama across 20 datasets...")
+    fig, axes = plt.subplots(4, 5, figsize=(10.5, 7.2))
+    axes = axes.ravel()
+
+    for i, ds in enumerate(CORE_20):
+        ax = axes[i]
+        dname = display_names.get(ds, ds)
+
+        for key, label, dkey, color, ls, lw, marker, zorder in SOTA_ALGOS:
+            data = load_from_all(key, ds, prefix="curve")
+            if data is not None and len(data) > 0:
+                mean_c = np.mean(data, axis=0)
+                x = np.arange(len(mean_c))
+                ax.plot(x, mean_c, color=color, linestyle=ls, linewidth=lw,
+                        marker=marker, markevery=20, markersize=3.2,
+                        label=label, zorder=zorder)
+
+        ax.set_title(dname, fontsize=8.0, fontweight="bold", pad=2.5)
+        ax.set_xlabel("Iteration", fontsize=7.0, labelpad=1.5)
+        ax.set_ylabel("Fitness", fontsize=7.0, labelpad=1.5)
+        ax.set_xlim(0, 100)
+        ax.set_xticks([0, 50, 100])
+        ax.yaxis.set_major_locator(mticker.MaxNLocator(4, prune="lower"))
+        ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
+        ax.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
+
+    handles = [
+        Line2D([0], [0], color=color, linestyle=ls, linewidth=lw,
+               marker=marker, markersize=4.0, label=label)
+        for _, label, _, color, ls, lw, marker, _ in SOTA_ALGOS
+    ]
+    fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.012),
+               ncol=5, frameon=True, facecolor="#ffffff", edgecolor="#CBD5E0",
+               fontsize=8.0, handlelength=2.2, columnspacing=1.8, framealpha=0.95)
+
+    plt.tight_layout(rect=[0, 0.035, 1, 1])
+    save_fig(fig, "F8_sota_convergence", out_dir)
+    plt.close(fig)
+    print("  [OK] F8_sota_convergence")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# F5_ablation: 消融收敛曲线 (3×3 矩阵: 全局均值 + 8 代表性数据集，阐释 TPS 机制)
 # ══════════════════════════════════════════════════════════════════════════════
 
 def fig_f8_convergence(out_dir):
-    """F8: Convergence — Balanced 2×3 grid: (a) Overall Mean (20 DS) + (b)-(f) 5 representative datasets."""
+    """Ablation convergence — Balanced 3×3 grid: (a) Overall Mean (20 DS) + (b)-(i) 8 representative datasets."""
     # 8 个代表性数据集（标题保持极简纯净，N/D 已在 Table 2 详述）
     REP_DS_CONFIGS = [
         ("Adenoma", "(b) Adenoma", (0.92, 1.005)),
@@ -219,7 +279,7 @@ def fig_f8_convergence(out_dir):
         "MEL":             "MEL",
     }
 
-    print("F8: Convergence — Comprehensive 3x3 Grid (Clean Titles & Correct Limits)...")
+    print("F5/F8: Convergence — Comprehensive 3x3 Grid (Clean Titles & Correct Limits)...")
 
     # ── 1. 全局 20 数据集均值预计算 ──
     all_curves = {v: [] for v in F8_ABL_VERSIONS}
@@ -275,7 +335,7 @@ def fig_f8_convergence(out_dir):
         ax.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
         ax.axvline(x=70, color="#718096", linestyle=":", linewidth=0.8, alpha=0.8)
 
-    # ── 全局统一底部图例 (与 F14 保持一致) ──
+    # ── 全局统一底部图例 ──
     handles = [
         Line2D([0], [0], color=ABL_PLOT_COLORS[v], linestyle=ABL_PLOT_STYLES[v],
                linewidth=1.6 if "TwoPhase" in v else 1.2, marker=ABL_PLOT_MARKERS[v],
@@ -288,6 +348,7 @@ def fig_f8_convergence(out_dir):
 
     plt.tight_layout(rect=[0, 0.035, 1, 1])
     save_fig(fig, "F8_convergence", out_dir)
+    save_fig(fig, "F5_ablation_convergence", out_dir)
     plt.close(fig)
 
 
@@ -367,7 +428,13 @@ def main():
     print(f"  Final:        {FINAL_CURVES}")
     print(f"\nGenerating -> {out_dir}\n")
 
-    all_figs = {"F8": fig_f8_convergence, "F9": fig_f9_nhd}
+    all_figs = {
+        "F8": fig_sota_convergence,
+        "F8_sota": fig_sota_convergence,
+        "F5_ablation": fig_f8_convergence,
+        "F8_ablation": fig_f8_convergence,
+        "F9": fig_f9_nhd,
+    }
     requested = args.fig if args.fig else list(all_figs.keys())
 
     for key in requested:

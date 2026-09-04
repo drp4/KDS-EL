@@ -39,8 +39,8 @@
 \citation{wei2025}
 \citation{weil2025}
 \citation{chen2025}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Taxonomic and methodological comparison between KDS-EL and representative evolutionary feature selection algorithms.}}{2}{table.1}\protected@file@percent }
-\newlabel{tab:comparison_literature}{{1}{2}{Taxonomic and methodological comparison between KDS-EL and representative evolutionary feature selection algorithms}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Methodological taxonomy of evolutionary feature selection algorithms.}}{2}{table.1}\protected@file@percent }
+\newlabel{tab:comparison_literature}{{1}{2}{Methodological taxonomy of evolutionary feature selection algorithms}{table.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Related Work and Background}{2}{section.2}\protected@file@percent }
 \newlabel{sec:related}{{2}{2}{Related Work and Background}{section.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Problem formulation and search paradigms in feature selection}{2}{subsection.2.1}\protected@file@percent }
@@ -179,20 +179,20 @@
 \citation{demsar2006}
 \citation{holm1979}
 \citation{friedman1940}
-\citation{deng2025nns,miao2024}
 \@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Comparison of classification accuracy (mean $\pm $ std).}}{10}{table.4}\protected@file@percent }
 \newlabel{T4}{{4}{10}{Comparison of classification accuracy (mean $\pm $ std)}{table.4}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Comparison of the number of selected features.}}{10}{table.5}\protected@file@percent }
 \newlabel{T5}{{5}{10}{Comparison of the number of selected features}{table.5}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}Statistical significance analysis via Wilcoxon test}{10}{subsubsection.4.2.4}\protected@file@percent }
 \newlabel{sec:stats}{{4.2.4}{10}{Statistical significance analysis via Wilcoxon test}{subsubsection.4.2.4}{}}
-\citation{mel2024}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Convergence curves of fitness values on representative datasets.}}{11}{figure.5}\protected@file@percent }
-\newlabel{F8}{{5}{11}{Convergence curves of fitness values on representative datasets}{figure.5}{}}
+\citation{deng2025nns,miao2024}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Average fitness convergence curves of KDS-EL and competitor algorithms.}}{11}{figure.5}\protected@file@percent }
+\newlabel{F8}{{5}{11}{Average fitness convergence curves of KDS-EL and competitor algorithms}{figure.5}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Pairwise Wilcoxon signed-rank test results on classification accuracy.}}{11}{table.6}\protected@file@percent }
 \newlabel{T6}{{6}{11}{Pairwise Wilcoxon signed-rank test results on classification accuracy}{table.6}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.5}Performance comparison before and after algorithm improvement}{11}{subsubsection.4.2.5}\protected@file@percent }
 \newlabel{sec:improvement}{{4.2.5}{11}{Performance comparison before and after algorithm improvement}{subsubsection.4.2.5}{}}
+\citation{mel2024}
 \citation{mimpode2025}
 \@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Holm--Bonferroni procedure for pairwise statistical comparisons.}}{12}{table.7}\protected@file@percent }
 \newlabel{T6b}{{7}{12}{Holm--Bonferroni procedure for pairwise statistical comparisons}{table.7}{}}
@@ -204,24 +204,26 @@
 \newlabel{fig:ablation_radar}{{7}{12}{Radar charts of classification accuracy for different algorithm variants}{figure.7}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.6}Computational efficiency and runtime analysis}{12}{subsubsection.4.2.6}\protected@file@percent }
 \newlabel{sec:efficiency}{{4.2.6}{12}{Computational efficiency and runtime analysis}{subsubsection.4.2.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Multi-objective Pareto efficiency and runtime trade-off.}}{12}{figure.8}\protected@file@percent }
-\newlabel{F11}{{8}{12}{Multi-objective Pareto efficiency and runtime trade-off}{figure.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Parameter sensitivity analysis of KDS-EL across five key hyperparameters.}}{13}{figure.9}\protected@file@percent }
-\newlabel{fig:param_sensitivity}{{9}{13}{Parameter sensitivity analysis of KDS-EL across five key hyperparameters}{figure.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Convergence curves of classification accuracy for KDS-EL and its ablative variants: (a) overall mean across 20 benchmark datasets, and (b)--(i) eight representative datasets. The vertical dotted line at $t=70$ denotes the transition boundary from Phase 1 (dimensional pruning) to Phase 2 (fine accuracy refinement) in Two-Phase Weight Scheduling.}}{13}{figure.8}\protected@file@percent }
+\newlabel{fig:ablation_convergence}{{8}{13}{Convergence curves of classification accuracy for KDS-EL and its ablative variants: (a) overall mean across 20 benchmark datasets, and (b)--(i) eight representative datasets. The vertical dotted line at $t=70$ denotes the transition boundary from Phase 1 (dimensional pruning) to Phase 2 (fine accuracy refinement) in Two-Phase Weight Scheduling}{figure.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Multi-objective Pareto efficiency and runtime trade-off.}}{13}{figure.9}\protected@file@percent }
+\newlabel{F11}{{9}{13}{Multi-objective Pareto efficiency and runtime trade-off}{figure.9}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.7}Parameter sensitivity and robustness analysis}{13}{subsubsection.4.2.7}\protected@file@percent }
 \newlabel{sec:parametric}{{4.2.7}{13}{Parameter sensitivity and robustness analysis}{subsubsection.4.2.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Summary of parameter sensitivity analysis.}}{13}{table.9}\protected@file@percent }
 \newlabel{T8}{{9}{13}{Summary of parameter sensitivity analysis}{table.9}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.8}Discussion}{13}{subsubsection.4.2.8}\protected@file@percent }
-\newlabel{sec:discussion}{{4.2.8}{13}{Discussion}{subsubsection.4.2.8}{}}
-\newlabel{sec:ceiling}{{4.2.8}{13}{Discussion}{subsubsection.4.2.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{13}{section.5}\protected@file@percent }
-\newlabel{sec:conclusion}{{5}{13}{Conclusion}{section.5}{}}
 \bibstyle{elsarticle-num}
 \bibdata{references}
 \bibcite{lili2017}{{1}{}{{}}{{}}}
 \bibcite{guyon2003}{{2}{}{{}}{{}}}
 \bibcite{liang2025}{{3}{}{{}}{{}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Parameter sensitivity analysis of KDS-EL across five key hyperparameters.}}{14}{figure.10}\protected@file@percent }
+\newlabel{fig:param_sensitivity}{{10}{14}{Parameter sensitivity analysis of KDS-EL across five key hyperparameters}{figure.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.8}Discussion}{14}{subsubsection.4.2.8}\protected@file@percent }
+\newlabel{sec:discussion}{{4.2.8}{14}{Discussion}{subsubsection.4.2.8}{}}
+\newlabel{sec:ceiling}{{4.2.8}{14}{Discussion}{subsubsection.4.2.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{14}{section.5}\protected@file@percent }
+\newlabel{sec:conclusion}{{5}{14}{Conclusion}{section.5}{}}
 \bibcite{kohavi1997}{{4}{}{{}}{{}}}
 \bibcite{kennedy1995}{{5}{}{{}}{{}}}
 \bibcite{shi1998}{{6}{}{{}}{{}}}
