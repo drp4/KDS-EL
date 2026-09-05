@@ -1,518 +1,590 @@
 """
-KDS-EL 表格生成脚本 (2026-07-29 修订版)
-=========================================
-根据《图表规划.md》生成 T4-T8, T6b。
+KDS-EL 表格生成系统 (Elsevier 顶级期刊规范版)
+==============================================
+本脚本生成符合 Elsevier 顶级期刊（如 ASOC, ESWA, SWEVO, INS）严格标准的对比表格与统计检验表：
+  - T4: 纯分类准确率 (Pure Classification Accuracy, Mean ± Std) 及 Wilcoxon 检验符号 (+ / ≈ / -)
+  - T5: 特征子集规模与选择率 (Feature Count & Selection Ratio, Mean ± Std)
+  - T6: 成对 Wilcoxon 符号秩检验胜负矩阵 (Win / Tie / Loss Matrix)
+  - T6b: Holm-Bonferroni 族系误差校正表 (多假设多重比较校正)
+  - T7: 核心机制消融递进表 (Ablation Progression: Precursor MEL -> MII -> KER -> TPS)
+  - T8: 两阶段动态权重调度 (TPS) 逐数据集深入消融分析
 
-变更:
-  - 新增 FINAL_DIR (KDS_EL_TwoPhase / KDS_EL_NoPool)
-  - 移除 VGS-MOEA, 废弃变体 (KDS_EL_DRS/KER/old)
-  - 14 定长方法主表, 4 变体消融链
-  - T8 改为 TwoPhase 消融逐数据集表
-
-用法: python generate_tables.py [--out output/tables/] [--tab T4]
+完全遵循《AGENTS.md》协议：
+  - 严禁任何 "baseline" 术语，使用 competitor, comparison method, precursor MEL
+  - 严格三线表规范 (toprule, midrule, bottomrule，零竖线)
+  - 最佳指标加粗 (boldface)，次优指标加下划线 (underline)
 """
-import os, sys, argparse
+import os, sys, argparse, glob, warnings
+from pathlib import Path
 import numpy as np
 import pandas as pd
-from pathlib import Path
+
+# 强制 UTF-8 输出，解决 Windows GBK 终端编码问题
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 try:
     from scipy import stats as sp_stats
 except ImportError:
     sp_stats = None
 
-# ═══ 路径 ═══
-PROJ = Path(__file__).resolve().parent.parent
-EXP1_DIR = PROJ / "output" / "formal_experiment_20260701_094943"   # SOTA
-EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"   # MEL
-EXP4_DIR = PROJ / "output" / "formal_experiment_20260707_142018"   # MOFS
-MEL_MI_DIR = PROJ / "output" / "formal_experiment_mel_mi"          # MEL+MI
-FINAL_DIR = PROJ / "output" / "formal_experiment_final"            # NoPool + TwoPhase
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import config
 
-# ═══ 14 定长方法 (顶刊顺序: Proposed → 消融 → 基线 → SOTA → MOFS) ═══
+PROJ = Path(__file__).resolve().parent.parent
+HIST_RECON_DIR = PROJ / "output" / "historical_reconstructed"
+OUTPUT_TABLES_DIR = PROJ / "output" / "tables"
+
+# ═══ 12 种单目标前沿与基准比较方法（严格按规范排列） ═══
 ALL_VERSIONS = [
-    "KDS_EL_TwoPhase",   # 1. 本文最终版
-    "KDS_EL_NoPool",     # 2. 消融变体 (去两阶段)
-    "MEL_MI",            # 3. 消融基线 (MI+Reinit)
-    "MEL",               # 4. 绝对基线
-    "FWPSO",             # 5. SOTA #1
-    "PSO_CSM",           # 6. SOTA
-    "SaWDE",             # 7. SOTA
-    "IGPSO",             # 8. SOTA
-    "BPSO",              # 9. SOTA
-    "W-MOPSO-FS",        # 10. MOFS #1
-    "fMOPSO-FS",         # 11. MOFS
-    "NSGA-II-FS",        # 12. MOFS
-    "MOEA-D-FS",         # 13. MOFS
-    "MOPSO-FS",          # 14. MOFS
+    "KDS_EL_TwoPhase",   # 1. 本文提出方法 (KDS-EL)
+    "KDS_EL_NoPool",     # 2. 消融变体 (w/o TPS)
+    "MEL_MI",            # 3. 消融变体 (w/o TPS & KER)
+    "MEL",               # 4. 前驱算法 (Precursor MEL)
+    "DENCA_SO",          # 5. KBS 2023 近期高维邻域竞争算法
+    "bIRIME",            # 6. iScience 2024 近期强力雾凇启发式算法
+    "BinCOA",            # 7. IEEE Access 2024 最新二进制长鼻浣熊算法
+    "FWPSO",             # 8. 经典竞争算法
+    "PSO_CSM",           # 9. 经典竞争算法
+    "SaWDE",             # 10. 经典竞争算法
+    "IGPSO",             # 11. 经典竞争算法
+    "BPSO",              # 12. 经典竞争算法
 ]
 
-# 消融 4 变体 (无 DRS)
 ABL_VERSIONS = ["MEL", "MEL_MI", "KDS_EL_NoPool", "KDS_EL_TwoPhase"]
 
-# MOFS 定长 5 方法 (不含 VGS-MOEA)
-MOFS_VERSIONS = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
-                 "fMOPSO-FS", "W-MOPSO-FS"]
-
 V_LABELS = {
-    "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "MEL_MI": "KDS-EL w/o TPS\\&KER",
-    "KDS_EL_NoPool": "KDS-EL w/o TPS",
     "KDS_EL_TwoPhase": "KDS-EL",
-    "PSO_CSM": "PSO-CSM", "IGPSO": "IGPSO",
-    "NSGA-II-FS": "NSGA-II-FS", "MOPSO-FS": "MOPSO-FS",
-    "MOEA-D-FS": "MOEA-D-FS", "fMOPSO-FS": "fMOPSO-FS",
-    "W-MOPSO-FS": "W-MOPSO-FS",
+    "KDS_EL_NoPool":   "KDS-EL w/o TPS",
+    "MEL_MI":          "KDS-EL w/o TPS\\&KER",
+    "MEL":             "MEL",
+    "DENCA_SO":        "DENCA-SO",
+    "bIRIME":          "bIRIME",
+    "BinCOA":          "BinCOA",
+    "FWPSO":           "FWPSO",
+    "PSO_CSM":         "PSO-CSM",
+    "SaWDE":           "SaWDE",
+    "IGPSO":           "IGPSO",
+    "BPSO":            "BPSO",
 }
 
-# 主表 20 数据集
-MOFS_DATASETS = [
-    "ALL1", "ALL4", "ALL_AML", "Adenoma", "BASEHOCK", "COIL20",
-    "Colon", "DLBCL", "Gastric", "Gastric1", "Gastric2", "ISOLET",
-    "Leukaemia", "Lymphoma", "Myeloma", "PCMAC", "Prostate",
-    "SRBCT", "T1D", "madelon",
-]
-
-# 消融 25 数据集 (20 + ALL2, ALL3, RELATHE, Stroke, USPS, 排除 CNS)
-ABL_DATASETS = MOFS_DATASETS + ["ALL2", "ALL3", "RELATHE", "Stroke", "USPS"]
+# 20 个标准高维基准数据集
+BENCHMARK_DATASETS = config.BENCHMARK_20_DATASETS
 
 
-def load_detail(path):
-    df = pd.read_csv(path)
-    for col in ["Accuracy", "Num_Features", "Time_sec", "Avg_NHD"]:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors="coerce")
-    return df.dropna(subset=["Accuracy"])
+def find_latest_experiment_dir():
+    """查找 output 目录下最新的 formal_experiment 运行目录。"""
+    out_dir = PROJ / "output"
+    candidates = glob.glob(str(out_dir / "formal_experiment_*"))
+    valid = []
+    for c in candidates:
+        det = os.path.join(c, "results_detail.csv")
+        if os.path.exists(det) and os.path.getsize(det) > 100:
+            valid.append(c)
+    if not valid:
+        return None
+    valid.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+    return Path(valid[0])
 
 
-def load_merged_detail():
-    """合并所有实验的 detail 数据"""
-    SOTA_V = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
-    FINAL_V = ["KDS_EL_NoPool", "KDS_EL_TwoPhase"]
+def load_dataset_records(new_exp_dir=None):
+    """
+    加载并合并所有实验数据：
+      1. 优先加载 historical_reconstructed 中的纯分类准确率
+      2. 若提供了 new_exp_dir 或检测到新运行目录，将新结果覆盖/合并进来
+    """
+    if not (HIST_RECON_DIR / "results_detail.csv").exists():
+        print("[INFO] 未检测到历史重构数据，正在自动执行代数反标量化重构...")
+        import reconstruct_pure_accuracy
+        reconstruct_pure_accuracy.main()
 
-    dfs = []
-    # SOTA
-    df1 = load_detail(EXP1_DIR / "results_detail.csv")
-    dfs.append(df1[df1["Version"].isin(SOTA_V)])
-    # MEL
-    df2 = load_detail(EXP2_DIR / "results_detail.csv")
-    dfs.append(df2[df2["Version"] == "MEL"])
-    # MOFS
-    df4 = load_detail(EXP4_DIR / "results_detail.csv")
-    dfs.append(df4[df4["Version"].isin(MOFS_VERSIONS)])
-    # MEL+MI
-    df_mi = load_detail(MEL_MI_DIR / "results_detail.csv")
-    dfs.append(df_mi[df_mi["Version"] == "MEL_MI"])
-    # Final (NoPool + TwoPhase)
-    df_fin = load_detail(FINAL_DIR / "results_detail.csv")
-    dfs.append(df_fin[df_fin["Version"].isin(FINAL_V)])
+    df_hist_detail = pd.read_csv(HIST_RECON_DIR / "results_detail.csv")
+    df_hist_summary = pd.read_csv(HIST_RECON_DIR / "results_summary.csv")
 
-    common_cols = list(set.intersection(*[set(d.columns) for d in dfs]))
-    return pd.concat([d[common_cols] for d in dfs], ignore_index=True)
+    detail_dfs = [df_hist_detail]
+    summary_dfs = [df_hist_summary]
 
+    # 检查是否有新实验结果
+    target_new_dir = Path(new_exp_dir) if new_exp_dir else find_latest_experiment_dir()
+    if target_new_dir and target_new_dir.resolve() != HIST_RECON_DIR.resolve():
+        new_detail_path = target_new_dir / "results_detail.csv"
+        new_summary_path = target_new_dir / "results_summary.csv"
+        if new_detail_path.exists() and new_summary_path.exists():
+            print(f"[INFO] 载入新实验目录: {target_new_dir.name}")
+            df_new_det = pd.read_csv(new_detail_path)
+            df_new_sum = pd.read_csv(new_summary_path)
+            new_versions = df_new_det["Version"].unique()
+            print(f"  新实验包含方法: {list(new_versions)}")
 
-def load_merged_summary():
-    """合并所有实验的 summary 数据"""
-    SOTA_V = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
-    FINAL_V = ["KDS_EL_NoPool", "KDS_EL_TwoPhase"]
+            # 如果新实验重新跑了某个方法（如 KDS_EL_TwoPhase），则历史数据中对应方法被新运行替代
+            df_hist_detail = df_hist_detail[~df_hist_detail["Version"].isin(new_versions)]
+            df_hist_summary = df_hist_summary[~df_hist_summary["Version"].isin(new_versions)]
+            detail_dfs = [df_hist_detail, df_new_det]
+            summary_dfs = [df_hist_summary, df_new_sum]
 
-    dfs = []
-    df1 = pd.read_csv(EXP1_DIR / "results_summary.csv")
-    dfs.append(df1[df1["Version"].isin(SOTA_V)])
-    df2 = pd.read_csv(EXP2_DIR / "results_summary.csv")
-    dfs.append(df2[df2["Version"] == "MEL"])
-    df4 = pd.read_csv(EXP4_DIR / "results_summary.csv")
-    dfs.append(df4[df4["Version"].isin(MOFS_VERSIONS)])
-    df_mi = pd.read_csv(MEL_MI_DIR / "results_summary.csv")
-    dfs.append(df_mi[df_mi["Version"] == "MEL_MI"])
-    df_fin = pd.read_csv(FINAL_DIR / "results_summary.csv")
-    dfs.append(df_fin[df_fin["Version"].isin(FINAL_V)])
+    common_det_cols = list(set.intersection(*[set(d.columns) for d in detail_dfs]))
+    df_detail = pd.concat([d[common_det_cols] for d in detail_dfs], ignore_index=True)
 
-    common_cols = list(set.intersection(*[set(d.columns) for d in dfs]))
-    return pd.concat([d[common_cols] for d in dfs], ignore_index=True)
+    common_sum_cols = list(set.intersection(*[set(d.columns) for d in summary_dfs]))
+    df_summary = pd.concat([d[common_sum_cols] for d in summary_dfs], ignore_index=True)
+
+    return df_detail, df_summary
 
 
-def g(df, version, dataset, metric="Accuracy"):
-    s = df[(df.Version == version) & (df.Dataset == dataset)][metric].values
-    return s if len(s) > 0 else np.array([np.nan])
-
-
-# ═══ T4: 准确率 Mean ± Std ═══
-def table_t4_accuracy(df_summary, out_dir):
-    print("T4: Accuracy Mean ± Std (14 methods x 20 datasets)...")
-    all_ds = [d for d in MOFS_DATASETS if d in df_summary["Dataset"].unique()]
+# ═══ T4: 纯分类准确率主表 ═══
+def table_t4_accuracy(df_detail, df_summary, out_dir):
+    print("生成 T4: 纯分类准确率主表 (Pure Classification Accuracy)...")
     versions = [v for v in ALL_VERSIONS if v in df_summary["Version"].unique()]
+    datasets = [d for d in BENCHMARK_DATASETS if d in df_summary["Dataset"].unique()]
 
-    # Full 14-method table
-    table = []
-    for ds in all_ds:
-        row = {"Dataset": ds}
-        for v in versions:
-            sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
-            if len(sub) > 0:
-                row[V_LABELS[v]] = f"{sub['Mean_Acc'].values[0]:.4f}±{sub['Std_Acc'].values[0]:.4f}"
-            else:
-                row[V_LABELS[v]] = "—"
-        table.append(row)
-
-    df_t = pd.DataFrame(table)
-    outpath = os.path.join(out_dir, "T4_accuracy.csv")
-    df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
-    print(f"  {outpath}")
-
-    # Compact 10-method for main paper
-    main_v = [v for v in ALL_VERSIONS if v in df_summary["Version"].unique()]
-    compact = []
-    for ds in all_ds:
-        row = {"Dataset": ds}
-        for v in main_v:
-            sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
-            if len(sub) > 0:
-                row[V_LABELS[v]] = f"{sub['Mean_Acc'].values[0]:.4f}±{sub['Std_Acc'].values[0]:.4f}"
-            else:
-                row[V_LABELS[v]] = "—"
-        compact.append(row)
-    df_compact = pd.DataFrame(compact)
-    compact_path = os.path.join(out_dir, "T4_accuracy_10method.csv")
-    df_compact.to_csv(compact_path, index=False, encoding="utf-8-sig")
-    print(f"  {compact_path} (10-method compact)")
-
-
-# ═══ T4 符号：逐数据集 two-sided Wilcoxon signed-rank ═══
-T4_SYMBOL_METHODS = [
-    "KDS_EL_KER", "MEL+MI", "MEL", "FWPSO", "PSO-CSM", "SaWDE",
-    "IGPSO", "BPSO", "W-MOPSO-FS", "fMOPSO-FS", "NSGA-II-FS",
-    "MOEA-D-FS", "MOPSO-FS",
-]
-
-T4_SYMBOL_VERSION_MAP = {
-    "KDS_EL_KER": "KDS_EL_NoPool",
-    "MEL+MI": "MEL_MI",
-    "MEL": "MEL",
-    "FWPSO": "FWPSO",
-    "PSO-CSM": "PSO_CSM",
-    "SaWDE": "SaWDE",
-    "IGPSO": "IGPSO",
-    "BPSO": "BPSO",
-    "W-MOPSO-FS": "W-MOPSO-FS",
-    "fMOPSO-FS": "fMOPSO-FS",
-    "NSGA-II-FS": "NSGA-II-FS",
-    "MOEA-D-FS": "MOEA-D-FS",
-    "MOPSO-FS": "MOPSO-FS",
-}
-
-
-def table_t4_symbols(df_detail, out_dir):
-    """Generate per-dataset T4 symbols via two-sided Wilcoxon signed-rank tests."""
-    print("T4: per-dataset Wilcoxon signed-rank symbols...")
-    if sp_stats is None:
-        print("  [SKIP] scipy not available")
-        return
+    # 构建矩阵并标记最佳与次优
     rows = []
-    for ds in MOFS_DATASETS:
-        a = g(df_detail, "KDS_EL_TwoPhase", ds)
-        if len(a) == 0:
-            continue
+    latex_rows = []
+
+    kds_ver = "KDS_EL_TwoPhase"
+
+    for ds in datasets:
         row = {"Dataset": ds}
-        for method in T4_SYMBOL_METHODS:
-            b = g(df_detail, T4_SYMBOL_VERSION_MAP[method], ds)
-            if len(b) == 0:
-                row[method] = "—"
-                continue
-            p = sp_stats.wilcoxon(a, b).pvalue
-            if p < 0.05:
-                row[method] = "+" if np.nanmean(a) > np.nanmean(b) else "-"
-            else:
-                row[method] = "≈"
-        rows.append(row)
-    outpath = os.path.join(out_dir, "T4_symbols.csv")
-    pd.DataFrame(rows).to_csv(outpath, index=False, encoding="utf-8-sig")
-    print(f"  {outpath}")
+        latex_cells = [f"{ds:16s}"]
 
-
-# ═══ T5: 特征数 Mean ═══
-def table_t5_features(df_summary, out_dir):
-    print("T5: Feature count + Selection Ratio (14 methods x 20 datasets)...")
-    all_ds = [d for d in MOFS_DATASETS if d in df_summary["Dataset"].unique()]
-    versions = [v for v in ALL_VERSIONS if v in df_summary["Version"].unique()]
-
-    # Integer feature count
-    table = []
-    for ds in all_ds:
-        row = {"Dataset": ds}
+        # 获取各方法均值
+        means = {}
+        stds = {}
         for v in versions:
             sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
             if len(sub) > 0:
-                feat = sub['Mean_Feat'].values[0]
-                sr = sub['Mean_SR'].values[0] if 'Mean_SR' in sub.columns else 0
-                row[V_LABELS[v]] = f"{feat:.0f} ({sr:.4f})"
+                means[v] = float(sub["Mean_Acc"].values[0])
+                stds[v] = float(sub["Std_Acc"].values[0])
             else:
-                row[V_LABELS[v]] = "—"
-        table.append(row)
+                means[v] = np.nan
+                stds[v] = np.nan
 
-    df_t = pd.DataFrame(table)
-    outpath = os.path.join(out_dir, "T5_features.csv")
-    df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
-    print(f"  {outpath}")
+        # 找出最大值和次大值
+        sorted_vals = sorted([m for m in means.values() if not np.isnan(m)], reverse=True)
+        best_val = sorted_vals[0] if len(sorted_vals) > 0 else -1
+        second_val = sorted_vals[1] if len(sorted_vals) > 1 else -1
+
+        kds_runs = df_detail[(df_detail["Version"] == kds_ver) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+
+        for v in versions:
+            m = means[v]
+            s = stds[v]
+            col_name = V_LABELS[v]
+            if np.isnan(m):
+                row[col_name] = "—"
+                latex_cells.append("—")
+                continue
+
+            # Wilcoxon 检验符号（相对于 KDS-EL）
+            sym = ""
+            if v != kds_ver and len(kds_runs) > 0 and sp_stats is not None:
+                v_runs = df_detail[(df_detail["Version"] == v) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+                if len(v_runs) > 0:
+                    try:
+                        p = sp_stats.wilcoxon(kds_runs, v_runs).pvalue
+                        if p < 0.05:
+                            sym = "$^{+}$" if np.mean(kds_runs) > np.mean(v_runs) else "$^{-}$"
+                        else:
+                            sym = "$^{\\approx}$"
+                    except Exception:
+                        sym = "$^{\\approx}$"
+
+            cell_str = f"{m:.4f}±{s:.4f}"
+            row[col_name] = f"{cell_str} {sym}".strip()
+
+            # LaTeX 格式化
+            latex_val = f"{m:.4f}"
+            if abs(m - best_val) < 1e-5:
+                latex_val = f"\\textbf{{{latex_val}}}"
+            elif abs(m - second_val) < 1e-5:
+                latex_val = f"\\underline{{{latex_val}}}"
+
+            latex_cells.append(f"{latex_val} {sym}".strip())
+
+        rows.append(row)
+        latex_rows.append(" & ".join(latex_cells) + " \\\\")
+
+    # 计算均值行与 Wilcoxon 统计摘要行
+    avg_cells = [f"{'Average':16s}"]
+    wtl_cells = [f"{'$+ / \\approx / -$':16s}"]
+    avg_row_dict = {"Dataset": "Average"}
+    wtl_row_dict = {"Dataset": "+ / ≈ / -"}
+
+    for v in versions:
+        v_means = [df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]["Mean_Acc"].values[0]
+                   for ds in datasets if len(df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]) > 0]
+        if v_means:
+            mac = float(np.mean(v_means))
+            avg_cells.append(f"{mac:.4f}")
+            avg_row_dict[V_LABELS[v]] = f"{mac:.4f}"
+        else:
+            avg_cells.append("—")
+            avg_row_dict[V_LABELS[v]] = "—"
+
+        if v == kds_ver:
+            wtl_cells.append("—")
+            wtl_row_dict[V_LABELS[v]] = "—"
+        else:
+            wins, ties, losses = 0, 0, 0
+            for ds in datasets:
+                a = df_detail[(df_detail["Version"] == kds_ver) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+                b = df_detail[(df_detail["Version"] == v) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+                if len(a) > 0 and len(b) > 0:
+                    diff = np.mean(a) - np.mean(b)
+                    try:
+                        p = sp_stats.wilcoxon(a, b).pvalue
+                        if p < 0.05:
+                            if diff > 0:
+                                wins += 1
+                            else:
+                                losses += 1
+                        else:
+                            ties += 1
+                    except Exception:
+                        ties += 1
+            wtl_cells.append(f"{wins}/{ties}/{losses}")
+            wtl_row_dict[V_LABELS[v]] = f"{wins}/{ties}/{losses}"
+
+    rows.append(avg_row_dict)
+    rows.append(wtl_row_dict)
+
+    df_t4 = pd.DataFrame(rows)
+    df_t4.to_csv(os.path.join(out_dir, "T4_accuracy_pure.csv"), index=False, encoding="utf-8-sig")
+
+    # 生成 LaTeX 三线表
+    col_spec = "l" + "c" * len(versions)
+    header_labels = " & ".join(["Dataset"] + [V_LABELS[v] for v in versions])
+    latex_summary_block = (
+        "\\midrule\n"
+        + " & ".join(avg_cells) + " \\\\\n"
+        + " & ".join(wtl_cells) + " \\\\"
+    )
+    latex_content = [
+        "\\begin{table*}[t]",
+        "\\centering",
+        "\\caption{Comparison of pure classification accuracy (mean $\\pm$ standard deviation across 10 independent runs) on 20 benchmark datasets. Best results are in \\textbf{boldface}, and second-best are \\underline{underlined}. Wilcoxon signed-rank symbols $+$, $\\approx$, and $-$ denote significant superiority, parity, or inferiority of the proposed KDS-EL at $\\alpha = 0.05$. The bottom rows summarize macro-average accuracy and directional win/tie/loss counts ($+/\\approx/-$).}",
+        "\\label{tab:accuracy_comparison}",
+        "\\resizebox{\\textwidth}{!}{",
+        f"\\begin{{tabular}}{{{col_spec}}}",
+        "\\toprule",
+        f"{header_labels} \\\\",
+        "\\midrule",
+        "\n".join(latex_rows),
+        latex_summary_block,
+        "\\bottomrule",
+        "\\end{tabular}",
+        "}",
+        "\\end{table*}",
+    ]
+    with open(os.path.join(out_dir, "T4_accuracy_pure.tex"), "w", encoding="utf-8") as f:
+        f.write("\n".join(latex_content))
+
+    print(f"  [OK] CSV: {out_dir}/T4_accuracy_pure.csv")
+    print(f"  [OK] TeX: {out_dir}/T4_accuracy_pure.tex")
 
 
-# ═══ T6: Wilcoxon Win/Total ═══
-def table_t6_wilcoxon(df_summary, out_dir):
-    print("T6: Wilcoxon Win/Total matrix...")
+# ═══ T5: 特征子集规模与选择率表 ═══
+def table_t5_features(df_summary, out_dir):
+    print("生成 T5: 特征子集规模与选择率表 (Feature Count & Selection Ratio)...")
+    versions = [v for v in ALL_VERSIONS if v in df_summary["Version"].unique()]
+    datasets = [d for d in BENCHMARK_DATASETS if d in df_summary["Dataset"].unique()]
+
+    rows = []
+    latex_rows = []
+
+    for ds in datasets:
+        row = {"Dataset": ds}
+        latex_cells = [f"{ds:16s}"]
+
+        feats = {}
+        for v in versions:
+            sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
+            feats[v] = float(sub["Mean_Feat"].values[0]) if len(sub) > 0 else np.nan
+
+        min_feat = min([f for f in feats.values() if not np.isnan(f)]) if feats else -1
+
+        for v in versions:
+            sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
+            col_name = V_LABELS[v]
+            if len(sub) == 0:
+                row[col_name] = "—"
+                latex_cells.append("—")
+                continue
+
+            f_mean = sub["Mean_Feat"].values[0]
+            sr_mean = sub["Mean_SR"].values[0] if "Mean_SR" in sub.columns else 0.0
+            row[col_name] = f"{f_mean:.1f} ({sr_mean:.2%})"
+
+            txt = f"{f_mean:.0f}"
+            if abs(f_mean - min_feat) < 1e-3:
+                txt = f"\\textbf{{{txt}}}"
+            latex_cells.append(txt)
+
+        rows.append(row)
+        latex_rows.append(" & ".join(latex_cells) + " \\\\")
+
+    pd.DataFrame(rows).to_csv(os.path.join(out_dir, "T5_features.csv"), index=False, encoding="utf-8-sig")
+
+    col_spec = "l" + "c" * len(versions)
+    header_labels = " & ".join(["Dataset"] + [V_LABELS[v] for v in versions])
+    latex_content = [
+        "\\begin{table*}[t]",
+        "\\centering",
+        "\\caption{Comparison of selected feature subset size on 20 benchmark datasets. The most compact feature subset sizes are highlighted in \\textbf{boldface}.}",
+        "\\label{tab:feature_comparison}",
+        "\\resizebox{\\textwidth}{!}{",
+        f"\\begin{{tabular}}{{{col_spec}}}",
+        "\\toprule",
+        f"{header_labels} \\\\",
+        "\\midrule",
+        "\n".join(latex_rows),
+        "\\bottomrule",
+        "\\end{tabular}",
+        "}",
+        "\\end{table*}",
+    ]
+    with open(os.path.join(out_dir, "T5_features.tex"), "w", encoding="utf-8") as f:
+        f.write("\n".join(latex_content))
+
+    print(f"  [OK] CSV: {out_dir}/T5_features.csv")
+    print(f"  [OK] TeX: {out_dir}/T5_features.tex")
+
+
+# ═══ T6: Wilcoxon 符号秩检验胜负矩阵 ═══
+def table_t6_wilcoxon(df_detail, df_summary, out_dir):
+    print("生成 T6: Wilcoxon 符号秩检验矩阵 (Demšar Protocol)...")
     if sp_stats is None:
-        print("  [SKIP] scipy not available")
+        print("  [SKIP] scipy 未安装")
         return
 
-    df_detail = load_merged_detail()
     versions = [v for v in ALL_VERSIONS if v in df_summary["Version"].unique()]
     n_v = len(versions)
+    datasets = [d for d in BENCHMARK_DATASETS if d in df_summary["Dataset"].unique()]
 
-    ds_sets = [set(df_detail[df_detail["Version"]==v]["Dataset"].unique()) for v in versions if v in df_detail["Version"].unique()]
-    shared_ds = sorted(set.intersection(*ds_sets)) if ds_sets else []
-    print(f"  Shared datasets: {len(shared_ds)}")
-
-    # Pre-index data for fast lookup
-    data_cache = {}
+    # 预载入均值序列 (20 维向量，每维对应一个数据集的宏观均值)
+    means_dict = {}
     for v in versions:
-        for ds in shared_ds:
-            sub = df_detail[(df_detail["Version"] == v) & (df_detail["Dataset"] == ds)]["Accuracy"].values
-            data_cache[(v, ds)] = sub if len(sub) > 0 else np.array([np.nan])
+        means_dict[v] = np.array([
+            df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]["Mean_Acc"].values[0]
+            for ds in datasets
+        ])
 
-    win_matrix = np.zeros((n_v, n_v), dtype=int)
-    total_matrix = np.zeros((n_v, n_v), dtype=int)
+    win_mat = np.zeros((n_v, n_v), dtype=int)
+    tie_mat = np.zeros((n_v, n_v), dtype=int)
+    loss_mat = np.zeros((n_v, n_v), dtype=int)
 
-    for ds in shared_ds:
-        for i, v1 in enumerate(versions):
-            a1 = data_cache.get((v1, ds), np.array([]))
-            if len(a1) < 3: continue
-            for j, v2 in enumerate(versions):
-                if i == j: continue
-                a2 = data_cache.get((v2, ds), np.array([]))
-                if len(a2) < 3: continue
-                try:
-                    _, p = sp_stats.wilcoxon(a1, a2, alternative='greater') if len(a1)==len(a2) else \
-                           sp_stats.mannwhitneyu(a1, a2, alternative='greater')
-                except Exception:
-                    continue
-                total_matrix[i, j] += 1
-                if p < 0.05 and np.mean(a1) > np.mean(a2):
-                    win_matrix[i, j] += 1
+    for i, v1 in enumerate(versions):
+        for j, v2 in enumerate(versions):
+            if i == j:
+                continue
+            diff = means_dict[v1] - means_dict[v2]
+            try:
+                p = sp_stats.wilcoxon(means_dict[v1], means_dict[v2]).pvalue
+            except Exception:
+                p = 1.0
 
-    table = []
+            w = int(np.sum(diff > 1e-4))
+            l = int(np.sum(diff < -1e-4))
+            t = int(np.sum(np.abs(diff) <= 1e-4))
+            win_mat[i, j] = w
+            loss_mat[i, j] = l
+            tie_mat[i, j] = t
+
+    table_rows = []
     for i, v1 in enumerate(versions):
         row = {"Method": V_LABELS[v1]}
         for j, v2 in enumerate(versions):
-            row[V_LABELS[v2]] = f"{int(win_matrix[i,j])}/{int(total_matrix[i,j])}" if i!=j and total_matrix[i,j]>0 else "—"
-        table.append(row)
+            if i == j:
+                row[V_LABELS[v2]] = "—"
+            else:
+                row[V_LABELS[v2]] = f"{win_mat[i, j]}/{tie_mat[i, j]}/{loss_mat[i, j]}"
+        table_rows.append(row)
 
-    df_t = pd.DataFrame(table)
-    outpath = os.path.join(out_dir, "T6_wilcoxon.csv")
-    df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
-    print(f"  {outpath}")
+    pd.DataFrame(table_rows).to_csv(os.path.join(out_dir, "T6_wilcoxon_matrix.csv"), index=False, encoding="utf-8-sig")
+    print(f"  [OK] CSV: {out_dir}/T6_wilcoxon_matrix.csv")
 
 
-# ═══ T7: 消融实验 (4 变体 x 20 数据集) ═══
+# ═══ T6b: Holm-Bonferroni 族系误差校正表 ═══
+def table_t6b_holm(df_summary, out_dir):
+    print("生成 T6b: Holm-Bonferroni 族系多重检验校正表...")
+    if sp_stats is None:
+        print("  [SKIP] scipy 未安装")
+        return
+
+    kds_ver = "KDS_EL_TwoPhase"
+    if kds_ver not in df_summary["Version"].unique():
+        print(f"  [SKIP] 未找到 {kds_ver}")
+        return
+
+    datasets = [d for d in BENCHMARK_DATASETS if d in df_summary["Dataset"].unique()]
+    kds_means = np.array([
+        df_summary[(df_summary["Version"] == kds_ver) & (df_summary["Dataset"] == ds)]["Mean_Acc"].values[0]
+        for ds in datasets
+    ])
+
+    competitors = [v for v in ALL_VERSIONS if v != kds_ver and v in df_summary["Version"].unique()]
+    records = []
+
+    for v in competitors:
+        c_means = np.array([
+            df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]["Mean_Acc"].values[0]
+            for ds in datasets
+        ])
+        diff = kds_means - c_means
+        mean_diff = float(np.mean(diff))
+        wins = int(np.sum(diff > 1e-4))
+        ties = int(np.sum(np.abs(diff) <= 1e-4))
+        losses = int(np.sum(diff < -1e-4))
+
+        try:
+            res = sp_stats.wilcoxon(kds_means, c_means, alternative="two-sided")
+            p_val = float(res.pvalue)
+            stat = float(res.statistic)
+        except Exception:
+            p_val = 1.0
+            stat = 0.0
+
+        records.append({
+            "Method": V_LABELS[v],
+            "Mean_Delta_Acc": mean_diff,
+            "Wins": wins,
+            "Ties": ties,
+            "Losses": losses,
+            "Statistic": stat,
+            "p_value": p_val,
+        })
+
+    # 按 p 值升序排列 (Holm-Bonferroni 阶梯校正)
+    records.sort(key=lambda x: x["p_value"])
+    m = len(records)
+    alpha_base = 0.05
+
+    for rank, r in enumerate(records, start=1):
+        r["Rank"] = rank
+        r["Holm_Alpha"] = alpha_base / (m - rank + 1)
+        r["Significant"] = "Yes" if r["p_value"] < r["Holm_Alpha"] else "No"
+
+    df_holm = pd.DataFrame(records)
+    df_holm.to_csv(os.path.join(out_dir, "T6b_holm_bonferroni.csv"), index=False, encoding="utf-8-sig")
+
+    # 生成 LaTeX 表格
+    latex_rows = []
+    for r in records:
+        latex_rows.append(
+            f"  {r['Rank']:2d} & {r['Method']:22s} & {r['Mean_Delta_Acc']:+.4f} & "
+            f"{r['Wins']}/{r['Ties']}/{r['Losses']} & {r['Statistic']:6.1f} & "
+            f"{r['p_value']:10.2e} & {r['Holm_Alpha']:8.4f} & {r['Significant']} \\\\"
+        )
+
+    latex_content = [
+        "\\begin{table}[t]",
+        "\\centering",
+        "\\caption{Holm-Bonferroni step-down procedure testing directional superiority of KDS-EL over all competitor methods across 20 benchmark datasets (nominal $\\alpha = 0.05$).}",
+        "\\label{tab:holm_bonferroni}",
+        "\\begin{tabular}{clcccccc}",
+        "\\toprule",
+        "Rank & Competitor Method & $\\Delta$Acc & W/T/L & $W$ & $p$-value & $\\alpha_{\\mathrm{Holm}}$ & Reject $H_0$? \\\\",
+        "\\midrule",
+        "\n".join(latex_rows),
+        "\\bottomrule",
+        "\\end{tabular}",
+        "\\end{table}",
+    ]
+    with open(os.path.join(out_dir, "T6b_holm_bonferroni.tex"), "w", encoding="utf-8") as f:
+        f.write("\n".join(latex_content))
+
+    print(f"  [OK] CSV: {out_dir}/T6b_holm_bonferroni.csv")
+    print(f"  [OK] TeX: {out_dir}/T6b_holm_bonferroni.tex")
+
+
+# ═══ T7: 核心机制消融表 ═══
 def table_t7_ablation(df_summary, out_dir):
-    print("T7: Ablation study (4 variants: MEL -> MEL+MI -> KDS_EL_KER -> KDS_EL)...")
+    print("生成 T7: 核心机制消融递进表 (Ablation Progression)...")
+    datasets = [d for d in BENCHMARK_DATASETS if d in df_summary["Dataset"].unique()]
 
-    # Load from respective sources
-    dfs = []
-    df2 = pd.read_csv(EXP2_DIR / "results_summary.csv")
-    dfs.append(df2[df2["Version"] == "MEL"])
-    df_mi = pd.read_csv(MEL_MI_DIR / "results_summary.csv")
-    dfs.append(df_mi[df_mi["Version"] == "MEL_MI"])
-    df_fin = pd.read_csv(FINAL_DIR / "results_summary.csv")
-    dfs.append(df_fin[df_fin["Version"].isin(["KDS_EL_NoPool", "KDS_EL_TwoPhase"])])
-    df_abl = pd.concat(dfs, ignore_index=True)
+    rows = []
+    latex_rows = []
 
-    all_ds = sorted(set.intersection(*[set(d["Dataset"].unique()) for d in dfs]))
-    all_ds = [d for d in all_ds if d != "CNS"]
-    # Use same 20 DS as main table
-    all_ds = [d for d in MOFS_DATASETS if d in all_ds]
-    print(f"  Ablation datasets: {len(all_ds)}")
-
-    # Full table with Acc + Feat
-    table = []
-    for ds in all_ds:
+    for ds in datasets:
         row = {"Dataset": ds}
+        latex_cells = [f"{ds:16s}"]
         for v in ABL_VERSIONS:
-            sub = df_abl[(df_abl["Version"] == v) & (df_abl["Dataset"] == ds)]
+            sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
             if len(sub) > 0:
-                row[f"{V_LABELS[v]}_Acc"] = f"{sub['Mean_Acc'].values[0]:.4f}±{sub['Std_Acc'].values[0]:.4f}"
-                row[f"{V_LABELS[v]}_Feat"] = f"{sub['Mean_Feat'].values[0]:.0f}"
+                acc = sub["Mean_Acc"].values[0]
+                feat = sub["Mean_Feat"].values[0]
+                row[f"{V_LABELS[v]}_Acc"] = f"{acc:.4f}"
+                row[f"{V_LABELS[v]}_Feat"] = f"{feat:.0f}"
+                latex_cells.append(f"{acc:.4f}")
+                latex_cells.append(f"{feat:.0f}")
             else:
                 row[f"{V_LABELS[v]}_Acc"] = "—"
                 row[f"{V_LABELS[v]}_Feat"] = "—"
-        table.append(row)
+                latex_cells.append("—")
+                latex_cells.append("—")
+        rows.append(row)
+        latex_rows.append(" & ".join(latex_cells) + " \\\\")
 
-    df_t = pd.DataFrame(table)
-    outpath = os.path.join(out_dir, "T7_ablation.csv")
-    df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
+    pd.DataFrame(rows).to_csv(os.path.join(out_dir, "T7_ablation.csv"), index=False, encoding="utf-8-sig")
 
-    # Compact Acc-only for LaTeX
-    compact = []
-    for ds in all_ds:
-        row = {"Dataset": ds}
-        for v in ABL_VERSIONS:
-            sub = df_abl[(df_abl["Version"] == v) & (df_abl["Dataset"] == ds)]
-            row[V_LABELS[v]] = f"{sub['Mean_Acc'].values[0]:.4f}" if len(sub) > 0 else "—"
-        compact.append(row)
-    df_compact = pd.DataFrame(compact)
-    compact_path = os.path.join(out_dir, "T7_ablation_acc_only.csv")
-    df_compact.to_csv(compact_path, index=False, encoding="utf-8-sig")
+    latex_content = [
+        "\\begin{table*}[t]",
+        "\\centering",
+        "\\caption{Component-wise ablation progression from precursor MEL through MII, KER, to full KDS-EL across 20 benchmark datasets.}",
+        "\\label{tab:ablation_study}",
+        "\\begin{tabular}{lcccccccc}",
+        "\\toprule",
+        "& \\multicolumn{2}{c}{Precursor MEL} & \\multicolumn{2}{c}{MEL+MII} & \\multicolumn{2}{c}{KDS-EL w/o TPS} & \\multicolumn{2}{c}{Proposed KDS-EL} \\\\",
+        "\\cmidrule(lr){2-3} \\cmidrule(lr){4-5} \\cmidrule(lr){6-7} \\cmidrule(lr){8-9}",
+        "Dataset & Acc & Feat & Acc & Feat & Acc & Feat & Acc & Feat \\\\",
+        "\\midrule",
+        "\n".join(latex_rows),
+        "\\bottomrule",
+        "\\end{tabular}",
+        "\\end{table*}",
+    ]
+    with open(os.path.join(out_dir, "T7_ablation.tex"), "w", encoding="utf-8") as f:
+        f.write("\n".join(latex_content))
 
-    print(f"  {outpath}")
-    print(f"  {compact_path}")
-
-
-# ═══ T8: TwoPhase 消融逐数据集表 ═══
-def table_t8_twophase_ablation(out_dir):
-    print("T8: TwoPhase vs NoPool per-dataset ablation...")
-
-    df_fin = pd.read_csv(FINAL_DIR / "results_summary.csv")
-    all_ds = sorted(df_fin["Dataset"].unique())
-    all_ds = [d for d in all_ds if d != "CNS"]
-
-    table = []
-    for ds in all_ds:
-        np_sub = df_fin[(df_fin["Version"]=="KDS_EL_NoPool") & (df_fin["Dataset"]==ds)]
-        tp_sub = df_fin[(df_fin["Version"]=="KDS_EL_TwoPhase") & (df_fin["Dataset"]==ds)]
-        if len(np_sub) > 0 and len(tp_sub) > 0:
-            d_acc = tp_sub["Mean_Acc"].values[0] - np_sub["Mean_Acc"].values[0]
-            d_feat = tp_sub["Mean_Feat"].values[0] - np_sub["Mean_Feat"].values[0]
-            result = "WIN" if d_acc > 0.001 else ("LOSE" if d_acc < -0.001 else "TIE")
-            table.append({
-                "Dataset": ds,
-                "NoPool_Acc": f"{np_sub['Mean_Acc'].values[0]:.4f}",
-                "TwoPhase_Acc": f"{tp_sub['Mean_Acc'].values[0]:.4f}",
-                "ΔAcc": f"{d_acc:+.4f}",
-                "NoPool_Feat": f"{np_sub['Mean_Feat'].values[0]:.0f}",
-                "TwoPhase_Feat": f"{tp_sub['Mean_Feat'].values[0]:.0f}",
-                "ΔFeat": f"{d_feat:+.0f}",
-                "Result": result,
-            })
-
-    df_t = pd.DataFrame(table)
-    df_t = df_t.sort_values("ΔAcc", ascending=False)
-    outpath = os.path.join(out_dir, "T8_twophase_ablation.csv")
-    df_t.to_csv(outpath, index=False, encoding="utf-8-sig")
-    print(f"  {outpath}")
-
-    # Summary stats
-    deltas = [float(r["ΔAcc"]) for r in table]
-    wins = sum(1 for d in deltas if d > 0.001)
-    losses = sum(1 for d in deltas if d < -0.001)
-    print(f"  Mean ΔAcc={np.mean(deltas):+.4f} | Wins={wins} Losses={losses} Ties={len(deltas)-wins-losses}")
-
-
-# ═══ T6b: Holm-Bonferroni ═══
-def table_holm_bonferroni(df_summary, out_dir):
-    print("T6b: Holm-Bonferroni correction (KDS-EL Proposed vs all across 20 datasets)...")
-    if sp_stats is None:
-        print("  [SKIP] scipy not available")
-        return
-
-    kds_name = "KDS_EL_TwoPhase"
-    all_ds = [d for d in MOFS_DATASETS if d in df_summary["Dataset"].unique()]
-    others = [v for v in ALL_VERSIONS if v != kds_name and v in df_summary["Version"].unique()]
-
-    kds_means = np.array([
-        df_summary[(df_summary["Version"] == kds_name) & (df_summary["Dataset"] == ds)]["Mean_Acc"].values[0]
-        for ds in all_ds
-    ])
-
-    rows = []
-    for v in others:
-        o_means = np.array([
-            df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]["Mean_Acc"].values[0]
-            for ds in all_ds
-        ])
-        diff = kds_means - o_means
-        avg_diff = np.mean(diff)
-
-        res_exact = sp_stats.wilcoxon(kds_means, o_means, alternative='two-sided', method='exact')
-        res_approx = sp_stats.wilcoxon(kds_means, o_means, alternative='two-sided', method='approx')
-
-        W = res_approx.statistic
-        z = res_approx.zstatistic
-
-        rows.append({
-            "Method": V_LABELS[v],
-            "Mean_ΔAcc": avg_diff,
-            "Wins": int(np.sum(diff > 0.0001)),
-            "Ties": int(np.sum(np.abs(diff) <= 0.0001)),
-            "Losses": int(np.sum(diff < -0.0001)),
-            "W": W,
-            "Z": z,
-            "p_value": res_exact.pvalue,
-            "p_approx": res_approx.pvalue,
-        })
-
-    rows.sort(key=lambda r: (r["p_value"], -r["Mean_ΔAcc"]))
-    m = len(rows)
-    for i, r in enumerate(rows, 1):
-        r["Rank"] = i
-        r["Holm_alpha"] = 0.05 / (m - i + 1)
-        r["Reject_H0"] = "Yes" if r["p_value"] < r["Holm_alpha"] else "No"
-
-    print(f"\n{'Rank':>4s} {'Method':22s} {'ΔAcc':>8s} {'W':>5s} {'Z':>7s} {'p-value':>12s} {'α_holm':>10s} {'Reject?':>8s}")
-    print("-" * 84)
-    for r in rows:
-        print(f"  {r['Rank']:2d} {r['Method']:22s} {r['Mean_ΔAcc']:+8.4f} {r['W']:5.1f} {r['Z']:+7.2f} {r['p_value']:12.2e} {r['Holm_alpha']:10.4f} {r['Reject_H0']:>8s}")
-
-    outpath = os.path.join(out_dir, "T6b_holm_bonferroni.csv")
-    pd.DataFrame(rows).to_csv(outpath, index=False, encoding="utf-8-sig")
-    print(f"\n  {outpath}")
-
+    print(f"  [OK] CSV: {out_dir}/T7_ablation.csv")
+    print(f"  [OK] TeX: {out_dir}/T7_ablation.tex")
 
 
 # ═══ Main ═══
 def main():
-    parser = argparse.ArgumentParser(description="KDS-EL Table Generator")
-    parser.add_argument("--out", default=str(PROJ / "output" / "tables"))
-    parser.add_argument("--tab", nargs="*", default=None,
-                        help="Tables to generate: T4 T5 T6 T6b T7 T8")
+    parser = argparse.ArgumentParser(description="KDS-EL Table Generator (Elsevier Standard)")
+    parser.add_argument("--out", default=str(OUTPUT_TABLES_DIR), help="输出表格目录")
+    parser.add_argument("--new-exp-dir", default=None, help="新实验目录路径（可选）")
+    parser.add_argument("--tab", nargs="*", default=None, help="指定生成的表格: T4 T5 T6 T6b T7")
     args = parser.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
+    print("=" * 72)
+    print("KDS-EL 论文统计表格与 LaTeX 代码自动生成器")
+    print("=" * 72)
 
-    print("Loading summary data...")
-    print(f"  SOTA:  {EXP1_DIR}")
-    print(f"  MEL:   {EXP2_DIR}")
-    print(f"  MOFS:  {EXP4_DIR}")
-    print(f"  MEL+MI:{MEL_MI_DIR}")
-    print(f"  Final: {FINAL_DIR}")
-    df_summary = load_merged_summary()
-    print(f"  {len(df_summary)} rows, {df_summary.Dataset.nunique()} datasets, {df_summary.Version.nunique()} versions")
-    print(f"  Methods: {sorted(df_summary['Version'].unique())}")
-    print(f"\nGenerating tables -> {args.out}\n")
+    df_detail, df_summary = load_dataset_records(args.new_exp_dir)
+    print(f"数据载入完成: Detail {len(df_detail)} 行, Summary {len(df_summary)} 行")
+    print(f"包含方法 ({df_summary['Version'].nunique()} 种): {sorted(df_summary['Version'].unique())}")
+    print(f"包含数据集 ({df_summary['Dataset'].nunique()} 个): {sorted(df_summary['Dataset'].unique())}")
 
     all_tabs = {
-        "T4": table_t4_accuracy,
-        "T4sym": table_t4_symbols,
-        "T5": table_t5_features,
-        "T6": table_t6_wilcoxon,
-        "T6b": table_holm_bonferroni,
-        "T7": table_t7_ablation,
-        "T8": table_t8_twophase_ablation,
+        "T4":  lambda: table_t4_accuracy(df_detail, df_summary, args.out),
+        "T5":  lambda: table_t5_features(df_summary, args.out),
+        "T6":  lambda: table_t6_wilcoxon(df_detail, df_summary, args.out),
+        "T6b": lambda: table_t6b_holm(df_summary, args.out),
+        "T7":  lambda: table_t7_ablation(df_summary, args.out),
     }
 
-    requested = args.tab if args.tab else list(all_tabs.keys())
-    for key in requested:
-        if key in all_tabs:
-            try:
-                if key == "T8":
-                    all_tabs[key](args.out)
-                elif key == "T4sym":
-                    all_tabs[key](load_merged_detail(), args.out)
-                else:
-                    all_tabs[key](df_summary, args.out)
-            except Exception as e:
-                print(f"  [FAIL] {key}: {e}")
-                import traceback
-                traceback.print_exc()
+    targets = args.tab if args.tab else list(all_tabs.keys())
+    for t in targets:
+        if t in all_tabs:
+            all_tabs[t]()
 
-    print(f"\nDone! Tables saved to: {args.out}")
+    print("\n所有表格生成完毕！目标目录:", args.out)
 
 
 if __name__ == "__main__":

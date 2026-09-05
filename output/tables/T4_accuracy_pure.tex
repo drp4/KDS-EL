@@ -1,0 +1,36 @@
+\begin{table*}[t]
+\centering
+\caption{Comparison of pure classification accuracy (mean $\pm$ standard deviation across 10 independent runs) on 20 benchmark datasets. Best results are in \textbf{boldface}, and second-best are \underline{underlined}. Wilcoxon signed-rank symbols $+$, $\approx$, and $-$ denote significant superiority, parity, or inferiority of the proposed KDS-EL at $\alpha = 0.05$. The bottom rows summarize macro-average accuracy and directional win/tie/loss counts ($+/\approx/-$).}
+\label{tab:accuracy_comparison}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lccccccccc}
+\toprule
+Dataset & KDS-EL & KDS-EL w/o TPS & KDS-EL w/o TPS\&KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO \\
+\midrule
+ALL1             & \textbf{1.0000} & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & 0.9995 $^{+}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ \\
+ALL4             & \textbf{0.9480} & \underline{0.9367} $^{\approx}$ & 0.9356 $^{+}$ & 0.8656 $^{+}$ & 0.8580 $^{+}$ & 0.8308 $^{+}$ & 0.8250 $^{+}$ & 0.7918 $^{+}$ & 0.7846 $^{+}$ \\
+ALL_AML          & \textbf{1.0000} & \textbf{1.0000} $^{\approx}$ & 0.9947 $^{\approx}$ & 0.9857 $^{+}$ & 0.9914 $^{+}$ & 0.9868 $^{+}$ & 0.9857 $^{+}$ & 0.9857 $^{+}$ & 0.9871 $^{+}$ \\
+Adenoma          & \textbf{1.0000} & \textbf{1.0000} $^{\approx}$ & 0.9971 $^{\approx}$ & 0.9714 $^{+}$ & 0.9800 $^{+}$ & 0.9767 $^{+}$ & 0.9714 $^{+}$ & 0.9714 $^{+}$ & 0.9714 $^{+}$ \\
+BASEHOCK         & \underline{0.9045} & 0.8933 $^{+}$ & 0.8627 $^{+}$ & 0.8802 $^{+}$ & 0.9045 $^{\approx}$ & 0.8739 $^{+}$ & \textbf{0.9170} $^{\approx}$ & 0.8743 $^{+}$ & 0.8994 $^{\approx}$ \\
+COIL20           & \textbf{1.0000} & 0.9976 $^{+}$ & 0.9955 $^{+}$ & 0.9944 $^{+}$ & 0.9980 $^{+}$ & 0.9939 $^{+}$ & \underline{0.9988} $^{+}$ & 0.9951 $^{+}$ & 0.9967 $^{+}$ \\
+Colon            & \textbf{0.9452} & \underline{0.9294} $^{+}$ & 0.9182 $^{+}$ & 0.8777 $^{+}$ & 0.9268 $^{+}$ & 0.8914 $^{+}$ & 0.9086 $^{+}$ & 0.8733 $^{+}$ & 0.8885 $^{+}$ \\
+DLBCL            & \underline{0.9999} & \textbf{1.0000} $^{\approx}$ & 0.9987 $^{\approx}$ & 0.9859 $^{+}$ & 0.9935 $^{\approx}$ & 0.9966 $^{+}$ & 0.9924 $^{+}$ & 0.9884 $^{+}$ & 0.9899 $^{+}$ \\
+Gastric          & \textbf{0.9763} & 0.9646 $^{+}$ & \underline{0.9723} $^{\approx}$ & 0.9015 $^{+}$ & 0.9154 $^{+}$ & 0.8886 $^{+}$ & 0.8385 $^{+}$ & 0.8646 $^{+}$ & 0.8369 $^{+}$ \\
+Gastric1         & \textbf{0.9779} & \underline{0.9719} $^{+}$ & 0.9636 $^{+}$ & 0.9602 $^{+}$ & 0.9623 $^{+}$ & 0.9588 $^{+}$ & 0.9623 $^{+}$ & 0.9588 $^{+}$ & 0.9581 $^{+}$ \\
+Gastric2         & \textbf{0.9982} & \underline{0.9936} $^{+}$ & 0.9880 $^{+}$ & 0.9822 $^{+}$ & 0.9887 $^{+}$ & 0.9830 $^{+}$ & 0.9815 $^{+}$ & 0.9837 $^{+}$ & 0.9815 $^{+}$ \\
+ISOLET           & 0.8880 & 0.8955 $^{-}$ & 0.8801 $^{+}$ & 0.8783 $^{+}$ & \underline{0.9000} $^{-}$ & 0.8775 $^{\approx}$ & \textbf{0.9164} $^{-}$ & 0.8648 $^{+}$ & 0.8942 $^{-}$ \\
+Leukaemia        & \textbf{1.0000} & \textbf{1.0000} $^{\approx}$ & 0.9960 $^{\approx}$ & 0.9857 $^{+}$ & 0.9957 $^{\approx}$ & 0.9895 $^{+}$ & 0.9857 $^{+}$ & 0.9871 $^{+}$ & 0.9857 $^{+}$ \\
+Lymphoma         & \textbf{1.0000} & \textbf{1.0000} $^{\approx}$ & 0.9867 $^{+}$ & 0.8978 $^{+}$ & 0.9422 $^{+}$ & 0.9263 $^{+}$ & 0.9044 $^{+}$ & 0.8978 $^{+}$ & 0.8933 $^{+}$ \\
+Myeloma          & \textbf{0.9083} & \underline{0.8889} $^{+}$ & 0.8710 $^{+}$ & 0.8466 $^{+}$ & 0.8722 $^{+}$ & 0.8552 $^{+}$ & 0.8757 $^{+}$ & 0.8367 $^{+}$ & 0.8536 $^{+}$ \\
+PCMAC            & \textbf{0.8592} & 0.8360 $^{+}$ & 0.8000 $^{+}$ & 0.8085 $^{+}$ & 0.8301 $^{+}$ & 0.8038 $^{+}$ & \underline{0.8498} $^{\approx}$ & 0.7985 $^{+}$ & 0.8310 $^{+}$ \\
+Prostate         & \textbf{0.9670} & 0.9552 $^{+}$ & \underline{0.9600} $^{+}$ & 0.8732 $^{+}$ & 0.8930 $^{+}$ & 0.8715 $^{+}$ & 0.8940 $^{+}$ & 0.8603 $^{+}$ & 0.8863 $^{+}$ \\
+SRBCT            & \textbf{1.0000} & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & 0.9682 $^{+}$ & 0.9865 $^{+}$ & 0.9837 $^{+}$ & 0.9976 $^{\approx}$ & 0.9709 $^{+}$ & 0.9953 $^{\approx}$ \\
+T1D              & \textbf{0.8449} & 0.8043 $^{+}$ & \underline{0.8054} $^{+}$ & 0.7558 $^{+}$ & 0.7446 $^{+}$ & 0.7204 $^{+}$ & 0.7296 $^{+}$ & 0.7060 $^{+}$ & 0.7285 $^{+}$ \\
+madelon          & \textbf{0.8731} & \underline{0.8567} $^{\approx}$ & 0.7710 $^{+}$ & 0.7667 $^{+}$ & 0.8008 $^{+}$ & 0.7621 $^{+}$ & 0.8255 $^{+}$ & 0.7599 $^{+}$ & 0.7882 $^{+}$ \\
+\midrule
+Average          & 0.9545 & 0.9462 & 0.9348 & 0.9093 & 0.9242 & 0.9085 & 0.9180 & 0.8985 & 0.9075 \\
+$+ / \approx / -$ & — & 10/9/1 & 13/7/0 & 19/1/0 & 15/4/1 & 19/1/0 & 15/4/1 & 19/1/0 & 16/3/1 \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}

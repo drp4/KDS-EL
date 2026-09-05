@@ -1,21 +1,33 @@
-\begin{table}[!htb]
+\begin{table*}[t]
 \centering
-\caption{Results of subtractive component contribution analysis across 20 benchmark datasets.}
-\label{T7}
-\small
-\setlength{\tabcolsep}{6pt}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lccc@{}}
+\caption{Component-wise ablation progression from precursor MEL through MII, KER, to full KDS-EL across 20 benchmark datasets.}
+\label{tab:ablation_study}
+\begin{tabular}{lcccccccc}
 \toprule
-Variant & Accuracy & Features & $\Delta$Acc (pp) \\
+& \multicolumn{2}{c}{Precursor MEL} & \multicolumn{2}{c}{MEL+MII} & \multicolumn{2}{c}{KDS-EL w/o TPS} & \multicolumn{2}{c}{Proposed KDS-EL} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+Dataset & Acc & Feat & Acc & Feat & Acc & Feat & Acc & Feat \\
 \midrule
-KDS-EL & \textbf{0.9574} & \textbf{87.8} & -- \\
-KDS-EL w/o TPS & 0.9488 & 121.7 & -0.86 \\
-KDS-EL w/o TPS\&KER & 0.9325 & 290.6 & -1.63 \\
-MEL & 0.8868 & 2722.2 & -4.58 \\
+ALL1             & 1.0000 & 4248 & 1.0000 & 55 & 1.0000 & 55 & 1.0000 & 39 \\
+ALL4             & 0.8656 & 1082 & 0.9356 & 64 & 0.9367 & 152 & 0.9480 & 124 \\
+ALL_AML          & 0.9857 & 2369 & 0.9947 & 473 & 1.0000 & 70 & 1.0000 & 67 \\
+Adenoma          & 0.9714 & 2483 & 0.9971 & 120 & 1.0000 & 33 & 1.0000 & 66 \\
+BASEHOCK         & 0.8802 & 1965 & 0.8627 & 812 & 0.8933 & 208 & 0.9045 & 134 \\
+COIL20           & 0.9944 & 323 & 0.9955 & 348 & 0.9976 & 60 & 1.0000 & 84 \\
+Colon            & 0.8777 & 702 & 0.9182 & 105 & 0.9294 & 35 & 0.9452 & 14 \\
+DLBCL            & 0.9859 & 2784 & 0.9987 & 615 & 1.0000 & 52 & 0.9999 & 64 \\
+Gastric          & 0.9015 & 3604 & 0.9723 & 62 & 0.9646 & 97 & 0.9763 & 100 \\
+Gastric1         & 0.9602 & 7393 & 0.9636 & 678 & 0.9719 & 217 & 0.9779 & 31 \\
+Gastric2         & 0.9822 & 7084 & 0.9880 & 444 & 0.9936 & 140 & 0.9982 & 83 \\
+ISOLET           & 0.8783 & 250 & 0.8801 & 225 & 0.8955 & 100 & 0.8880 & 60 \\
+Leukaemia        & 0.9857 & 2409 & 0.9960 & 488 & 1.0000 & 47 & 1.0000 & 66 \\
+Lymphoma         & 0.8978 & 1404 & 0.9867 & 50 & 1.0000 & 23 & 1.0000 & 45 \\
+Myeloma          & 0.8466 & 2137 & 0.8710 & 175 & 0.8889 & 365 & 0.9083 & 250 \\
+PCMAC            & 0.8085 & 1339 & 0.8000 & 637 & 0.8360 & 329 & 0.8592 & 91 \\
+Prostate         & 0.8732 & 5058 & 0.9600 & 27 & 0.9552 & 23 & 0.9670 & 26 \\
+SRBCT            & 0.9682 & 906 & 1.0000 & 129 & 1.0000 & 36 & 1.0000 & 64 \\
+T1D              & 0.7558 & 6715 & 0.8054 & 174 & 0.8043 & 366 & 0.8449 & 330 \\
+madelon          & 0.7667 & 190 & 0.7710 & 130 & 0.8567 & 26 & 0.8731 & 18 \\
 \bottomrule
-\end{tabular*}
-\vspace{2pt}
-\par\raggedright\footnotesize
-\textit{Note}: $\Delta$Acc indicates the marginal accuracy degradation when stripping the corresponding component. Bold values denote the best performance.
-\end{table}
+\end{tabular}
+\end{table*}

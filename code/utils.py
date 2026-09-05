@@ -185,6 +185,82 @@ def jFitness(X, y, mask, opts):
            + opts["ws"][1] * (nf / X.shape[1])
 
 
+def evaluate_subset(X, y, mask, opts=None):
+    """
+    统一外部后验评价器。
+    对给定的特征掩码执行分层 5 折交叉验证，独立计算并输出：
+      - accuracy: 纯分类准确率 (全体样本折外预测正确率)
+      - error_rate: 纯分类错误率 (1.0 - accuracy)
+      - num_features: 激活特征数
+      - feature_ratio: 激活特征比例 (nf / D)
+      - scalar_fitness: 统一参考标量化适应度 (0.90 * error_rate + 0.10 * feature_ratio)
+      - y_pred: 全体样本折外预测结果向量
+      - y_true: 真实标签向量
+    """
+    if opts is None:
+        opts = {}
+    k = opts.get("k", 3)
+    cv_splits = opts.get("cv_splits", 5)
+    cv_shuffle = opts.get("cv_shuffle", True)
+    cv_random_state = opts.get("cv_random_state", 42)
+    ws = opts.get("ws", [0.9, 0.1])
+
+    mask = np.asarray(mask, dtype=bool)
+    nf = int(mask.sum())
+    total_d = X.shape[1]
+    sr = float(nf / total_d) if total_d > 0 else 0.0
+    N_samples = len(y)
+    y_arr = np.asarray(y)
+
+    if nf == 0:
+        return {
+            "accuracy": 0.0,
+            "error_rate": 1.0,
+            "num_features": 0,
+            "feature_ratio": 0.0,
+            "scalar_fitness": 1.0,
+            "y_pred": np.zeros(N_samples, dtype=int),
+            "y_true": y_arr.copy(),
+        }
+
+    X_sub = X[:, mask]
+    min_class = int(np.min(np.bincount(y_arr)))
+    n_splits = min(cv_splits, min_class)
+    if n_splits < 2:
+        return {
+            "accuracy": 0.0,
+            "error_rate": 1.0,
+            "num_features": nf,
+            "feature_ratio": sr,
+            "scalar_fitness": 1.0,
+            "y_pred": np.zeros(N_samples, dtype=int),
+            "y_true": y_arr.copy(),
+        }
+
+    skf = StratifiedKFold(n_splits=n_splits, shuffle=cv_shuffle, random_state=cv_random_state)
+    y_pred = np.zeros(N_samples, dtype=int)
+    for tr, te in skf.split(X_sub, y_arr):
+        actual_k = min(k, len(tr))
+        clf = KNeighborsClassifier(n_neighbors=actual_k)
+        clf.fit(X_sub[tr], y_arr[tr])
+        y_pred[te] = clf.predict(X_sub[te])
+
+    acc = float(np.mean(y_pred == y_arr))
+    err = 1.0 - acc
+    fit = float(ws[0] * err + ws[1] * sr)
+
+    return {
+        "accuracy": acc,
+        "error_rate": err,
+        "num_features": nf,
+        "feature_ratio": sr,
+        "scalar_fitness": fit,
+        "y_pred": y_pred,
+        "y_true": y_arr.copy(),
+    }
+
+
+
 # ════════════════════════════════════════════════════════════════════════
 # 3) 种群多样性指标 (NHD)
 # ════════════════════════════════════════════════════════════════════════

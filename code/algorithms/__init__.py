@@ -21,6 +21,9 @@ from .moead_fs import run_MOEA_D_FS
 from .fmopso_fs import run_fMOPSO_FS
 from .vgs_moea import run_VGS_MOEA
 from .wmopso_fs import run_W_MOPSO_FS
+from .denca_so import run_DENCA_SO
+from .birime import run_bIRIME
+from .bincoa import run_BinCOA
 
 RUNNERS = {
     "BPSO":            run_BPSO,
@@ -35,6 +38,9 @@ RUNNERS = {
     "KDS_EL":          run_KDS_EL,
     "PSO_CSM":         run_PSO_CSM,
     "IGPSO":           run_IGPSO,
+    "DENCA_SO":        run_DENCA_SO,
+    "bIRIME":          run_bIRIME,
+    "BinCOA":          run_BinCOA,
     "NSGA-II-FS":      run_NSGA_II_FS,
     "MOPSO-FS":        run_MOPSO_FS,
     "MOEA-D-FS":       run_MOEA_D_FS,

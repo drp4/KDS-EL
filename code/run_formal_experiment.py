@@ -27,24 +27,28 @@ if sys.platform == "win32":
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config
-from utils import load_dataset
+from utils import load_dataset, evaluate_subset
 from algorithms import RUNNERS
 
 # ── 实验配置 ─────────────────────────────────────────────────────────────
 NUM_RUNS = 10          # 对标 MEL: numRun = 10
 
-ABLATION_METHODS = ["MEL", "MEL_MI", "KDS_EL_DRS", "KDS_EL_KER", "KDS_EL_NoPool", "KDS_EL_TwoPhase", "KDS_EL"]
-SOTA_METHODS     = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
+ABLATION_METHODS = ["KDS_EL_TwoPhase", "KDS_EL_NoPool", "MEL_MI", "MEL"]
+SOTA_METHODS     = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO", "DENCA_SO", "bIRIME", "BinCOA"]
+NEW_METHODS      = ["DENCA_SO", "bIRIME", "BinCOA"]
+RERUN_METHODS    = ["KDS_EL_TwoPhase", "DENCA_SO", "bIRIME", "BinCOA"]
 MOFS_METHODS     = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
                     "fMOPSO-FS", "VGS-MOEA", "W-MOPSO-FS"]
-ALL_METHODS      = ABLATION_METHODS + SOTA_METHODS + MOFS_METHODS
+ALL_METHODS      = ABLATION_METHODS + SOTA_METHODS
 
-# CSV 字段
+# CSV 字段（严格解耦纯分类准确率、纯分类错误率与搜索标量适应度）
 FIELDS_DETAIL  = ["Version", "Dataset", "Run",
-                  "Accuracy", "fitG", "Num_Features", "SR",
-                  "Avg_NHD", "Best_Iter", "Time_sec"]
+                  "Accuracy", "Error_Rate", "fitG", "Scalar_Fitness",
+                  "Num_Features", "SR", "Avg_NHD", "Best_Iter", "Time_sec"]
 FIELDS_SUMMARY = ["Version", "Dataset",
                   "Mean_Acc", "Std_Acc",
+                  "Mean_Err", "Std_Err",
+                  "Mean_Scalar_Fit", "Std_Scalar_Fit",
                   "Mean_Feat", "Std_Feat",
                   "Mean_SR", "Std_SR",
                   "Mean_NHD", "Std_NHD",
@@ -54,26 +58,32 @@ FIELDS_SUMMARY = ["Version", "Dataset",
 
 def compute_stats(rows):
     """从多次运行结果计算 Mean ± Std（ddof=1）。"""
-    accs   = np.array([r["Accuracy"]     for r in rows])
+    accs   = np.array([r["Accuracy"] for r in rows])
+    errs   = np.array([r.get("Error_Rate", 1.0 - r["Accuracy"]) for r in rows])
+    sfits  = np.array([r.get("Scalar_Fitness", r.get("fitG", 1.0 - r["Accuracy"])) for r in rows])
     feats  = np.array([r["Num_Features"] for r in rows])
-    srs    = np.array([r["SR"]           for r in rows])
-    nhds   = np.array([r["Avg_NHD"]      for r in rows])
-    iters  = np.array([r["Best_Iter"]    for r in rows])
-    times  = np.array([r["Time_sec"]     for r in rows])
+    srs    = np.array([r.get("SR", 0.0) for r in rows])
+    nhds   = np.array([r.get("Avg_NHD", 0.0) for r in rows])
+    iters  = np.array([r.get("Best_Iter", 0) for r in rows])
+    times  = np.array([r.get("Time_sec", 0.0) for r in rows])
     n = len(rows)
     return {
-        "Mean_Acc":       round(float(np.mean(accs)),  6),
-        "Std_Acc":        round(float(np.std(accs, ddof=1)), 6) if n >= 2 else 0.0,
-        "Mean_Feat":      round(float(np.mean(feats)), 1),
-        "Std_Feat":       round(float(np.std(feats, ddof=1)), 1) if n >= 2 else 0.0,
-        "Mean_SR":        round(float(np.mean(srs)),   6),
-        "Std_SR":         round(float(np.std(srs, ddof=1)), 6) if n >= 2 else 0.0,
-        "Mean_NHD":       round(float(np.mean(nhds)),  6),
-        "Std_NHD":        round(float(np.std(nhds, ddof=1)), 6) if n >= 2 else 0.0,
-        "Mean_Best_Iter": round(float(np.mean(iters)), 1),
-        "Std_Best_Iter":  round(float(np.std(iters, ddof=1)), 1) if n >= 2 else 0.0,
-        "Mean_Time":      round(float(np.mean(times)), 1),
-        "Std_Time":       round(float(np.std(times, ddof=1)), 1) if n >= 2 else 0.0,
+        "Mean_Acc":        round(float(np.mean(accs)),  6),
+        "Std_Acc":         round(float(np.std(accs, ddof=1)), 6) if n >= 2 else 0.0,
+        "Mean_Err":        round(float(np.mean(errs)),  6),
+        "Std_Err":         round(float(np.std(errs, ddof=1)), 6) if n >= 2 else 0.0,
+        "Mean_Scalar_Fit": round(float(np.mean(sfits)), 6),
+        "Std_Scalar_Fit":  round(float(np.std(sfits, ddof=1)), 6) if n >= 2 else 0.0,
+        "Mean_Feat":       round(float(np.mean(feats)), 1),
+        "Std_Feat":        round(float(np.std(feats, ddof=1)), 1) if n >= 2 else 0.0,
+        "Mean_SR":         round(float(np.mean(srs)),   6),
+        "Std_SR":          round(float(np.std(srs, ddof=1)), 6) if n >= 2 else 0.0,
+        "Mean_NHD":        round(float(np.mean(nhds)),  6),
+        "Std_NHD":         round(float(np.std(nhds, ddof=1)), 6) if n >= 2 else 0.0,
+        "Mean_Best_Iter":  round(float(np.mean(iters)), 1),
+        "Std_Best_Iter":   round(float(np.std(iters, ddof=1)), 1) if n >= 2 else 0.0,
+        "Mean_Time":       round(float(np.mean(times)), 1),
+        "Std_Time":        round(float(np.std(times, ddof=1)), 1) if n >= 2 else 0.0,
     }
 
 
@@ -86,19 +96,21 @@ def load_completed(csv_path):
     if not os.path.exists(csv_path):
         return done, rows
     try:
-        with open(csv_path, "r", newline="") as f:
+        with open(csv_path, "r", newline="", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for r in reader:
                 key = (r["Version"], r["Dataset"], int(r["Run"]))
                 done.add(key)
                 # 恢复数值类型以便后续计算
-                r["Accuracy"]     = float(r["Accuracy"])
-                r["fitG"]         = float(r.get("fitG", 1 - r["Accuracy"]))
-                r["Num_Features"] = int(r["Num_Features"])
-                r["SR"]           = float(r.get("SR", 0.0))
-                r["Avg_NHD"]      = float(r["Avg_NHD"])
-                r["Best_Iter"]    = int(r.get("Best_Iter", 0))
-                r["Time_sec"]     = float(r["Time_sec"])
+                r["Accuracy"]       = float(r["Accuracy"])
+                r["Error_Rate"]     = float(r.get("Error_Rate", 1.0 - r["Accuracy"]))
+                r["fitG"]           = float(r.get("fitG", 1.0 - r["Accuracy"]))
+                r["Scalar_Fitness"] = float(r.get("Scalar_Fitness", r["fitG"]))
+                r["Num_Features"]   = int(r["Num_Features"])
+                r["SR"]             = float(r.get("SR", 0.0))
+                r["Avg_NHD"]        = float(r.get("Avg_NHD", 0.0))
+                r["Best_Iter"]      = int(r.get("Best_Iter", 0))
+                r["Time_sec"]       = float(r.get("Time_sec", 0.0))
                 rows.append(r)
     except Exception as e:
         print(f"  [WARN] 读取已有结果失败: {e}，视为新实验")
@@ -154,20 +166,24 @@ def main():
     args = parser.parse_args()
 
     # ── 方法列表 ─────────────────────────────────────────────────────
-    method_scope = args.methods
+    method_scope = args.methods.lower()
     if method_scope == "all":
         methods = ALL_METHODS
     elif method_scope == "ablation":
         methods = ABLATION_METHODS
     elif method_scope == "sota":
-        methods = SOTA_METHODS  # KDS_EL 复用消融结果，不重跑
+        methods = SOTA_METHODS
+    elif method_scope in ["new_sota", "new"]:
+        methods = NEW_METHODS
+    elif method_scope == "rerun":
+        methods = RERUN_METHODS
     elif method_scope == "mofs":
         methods = MOFS_METHODS
     else:
         methods = [m.strip() for m in args.methods.split(",") if m.strip()]
 
     # 验证方法名
-    valid = set(ALL_METHODS)
+    valid = set(ALL_METHODS) | set(MOFS_METHODS)
     for m in methods:
         if m not in valid:
             print(f"[ERROR] 未知方法: {m}，可选: {sorted(valid)}")
@@ -194,11 +210,8 @@ def main():
     os.makedirs(curves_dir, exist_ok=True)
 
     # ── 数据集扫描 ───────────────────────────────────────────────────
-    if args.datasets == "all":
-        if method_scope == "mofs":
-            candidates = config.MOFS_DATASETS
-        else:
-            candidates = config.ALL_DATASETS
+    if args.datasets in ["all", "20", "benchmark"]:
+        candidates = config.BENCHMARK_20_DATASETS
     else:
         candidates = [d.strip() for d in args.datasets.split(",") if d.strip()]
 
@@ -331,26 +344,39 @@ def main():
                 res = runner_fn(X, y, opts)
                 elapsed = time() - t0
 
-                fitG = float(res["fitG"])
-                acc  = 1.0 - fitG
-                nf   = int(res["nf"])
-                d    = X.shape[1]
-                sr   = nf / d if d > 0 else 0.0
-                nhd  = res.get("nhd_curve", np.zeros(opts["T"] + 1))
-                avg_nhd = float(np.mean(nhd[1:])) if np.any(nhd[1:]) else 0.0
-                best_iter = int(np.argmin(res["curve"]))
+                # 统一外部后验评价器：重算真实分类准确率与各项指标
+                if "mask" in res and res["mask"] is not None:
+                    mask = np.asarray(res["mask"], dtype=bool)
+                elif "Gbest" in res:
+                    mask = (np.asarray(res["Gbest"]) > opts.get("thres", 0.6)).astype(bool)
+                else:
+                    raise ValueError(f"算法 {method_name} 未返回特征掩码 mask 或 Gbest")
+
+                eval_res = evaluate_subset(X, y, mask, opts)
+
+                acc        = float(eval_res["accuracy"])
+                err        = float(eval_res["error_rate"])
+                fitG       = float(res["fitG"])  # 算法内部搜索记录的最优适应度
+                scalar_fit = float(eval_res["scalar_fitness"])
+                nf         = int(eval_res["num_features"])
+                sr         = float(eval_res["feature_ratio"])
+                nhd        = res.get("nhd_curve", np.zeros(opts["T"] + 1))
+                avg_nhd    = float(np.mean(nhd[1:])) if np.any(nhd[1:]) else 0.0
+                best_iter  = int(np.argmin(res["curve"]))
 
                 row = {
-                    "Version":      method_name,
-                    "Dataset":      ds_name,
-                    "Run":          run_idx,
-                    "Accuracy":     round(acc, 6),
-                    "fitG":         round(fitG, 6),
-                    "Num_Features": nf,
-                    "SR":           round(sr, 6),
-                    "Avg_NHD":      round(avg_nhd, 6),
-                    "Best_Iter":    best_iter,
-                    "Time_sec":     round(elapsed, 2),
+                    "Version":        method_name,
+                    "Dataset":        ds_name,
+                    "Run":            run_idx,
+                    "Accuracy":       round(acc, 6),
+                    "Error_Rate":     round(err, 6),
+                    "fitG":           round(fitG, 6),
+                    "Scalar_Fitness": round(scalar_fit, 6),
+                    "Num_Features":   nf,
+                    "SR":             round(sr, 6),
+                    "Avg_NHD":        round(avg_nhd, 6),
+                    "Best_Iter":      best_iter,
+                    "Time_sec":       round(elapsed, 2),
                 }
                 run_rows_this_ds.append(row)
                 all_rows.append(row)
@@ -359,17 +385,29 @@ def main():
                 # ⚡ 立即写入 CSV（断点安全：中断最多丢失当前这一条）
                 write_detail_row(csv_detail_path, row)
 
-                # 保存曲线
+                # 保存特征掩码与样本级预测向量
+                masks_dir = os.path.join(out_dir, "masks")
+                os.makedirs(masks_dir, exist_ok=True)
+                np.save(os.path.join(masks_dir, f"mask_{method_name}_{ds_name}_run{run_idx}.npy"), mask)
+
+                preds_dir = os.path.join(out_dir, "predictions")
+                os.makedirs(preds_dir, exist_ok=True)
+                np.savez_compressed(
+                    os.path.join(preds_dir, f"pred_{method_name}_{ds_name}_run{run_idx}.npz"),
+                    y_pred=eval_res["y_pred"],
+                    y_true=eval_res["y_true"]
+                )
+
+                # 保存收敛曲线
                 np.save(os.path.join(curves_dir,
                     f"curve_{method_name}_{ds_name}_run{run_idx}.npy"), res["curve"])
                 np.save(os.path.join(curves_dir,
                     f"nhd_{method_name}_{ds_name}_run{run_idx}.npy"), nhd)
 
                 completed += 1
-                print(f"  [{completed:4d}/{total_runs}] {method_name:10s}  {ds_name:20s}  "
-                      f"run={run_idx:2d}  Acc={acc:.4f}  Feat={nf:4d}({sr:.1%})  "
-                      f"Best={best_iter:3d}  "
-                      f"NHD={avg_nhd:.3f}  t={elapsed:6.1f}s")
+                print(f"  [{completed:4d}/{total_runs}] {method_name:15s}  {ds_name:20s}  "
+                      f"run={run_idx:2d}  Acc={acc:.4f}  Err={err:.4f}  Feat={nf:4d}({sr:.1%})  "
+                      f"Best={best_iter:3d}  NHD={avg_nhd:.3f}  t={elapsed:6.1f}s")
 
             # ── 每数据集跑完后更新 summary ──────────────────────────
             ds_n = len(run_rows_this_ds)

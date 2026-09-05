@@ -56,13 +56,14 @@ ALL_DATASETS = [
     "PCMAC", "RELATHE", "USPS",
 ]
 
-# ── MOFS 对比实验专用数据集（20 个）─────────────────────────────────────────
-MOFS_DATASETS = [
+# ── 标准 20 个高维基准数据集 ───────────────────────────────────────────────
+BENCHMARK_20_DATASETS = [
     "ALL1", "ALL4", "ALL_AML", "Adenoma", "BASEHOCK", "COIL20",
     "Colon", "DLBCL", "Gastric", "Gastric1", "Gastric2", "ISOLET",
     "Leukaemia", "Lymphoma", "Myeloma", "PCMAC", "Prostate",
     "SRBCT", "T1D", "madelon",
 ]
+MOFS_DATASETS = BENCHMARK_20_DATASETS  # 兼容旧代码引用
 
 OPTS = {
     "k": 3,
@@ -93,3 +94,34 @@ MAT_DATASETS = {
     "BASEHOCK", "COIL20", "PCMAC", "RELATHE", "ISOLET",
     "USPS", "Pancancer", "MultipleFeaturesDigit", "madelon",
 }
+
+# ── 数据集原始特征维度 D（加速特征选择率计算）──────────────────────────────
+DATASET_DIMS = {
+    "Adenoma": 7457,
+    "ALL_AML": 7129,
+    "ALL3": 12625,
+    "ALL4": 12625,
+    "CNS": 7129,
+    "Colon": 2000,
+    "DLBCL": 7129,
+    "Leukaemia": 7129,
+    "Lymphoma": 4026,
+    "Stroke": 54675,
+    "Gastric": 22645,
+    "Prostate": 12625,
+    "ALL1": 12625,
+    "ALL2": 12625,
+    "Gastric1": 22283,
+    "Gastric2": 22283,
+    "Myeloma": 12625,
+    "SRBCT": 2308,
+    "T1D": 54675,
+    "BASEHOCK": 4862,
+    "COIL20": 1024,
+    "ISOLET": 617,
+    "madelon": 500,
+    "PCMAC": 3289,
+    "RELATHE": 4322,
+    "USPS": 256,
+}
+
