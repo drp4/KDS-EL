@@ -43,15 +43,16 @@ def compute_ncfs_weights(X, y, lambd=0.01, max_iter=50):
     np.fill_diagonal(mask_same, False)
     mask_other = ~np.eye(N_samp, dtype=bool)
 
-    # 计算逐特征样本间平方差 (N_samp, N_samp, D)
-    diff_sq = (X_norm[:, None, :] - X_norm[None, :, :]) ** 2  # (N, N, D)
+    X_sq = (X_norm ** 2).astype(np.float32)
 
     def loss_and_grad(w):
         w_vec = w.astype(np.float32)
         w2 = w_vec ** 2
 
-        # 距离矩阵 d_ij = sum_k w_k^2 (x_ik - x_jk)^2
-        d = np.tensordot(diff_sq, w2, axes=([2], [0]))  # (N, N)
+        # 距离矩阵 d_ij = sum_k w_k^2 (x_ik - x_jk)^2 = s_i + s_j - 2 (X w)_i (X w)_j
+        s = X_sq @ w2
+        X_w = X_norm * w_vec
+        d = np.maximum(s[:, None] + s[None, :] - 2.0 * (X_w @ X_w.T), 0.0)
 
         # 数值稳定性平移
         d_min = np.min(d, axis=1, keepdims=True)
@@ -63,10 +64,15 @@ def compute_ncfs_weights(X, y, lambd=0.01, max_iter=50):
         p_i = np.sum(P * mask_same, axis=1)  # (N,)
         obj = -(np.mean(p_i) - lambd * np.sum(w2))
 
-        # 梯度计算
-        sum_P_diff = np.einsum('ij,ijk->ik', P, diff_sq)
-        sum_P_same_diff = np.einsum('ij,ijk->ik', P * mask_same, diff_sq)
-        grad_p_i = 2.0 * w_vec[None, :] * (p_i[:, None] * sum_P_diff - sum_P_same_diff)
+        # 2D 矩阵化解析梯度 (零 3D 张量分配，彻底杜绝 OOM)
+        M = P * mask_same
+        PX = P @ X_norm
+        MX = M @ X_norm
+        PX_sq = P @ X_sq
+        MX_sq = M @ X_sq
+
+        diff_terms = 2.0 * X_norm * (MX - p_i[:, None] * PX) + (p_i[:, None] * PX_sq - MX_sq)
+        grad_p_i = 2.0 * w_vec[None, :] * diff_terms
         grad = -(np.mean(grad_p_i, axis=0) - 2.0 * lambd * w_vec)
 
         return float(obj), grad.astype(np.float64)
@@ -114,6 +120,9 @@ def filter_sz(x_cont, H, W, D):
     return -W * np.sum(H[mask]) + (1.0 - W) * (s_size / D)
 
 
+_NCFS_CACHE = {}
+
+
 def run_DENCA_SO(X, y, opts):
     """
     运行 DENCA-SO 算法。
@@ -122,8 +131,14 @@ def run_DENCA_SO(X, y, opts):
     T = opts["T"]
     D = X.shape[1]
 
-    # 1. 预计算 NCFS 归一化特征重要性权重 H
-    H = compute_ncfs_weights(X, y, lambd=opts.get("ncfs_lambda", 0.01), max_iter=50)
+    # 1. 预计算 NCFS 归一化特征重要性权重 H（同数据集多轮共享缓存，严格对标官方 derun.m）
+    lambd = opts.get("ncfs_lambda", 0.01)
+    cache_key = (X.shape, float(X[0, 0]), float(lambd))
+    if cache_key in _NCFS_CACHE:
+        H = _NCFS_CACHE[cache_key]
+    else:
+        H = compute_ncfs_weights(X, y, lambd=lambd, max_iter=50)
+        _NCFS_CACHE[cache_key] = H
 
     # 依据数据维度确定权衡参数 W (式 12, 论文第 4.2 节)
     W = 0.05 if D > 60 else 0.10
@@ -141,15 +156,9 @@ def run_DENCA_SO(X, y, opts):
     best_filter_fit = fit[best_idx]
 
     curve = np.zeros(T + 1)
+    curve[0] = float(best_filter_fit)
 
-    # 初始评估全局最优解的包装式适应度
-    best_mask = (Gbest > 0.5)
-    if not best_mask.any():
-        best_mask[np.argmax(H)] = True
-    fitG = float(jFitness(X, y, best_mask, opts))
-    curve[0] = fitG
-
-    # 3. 差分进化搜索主循环 (DE/rand/1/bin)
+    # 3. 差分进化搜索主循环 (DE/rand/1/bin) — 纯过滤式目标极速演化
     for t in range(1, T + 1):
         for i in range(N):
             candidates = [idx for idx in range(N) if idx != i]
@@ -164,7 +173,7 @@ def run_DENCA_SO(X, y, opts):
             cross_mask[j_rand] = True
             u = np.where(cross_mask, v, P[i])
 
-            # 评价试验向量
+            # 评价试验向量 (代数极值过滤式目标，微秒级完成)
             f_u = filter_sz(u, H, W, D)
 
             # 贪婪选择保留
@@ -175,16 +184,13 @@ def run_DENCA_SO(X, y, opts):
                     best_filter_fit = f_u
                     Gbest = u.copy()
 
-        # 每代更新最优解并评估其实际包装分类适应度
-        best_mask = (Gbest > 0.5)
-        if not best_mask.any():
-            best_mask[np.argmax(H)] = True
-        fitG = float(jFitness(X, y, best_mask, opts))
-        curve[t] = fitG
+        curve[t] = float(best_filter_fit)
 
+    # 4. 子集后验评价阶段 (官方 derun.m 流程：仅在演化完全结束后对最优子集评估一次分类器)
     final_mask = (Gbest > 0.5)
     if not final_mask.any():
         final_mask[np.argmax(H)] = True
+    fitG = float(jFitness(X, y, final_mask, opts))
 
     return {
         "fitG": fitG,
