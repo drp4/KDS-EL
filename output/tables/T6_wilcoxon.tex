@@ -1,33 +1,31 @@
 \begin{table*}[!t]
 \centering
-\caption{Pairwise Wilcoxon signed-rank test results on classification accuracy.}
+\caption{Pairwise Wilcoxon signed-rank test results on classification accuracy across 20 benchmark datasets.}
 \label{T6}
 \scriptsize
 \setlength{\tabcolsep}{3.5pt}
 \renewcommand{\arraystretch}{1.06}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}lcccccccccccccc@{}}
+\begin{tabular}{lcccccccccccc}
 \toprule
-Method & KDS-EL & w/o TPS & w/o TPS\&KER & MEL & FWPSO & PSO-CSM & SaWDE & IGPSO & BPSO & W-MPSO & fMPSO & NSGA-II & MOEA/D & MOPSO \\
+Method & KDS-EL & KDS-EL w/o TPS & KDS-EL w/o TPS\&KER & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
 \midrule
-KDS-EL & --- & \textbf{13/20} & \textbf{19/20} & \textbf{20/20} & \textbf{19/20} & \textbf{20/20} & \textbf{19/20} & \textbf{20/20} & \textbf{20/20} & \textbf{14/20} & \textbf{15/20} & \textbf{16/20} & \textbf{16/20} & \textbf{18/20} \\
-KDS-EL w/o TPS & 0/20 & --- & \textbf{15/20} & \textbf{20/20} & \textbf{20/20} & \textbf{20/20} & \textbf{19/20} & \textbf{20/20} & \textbf{20/20} & \textbf{14/20} & \textbf{15/20} & \textbf{15/20} & \textbf{15/20} & \textbf{17/20} \\
-KDS-EL w/o TPS\&KER & 0/20 & 2/20 & --- & \textbf{18/20} & \textbf{11/20} & \textbf{15/20} & \textbf{15/20} & \textbf{19/20} & \textbf{16/20} & \textbf{10/20} & \textbf{9/20} & \textbf{14/20} & \textbf{14/20} & \textbf{13/20} \\
-MEL & 0/20 & 0/20 & 1/20 & --- & 0/20 & 1/20 & 3/20 & 3/20 & \textbf{11/20} & 2/20 & 2/20 & 3/20 & 3/20 & 3/20 \\
-FWPSO & 0/20 & 0/20 & 5/20 & \textbf{17/20} & --- & \textbf{16/20} & \textbf{15/20} & \textbf{20/20} & \textbf{20/20} & 6/20 & \textbf{7/20} & \textbf{9/20} & \textbf{10/20} & \textbf{9/20} \\
-PSO-CSM & 0/20 & 0/20 & 1/20 & \textbf{15/20} & 0/20 & --- & \textbf{12/20} & \textbf{20/20} & \textbf{16/20} & 2/20 & 2/20 & 5/20 & 5/20 & 6/20 \\
-SaWDE & 0/20 & 0/20 & 5/20 & \textbf{14/20} & 3/20 & 4/20 & --- & \textbf{10/20} & \textbf{20/20} & 2/20 & 2/20 & 3/20 & 3/20 & 6/20 \\
-IGPSO & 0/20 & 0/20 & 1/20 & \textbf{9/20} & 0/20 & 0/20 & 7/20 & --- & \textbf{14/20} & 0/20 & 0/20 & 2/20 & 1/20 & 2/20 \\
-BPSO & 0/20 & 0/20 & 1/20 & 5/20 & 0/20 & 0/20 & 0/20 & 4/20 & --- & 0/20 & 0/20 & 0/20 & 0/20 & 0/20 \\
-W-MOPSO-FS & 3/20 & 3/20 & 9/20 & \textbf{16/20} & 6/20 & \textbf{15/20} & \textbf{13/20} & \textbf{20/20} & \textbf{20/20} & --- & \textbf{2/20} & \textbf{10/20} & \textbf{12/20} & \textbf{12/20} \\
-fMOPSO-FS & 3/20 & 3/20 & 8/20 & \textbf{16/20} & 5/20 & \textbf{13/20} & \textbf{13/20} & \textbf{20/20} & \textbf{20/20} & 1/20 & --- & \textbf{10/20} & \textbf{10/20} & \textbf{8/20} \\
-NSGA-II-FS & 4/20 & 5/20 & 6/20 & \textbf{14/20} & 7/20 & \textbf{11/20} & \textbf{14/20} & \textbf{15/20} & \textbf{20/20} & 5/20 & 6/20 & --- & \textbf{6/20} & \textbf{5/20} \\
-MOEA-D-FS & 2/20 & 2/20 & 5/20 & \textbf{15/20} & 7/20 & \textbf{11/20} & \textbf{12/20} & \textbf{16/20} & \textbf{19/20} & 4/20 & 4/20 & 0/20 & --- & 4/20 \\
-MOPSO-FS & 2/20 & 2/20 & 6/20 & \textbf{16/20} & 5/20 & \textbf{12/20} & \textbf{10/20} & \textbf{17/20} & \textbf{20/20} & 1/20 & 2/20 & 3/20 & 4/20 & --- \\
+KDS-EL & — & 17/2/1 & 20/0/0 & 20/0/0 & 12/0/8 & 20/0/0 & 20/0/0 & 18/0/2 & 19/0/1 & 20/0/0 & 18/0/2 & 20/0/0 \\
+KDS-EL w/o TPS & 1/2/17 & — & 16/1/3 & 20/0/0 & 8/0/12 & 20/0/0 & 20/0/0 & 18/0/2 & 19/0/1 & 20/0/0 & 18/0/2 & 20/0/0 \\
+KDS-EL w/o TPS\&KER & 0/0/20 & 3/1/16 & — & 19/0/1 & 4/0/16 & 14/0/6 & 16/0/4 & 15/0/5 & 15/0/5 & 19/0/1 & 15/0/5 & 18/1/1 \\
+MEL & 0/0/20 & 0/0/20 & 1/0/19 & — & 0/0/20 & 2/0/18 & 3/0/17 & 4/0/16 & 3/0/17 & 8/0/12 & 8/0/12 & 14/0/6 \\
+bIRIME & 8/0/12 & 12/0/8 & 16/0/4 & 20/0/0 & — & 20/0/0 & 20/0/0 & 19/1/0 & 20/0/0 & 20/0/0 & 19/1/0 & 20/0/0 \\
+FWPSO & 0/0/20 & 0/0/20 & 6/0/14 & 18/0/2 & 0/0/20 & — & 18/1/1 & 14/0/6 & 16/0/4 & 20/0/0 & 18/0/2 & 20/0/0 \\
+PSO-CSM & 0/0/20 & 0/0/20 & 4/0/16 & 17/0/3 & 0/0/20 & 1/1/18 & — & 9/0/11 & 16/0/4 & 20/0/0 & 13/0/7 & 19/0/1 \\
+BinCOA & 2/0/18 & 2/0/18 & 5/0/15 & 16/0/4 & 0/1/19 & 6/0/14 & 11/0/9 & — & 11/0/9 & 18/0/2 & 18/1/1 & 19/0/1 \\
+SaWDE & 1/0/19 & 1/0/19 & 5/0/15 & 17/0/3 & 0/0/20 & 4/0/16 & 4/0/16 & 9/0/11 & — & 11/0/9 & 12/0/8 & 20/0/0 \\
+IGPSO & 0/0/20 & 0/0/20 & 1/0/19 & 12/0/8 & 0/0/20 & 0/0/20 & 0/0/20 & 2/0/18 & 9/0/11 & — & 9/0/11 & 16/0/4 \\
+DENCA-SO & 2/0/18 & 2/0/18 & 5/0/15 & 12/0/8 & 0/1/19 & 2/0/18 & 7/0/13 & 1/1/18 & 8/0/12 & 11/0/9 & — & 11/0/9 \\
+BPSO & 0/0/20 & 0/0/20 & 1/1/18 & 6/0/14 & 0/0/20 & 0/0/20 & 1/0/19 & 1/0/19 & 0/0/20 & 4/0/16 & 9/0/11 & — \\
 \bottomrule
 \end{tabular}%
 }
 \vspace{2pt}
 \par\raggedright\footnotesize
-Entries indicate the number of datasets where the row algorithm significantly outperforms the column algorithm ($p < 0.05$, paired Wilcoxon signed-rank test). Bold values highlight the statistically dominant algorithm in each pairwise matchup.
+Entries denote pairwise win/tie/loss ($+/ \approx / -$) counts between the row method and column method evaluated across 20 benchmark datasets at $\alpha = 0.05$.
 \end{table*}

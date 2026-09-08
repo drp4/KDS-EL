@@ -70,19 +70,15 @@ COLOR_PALETTE = {
     "MEL_MI":          "#5C82A6",  # Slate Blue (KDS-EL w/o TPS&KER)
     "MEL":             "#718096",  # Slate Gray (MEL Baseline)
 
-    # ⚪ Single-Objective SOTA (Warm Slate Progression)
+    # ⚪ Single-Objective SOTA & Competitors
+    "bIRIME":          "#D97706",  # Warm Amber (Top competitor)
     "FWPSO":           "#64748B",  # Slate 500
     "PSO_CSM":         "#788698",  # Slate Tint 1
+    "BinCOA":          "#059669",  # Emerald Green
     "SaWDE":           "#8C99A8",  # Slate Tint 2
     "IGPSO":           "#A0ACB8",  # Slate Tint 3
+    "DENCA_SO":        "#4F46E5",  # Indigo
     "BPSO":            "#B4BFC8",  # Slate Tint 4
-
-    # ⚪ Multi-Objective MOFS (Cool Slate Progression)
-    "W-MOPSO-FS":      "#5F7176",  # Cool Slate 1
-    "fMOPSO-FS":       "#74868B",  # Cool Slate 2
-    "NSGA-II-FS":      "#899BA0",  # Cool Slate 3
-    "MOEA-D-FS":       "#9EAFB4",  # Cool Slate 4
-    "MOPSO-FS":        "#B3C3C8",  # Cool Slate 5
 }
 
 # Distinct geometric markers for trajectories and scatter plots only
@@ -91,16 +87,14 @@ MARKERS = {
     "KDS_EL_NoPool":   "s",   # Square
     "MEL_MI":          "^",   # Triangle Up
     "MEL":             "v",   # Triangle Down
+    "bIRIME":          "P",   # Plus Filled
     "FWPSO":           "D",   # Diamond
     "PSO_CSM":         "p",   # Pentagon
+    "BinCOA":          "h",   # Hexagon
     "SaWDE":           "<",   # Triangle Left
     "IGPSO":           ">",   # Triangle Right
+    "DENCA_SO":        "d",   # Thin Diamond
     "BPSO":            "x",   # Cross
-    "W-MOPSO-FS":      "h",   # Hexagon
-    "fMOPSO-FS":       "8",   # Octagon
-    "NSGA-II-FS":      "*",   # Star
-    "MOEA-D-FS":       "P",   # Plus Filled
-    "MOPSO-FS":        "+",   # Plus
 }
 
 LINESTYLES = {
@@ -108,33 +102,29 @@ LINESTYLES = {
     "KDS_EL_NoPool":   "--",
     "MEL_MI":          "-.",
     "MEL":             ":",
-    "FWPSO":           "-",
-    "PSO_CSM":         "--",
-    "SaWDE":           "-.",
-    "IGPSO":           ":",
-    "BPSO":            "--",
-    "W-MOPSO-FS":      "-",
-    "fMOPSO-FS":       "--",
-    "NSGA-II-FS":      "-.",
-    "MOEA-D-FS":       ":",
-    "MOPSO-FS":        "--",
+    "bIRIME":          "-",
+    "FWPSO":           "--",
+    "PSO_CSM":         "-.",
+    "BinCOA":          ":",
+    "SaWDE":           "-",
+    "IGPSO":           "--",
+    "DENCA_SO":        "-.",
+    "BPSO":            ":",
 }
 
 V_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
     "KDS_EL_NoPool":   "KDS-EL w/o TPS",
-    "MEL_MI":          "KDS-EL w/o TPS&KER",
+    "MEL_MI":          "KDS-EL w/o TPS\\&KER",
     "MEL":             "MEL",
+    "bIRIME":          "bIRIME",
     "FWPSO":           "FWPSO",
     "PSO_CSM":         "PSO-CSM",
+    "BinCOA":          "BinCOA",
     "SaWDE":           "SaWDE",
     "IGPSO":           "IGPSO",
+    "DENCA_SO":        "DENCA-SO",
     "BPSO":            "BPSO",
-    "W-MOPSO-FS":      "W-MOPSO-FS",
-    "fMOPSO-FS":       "fMOPSO-FS",
-    "NSGA-II-FS":      "NSGA-II-FS",
-    "MOEA-D-FS":       "MOEA-D-FS",
-    "MOPSO-FS":        "MOPSO-FS",
 }
 
 ORDERED_METHODS = [
@@ -142,16 +132,14 @@ ORDERED_METHODS = [
     "KDS_EL_NoPool",
     "MEL_MI",
     "MEL",
+    "bIRIME",
     "FWPSO",
     "PSO_CSM",
+    "BinCOA",
     "SaWDE",
     "IGPSO",
+    "DENCA_SO",
     "BPSO",
-    "W-MOPSO-FS",
-    "fMOPSO-FS",
-    "NSGA-II-FS",
-    "MOEA-D-FS",
-    "MOPSO-FS",
 ]
 
 

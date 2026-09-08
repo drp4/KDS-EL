@@ -23,26 +23,24 @@ except ImportError:
 PROJ = Path(__file__).resolve().parent.parent
 EXP1_DIR = PROJ / "output" / "formal_experiment_20260701_094943"   # SOTA
 EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"   # MEL
-EXP4_DIR = PROJ / "output" / "formal_experiment_20260707_142018"   # MOFS
+NEW_SOTA_DIR = PROJ / "output" / "formal_experiment_20260905_211755"  # DENCA_SO, bIRIME, BinCOA
 MEL_MI_DIR = PROJ / "output" / "formal_experiment_mel_mi"          # MEL+MI
 FINAL_DIR = PROJ / "output" / "formal_experiment_final"            # NoPool + TwoPhase
 
-# ═══ 14 定长方法 (顶刊顺序: Proposed → 消融 → 基线 → SOTA → MOFS) ═══
+# ═══ 12 种单目标方法 (顶刊顺序: Proposed → 消融 → 基线 → 竞品) ═══
 ALL_VERSIONS = [
     "KDS_EL_TwoPhase",   # 1. 本文
     "KDS_EL_NoPool",     # 2. 消融变体
     "MEL_MI",            # 3. 消融基线
-    "MEL",               # 4. 绝对基线
-    "FWPSO",             # 5. SOTA
-    "PSO_CSM",           # 6. SOTA
-    "SaWDE",             # 7. SOTA
-    "IGPSO",             # 8. SOTA
-    "BPSO",              # 9. SOTA
-    "W-MOPSO-FS",        # 10. MOFS
-    "fMOPSO-FS",         # 11. MOFS
-    "NSGA-II-FS",        # 12. MOFS
-    "MOEA-D-FS",         # 13. MOFS
-    "MOPSO-FS",          # 14. MOFS
+    "MEL",               # 4. 前驱算法
+    "bIRIME",            # 5. SOTA (iScience 2024)
+    "FWPSO",             # 6. SOTA (BIBM 2022)
+    "PSO_CSM",           # 7. SOTA (SWEVO 2025)
+    "BinCOA",            # 8. SOTA (IEEE Access 2024)
+    "SaWDE",             # 9. SOTA (KBS 2022)
+    "IGPSO",             # 10. SOTA (SWEVO 2024)
+    "DENCA_SO",          # 11. SOTA (KBS 2023)
+    "BPSO",              # 12. 经典基准 (SMC 1997)
 ]
 
 MAIN_VERSIONS = ALL_VERSIONS
@@ -62,7 +60,7 @@ V_LABELS = STYLE_V_LABELS
 ABL_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
     "KDS_EL_NoPool": "KDS-EL w/o TPS",
-    "MEL_MI": "KDS-EL w/o TPS&KER",
+    "MEL_MI": "KDS-EL w/o TPS\\&KER",
     "MEL": "MEL",
 }
 
@@ -70,23 +68,31 @@ ABL_LABELS = {
 SHORT_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
     "KDS_EL_NoPool": "w/o TPS",
-    "BPSO": "BPSO", "SaWDE": "SaWDE", "FWPSO": "FWPSO",
-    "MEL": "MEL", "MEL_MI": "w/o TPS&KER",
-    "PSO_CSM": "P-CSM", "IGPSO": "IGPSO",
-    "NSGA-II-FS": "NSGA2", "MOPSO-FS": "MOPSO",
-    "MOEA-D-FS": "MOEAD", "fMOPSO-FS": "fMPSO",
-    "W-MOPSO-FS": "W-MPS",
+    "MEL_MI": "w/o T&K",
+    "MEL": "MEL",
+    "bIRIME": "bIRIME",
+    "FWPSO": "FWPSO",
+    "PSO_CSM": "P-CSM",
+    "BinCOA": "BinCOA",
+    "SaWDE": "SaWDE",
+    "IGPSO": "IGPSO",
+    "DENCA_SO": "DENCA",
+    "BPSO": "BPSO",
 }
 
 HATCHES = {
-    "BPSO": "////", "SaWDE": "\\\\\\\\", "FWPSO": "----",
-    "MEL": "....", "MEL_MI": "oo",
-    "KDS_EL_NoPool": "++++",
     "KDS_EL_TwoPhase": "",
-    "PSO_CSM": "oooo", "IGPSO": "****",
-    "NSGA-II-FS": "///", "MOPSO-FS": "\\\\\\",
-    "MOEA-D-FS": "---", "fMOPSO-FS": "+++",
-    "W-MOPSO-FS": "oo",
+    "KDS_EL_NoPool": "++++",
+    "MEL_MI": "oo",
+    "MEL": "....",
+    "bIRIME": "xx",
+    "FWPSO": "----",
+    "PSO_CSM": "oooo",
+    "BinCOA": "**",
+    "SaWDE": "\\\\\\\\",
+    "IGPSO": "****",
+    "DENCA_SO": "//",
+    "BPSO": "////",
 }
 
 # ── 20个MOFS数据集 ──
@@ -143,16 +149,15 @@ def load_merged_detail():
     """合并所有实验的 detail 数据：各方法从各自有效来源加载"""
     SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
     FINAL_VERSIONS = ["KDS_EL_NoPool", "KDS_EL_TwoPhase"]
-    MOFS_VERSIONS_FIG = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
-                         "fMOPSO-FS", "W-MOPSO-FS"]
+    NEW_SOTA_VERSIONS = ["DENCA_SO", "bIRIME", "BinCOA"]
 
     dfs = []
     df1 = load_detail(EXP1_DIR / "results_detail.csv")
     dfs.append(df1[df1["Version"].isin(SOTA_VERSIONS)])
     df2 = load_detail(EXP2_DIR / "results_detail.csv")
     dfs.append(df2[df2["Version"] == "MEL"])
-    df4 = load_detail(EXP4_DIR / "results_detail.csv")
-    dfs.append(df4[df4["Version"].isin(MOFS_VERSIONS_FIG)])
+    df_new = load_detail(NEW_SOTA_DIR / "results_detail.csv")
+    dfs.append(df_new[df_new["Version"].isin(NEW_SOTA_VERSIONS)])
     df_mel_mi = load_detail(MEL_MI_DIR / "results_detail.csv")
     dfs.append(df_mel_mi[df_mel_mi["Version"] == "MEL_MI"])
     df_fin = load_detail(FINAL_DIR / "results_detail.csv")
@@ -166,16 +171,15 @@ def load_merged_summary():
     """合并所有实验的 summary 数据"""
     SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
     FINAL_VERSIONS = ["KDS_EL_NoPool", "KDS_EL_TwoPhase"]
-    MOFS_VERSIONS_FIG = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
-                         "fMOPSO-FS", "W-MOPSO-FS"]
+    NEW_SOTA_VERSIONS = ["DENCA_SO", "bIRIME", "BinCOA"]
 
     dfs = []
     df1 = pd.read_csv(EXP1_DIR / "results_summary.csv")
     dfs.append(df1[df1["Version"].isin(SOTA_VERSIONS)])
     df2 = pd.read_csv(EXP2_DIR / "results_summary.csv")
     dfs.append(df2[df2["Version"] == "MEL"])
-    df4 = pd.read_csv(EXP4_DIR / "results_summary.csv")
-    dfs.append(df4[df4["Version"].isin(MOFS_VERSIONS_FIG)])
+    df_new = pd.read_csv(NEW_SOTA_DIR / "results_summary.csv")
+    dfs.append(df_new[df_new["Version"].isin(NEW_SOTA_VERSIONS)])
     df_mel_mi = pd.read_csv(MEL_MI_DIR / "results_summary.csv")
     dfs.append(df_mel_mi[df_mel_mi["Version"] == "MEL_MI"])
     df_fin = pd.read_csv(FINAL_DIR / "results_summary.csv")
@@ -810,9 +814,9 @@ def fig_f11_runtime(df_detail, out_dir):
 
     fig, ax = plt.subplots(figsize=(7.2, 4.4))
 
-    # Plot Pareto envelope (non-dominated frontier)
-    frontier_x = [87.8, 121.7, 1068.9, 2960.0]
-    frontier_y = [0.9574, 0.9488, 0.9177, 0.9132]
+    # Plot Pareto envelope (non-dominated frontier across key configurations)
+    frontier_x = [87.8, 121.7, 407.7, 1068.9]
+    frontier_y = [0.9574, 0.9488, 0.9454, 0.9177]
     ax.plot(frontier_x, frontier_y, linestyle="--", linewidth=1.1, color="#CBD5E0",
             alpha=0.9, zorder=1, label="Pareto Frontier")
 
@@ -1133,7 +1137,7 @@ def main():
     print(f"Loading data from:")
     print(f"  Exp1 (SOTA):  {EXP1_DIR}")
     print(f"  Exp2 (MEL):   {EXP2_DIR}")
-    print(f"  Exp4 (MOFS):  {EXP4_DIR}")
+    print(f"  New SOTA:     {NEW_SOTA_DIR}")
     print(f"  MEL+MI:       {MEL_MI_DIR}")
     print(f"  Final:        {FINAL_DIR}")
     df = load_merged_detail()

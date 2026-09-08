@@ -85,40 +85,25 @@ X.~Wang, H.~Shangguan, F.~Huang, S.~Wu, W.~Jia, Mel: Efficient multi-task
 \newblock \href {https://doi.org/10.1109/TKDE.2024.3366333}
   {\path{doi:10.1109/TKDE.2024.3366333}}.
 
-\bibitem{deb2002}
-K.~Deb, A.~Pratap, S.~Agarwal, T.~Meyarivan, A fast and elitist multiobjective
-  genetic algorithm: {NSGA-II}, IEEE Transactions on Evolutionary Computation
-  6~(2) (2002) 182--197.
-\newblock \href {https://doi.org/10.1109/4235.996017}
-  {\path{doi:10.1109/4235.996017}}.
+\bibitem{su2024}
+H.~Su, L.~Zhang, B.~Xue, M.~Zhang, An improved binary {RIME} algorithm for
+  feature selection, iScience 27~(8) (2024) 110561.
+\newblock \href {https://doi.org/10.1016/j.isci.2024.110561}
+  {\path{doi:10.1016/j.isci.2024.110561}}.
 
-\bibitem{zhang2007}
-Q.~Zhang, H.~Li, {MOEA/D}: A multiobjective evolutionary algorithm based on
-  decomposition, IEEE Transactions on Evolutionary Computation 11~(6) (2007)
-  712--731.
-\newblock \href {https://doi.org/10.1109/TEVC.2007.892759}
-  {\path{doi:10.1109/TEVC.2007.892759}}.
+\bibitem{hancer2023}
+E.~Hancer, B.~Xue, M.~Zhang, An evolutionary filter approach to feature
+  selection in classification for both single- and multi-objective scenarios,
+  Knowledge-Based Systems 280 (2023) 111008.
+\newblock \href {https://doi.org/10.1016/j.knosys.2023.111008}
+  {\path{doi:10.1016/j.knosys.2023.111008}}.
 
-\bibitem{coello2004}
-C.~A.~C. Coello, G.~T. Pulido, M.~S. Lechuga, Handling multiple objectives with
-  particle swarm optimization, IEEE Transactions on Evolutionary Computation
-  8~(3) (2004) 256--279.
-\newblock \href {https://doi.org/10.1109/TEVC.2004.826067}
-  {\path{doi:10.1109/TEVC.2004.826067}}.
-
-\bibitem{han2024}
-F.~Han, F.~Li, Q.~Ling, H.~Han, T.~Lu, Z.~Jiao, H.~Zhang, A feature selection
-  method based on feature-label correlation information and self-adaptive
-  {MOPSO}, Neural Processing Letters 56 (2024) 110.
-\newblock \href {https://doi.org/10.1007/s11063-024-11553-9}
-  {\path{doi:10.1007/s11063-024-11553-9}}.
-
-\bibitem{xue2012mopso}
-B.~Xue, M.~Zhang, W.~N. Browne, Particle swarm optimization for feature
-  selection in classification: {A} multi-objective approach, IEEE Transactions
-  on Cybernetics 43~(6) (2012) 1656--1671.
-\newblock \href {https://doi.org/10.1109/TSMCB.2012.2227469}
-  {\path{doi:10.1109/TSMCB.2012.2227469}}.
+\bibitem{shikoun2024}
+N.~H. Shikoun, A.~E. Hassanien, M.~H. Haggag, {BinCOA}: An efficient binary
+  crayfish optimization algorithm for feature selection, IEEE Access 12 (2024)
+  28621--28635.
+\newblock \href {https://doi.org/10.1109/ACCESS.2024.3368297}
+  {\path{doi:10.1109/ACCESS.2024.3368297}}.
 
 \bibitem{miao2024}
 F.~Miao, Y.~Wu, G.~Yan, X.~Si, Dynamic multi-swarm whale optimization algorithm

@@ -1,19 +1,24 @@
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \caption{Holm-Bonferroni step-down procedure testing directional superiority of KDS-EL over all competitor methods across 20 benchmark datasets (nominal $\alpha = 0.05$).}
-\label{tab:holm_bonferroni}
-\begin{tabular}{clcccccc}
+\label{T6b}\label{tab:holm_bonferroni}
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}clcccccc@{}}
 \toprule
 Rank & Competitor Method & $\Delta$Acc & W/T/L & $W$ & $p$-value & $\alpha_{\mathrm{Holm}}$ & Reject $H_0$? \\
 \midrule
-   1 & PSO-CSM                & +0.0460 & 20/0/0 &    0.0 &   1.91e-06 &   0.0063 & Yes \\
-   2 & MEL                    & +0.0452 & 19/1/0 &    0.0 &   1.32e-04 &   0.0071 & Yes \\
-   3 & IGPSO                  & +0.0561 & 19/1/0 &    0.0 &   1.32e-04 &   0.0083 & Yes \\
-   4 & KDS-EL w/o TPS\&KER    & +0.0197 & 18/2/0 &    0.0 &   1.96e-04 &   0.0100 & Yes \\
-   5 & BPSO                   & +0.0470 & 18/1/1 &    4.0 &   2.50e-04 &   0.0125 & Yes \\
-   6 & FWPSO                  & +0.0303 & 17/2/1 &    7.0 &   3.98e-04 &   0.0167 & Yes \\
-   7 & SaWDE                  & +0.0365 & 17/1/2 &   15.0 &   1.28e-03 &   0.0250 & Yes \\
-   8 & KDS-EL w/o TPS         & +0.0083 & 12/7/1 &    6.0 &   3.51e-03 &   0.0500 & Yes \\
+   1 & KDS-EL w/o TPS\&KER    & +0.0248 & 20/0/0 &    0.0 &   1.91e-06 &   0.0045 & Yes \\
+   2 & MEL                    & +0.0706 & 20/0/0 &    0.0 &   1.91e-06 &   0.0050 & Yes \\
+   3 & FWPSO                  & +0.0396 & 20/0/0 &    0.0 &   1.91e-06 &   0.0056 & Yes \\
+   4 & PSO-CSM                & +0.0552 & 20/0/0 &    0.0 &   1.91e-06 &   0.0063 & Yes \\
+   5 & IGPSO                  & +0.0734 & 20/0/0 &    0.0 &   1.91e-06 &   0.0071 & Yes \\
+   6 & BPSO                   & +0.0875 & 20/0/0 &    0.0 &   1.91e-06 &   0.0083 & Yes \\
+   7 & SaWDE                  & +0.0630 & 19/0/1 &    1.0 &   3.81e-06 &   0.0100 & Yes \\
+   8 & BinCOA                 & +0.0600 & 18/0/2 &    3.0 &   9.54e-06 &   0.0125 & Yes \\
+   9 & DENCA-SO               & +0.0862 & 18/0/2 &    3.0 &   9.54e-06 &   0.0167 & Yes \\
+  10 & KDS-EL w/o TPS         & +0.0086 & 17/2/1 &    9.0 &   6.29e-05 &   0.0250 & Yes \\
+  11 & bIRIME                 & +0.0119 & 12/0/8 &   47.0 &   2.96e-02 &   0.0500 & Yes \\
 \bottomrule
-\end{tabular}
-\end{table}
+\end{tabular*}
+\end{table*}

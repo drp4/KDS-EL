@@ -25,11 +25,11 @@ from matplotlib.lines import Line2D
 PROJ = Path(__file__).resolve().parent.parent
 EXP1_CURVES = PROJ / "output" / "formal_experiment_20260701_094943" / "curves"
 EXP2_CURVES = PROJ / "output" / "formal_experiment_20260628_205157" / "curves"
-EXP4_CURVES = PROJ / "output" / "formal_experiment_20260707_142018" / "curves"
+NEW_SOTA_CURVES = PROJ / "output" / "formal_experiment_20260905_211755" / "curves"
 MEL_MI_CURVES = PROJ / "output" / "formal_experiment_mel_mi" / "curves"
 FINAL_CURVES = PROJ / "output" / "formal_experiment_final" / "curves"
 
-ALL_CURVE_DIRS = [EXP1_CURVES, EXP2_CURVES, EXP4_CURVES, MEL_MI_CURVES, FINAL_CURVES]
+ALL_CURVE_DIRS = [EXP1_CURVES, EXP2_CURVES, NEW_SOTA_CURVES, MEL_MI_CURVES, FINAL_CURVES]
 
 from plot_style import (
     apply_style, COLOR_PALETTE, MARKERS, LINESTYLES,
@@ -40,23 +40,9 @@ from plot_style import (
 apply_style()
 
 COLORS = COLOR_PALETTE
-V_LABELS = {
-    **STYLE_V_LABELS,
-    "NSGA_II_FS": "NSGA-II-FS",
-    "MOPSO_FS": "MOPSO-FS",
-    "MOEA_D_FS": "MOEA-D-FS",
-    "fMOPSO_FS": "fMOPSO-FS",
-    "W_MOPSO_FS": "W-MOPSO-FS",
-}
+V_LABELS = STYLE_V_LABELS
+LINE_STYLES = LINESTYLES
 
-LINE_STYLES = {
-    **LINESTYLES,
-    "NSGA_II_FS": "-.",
-    "MOPSO_FS": "--",
-    "MOEA_D_FS": ":",
-    "fMOPSO_FS": "--",
-    "W_MOPSO_FS": "-",
-}
 
 # 20 权威基准数据集
 CORE_20 = [
@@ -123,21 +109,18 @@ def load_from_all(version, dataset, prefix="curve"):
        - KDS-EL 变体 → FINAL_CURVES
        - MEL_MI → MEL_MI_CURVES
        - MEL → EXP2_CURVES / EXP1_CURVES
-       - MOFS → EXP4_CURVES / EXP1_CURVES
-       - SOTA → EXP1_CURVES / EXP2_CURVES
+       - 新 SOTA (bIRIME, BinCOA, DENCA_SO) → NEW_SOTA_CURVES
+       - 经典单目标 SOTA → EXP1_CURVES / EXP2_CURVES
     """
     KDS_VERSIONS = {"KDS_EL_NoPool", "KDS_EL_TwoPhase"}
-    MOFS_NAMES = {"NSGA_II_FS", "MOPSO_FS", "MOEA_D_FS",
-                   "fMOPSO_FS", "W_MOPSO_FS"}
+    NEW_SOTA_NAMES = {"bIRIME", "BinCOA", "DENCA_SO"}
 
     if version in KDS_VERSIONS:
         data = load_curves(version, dataset, FINAL_CURVES, prefix)
     elif version == "MEL_MI":
         data = load_curves(version, dataset, MEL_MI_CURVES, prefix)
-    elif version in MOFS_NAMES:
-        data = load_curves(version, dataset, EXP4_CURVES, prefix)
-        if data is None:
-            data = load_curves(version, dataset, EXP1_CURVES, prefix)
+    elif version in NEW_SOTA_NAMES:
+        data = load_curves(version, dataset, NEW_SOTA_CURVES, prefix)
     elif version == "MEL":
         data = load_curves(version, dataset, EXP2_CURVES, prefix)
         if data is None:
@@ -421,11 +404,11 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
 
     print("Curve data sources:")
-    print(f"  Exp1 (SOTA):  {EXP1_CURVES}")
-    print(f"  Exp2 (MEL):   {EXP2_CURVES}")
-    print(f"  Exp4 (MOFS):  {EXP4_CURVES}")
-    print(f"  MEL+MI:       {MEL_MI_CURVES}")
-    print(f"  Final:        {FINAL_CURVES}")
+    print(f"  Exp1 (SOTA):     {EXP1_CURVES}")
+    print(f"  Exp2 (MEL):      {EXP2_CURVES}")
+    print(f"  New SOTA:        {NEW_SOTA_CURVES}")
+    print(f"  MEL+MI:          {MEL_MI_CURVES}")
+    print(f"  Final (TwoPhase):{FINAL_CURVES}")
     print(f"\nGenerating -> {out_dir}\n")
 
     all_figs = {
