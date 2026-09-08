@@ -251,9 +251,77 @@ In top-tier Elsevier journals, the functional boundaries of table titles, table 
 
 ---
 
+## 📌 Section VI: Specialized Protocols for Section 3 (The Proposed Method)
+
+*These protocols must be strictly enforced whenever drafting, modifying, reviewing, or verifying Section 3 (The Proposed Method) of the manuscript.*
+
+### 🎯 Core Mission & Methodological Rigor
+The proposed methodology section must construct an airtight, self-contained mathematical and algorithmic framework. It is neither a superficial narrative nor a raw transliteration of python scripts, but a formal theoretical exposition where every equation directly addresses a specific physical search degeneration in ultra-high dimensions ($D \gg 10^3, N_{\mathrm{samp}} \ll 100$) and maintains 100% mathematical fidelity with the underlying experimental codebase.
+
+---
+
+### 🔑 Critical Operational Protocols for Section 3
+
+#### Protocol PM-1: Tier 1 Zero-Data Boundary Enforcement (绝对禁水区规范)
+- **Strict Prohibition of Test Outcomes**: Section 3 is strictly classified under Data Tier 1. Zero post-hoc experimental metrics, test scores, or forward-looking spoilers are permitted (strictly no mentions of 0.9574 classification accuracy, 87.8 selected features, 51.3\,s execution time, 3.4$\times$ speedup, or pairwise $+/\approx/-$ counts).
+- **Authorized Numerical Content**: Confined strictly to mathematical formulations, algorithmic state variables ($c_{\mathrm{stall}} \ge \tau$), theoretical initializations ($S(0) = 0.5$), Big-$\mathcal{O}$ asymptotic bounds, and high-level dimension orders of magnitude ($D \gg 10^3, N_{\mathrm{samp}} \ll 100$).
+
+#### Protocol PM-2: "Why Before How" 4-Step Causal Formulation Chain (物理动机先行原则)
+Every mathematical equation must be introduced through a complete 4-step progressive narrative chain:
+1. **Physical Bottleneck & Search Degeneration**: Articulate the exact failure mode of standard evolutionary techniques in ultra-high dimensions (e.g., standard continuous-discrete binarization collapsing into the uninformative $D/2$ attractor; undirected mutation in $2^D$ destroying synergistic gene combinations with probability $>99.9\%$; static objective weighting forcing severe phase misalignment).
+2. **Design Rationale**: Present the structural intuition and engineering principle of the proposed remedy.
+3. **Formal Mathematical Formulation**: Provide definition-complete, self-contained equations with declared mathematical spaces.
+4. **Physical Interpretation & Boundary Behavior**: Analyze variable roles and extreme parameter limits (e.g., as $\gamma \to 1.0$, historical noise accumulates unchecked; as $\rho \to 0$, prior guidance vanishes; as $\rho \to 1.0$, initial diversity collapses).
+
+#### Protocol PM-3: Mathematical Typography & Domain Completeness (数学排版与空间完备性)
+- **Explicit Mathematical Domain**: Every variable, matrix, vector, and set must declare its mathematical space upon first appearance ($\mathbf{X} \in \{0, 1\}^{N \times D}$, $\mathbf{W} \in \mathbb{R}^D$, $\mathbf{m} \in [0, 1]^D$, $\mathbf{w}(t) \in [0, 1]^2$, $\gamma \in (0, 1)$).
+- **Rigorous Font Categorization**:
+  - *Matrices*: Bold uppercase roman ($\mathbf{X}, \mathbf{W}$).
+  - *Vectors*: Bold lowercase roman ($\mathbf{x}_i, \mathbf{p}_i, \mathbf{m}, \boldsymbol{\varepsilon}_i, \mathbf{u}_i, \mathbf{w}(t)$).
+  - *Scalars / Hyperparameters*: Italic lowercase ($x_{i,j}, p_{i,j}, N, D, T, \theta, \gamma, \tau, \rho, \phi, \kappa, k_e$).
+  - *Sets / Populations / Partitions*: Calligraphic uppercase ($\mathcal{P}_1, \mathcal{P}_2, \mathcal{D}, \mathcal{S}_{\mathrm{know}}, \mathcal{S}_{\mathrm{rand}}, \mathcal{C}_i^{(t)}, \mathcal{E}$).
+  - *Standard Functions & Operators*: Upright roman ($\min, \max, \arg\max, \mathrm{clip}(\cdot), \mathbb{I}(\cdot), \mathrm{Acc}(\cdot)$).
+- **Vector Orientation Consistency**: Solutions $\mathbf{x}_i$ are treated consistently as row or column vectors throughout; random or arbitrary transposition marks ($\mathbf{x}_i^T$) are strictly prohibited.
+
+#### Protocol PM-4: Component Terminology & Strict "Operator" Prohibition (组件称谓与算子禁令)
+- **Strict Prohibition of "Operator"**: KDS-EL's own constituent innovations must strictly be termed **strategy** or **mechanism** (e.g., `the KER strategy`, `the elite refinement mechanism`, `the dynamic TPS strategy`, `the adaptive recovery mechanism`). The word `operator` is reserved exclusively for low-level genetic/evolutionary heuristics of peer algorithms (e.g., `crossover operator`, `stochastic bit-flip operator`).
+- **Zero Duplicate Acronym Tags**: Acronyms already introduced must not be expanded again with parenthetical tags like `(KER)` or `(TPS)`.
+- **Prose Translation of Code Conditions**: Never write raw code syntax like `if rank <= N/2` or `while stall >= 20` in running text. Translate into formal academic English (e.g., *"the lower-performing half of the swarm is refreshed..."*).
+
+#### Protocol PM-5: Deep Figure-Text Linkage & 100% Symbol Homomorphism (图文同构与深层指引)
+- **Explicit Directional Referencing**: Text must actively guide the reader through specific visual branches (e.g., *"As illustrated in the dual-subpopulation co-evolutionary cycle of Fig.~2..."*, *"Following Step~4 of the adaptive recovery pathway in Fig.~3..."*, *"As depicted in Branch~2 of the KER flowchart in Fig.~4..."*).
+- **100% Visual-Symbol Synchrony**: Every box label, axis variable, and subscript appearing in vector diagrams (F1, F2, F3, F4) must match in-text LaTeX math notation with zero discrepancy.
+
+#### Protocol PM-6: Hierarchical & Standardized Modular Pseudocode (层次化算法伪代码)
+- **Two-Tier Hierarchical Decomposition**:
+  - *Sub-routine Algorithm 1 (`Algorithm 1`)*: Formalizes the self-contained operational logic of Knowledge-Guided Elite Refinement (`KER`), isolating detailed bit-flip score calculations and greedy one-to-one acceptance.
+  - *Master Coordination Algorithm 2 (`Algorithm 2`)*: Maintains a high-level executive perspective of the end-to-end KDS-EL lifecycle across generational iterations.
+- **Exhaustive Require / Ensure Blocks**:
+  - `\Require`: Formally declares all inputs, datasets, dimensions ($N, D, T$), and all 9 hyperparameters ($\theta, \rho, \sigma, \gamma, k_e, \phi, p_{\mathrm{rand}}, \kappa, \tau$) with their respective mathematical domains.
+  - `\Ensure`: Explicitly defines the final outputs: optimal compact binary mask $\mathbf{x}^{\star} \in \{0, 1\}^D$ and optimal fitness $f_{\mathrm{gbest}} \in \mathbb{R}$.
+- **Stage-Wise Functional Segmentation**: Structured cleanly using `\Statex \textbf{Stage 1: ...}`, `\Statex \textbf{Stage 2: ...}`, and `\Statex \textbf{Stage 3: ...}`.
+
+#### Protocol PM-7: Comprehensive Asymptotic Complexity Closed-Loop (时空渐近复杂度闭环)
+- **Decoupled Two-Phase Complexity Formulation**:
+  - *Offline Preprocessing*: One-time continuous KSG mutual information estimation and sorting: $\mathcal{T}_{\mathrm{pre}} = \mathcal{O}(D \cdot N_{\mathrm{samp}} \log N_{\mathrm{samp}} + D \log D)$.
+  - *Online Generational Evolution*: Generation-wise evaluation cost incorporating dynamic active feature sparsity: $\mathcal{T}_{\mathrm{eval}} = \mathcal{O}(T \cdot N \cdot N_{\mathrm{samp}}^2 \cdot \bar{d}_{\mathrm{selected}} + T \cdot N \cdot D)$.
+- **Empirical Wall-Clock Speedup Rationale**: Explicitly explain why identical Big-$\mathcal{O}$ order yields a substantial real-world speedup ($3.4\times$ acceleration over the foundational MEL framework): $k$-NN distance computation scales linearly with active feature count $d$; by shrinking candidate subsets from $D/2 \approx 5{,}000+$ down to $\bar{d}_{\mathrm{selected}} \approx 88$, per-evaluation arithmetic operations are reduced by over $95\%$.
+- **Linear Space Complexity**: Fully account for working arrays $\mathbf{X}, \mathbf{P}_{\mathrm{best}}, \mathbf{W}, \mathcal{D}$ yielding linear bound $\mathcal{S}_{\mathrm{total}} = \mathcal{O}((N + N_{\mathrm{samp}})D)$, proving hardware feasibility even for $D > 10^5$.
+
+#### Protocol PM-8: 100% Strict Code-to-Math Mirroring (公式与底层代码绝对镜像映射，严禁凭空捏造)
+Every equation in Section 3 must strictly correspond 1-to-1 with the actual Python implementation in `code/algorithms/kds_el_twophase.py` and `code/utils.py`:
+1. *Mutual Information Prior Seeding*: `compute_mi_scores` $\longleftrightarrow$ Eq.~\eqref{eq:mi_ksg} (KSG non-parametric estimator) & Eq.~\eqref{eq:mi_norm} (Min-Max normalization into $\mathbf{m} \in [0, 1]^D$).
+2. *Hybrid Seeding & Step Binarization*: `P[:half] = np.clip(mi + N(0, 0.1), 0, 1)`, `P[half:] = U(0, 1)`, `(P > thres)` $\longleftrightarrow$ Eq.~\eqref{eq:mi_seeding} (Gaussian soft prior) & Eq.~\eqref{eq:binarize} (Heaviside step mapping with cut-off threshold $\theta$).
+3. *Adaptive Stagnation Recovery*: `stall_counter >= patience` resetting lower $N/2$ particles $\longleftrightarrow$ Eq.~\eqref{eq:reinit_formula} (elite retention and Gaussian re-seeding).
+4. *Cumulative Importance Harvesting & Decay*: `weight[change & (fv_n > fv_o)] += inc`, `weight *= decay` $\longleftrightarrow$ Eq.~\eqref{eq:importance_update} (directional fitness differential accumulation) & Eq.~\eqref{eq:decay} (exponential memory forgetting via $\gamma$).
+5. *Knowledge-Guided Elite Refinement*: `ker_flip` with directional flip scores $\sigma_j = (1 - 2x_{e,j})W_j$ $\longleftrightarrow$ Eq.~\eqref{eq:flip_score} (state-dependent scoring), Eq.~\eqref{eq:top_scores} (top-$k_{\mathrm{flip}}$ selection), & Eq.~\eqref{eq:inplace} (greedy in-place replacement).
+6. *Dynamic Two-Phase Weight Scheduling*: `ws_phase1 = [0.70, 0.30]`, `ws_phase2 = [0.95, 0.05]`, `switch_t = 0.7*T`, and instantaneous Pbest re-evaluation at switch $\longleftrightarrow$ Eq.~\eqref{eq:twophase} (step-wise weight formulation) & Eq.~\eqref{eq:fitness} (unified scalar fitness).
+
+---
+
 ## 🔍 Automated Pre-Response & Pre-Compilation Verification Checklist
 
-For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 20-point internal audit before outputting:
+For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 25-point internal audit before outputting:
 
 1. [ ] **Zero Baseline Terminology Check**: Is the word "baseline" / "baselines" completely eliminated from manuscript text, tables, captions, footnotes, and dialogue responses in favor of "competitor", "comparison method", "peer algorithm", or "benchmark"?
 2. [ ] **Acronym Check**: Are there duplicate acronym expansions (e.g., `(KER)`, `(TPS)`)?
@@ -281,3 +349,10 @@ For **every user prompt, LaTeX edit, or section rewriting**, the agent must exec
 
 ### 🏷️ Figure and Table Caption & Layout Audit:
 20. [ ] **Caption & Footnote Audit**: Are table captions ultra-concise noun phrases (6–15 words) free of formatting definitions? Are boldface/underline definitions and statistical symbols delegated exclusively to table footnotes? Do figure captions adhere to the 3-part self-contained anatomy (20–50 words) with explicit sub-panel guides and visual landmark decodings?
+
+### 📐 Additional Section 3 (The Proposed Method) Specific Audit Items:
+21. [ ] **Section 3 Tier 1 Zero-Data Audit**: Is Section 3 completely devoid of empirical test results, performance numbers, and future spoilers?
+22. [ ] **Section 3 Code-Formula Mirror Audit**: Does every equation and algorithmic step strictly mirror the Python implementation in `code/algorithms/kds_el_twophase.py` and `code/utils.py`?
+23. [ ] **Section 3 "Why Before How" Audit**: Does each formula follow the 4-step causal chain with physical bottleneck analysis and boundary condition interpretation?
+24. [ ] **Section 3 Complexity Closed-Loop Audit**: Are offline preprocessing and online evaluation decoupled, with $\bar{d}_{\mathrm{selected}}$ and linear spatial bounds explicitly formulated?
+25. [ ] **Section 3 Modular Pseudocode Audit**: Are Algorithm 1 (KER) and Algorithm 2 (KDS-EL) fully declared with mathematical domains in `\Require`/`\Ensure` and stage-wise segmentation?
