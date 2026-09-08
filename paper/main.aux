@@ -83,8 +83,8 @@
 \citation{wangjia2022}
 \citation{xuezhang2024}
 \citation{liu2024}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Example of the feature selection process via KDS-EL.}}{4}{figure.1}\protected@file@percent }
-\newlabel{fig:kds_el_dataflow}{{1}{4}{Example of the feature selection process via KDS-EL}{figure.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Overall dataflow architecture of the proposed KDS-EL framework for high-dimensional feature selection. The pipeline progresses from mutual-information-guided prior initialization to collaborative dual-swarm co-evolution ($\mathcal  {P}_1$ and $\mathcal  {P}_2$), dynamic Two-Phase Weight Scheduling, and closed-loop elite refinement with exponential memory decay, isolating optimal compact biomarker subsets.}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:kds_el_dataflow}{{1}{4}{Overall dataflow architecture of the proposed KDS-EL framework for high-dimensional feature selection. The pipeline progresses from mutual-information-guided prior initialization to collaborative dual-swarm co-evolution ($\mathcal {P}_1$ and $\mathcal {P}_2$), dynamic Two-Phase Weight Scheduling, and closed-loop elite refinement with exponential memory decay, isolating optimal compact biomarker subsets}{figure.1}{}}
 \newlabel{eq:mi}{{8}{4}{Knowledge-guided search and taxonomic positioning}{equation.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}The Proposed Method}{4}{section.3}\protected@file@percent }
 \newlabel{sec:proposed}{{3}{4}{The Proposed Method}{section.3}{}}
@@ -92,26 +92,26 @@
 \newlabel{sec:framework}{{3.1}{4}{The framework of KDS-EL}{subsection.3.1}{}}
 \citation{ross2014}
 \citation{kraskov2004,ross2014}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Overall flowchart for feature selection via KDS-EL.}}{5}{figure.2}\protected@file@percent }
-\newlabel{fig:kds_el_flowchart}{{2}{5}{Overall flowchart for feature selection via KDS-EL}{figure.2}{}}
 \newlabel{eq:pop_matrix}{{9}{5}{The framework of KDS-EL}{equation.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Population initialization and adaptive recovery}{5}{subsection.3.2}\protected@file@percent }
 \newlabel{sec:mi}{{3.2}{5}{Population initialization and adaptive recovery}{subsection.3.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Prior-guided sparse population initialization}{5}{subsubsection.3.2.1}\protected@file@percent }
 \newlabel{eq:mi_ksg}{{10}{5}{Prior-guided sparse population initialization}{equation.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Process of prior-guided sparse initialization and adaptive recovery.}}{6}{figure.3}\protected@file@percent }
-\newlabel{fig:mi_seeding}{{3}{6}{Process of prior-guided sparse initialization and adaptive recovery}{figure.3}{}}
-\newlabel{eq:mi_norm}{{11}{6}{Prior-guided sparse population initialization}{equation.11}{}}
-\newlabel{eq:mi_seeding}{{12}{6}{Prior-guided sparse population initialization}{equation.12}{}}
-\newlabel{eq:binarize}{{13}{6}{Prior-guided sparse population initialization}{equation.13}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Adaptive stagnation recovery}{6}{subsubsection.3.2.2}\protected@file@percent }
-\newlabel{sec:reinit}{{3.2.2}{6}{Adaptive stagnation recovery}{subsubsection.3.2.2}{}}
+\newlabel{eq:mi_norm}{{11}{5}{Prior-guided sparse population initialization}{equation.11}{}}
+\newlabel{eq:mi_seeding}{{12}{5}{Prior-guided sparse population initialization}{equation.12}{}}
+\newlabel{eq:binarize}{{13}{5}{Prior-guided sparse population initialization}{equation.13}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Adaptive stagnation recovery}{5}{subsubsection.3.2.2}\protected@file@percent }
+\newlabel{sec:reinit}{{3.2.2}{5}{Adaptive stagnation recovery}{subsubsection.3.2.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Algorithmic execution flowchart of the KDS-EL framework. The schematic illustrates the full optimization lifecycle, depicting parameter initialization, dual-subpopulation co-evolutionary updates, two-phase objective fitness evaluation, adaptive diversity recovery upon search stagnation, and closed-loop knowledge-guided elite refinement.}}{6}{figure.2}\protected@file@percent }
+\newlabel{fig:kds_el_flowchart}{{2}{6}{Algorithmic execution flowchart of the KDS-EL framework. The schematic illustrates the full optimization lifecycle, depicting parameter initialization, dual-subpopulation co-evolutionary updates, two-phase objective fitness evaluation, adaptive diversity recovery upon search stagnation, and closed-loop knowledge-guided elite refinement}{figure.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Schematic representation of prior-guided sparse population initialization and adaptive diversity recovery. Step~1 injects mutual information priors into continuous candidate vectors, Steps~2--3 trace generational convergence toward compact subsets, and Step~4 triggers adaptive re-initialization upon reaching the stagnation threshold $\tau $ to restore swarm diversity.}}{6}{figure.3}\protected@file@percent }
+\newlabel{fig:mi_seeding}{{3}{6}{Schematic representation of prior-guided sparse population initialization and adaptive diversity recovery. Step~1 injects mutual information priors into continuous candidate vectors, Steps~2--3 trace generational convergence toward compact subsets, and Step~4 triggers adaptive re-initialization upon reaching the stagnation threshold $\tau $ to restore swarm diversity}{figure.3}{}}
 \newlabel{eq:reinit_formula}{{14}{6}{Adaptive stagnation recovery}{equation.14}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Cumulative importance learning and elite refinement}{6}{subsection.3.3}\protected@file@percent }
 \newlabel{sec:importance}{{3.3}{6}{Cumulative importance learning and elite refinement}{subsection.3.3}{}}
 \newlabel{sec:ker}{{3.3}{6}{Cumulative importance learning and elite refinement}{subsection.3.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Process of the knowledge-guided elite refinement strategy.}}{7}{figure.4}\protected@file@percent }
-\newlabel{fig:ker_refinement}{{4}{7}{Process of the knowledge-guided elite refinement strategy}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Operational mechanism of the knowledge-guided elite refinement strategy. Cross-iteration fitness differentials are harvested into a continuous feature-importance vector under exponential memory decay, generating a normalized bit-flip probability matrix that steers targeted directional mutations on the top-$k_e$ elite solutions via greedy in-place replacement.}}{7}{figure.4}\protected@file@percent }
+\newlabel{fig:ker_refinement}{{4}{7}{Operational mechanism of the knowledge-guided elite refinement strategy. Cross-iteration fitness differentials are harvested into a continuous feature-importance vector under exponential memory decay, generating a normalized bit-flip probability matrix that steers targeted directional mutations on the top-$k_e$ elite solutions via greedy in-place replacement}{figure.4}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Online feature importance learning}{7}{subsubsection.3.3.1}\protected@file@percent }
 \newlabel{eq:changed_features}{{15}{7}{Online feature importance learning}{equation.15}{}}
 \newlabel{eq:importance_update}{{16}{7}{Online feature importance learning}{equation.16}{}}
@@ -159,9 +159,15 @@
 \citation{hancer2023}
 \citation{su2024}
 \citation{shikoun2024}
+\citation{wangjia2022}
+\citation{wei2025}
+\citation{wang2022}
+\citation{xuezhang2024}
+\citation{kennedy1997}
 \citation{su2024}
 \citation{shikoun2024}
 \citation{hancer2023}
+\citation{mel2024}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Experimental results and discussion}{9}{section.4}\protected@file@percent }
 \newlabel{sec:results}{{4}{9}{Experimental results and discussion}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental setup}{9}{subsection.4.1}\protected@file@percent }
@@ -175,6 +181,20 @@
 \newlabel{sec:analysis}{{4.2}{9}{Experimental analysis}{subsection.4.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Comparison of classification accuracy}{9}{subsubsection.4.2.1}\protected@file@percent }
 \newlabel{sec:accuracy}{{4.2.1}{9}{Comparison of classification accuracy}{subsubsection.4.2.1}{}}
+\citation{wangjia2022}
+\citation{su2024}
+\citation{shikoun2024}
+\citation{hancer2023}
+\citation{kennedy1997}
+\citation{mel2024}
+\citation{wangjia2022}
+\citation{wang2022}
+\citation{mel2024}
+\citation{kennedy1997}
+\citation{kennedy1997}
+\citation{wangjia2022}
+\citation{wang2022}
+\citation{mel2024}
 \@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Relevant parameter settings for all algorithms.}}{10}{table.3}\protected@file@percent }
 \newlabel{T3}{{3}{10}{Relevant parameter settings for all algorithms}{table.3}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Comparison of the number of selected features}{10}{subsubsection.4.2.2}\protected@file@percent }
@@ -182,60 +202,73 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}Fitness value and convergence analysis}{10}{subsubsection.4.2.3}\protected@file@percent }
 \newlabel{sec:convergence}{{4.2.3}{10}{Fitness value and convergence analysis}{subsubsection.4.2.3}{}}
 \citation{demsar2006}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Comparison of pure classification accuracy (mean $\pm $ standard deviation across 10 independent runs) on 20 benchmark datasets. Best results are in \textbf  {boldface}, and second-best are \underline  {underlined}. Wilcoxon signed-rank symbols $+$, $\approx $, and $-$ denote significant superiority, parity, or inferiority of the proposed KDS-EL at $\alpha = 0.05$. The bottom rows summarize macro-average accuracy and directional win/tie/loss counts ($+/\approx /-$).}}{11}{table.4}\protected@file@percent }
-\newlabel{T4}{{4}{11}{Comparison of pure classification accuracy (mean $\pm $ standard deviation across 10 independent runs) on 20 benchmark datasets. Best results are in \textbf {boldface}, and second-best are \underline {underlined}. Wilcoxon signed-rank symbols $+$, $\approx $, and $-$ denote significant superiority, parity, or inferiority of the proposed KDS-EL at $\alpha = 0.05$. The bottom rows summarize macro-average accuracy and directional win/tie/loss counts ($+/\approx /-$)}{table.4}{}}
-\newlabel{tab:accuracy_comparison}{{4}{11}{Comparison of pure classification accuracy (mean $\pm $ standard deviation across 10 independent runs) on 20 benchmark datasets. Best results are in \textbf {boldface}, and second-best are \underline {underlined}. Wilcoxon signed-rank symbols $+$, $\approx $, and $-$ denote significant superiority, parity, or inferiority of the proposed KDS-EL at $\alpha = 0.05$. The bottom rows summarize macro-average accuracy and directional win/tie/loss counts ($+/\approx /-$)}{table.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Comparison of selected feature subset size on 20 benchmark datasets. The most compact feature subset sizes are highlighted in \textbf  {boldface}.}}{11}{table.5}\protected@file@percent }
-\newlabel{T5}{{5}{11}{Comparison of selected feature subset size on 20 benchmark datasets. The most compact feature subset sizes are highlighted in \textbf {boldface}}{table.5}{}}
-\newlabel{tab:feature_comparison}{{5}{11}{Comparison of selected feature subset size on 20 benchmark datasets. The most compact feature subset sizes are highlighted in \textbf {boldface}}{table.5}{}}
+\citation{wangjia2022}
+\citation{wang2022}
+\citation{wei2025}
+\citation{xuezhang2024}
+\citation{kennedy1997}
+\citation{su2024}
+\citation{shikoun2024}
+\citation{hancer2023}
+\citation{mel2024}
+\citation{holm1979}
+\citation{friedman1940}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Comparison of classification accuracy between KDS-EL and competitor algorithms across the benchmark suite.}}{11}{table.4}\protected@file@percent }
+\newlabel{T4}{{4}{11}{Comparison of classification accuracy between KDS-EL and competitor algorithms across the benchmark suite}{table.4}{}}
+\newlabel{tab:accuracy_comparison}{{4}{11}{Comparison of classification accuracy between KDS-EL and competitor algorithms across the benchmark suite}{table.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Comparison of selected feature subset size between KDS-EL and competitor algorithms across the benchmark suite.}}{11}{table.5}\protected@file@percent }
+\newlabel{T5}{{5}{11}{Comparison of selected feature subset size between KDS-EL and competitor algorithms across the benchmark suite}{table.5}{}}
+\newlabel{tab:feature_comparison}{{5}{11}{Comparison of selected feature subset size between KDS-EL and competitor algorithms across the benchmark suite}{table.5}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}Statistical significance analysis via Wilcoxon test}{11}{subsubsection.4.2.4}\protected@file@percent }
 \newlabel{sec:stats}{{4.2.4}{11}{Statistical significance analysis via Wilcoxon test}{subsubsection.4.2.4}{}}
-\citation{holm1979}
-\citation{demsar2006}
-\citation{friedman1940}
-\citation{deng2025nns,miao2024}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Average fitness convergence curves of KDS-EL and competitor algorithms.}}{12}{figure.5}\protected@file@percent }
-\newlabel{F8}{{5}{12}{Average fitness convergence curves of KDS-EL and competitor algorithms}{figure.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Average Friedman ranks of the compared algorithms.}}{12}{figure.6}\protected@file@percent }
-\newlabel{F13}{{6}{12}{Average Friedman ranks of the compared algorithms}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Convergence trajectories of mean objective fitness over 100 evolutionary generations across the benchmark suite. Individual subplots display fitness descent curves across representative benchmark datasets spanning diverse biological and data modalities. Lower values indicate superior objective performance; solid red curves highlight KDS-EL, consistently demonstrating accelerated early descent and sustained escape from local exploratory plateaus.}}{12}{figure.5}\protected@file@percent }
+\newlabel{F8}{{5}{12}{Convergence trajectories of mean objective fitness over 100 evolutionary generations across the benchmark suite. Individual subplots display fitness descent curves across representative benchmark datasets spanning diverse biological and data modalities. Lower values indicate superior objective performance; solid red curves highlight KDS-EL, consistently demonstrating accelerated early descent and sustained escape from local exploratory plateaus}{figure.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Pairwise Wilcoxon signed-rank test results on classification accuracy.}}{12}{table.6}\protected@file@percent }
+\newlabel{T6}{{6}{12}{Pairwise Wilcoxon signed-rank test results on classification accuracy}{table.6}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.5}Performance comparison before and after algorithm improvement}{12}{subsubsection.4.2.5}\protected@file@percent }
 \newlabel{sec:improvement}{{4.2.5}{12}{Performance comparison before and after algorithm improvement}{subsubsection.4.2.5}{}}
-\citation{mel2024}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Pairwise Wilcoxon signed-rank test results on classification accuracy across 20 benchmark datasets.}}{13}{table.6}\protected@file@percent }
-\newlabel{T6}{{6}{13}{Pairwise Wilcoxon signed-rank test results on classification accuracy across 20 benchmark datasets}{table.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Holm-Bonferroni step-down procedure testing directional superiority of KDS-EL over all competitor methods across 20 benchmark datasets (nominal $\alpha = 0.05$).}}{13}{table.7}\protected@file@percent }
-\newlabel{T6b}{{7}{13}{Holm-Bonferroni step-down procedure testing directional superiority of KDS-EL over all competitor methods across 20 benchmark datasets (nominal $\alpha = 0.05$)}{table.7}{}}
-\newlabel{tab:holm_bonferroni}{{7}{13}{Holm-Bonferroni step-down procedure testing directional superiority of KDS-EL over all competitor methods across 20 benchmark datasets (nominal $\alpha = 0.05$)}{table.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Radar charts of classification accuracy for different algorithm variants.}}{13}{figure.7}\protected@file@percent }
-\newlabel{fig:ablation_radar}{{7}{13}{Radar charts of classification accuracy for different algorithm variants}{figure.7}{}}
+\citation{hancer2023}
+\citation{su2024}
+\citation{shikoun2024}
+\citation{wei2025}
+\citation{wang2022}
+\citation{kennedy1997}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Holm-Bonferroni step-down procedure testing directional superiority of KDS-EL over all competitor methods (nominal $\alpha = 0.05$).}}{13}{table.7}\protected@file@percent }
+\newlabel{T6b}{{7}{13}{Holm-Bonferroni step-down procedure testing directional superiority of KDS-EL over all competitor methods (nominal $\alpha = 0.05$)}{table.7}{}}
+\newlabel{tab:holm_bonferroni}{{7}{13}{Holm-Bonferroni step-down procedure testing directional superiority of KDS-EL over all competitor methods (nominal $\alpha = 0.05$)}{table.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Overall Friedman ranking distribution of KDS-EL and 11 competitor algorithms across the 20 benchmark datasets. Horizontal bars indicate average ranks across all test problems (lower rank denotes superior performance), with statistical significance assessed at nominal $\alpha = 0.05$.}}{13}{figure.6}\protected@file@percent }
+\newlabel{F13}{{6}{13}{Overall Friedman ranking distribution of KDS-EL and 11 competitor algorithms across the 20 benchmark datasets. Horizontal bars indicate average ranks across all test problems (lower rank denotes superior performance), with statistical significance assessed at nominal $\alpha = 0.05$}{figure.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Comparison of KDS-EL and MEL performance.}}{13}{table.8}\protected@file@percent }
+\newlabel{T7}{{8}{13}{Comparison of KDS-EL and MEL performance}{table.8}{}}
+\newlabel{tab:ablation_study}{{8}{13}{Comparison of KDS-EL and MEL performance}{table.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Multi-dataset radar visualization of classification accuracy across the 20 benchmark datasets. Concentric axes trace predictive accuracy from 0.75 to 1.00; polygonal contours compare the full KDS-EL framework against its three ablative configurations, illustrating consistent outer-boundary coverage across all data modalities.}}{13}{figure.7}\protected@file@percent }
+\newlabel{fig:ablation_radar}{{7}{13}{Multi-dataset radar visualization of classification accuracy across the 20 benchmark datasets. Concentric axes trace predictive accuracy from 0.75 to 1.00; polygonal contours compare the full KDS-EL framework against its three ablative configurations, illustrating consistent outer-boundary coverage across all data modalities}{figure.7}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.6}Computational efficiency and runtime analysis}{13}{subsubsection.4.2.6}\protected@file@percent }
 \newlabel{sec:efficiency}{{4.2.6}{13}{Computational efficiency and runtime analysis}{subsubsection.4.2.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Component-wise ablation progression from precursor MEL through MII, KER, to full KDS-EL across 20 benchmark datasets.}}{14}{table.8}\protected@file@percent }
-\newlabel{T7}{{8}{14}{Component-wise ablation progression from precursor MEL through MII, KER, to full KDS-EL across 20 benchmark datasets}{table.8}{}}
-\newlabel{tab:ablation_study}{{8}{14}{Component-wise ablation progression from precursor MEL through MII, KER, to full KDS-EL across 20 benchmark datasets}{table.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Convergence curves of classification accuracy for KDS-EL and its ablative variants: (a) overall mean across 20 benchmark datasets, and (b)--(i) eight representative datasets. The vertical dotted line at $t=70$ denotes the transition boundary from Phase 1 (dimensional pruning) to Phase 2 (fine accuracy refinement) in Two-Phase Weight Scheduling.}}{14}{figure.8}\protected@file@percent }
-\newlabel{fig:ablation_convergence}{{8}{14}{Convergence curves of classification accuracy for KDS-EL and its ablative variants: (a) overall mean across 20 benchmark datasets, and (b)--(i) eight representative datasets. The vertical dotted line at $t=70$ denotes the transition boundary from Phase 1 (dimensional pruning) to Phase 2 (fine accuracy refinement) in Two-Phase Weight Scheduling}{figure.8}{}}
 \citation{mimpode2025}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Overall performance trade-off across classification accuracy, selected feature subset size, and computational runtime.}}{15}{figure.9}\protected@file@percent }
-\newlabel{F11}{{9}{15}{Overall performance trade-off across classification accuracy, selected feature subset size, and computational runtime}{figure.9}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.7}Parameter sensitivity and robustness analysis}{15}{subsubsection.4.2.7}\protected@file@percent }
-\newlabel{sec:parametric}{{4.2.7}{15}{Parameter sensitivity and robustness analysis}{subsubsection.4.2.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Convergence trajectories of classification accuracy for KDS-EL and its intermediate algorithmic configurations before and after improvement. Panels illustrate (a) the omnibus mean across the benchmark suite and (b)--(i) eight representative datasets. The vertical dotted line denotes the transition boundary from Phase 1 (dimensional pruning) to Phase 2 (fine accuracy refinement) in Two-Phase Weight Scheduling.}}{14}{figure.8}\protected@file@percent }
+\newlabel{fig:ablation_convergence}{{8}{14}{Convergence trajectories of classification accuracy for KDS-EL and its intermediate algorithmic configurations before and after improvement. Panels illustrate (a) the omnibus mean across the benchmark suite and (b)--(i) eight representative datasets. The vertical dotted line denotes the transition boundary from Phase 1 (dimensional pruning) to Phase 2 (fine accuracy refinement) in Two-Phase Weight Scheduling}{figure.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Trade-off distribution between classification accuracy and selected feature subset cardinality across the benchmark suite. The dashed curve traces the empirical Pareto frontier of non-dominated configurations across all evaluated algorithms. The superior upper-left positioning of KDS-EL demonstrates its simultaneous attainment of high predictive accuracy and extreme feature sparsity.}}{14}{figure.9}\protected@file@percent }
+\newlabel{F11}{{9}{14}{Trade-off distribution between classification accuracy and selected feature subset cardinality across the benchmark suite. The dashed curve traces the empirical Pareto frontier of non-dominated configurations across all evaluated algorithms. The superior upper-left positioning of KDS-EL demonstrates its simultaneous attainment of high predictive accuracy and extreme feature sparsity}{figure.9}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.7}Parameter sensitivity and robustness analysis}{14}{subsubsection.4.2.7}\protected@file@percent }
+\newlabel{sec:parametric}{{4.2.7}{14}{Parameter sensitivity and robustness analysis}{subsubsection.4.2.7}{}}
+\citation{guyon2003,liang2025}
+\citation{kohavi1997}
+\citation{fischer2001}
+\citation{alon1999}
+\citation{singh2002,rubin2002}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Sensitivity and stability profiles of KDS-EL across five hyperparameters: (a) weight decay $\gamma $, (b) phase split $\kappa $, (c) perturbation fraction $\phi $, (d) MI ratio $\rho $, and (e) elite pool size $k_e$. Curves denote accuracy (solid red) and feature count (dashed blue); shaded bands highlight stable operating intervals, and stars indicate default configurations.}}{15}{figure.10}\protected@file@percent }
+\newlabel{fig:param_sensitivity}{{10}{15}{Sensitivity and stability profiles of KDS-EL across five hyperparameters: (a) weight decay $\gamma $, (b) phase split $\kappa $, (c) perturbation fraction $\phi $, (d) MI ratio $\rho $, and (e) elite pool size $k_e$. Curves denote accuracy (solid red) and feature count (dashed blue); shaded bands highlight stable operating intervals, and stars indicate default configurations}{figure.10}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Summary of parameter sensitivity analysis across four representative datasets.}}{15}{table.9}\protected@file@percent }
 \newlabel{T8}{{9}{15}{Summary of parameter sensitivity analysis across four representative datasets}{table.9}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.8}Discussion}{15}{subsubsection.4.2.8}\protected@file@percent }
 \newlabel{sec:discussion}{{4.2.8}{15}{Discussion}{subsubsection.4.2.8}{}}
 \newlabel{sec:ceiling}{{4.2.8}{15}{Discussion}{subsubsection.4.2.8}{}}
-\citation{alon1999}
-\citation{singh2002,rubin2002}
 \bibstyle{elsarticle-num}
 \bibdata{references}
 \bibcite{lili2017}{{1}{}{{}}{{}}}
 \bibcite{guyon2003}{{2}{}{{}}{{}}}
 \bibcite{liang2025}{{3}{}{{}}{{}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Parameter sensitivity analysis of KDS-EL across five key hyperparameters.}}{16}{figure.10}\protected@file@percent }
-\newlabel{fig:param_sensitivity}{{10}{16}{Parameter sensitivity analysis of KDS-EL across five key hyperparameters}{figure.10}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{16}{section.5}\protected@file@percent }
-\newlabel{sec:conclusion}{{5}{16}{Conclusion}{section.5}{}}
 \bibcite{kohavi1997}{{4}{}{{}}{{}}}
 \bibcite{kennedy1995}{{5}{}{{}}{{}}}
 \bibcite{shi1998}{{6}{}{{}}{{}}}
@@ -255,6 +288,8 @@
 \bibcite{roffo2016}{{20}{}{{}}{{}}}
 \bibcite{bach2008}{{21}{}{{}}{{}}}
 \bibcite{zhang2021fsgbdt}{{22}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{16}{section.5}\protected@file@percent }
+\newlabel{sec:conclusion}{{5}{16}{Conclusion}{section.5}{}}
 \bibcite{huang2006}{{23}{}{{}}{{}}}
 \bibcite{aghdam2009}{{24}{}{{}}{{}}}
 \bibcite{karaboga2007}{{25}{}{{}}{{}}}
@@ -274,8 +309,9 @@
 \bibcite{demsar2006}{{39}{}{{}}{{}}}
 \bibcite{friedman1940}{{40}{}{{}}{{}}}
 \bibcite{holm1979}{{41}{}{{}}{{}}}
-\bibcite{alon1999}{{42}{}{{}}{{}}}
-\bibcite{singh2002}{{43}{}{{}}{{}}}
-\bibcite{rubin2002}{{44}{}{{}}{{}}}
+\bibcite{fischer2001}{{42}{}{{}}{{}}}
+\bibcite{alon1999}{{43}{}{{}}{{}}}
+\bibcite{singh2002}{{44}{}{{}}{{}}}
+\bibcite{rubin2002}{{45}{}{{}}{{}}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
 \gdef \@abspage@last{18}

@@ -1,6 +1,6 @@
 \begin{table*}[t]
 \centering
-\caption{Comparison of pure classification accuracy (mean $\pm$ standard deviation across 10 independent runs) on 20 benchmark datasets. Best results are in \textbf{boldface}, and second-best are \underline{underlined}. Wilcoxon signed-rank symbols $+$, $\approx$, and $-$ denote significant superiority, parity, or inferiority of the proposed KDS-EL at $\alpha = 0.05$. The bottom rows summarize macro-average accuracy and directional win/tie/loss counts ($+/\approx/-$).}
+\caption{Comparison of classification accuracy between KDS-EL and competitor algorithms across the benchmark suite.}
 \label{T4}\label{tab:accuracy_comparison}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{lcccccccccccc}
@@ -33,4 +33,7 @@ $+ / \approx / -$ & — & 12/8/0 & 19/1/0 & 20/0/0 & 7/5/8 & 19/1/0 & 20/0/0 & 1
 \bottomrule
 \end{tabular}
 }
+\vspace{2pt}
+\par\raggedright\footnotesize
+Entries in bold denote the best classification accuracy, while underlined entries indicate the second-best. $+ / \approx / -$ indicates that KDS-EL is statistically significantly superior ($+$), statistically equivalent ($\approx$), or inferior ($-$) to the corresponding competitor according to the pairwise Wilcoxon signed-rank test at $\alpha = 0.05$.
 \end{table*}

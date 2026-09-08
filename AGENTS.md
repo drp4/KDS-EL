@@ -9,7 +9,8 @@ Every generation and modification must strictly comply with all criteria outline
 ## 📌 Section I: Core Academic Writing & Narrative Protocols
 
 ### Pillar 1: Zero Parenthetical Clutter & Duplicate Acronyms
-- **No Duplicate Acronym Expansions**: Once an acronym (e.g., `KDS-EL`, `KER`, `TPS`, `PSO`, `MI`) is defined in the Abstract/Introduction, do not expand it again with parenthetical tags like `Knowledge-Guided Elite Refinement (KER)`. Use the formal terms directly (e.g., `the KER operator`, `the dynamic TPS strategy`).
+- **No Duplicate Acronym Expansions**: Once an acronym (e.g., `KDS-EL`, `KER`, `TPS`, `PSO`, `MI`) is defined in the Abstract/Introduction, do not expand it again with parenthetical tags like `Knowledge-Guided Elite Refinement (KER)`. Use the formal terms directly (e.g., `the KER strategy`, `the dynamic TPS strategy`, `the MII mechanism`).
+- **Strict Prohibition of "Operator" for Proposed Components**: Strictly prohibit referring to KDS-EL's own constituent components as an `operator` (e.g., never write `KER operator`, `refinement operator`, or `our operators`). KDS-EL's components must strictly be termed `strategy` or `mechanism` (e.g., `the KER strategy`, `the elite refinement mechanism`, `the dynamic TPS strategy`). The term `operator` is reserved exclusively for standard low-level genetic/evolutionary heuristics of peer algorithms (e.g., `crossover operator`, `stochastic bit-flip operator`, `swarm variation operators`).
 - **No Premature Parameter Dumping**: In high-level architecture/framework sections (such as Section 3.1), never hardcode specific hyperparameter values (e.g., `(wf,1 = 0.30)`, `(wa,2 = 0.95)`, `(theta = 0.60)`) or inline formula fragments in parentheses. Specific parameter values belong strictly in dedicated technical subsections and the experimental parameter setup table.
 - **Eliminate Pseudo-Code Conditions in Text**: Never write parenthetical code-like logic in prose (e.g., `(rank(i) <= N/2)` or `(MI_init_ratio = 0.50)`). Translate them into rigorous academic English (e.g., *"the superior half of the swarm is preserved intact..."*).
 
@@ -46,7 +47,7 @@ Every generation and modification must strictly comply with all criteria outline
 ---
 
 ### Pillar 5: Deep Figure-Table Linkage & Self-Containment
-- **Figure/Table Self-Containment**: Captions must be descriptive enough that a reader can grasp the core mechanism purely from the visual artifact.
+- **Figure/Table Self-Containment**: Captions must be descriptive enough that a reader can grasp the core mechanism purely from the visual artifact (complying strictly with Section V, Protocol CAP-2: self-contained 20–50 words structured into global subject, sub-panel guide, and visual cue decoding).
 - **Exact Symbol Matching**: Symbols within PDF figures (`F1`, `F2`, `F3`, `F8`, `F14`) must match the in-text LaTeX math notation 100%.
 - **Directional Referencing**: Direct the reader to specific visual pathways within figures (e.g., *"As illustrated in the adaptive recovery branch of Fig.~2..."*, *"As depicted in Branch 2 of the KER flowchart in Fig.~3..."*).
 
@@ -74,7 +75,7 @@ Every generation and modification must strictly comply with all criteria outline
   - *Causality*: `thereby facilitating...`, `consequently avoiding...`, `which in turn accelerates...`.
 - **Strict Prohibition of the Term "Baseline"**: Strictly prohibit the words `baseline` / `baselines` across all LaTeX manuscript text, table captions, table footnotes, and agent dialogue responses. Peer algorithms must never be casually or dismissively labeled as "baselines" or "baseline MEL". Adhere strictly to formal scholarly terminology:
   - *For peer algorithms*: `competitor algorithms`, `competing methods`, `comparison approaches`, `peer algorithms`, `counterparts`, `benchmark methods`.
-  - *For the predecessor algorithm MEL*: `the original MEL algorithm`, `the precursor MEL framework`, `the foundational multi-task learning method MEL` (never `baseline MEL` or `MEL baseline`).
+  - *For the backbone algorithm MEL*: `the original MEL algorithm`, `the foundational MEL framework`, or directly `MEL` (never `baseline MEL`, `MEL baseline`, or `precursor MEL`, perfectly aligning with EMSWOA's treatment of its base algorithm WOA as `the original WOA` or `the basic WOA`).
   - *For unreduced data / raw feature sets*: `unreduced full-dimensional feature sets`, `raw feature spaces` (never `full-dimensional baselines`).
   - *For reference fitness / starting levels*: `initial fitness value`, `initial reference fitness` (never `fitness baseline`).
   - *For algorithmic comparison collections*: `comparison suite`, `benchmark suite`, `competitor suite` (never `baseline suite`).
@@ -93,6 +94,7 @@ Every generation and modification must strictly comply with all criteria outline
 ---
 
 ### Pillar 10: Elsevier Table Design Protocols (Strict Three-Line Tables)
+- **Table Caption & Footnote Decoupling**: Captions placed strictly above tables must be ultra-concise noun phrases of 6–15 words defining only the entity and comparison scope, strictly adhering to Section V (Protocol CAP-1). All definitions of boldface, underline, statistical testing notation, and parameter symbols must reside strictly in the table footnote (`\par\raggedright\footnotesize`) below the table.
 - **Zero Vertical Lines**: In accordance with Elsevier style guides, **never include vertical rules (`|`)** in tables.
 - **Booktabs Macros**: Construct all tables using `\toprule`, `\midrule`, and `\bottomrule` from the `booktabs` package.
 - **Statistical Significance Highlighting**: Highlight the best-performing metric in **boldface** and underline the second-best across all comparison tables.
@@ -165,9 +167,93 @@ Section 2 must establish three explicit, non-overlapping motivation gaps that di
 
 ---
 
+## 📌 Section IV: Hierarchical Section-Wise Data-Boundary & Anti-Dumping Protocols (各章节数据与数值边界分级规范)
+
+*These protocols must be strictly enforced whenever drafting, modifying, or reviewing any section of the manuscript. Before modifying any text, the agent must explicitly identify the chapter/section, inspect whether data is already dumped, and enforce the corresponding tier.*
+
+### 🎯 Core Mission: "Tables & Figures Host the Data; Text Explains the Mechanisms"
+The primary defect of amateur evolutionary computation manuscripts is "Table Regurgitation" (报账式写作) — reciting table cells, float numbers, seconds, and percentages inside text paragraphs. In top-tier Elsevier journals (mirroring EMSWOA in *Applied Soft Computing*), tables and figures are the sole designated hosts for granular empirical data. The running text exists strictly to synthesize high-level behavioral trends, guide the reader through the visual artifacts, and articulate underlying causal and physical mechanisms.
+
+### 🔑 Four-Tier Data-Boundary Hierarchy
+
+#### Tier 1: Absolutely Zero Experimental Data (Strictly Zero Data / 绝对禁水区)
+- **Applicable Sections**: Section 2 (Related Work & Preliminaries) and Section 3 (The Proposed KDS-EL Framework).
+- **Strict Prohibition**: Zero experimental results, zero empirical test metrics, zero forward-looking performance spoilers (strictly no mentions of 0.9574 accuracy, 87.8 features, 51.3\,s runtime, 3.4$\times$ speedup, or win/tie/loss counts).
+- **Allowed Numerical Content**: Pure mathematical formulations, algorithmic state conditions, standard mathematical constants (e.g., $S(0) = 0.5$), Big-$\mathcal{O}$ asymptotic bounds, and high-level dimension orders of magnitude ($D \gg 10^3$, $N_{\mathrm{samp}} \ll 100$).
+
+#### Tier 2: Landmark Global Milestone Metrics Only (宏观标志性核心指标区)
+- **Applicable Sections**: Abstract, Highlights, Section 1 (Introduction), and Section 5 (Conclusion).
+- **Strict Limitation**: Limited strictly to 2–3 macro omnibus landmark metrics representing the highest aggregate achievement of the entire paper:
+  - Omnibus mean classification accuracy ($0.9574$ or $95.74\%$).
+  - Omnibus mean selected feature cardinality ($87.8$ features, $>98\%$ compression).
+  - Empirical speedup over the foundational MEL framework ($3.4\times$ acceleration).
+- **Strict Prohibition**: Never recite per-dataset results, never list individual competitor accuracy values or runtime numbers, and never enumerate granular benchmark subsets.
+
+#### Tier 3: Static Benchmarking & Configuration Constants Only (实验环境与参数配置区)
+- **Applicable Section**: Section 4.1 (Experimental Setup).
+- **Strict Limitation**: Only declare static benchmarking configuration constants: 20 benchmark datasets, 10 independent runs, 5-fold stratified cross-validation, 3-NN classifier, and default hyperparameter values defined in Table 3.
+- **Strict Prohibition**: Absolutely zero post-hoc experimental test outcomes or performance values.
+
+#### Tier 4: Mechanism-Driven & Insight-Focused Empirical Sections (机理驱动的实验分析区)
+- **Applicable Section**: Section 4.2 (Experimental Analysis subsections 4.2.1 through 4.2.8).
+- **Operational Rule for Each Subsection**:
+  - **4.2.1 (Classification Accuracy)**: Report only the omnibus mean ($0.9574$) and overall directional superiority; explain the discriminative geometry in high dimensions; **strictly prohibit reciting per-dataset accuracy numbers for individual datasets**.
+  - **4.2.2 (Feature Subset Size)**: Report only the omnibus average ($87.8$) and compression ratio ($>98\%$); explain the physical reason why unguided binarization collapses into the $D/2$ attractor and how two-phase scheduling resolves it; **do not enumerate feature numbers across individual datasets**.
+  - **4.2.3 (Convergence Dynamics)**: Zero floating-point data recitation; strictly describe trajectory slopes, early rapid descent, avoidance of exploratory plateaus, and sustained escape from local minima based on Fig.~5.
+  - **4.2.4 (Statistical Significance)**: State nominal $\alpha=0.05$ and overall ranking leadership; leave the full pairwise matrix to Table 6 and adjusted $p$-values to Table 7; **do not narrate the entire table cell by cell**.
+  - **4.2.5 (Before/After Improvement)**: Strictly mirror EMSWOA Section 4.2.5 (exactly 3 paragraphs, zero parenthetical numerical clutter, zero laundry lists); guide the reader to Table 8 and Fig.~7/8, focusing entirely on the orthogonal theoretical synergy of MII+AIR, KER, and TPS.
+  - **4.2.6 (Runtime & Efficiency)**: Report only the omnibus runtime ($51.3$\,s) and the $3.4\times$ speedup; dedicate prose to the asymptotic physical cause (the $k$-NN distance evaluation cost scaling linearly with selected feature cardinality $d_{\mathrm{selected}}$); **strictly prohibit reciting runtime seconds across individual datasets or listing numbers for each competitor**.
+  - **4.2.7 (Parameter Sensitivity)**: Report only recommended optimal values and stable operating intervals (e.g., $\kappa \in [0.60, 0.80]$, maximum variation $\le 1.5\%$); leave all detailed grid values to Table 8 and Fig.~11.
+  - **4.2.8 (Discussion & Ceiling Effects)**: State the ceiling saturation threshold ($>0.998$) and the representative sparse subset range ($39$ to $83$ features); focus on translational biology, RT-qPCR viability, and pathway enrichment, rather than listing feature counts for all peer algorithms.
+
+### 🛠️ Mandatory Pre-Edit Protocol: "Section Identification & Data-Dumping Audit"
+Before generating or applying any text edit to the manuscript:
+1. **Identify Section Location**: Explicitly determine the exact chapter and subsection number (e.g., `Section 4.2.6`).
+2. **Determine Data Tier**: Check whether the section is Tier 1, Tier 2, Tier 3, or Tier 4.
+3. **Data-Dumping Scan (查重与查堆)**: Scan the existing text for table regurgitation (parenthetical numbers, lists of seconds, accuracy diffs, feature numbers).
+4. **Purge & Sublimate**: If data is already dumped, aggressively remove the granular numbers, delegate them to the corresponding Table/Figure, and sublimate the text into deep mechanism analysis, physical rationale, and high-level trends.
+
+---
+
+## 📌 Section V: Scientific Figure and Table Caption Protocols (图表标题与图注设计规范)
+
+*These protocols must be strictly enforced whenever creating, drafting, or revising any Figure or Table captions in the manuscript.*
+
+### 🎯 Core Philosophy: "Table Captions Define the Entities; Table Footnotes Explain the Rules; Figure Captions Provide Self-Contained Visual Narratives"
+In top-tier Elsevier journals, the functional boundaries of table titles, table footnotes, and figure captions are strictly decoupled to maximize visual legibility and self-containment:
+1. **Table Titles (`\caption{...}` above tables)**: Act purely as high-level entity labels defining *what* is compared. They must remain extremely clean, concise, and completely unburdened by typographic or statistical rules.
+2. **Table Footnotes (`\par\raggedright\footnotesize` below tables)**: Formally host all typographic definitions (e.g., boldface/underline criteria), mathematical notations, statistical indicators ($+/ \approx / -$), and evaluation metrics.
+3. **Figure Captions (`\caption{...}` below figures)**: Serve as self-contained explanatory narratives that decode the complete visual story, guiding the reader through global trends, sub-panel mappings, and visual markers without requiring back-and-forth consultation with the main text.
+
+---
+
+### 🔑 Detailed Operational Caption Protocols
+
+#### Protocol CAP-1: Table Caption Standards (表格标题规范)
+- **Position**: Placed strictly **above** the tabular content (`\caption{...}` immediately follows `\begin{table}` or `\begin{table*}`).
+- **Length & Style**: Ultra-concise noun phrase, strictly within **6 to 15 words** (ideally 1 line across the column width; never exceeding 2 lines).
+- **Content Scope**: Solely describe the subject matter and benchmark scope (e.g., *"Table 4. Comparison of classification accuracy between KDS-EL and competitor algorithms across the benchmark suite."*).
+- **Strict Anti-Clutter Rule**: Strictly prohibit dumping formatting rules (such as *"The best results are shown in bold and the second-best are underlined..."*), significance thresholds ($p < 0.05$), or win/tie/loss explanations into the `\caption{...}` title string.
+- **Delegation to Table Footnotes**: All formatting definitions, abbreviations, and statistical testing notes must be placed exclusively at the base of the table using `\par\raggedright\footnotesize` or standard table note environments (e.g., *"Entries in bold denote the best performance, while underlined entries indicate the second-best. $+ / \approx / -$ indicates that KDS-EL is statistically significantly superior, statistically equivalent, or inferior to the corresponding competitor according to the pairwise Wilcoxon signed-rank test at $\alpha = 0.05$."*).
+
+#### Protocol CAP-2: Figure Caption Standards (插图标题与图注规范)
+- **Position**: Placed strictly **below** the visual graphic (`\caption{...}` placed after all subfigures or `\includegraphics`).
+- **Length & Style**: Self-contained scientific paragraph, strictly within **20 to 50 words** (typically 1 to 3 structured sentences; occupying 1 to 3 printed lines).
+- **Mandatory Three-Part Anatomy**:
+  1. *Main Subject Clause (8–15 words)*: Succinct statement of the visual metric or architectural workflow (e.g., *"Overall convergence trajectories of mean objective fitness across 100 evolutionary generations."*).
+  2. *Sub-Panel Navigation Guide (分图导引)*: Explicit mapping of all subfigures (e.g., *"(a) Omnibus mean trajectory across the 20 benchmark datasets, and (b)–(i) eight representative ultra-high-dimensional datasets."*).
+  3. *Visual Cue & Landmark Decoding (图符与视觉标记解析)*: Explicit explanation of visual indicators, including dashed division lines, shaded confidence ribbons, secondary axes, and marker shapes (e.g., *"The vertical dotted line marks the transition boundary from Phase 1 (dimensional pruning) to Phase 2 (fine accuracy refinement) under Two-Phase Weight Scheduling."*).
+- **Self-Containment Criterion**: An expert reader must be able to comprehend the entire figure, the meaning of each curve, and all graphical landmarks purely from the caption and the visual artifact, with zero ambiguity.
+
+#### Protocol CAP-3: Typographic & Symbol Synchronization (符号完全同构规范)
+- **100% Symbol Consistency**: Every mathematical symbol appearing in figure captions or table notes must match the in-text LaTeX math notation and the embedded vector PDF labels with 100% fidelity (e.g., $d_{\mathrm{selected}}$, $k_e$, $\kappa$, $\mathbf{W}$, $f_{\mathrm{gbest}}$).
+- **Capitalization Standard**: Follow standard Elsevier sentence-style capitalization for caption titles (capitalizing only the first word and proper nouns/acronyms).
+
+---
+
 ## 🔍 Automated Pre-Response & Pre-Compilation Verification Checklist
 
-For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 13-point internal audit before outputting (with special attention to Items 14–17 when revising Section 2):
+For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 20-point internal audit before outputting:
 
 1. [ ] **Zero Baseline Terminology Check**: Is the word "baseline" / "baselines" completely eliminated from manuscript text, tables, captions, footnotes, and dialogue responses in favor of "competitor", "comparison method", "peer algorithm", or "benchmark"?
 2. [ ] **Acronym Check**: Are there duplicate acronym expansions (e.g., `(KER)`, `(TPS)`)?
@@ -188,3 +274,10 @@ For **every user prompt, LaTeX edit, or section rewriting**, the agent must exec
 15. [ ] **Section 2 Closed-Loop Check**: Are the three core gaps in Related Work in 1-to-1 correspondence with MII+AIR, KER, and TPS?
 16. [ ] **Section 2 Competitor Coverage**: Are all 13 experimental competitor algorithms explicitly introduced and taxonomically categorized?
 17. [ ] **Section 2 No Parameter Dump**: Are specific tuning constants ($\theta=0.60, w_f=0.30, k_e=3, \gamma=0.99$) completely absent from Section 2 high-level narrative?
+18. [ ] **Zero "Operator" for Proposed Components**: Are KDS-EL's own components (KER, TPS, MII, AIR) strictly designated as "strategy" or "mechanism", with the word "operator" strictly prohibited for proposed components and reserved exclusively for standard genetic/evolutionary heuristics of peer algorithms?
+
+### 📊 Section-Wise Data-Boundary & Anti-Dumping Audit:
+19. [ ] **Section-Wise Data Tier Audit**: Is the modified text strictly compliant with its designated Data Tier (Tier 1: zero data; Tier 2: macro landmarks only; Tier 3: setup constants only; Tier 4: table-free causal mechanisms)? Has all "table regurgitation" (cell-by-cell numerical dumping) been completely purged in favor of causal and mechanical analysis?
+
+### 🏷️ Figure and Table Caption & Layout Audit:
+20. [ ] **Caption & Footnote Audit**: Are table captions ultra-concise noun phrases (6–15 words) free of formatting definitions? Are boldface/underline definitions and statistical symbols delegated exclusively to table footnotes? Do figure captions adhere to the 3-part self-contained anatomy (20–50 words) with explicit sub-panel guides and visual landmark decodings?

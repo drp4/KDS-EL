@@ -23,6 +23,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage[figuresright]{rotating}
+\usepackage{balance}
 \setlength{\emergencystretch}{3em}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \renewcommand{\bibfont}{\footnotesize}
@@ -187,7 +188,7 @@
     \hrule height 0.4pt
     \vspace{5pt}
     {\fontsize{7.5}{9.2}\selectfont
-    Feature selection in high-dimensional data remains a central challenge in evolutionary machine learning. Particle swarm optimization suffers from three structural deficiencies: undirected initialization provides insufficient search guidance in sparse high-dimensional spaces, uniform feature perturbation fails to exploit cross-iteration feature-importance feedback, and static objective weighting cannot adapt to shifting evolutionary demands. To overcome these bottlenecks, this paper proposes Knowledge-Guided Dual-Phase Swarm Evolutionary Learning (KDS-EL), a closed-loop framework incorporating domain prior injection, generational knowledge accumulation, and dynamic objective scheduling. Specifically, mutual-information-guided seeding provides continuous relevance priors while adaptive re-initialization restores population diversity upon stagnation. A knowledge-guided elite refinement operator dynamically harvests cross-iteration feature feedback with exponential memory decay, steering elite solutions toward historically effective dimensions under bounded computational overhead. Furthermore, two-phase weight scheduling temporally decouples early coarse dimensionality reduction from late-stage accuracy refinement. Extensive evaluations across 20 ultra-high-dimensional benchmark datasets demonstrate that KDS-EL achieves a leading average classification accuracy of 95.74\% while isolating an ultra-sparse signature of only 87.8 features, significantly outperforming 11 representative competitor algorithms and foundational multi-task frameworks. Non-parametric statistical tests with Holm--Bonferroni correction confirm the statistically significant superiority and computational efficiency of the proposed framework.\par
+    Feature selection in high-dimensional data remains a central challenge in evolutionary machine learning. Particle swarm optimization suffers from three structural deficiencies: undirected initialization provides insufficient search guidance in sparse high-dimensional spaces, uniform feature perturbation fails to exploit cross-iteration feature-importance feedback, and static objective weighting cannot adapt to shifting evolutionary demands. To overcome these bottlenecks, this paper proposes Knowledge-Guided Dual-Phase Swarm Evolutionary Learning (KDS-EL), a closed-loop framework incorporating domain prior injection, generational knowledge accumulation, and dynamic objective scheduling. Specifically, mutual-information-guided seeding provides continuous relevance priors while adaptive re-initialization restores population diversity upon stagnation. The knowledge-guided elite refinement strategy dynamically harvests cross-iteration feature feedback with exponential memory decay, steering elite solutions toward historically effective dimensions under bounded computational overhead. Furthermore, two-phase weight scheduling temporally decouples early coarse dimensionality reduction from late-stage accuracy refinement. Extensive evaluations across 20 ultra-high-dimensional benchmark datasets demonstrate that KDS-EL achieves a leading average classification accuracy of 95.74\% while isolating an ultra-sparse signature of only 87.8 features, significantly outperforming 11 representative competitor algorithms and foundational multi-task frameworks. Non-parametric statistical tests with Holm--Bonferroni correction confirm the statistically significant superiority and computational efficiency of the proposed framework.\par
     }
   \end{minipage}
 
@@ -234,9 +235,10 @@ This section outlines the experimental framework and presents a comprehensive em
 The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
 
 \section*{Data availability}
-The 20 high-dimensional benchmark datasets analyzed in this study are publicly accessible from standard machine learning and bioinformatics repositories. The source code of KDS-EL will be made available upon publication. Supplementary experimental records---including granular per-dataset ablation metrics (Table~S4), complete computational runtime measurements (Table~S5), full parameter sensitivity grids (Table~S6), cross-classifier inductive generalization assessments (Table~S9), and biological biomarker target annotations (Table~S10)---are provided in the accompanying Supplementary Material document.
+Data will be made available on request.
 
 % --------------------------- References --------------------------------
+\balance
 \bibliographystyle{elsarticle-num}
 \bibliography{references}
 

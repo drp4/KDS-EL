@@ -108,9 +108,9 @@ N.~H. Shikoun, A.~E. Hassanien, M.~H. Haggag, {BinCOA}: An efficient binary
 \bibitem{miao2024}
 F.~Miao, Y.~Wu, G.~Yan, X.~Si, Dynamic multi-swarm whale optimization algorithm
   based on elite tuning for high-dimensional feature selection classification
-  problems, Applied Soft Computing 164 (2024) 111958.
-\newblock \href {https://doi.org/10.1016/j.asoc.2024.111958}
-  {\path{doi:10.1016/j.asoc.2024.111958}}.
+  problems, Applied Soft Computing 169 (2025) 112634.
+\newblock \href {https://doi.org/10.1016/j.asoc.2024.112634}
+  {\path{doi:10.1016/j.asoc.2024.112634}}.
 
 \bibitem{deng2025nns}
 S.~Deng, H.~Liu, W.~Zhu, K.~Li, M.~Li, Elite neighborhood search and dynamic
@@ -276,6 +276,11 @@ M.~Friedman, A comparison of alternative tests of significance for the problem
 S.~Holm, A simple sequentially rejective multiple test procedure, Scandinavian
   Journal of Statistics 6~(2) (1979) 65--70.
 \newblock \href {https://doi.org/10.2307/4615733} {\path{doi:10.2307/4615733}}.
+
+\bibitem{fischer2001}
+H.~Fischer, R.~Stenling, C.~Rubio, A.~Lindblom, Colorectal carcinogenesis is
+  associated with expression of collagen type {XI} alpha 1, Clinical Cancer
+  Research 7~(10) (2001) 3144--3149.
 
 \bibitem{alon1999}
 U.~Alon, N.~Barkai, D.~A. Notterman, K.~Gish, S.~Ybarra, D.~Mack, A.~J. Levine,

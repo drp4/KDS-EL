@@ -245,7 +245,7 @@ def table_t4_accuracy(df_detail, df_summary, out_dir):
     latex_content = [
         "\\begin{table*}[t]",
         "\\centering",
-        "\\caption{Comparison of pure classification accuracy (mean $\\pm$ standard deviation across 10 independent runs) on 20 benchmark datasets. Best results are in \\textbf{boldface}, and second-best are \\underline{underlined}. Wilcoxon signed-rank symbols $+$, $\\approx$, and $-$ denote significant superiority, parity, or inferiority of the proposed KDS-EL at $\\alpha = 0.05$. The bottom rows summarize macro-average accuracy and directional win/tie/loss counts ($+/\\approx/-$).}",
+        "\\caption{Comparison of classification accuracy on 20 benchmark datasets. Best results are in \\textbf{boldface}, and second-best are \\underline{underlined}.}",
         "\\label{T4}\\label{tab:accuracy_comparison}",
         "\\resizebox{\\textwidth}{!}{",
         f"\\begin{{tabular}}{{{col_spec}}}",
@@ -525,6 +525,13 @@ def table_t7_ablation(df_summary, out_dir):
     print("生成 T7: 核心机制消融递进表 (Ablation Progression)...")
     datasets = [d for d in BENCHMARK_DATASETS if d in df_summary["Dataset"].unique()]
 
+    def format_feat(val):
+        if np.isnan(val):
+            return "—"
+        if val >= 1000:
+            return f"{int(round(val)):,}".replace(",", "{,}")
+        return f"{int(round(val))}"
+
     rows = []
     latex_rows = []
 
@@ -532,37 +539,131 @@ def table_t7_ablation(df_summary, out_dir):
         row = {"Dataset": ds}
         ds_tex = ds.replace("_", "\\_")
         latex_cells = [f"{ds_tex:16s}"]
+
+        acc_vals = []
+        feat_vals = []
         for v in ABL_VERSIONS:
             sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
             if len(sub) > 0:
-                acc = sub["Mean_Acc"].values[0]
-                feat = sub["Mean_Feat"].values[0]
+                acc = float(sub["Mean_Acc"].values[0])
+                feat = float(sub["Mean_Feat"].values[0])
+                acc_vals.append(acc)
+                feat_vals.append(feat)
                 row[f"{V_LABELS[v]}_Acc"] = f"{acc:.4f}"
                 row[f"{V_LABELS[v]}_Feat"] = f"{feat:.0f}"
-                latex_cells.append(f"{acc:.4f}")
-                latex_cells.append(f"{feat:.0f}")
             else:
+                acc_vals.append(np.nan)
+                feat_vals.append(np.nan)
                 row[f"{V_LABELS[v]}_Acc"] = "—"
                 row[f"{V_LABELS[v]}_Feat"] = "—"
-                latex_cells.append("—")
-                latex_cells.append("—")
+
+        # 确定最优与次优 Acc (最大)
+        valid_accs = sorted(list(set([a for a in acc_vals if not np.isnan(a)])), reverse=True)
+        best_acc = valid_accs[0] if len(valid_accs) > 0 else np.nan
+        second_acc = valid_accs[1] if len(valid_accs) > 1 else np.nan
+
+        # 确定最优与次优 Feat (最紧凑/最小)
+        valid_feats = sorted(list(set([f for f in feat_vals if not np.isnan(f)])))
+        best_feat = valid_feats[0] if len(valid_feats) > 0 else np.nan
+        second_feat = valid_feats[1] if len(valid_feats) > 1 else np.nan
+
+        for a, f in zip(acc_vals, feat_vals):
+            if np.isnan(a):
+                latex_cells.extend(["—", "—"])
+                continue
+
+            a_str = f"{a:.4f}"
+            if abs(a - best_acc) < 1e-5:
+                a_str = f"\\textbf{{{a_str}}}"
+            elif not np.isnan(second_acc) and abs(a - second_acc) < 1e-5:
+                a_str = f"\\underline{{{a_str}}}"
+
+            f_str = format_feat(f)
+            if abs(f - best_feat) < 1e-3:
+                f_str = f"\\textbf{{{f_str}}}"
+            elif not np.isnan(second_feat) and abs(f - second_feat) < 1e-3:
+                f_str = f"\\underline{{{f_str}}}"
+
+            latex_cells.extend([a_str, f_str])
+
         rows.append(row)
         latex_rows.append(" & ".join(latex_cells) + " \\\\")
 
+    # 计算均值行
+    avg_row_dict = {"Dataset": "Average"}
+    avg_accs = []
+    avg_feats = []
+    for v in ABL_VERSIONS:
+        sub = df_summary[df_summary["Version"] == v]
+        v_accs = [sub[sub["Dataset"] == ds]["Mean_Acc"].values[0] for ds in datasets if len(sub[sub["Dataset"] == ds]) > 0]
+        v_feats = [sub[sub["Dataset"] == ds]["Mean_Feat"].values[0] for ds in datasets if len(sub[sub["Dataset"] == ds]) > 0]
+        m_acc = float(np.mean(v_accs)) if v_accs else np.nan
+        m_feat = float(np.mean(v_feats)) if v_feats else np.nan
+        avg_accs.append(m_acc)
+        avg_feats.append(m_feat)
+        avg_row_dict[f"{V_LABELS[v]}_Acc"] = f"{m_acc:.4f}"
+        avg_row_dict[f"{V_LABELS[v]}_Feat"] = f"{m_feat:.1f}"
+
+    rows.append(avg_row_dict)
     pd.DataFrame(rows).to_csv(os.path.join(out_dir, "T7_ablation.csv"), index=False, encoding="utf-8-sig")
+
+    avg_cells = [f"{'Average':16s}"]
+    # 标注 Average 的最优和次优
+    sorted_avg_accs = sorted(list(set(avg_accs)), reverse=True)
+    sorted_avg_feats = sorted(list(set(avg_feats)))
+
+    for a, f in zip(avg_accs, avg_feats):
+        a_str = f"{a:.4f}"
+        if abs(a - sorted_avg_accs[0]) < 1e-5:
+            a_str = f"\\textbf{{{a_str}}}"
+        elif len(sorted_avg_accs) > 1 and abs(a - sorted_avg_accs[1]) < 1e-5:
+            a_str = f"\\underline{{{a_str}}}"
+
+        if f >= 1000:
+            f_str = f"{f:,.1f}".replace(",", "{,}")
+        else:
+            f_str = f"{f:.1f}"
+
+        if abs(f - sorted_avg_feats[0]) < 1e-3:
+            f_str = f"\\textbf{{{f_str}}}"
+        elif len(sorted_avg_feats) > 1 and abs(f - sorted_avg_feats[1]) < 1e-3:
+            f_str = f"\\underline{{{f_str}}}"
+
+        avg_cells.extend([a_str, f_str])
+
+    # 计算逐级边际提升行
+    delta_cells = [f"{'$\\Delta$ vs. Preceding':16s}", "\\multicolumn{2}{c}{—}"]
+    # Step 1: MEL -> w/o TPS&KER (MII)
+    d_acc1 = (avg_accs[1] - avg_accs[0]) * 100
+    d_feat1 = (avg_feats[1] - avg_feats[0]) / avg_feats[0] * 100
+    delta_cells.extend([f"+{d_acc1:.2f}\\%", f"{d_feat1:.1f}\\%"])
+
+    # Step 2: w/o TPS&KER -> w/o TPS (KER)
+    d_acc2 = (avg_accs[2] - avg_accs[1]) * 100
+    d_feat2 = (avg_feats[2] - avg_feats[1]) / avg_feats[1] * 100
+    delta_cells.extend([f"+{d_acc2:.2f}\\%", f"{d_feat2:.1f}\\%"])
+
+    # Step 3: w/o TPS -> KDS-EL (TPS)
+    d_acc3 = (avg_accs[3] - avg_accs[2]) * 100
+    d_feat3 = (avg_feats[3] - avg_feats[2]) / avg_feats[2] * 100
+    delta_cells.extend([f"+{d_acc3:.2f}\\%", f"{d_feat3:.1f}\\%"])
 
     latex_content = [
         "\\begin{table*}[t]",
         "\\centering",
-        "\\caption{Component-wise ablation progression from precursor MEL through MII, KER, to full KDS-EL across 20 benchmark datasets.}",
+        "\\caption{Performance comparison before and after algorithm improvement across 20 benchmark datasets. Best results are in \\textbf{boldface}, and second-best are \\underline{underlined}.}",
         "\\label{T7}\\label{tab:ablation_study}",
         "\\begin{tabular}{lcccccccc}",
         "\\toprule",
-        "& \\multicolumn{2}{c}{Precursor MEL} & \\multicolumn{2}{c}{MEL+MII} & \\multicolumn{2}{c}{KDS-EL w/o TPS} & \\multicolumn{2}{c}{Proposed KDS-EL} \\\\",
+        "& \\multicolumn{2}{c}{Foundational MEL} & \\multicolumn{2}{c}{KDS-EL w/o TPS\\&KER} & \\multicolumn{2}{c}{KDS-EL w/o TPS} & \\multicolumn{2}{c}{Proposed KDS-EL} \\\\",
+        "& \\multicolumn{2}{c}{(Base Swarm)} & \\multicolumn{2}{c}{(+ MII)} & \\multicolumn{2}{c}{(+ MII \\& KER)} & \\multicolumn{2}{c}{(Complete)} \\\\",
         "\\cmidrule(lr){2-3} \\cmidrule(lr){4-5} \\cmidrule(lr){6-7} \\cmidrule(lr){8-9}",
         "Dataset & Acc & Feat & Acc & Feat & Acc & Feat & Acc & Feat \\\\",
         "\\midrule",
         "\n".join(latex_rows),
+        "\\midrule",
+        " & ".join(avg_cells) + " \\\\",
+        " & ".join(delta_cells) + " \\\\",
         "\\bottomrule",
         "\\end{tabular}",
         "\\end{table*}",

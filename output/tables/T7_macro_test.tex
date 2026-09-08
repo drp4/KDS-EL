@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering
+\caption{Stepwise performance progression before and after algorithm improvement across the benchmark suite. Granular per-dataset metrics are documented in Supplementary Table S4.}
+\label{T7}\label{tab:ablation_study}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccccccc@{}}
+\toprule
+Algorithmic Configuration & MII \& AIR & KER Strategy & TPS Strategy & Mean Accuracy & Selected Features & $\\Delta & $\\Delta & Runtime \\
+\midrule
+Foundational MEL          & $\\times$    & $\\times$     & $\\times$     & 0.8868 $\\pm$ 0.0658 & 2{,}722.2 $\\pm$ 2{,}240.1 & --- & --- & 175.0\\,s \\
+KDS-EL w/o TPS\&KER       & $\\checkmark$& $\\times$     & $\\times$     & 0.9325 $\\pm$ 0.0694 & 290.5 $\\pm$ 231.8         & +4.58 pp & -89.3\% & 57.6\\,s \\
+KDS-EL w/o TPS            & $\\checkmark$& $\\checkmark$ & $\\times$     & 0.9488 $\\pm$ 0.0559 & 121.7 $\\pm$ 109.4         & +1.63 pp & -58.1\% & 53.6\\,s \\
+Proposed KDS-EL           & $\\checkmark$& $\\checkmark$ & $\\checkmark$ & \textbf{0.9574 $\\pm$ 0.0482} & \textbf{87.8 $\\pm$ 76.5} & \textbf{+0.86 pp} & \textbf{-27.9\%} & \textbf{51.3\\,s} \\
+\midrule
+Cumulative Net Progression & \multicolumn{3}{c}{Original MEL $\\longrightarrow$ Complete KDS-EL} & \textbf{+7.06 pp} & \textbf{-96.8\%} & \multicolumn{2}{c}{Wilcoxon: 20/0/0 ( < 10^{-5}$)} & \textbf{3.4$\\times$ Speedup} \\
+\bottomrule
+\end{tabular*}
+\end{table*}
