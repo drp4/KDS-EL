@@ -11,8 +11,13 @@ Every generation and modification must strictly comply with all criteria outline
 ### Pillar 1: Zero Parenthetical Clutter & Duplicate Acronyms
 - **No Duplicate Acronym Expansions**: Once an acronym (e.g., `KDS-EL`, `KER`, `TPS`, `PSO`, `MI`) is defined in the Abstract/Introduction, do not expand it again with parenthetical tags like `Knowledge-Guided Elite Refinement (KER)`. Use the formal terms directly (e.g., `the KER strategy`, `the dynamic TPS strategy`, `the MII mechanism`).
 - **Strict Prohibition of "Operator" for Proposed Components**: Strictly prohibit referring to KDS-EL's own constituent components as an `operator` (e.g., never write `KER operator`, `refinement operator`, or `our operators`). KDS-EL's components must strictly be termed `strategy` or `mechanism` (e.g., `the KER strategy`, `the elite refinement mechanism`, `the dynamic TPS strategy`). The term `operator` is reserved exclusively for standard low-level genetic/evolutionary heuristics of peer algorithms (e.g., `crossover operator`, `stochastic bit-flip operator`, `swarm variation operators`).
-- **No Premature Parameter Dumping**: In high-level architecture/framework sections (such as Section 3.1), never hardcode specific hyperparameter values (e.g., `(wf,1 = 0.30)`, `(wa,2 = 0.95)`, `(theta = 0.60)`) or inline formula fragments in parentheses. Specific parameter values belong strictly in dedicated technical subsections and the experimental parameter setup table.
-- **Eliminate Pseudo-Code Conditions in Text**: Never write parenthetical code-like logic in prose (e.g., `(rank(i) <= N/2)` or `(MI_init_ratio = 0.50)`). Translate them into rigorous academic English (e.g., *"the superior half of the swarm is preserved intact..."*).
+- **Eliminate Parenthetical Inequalities & Dimensional Clutter**: Never append parenthetical inequality shorthands or dimension fragments like `($D \gg N_{\mathrm{samp}}$)` or `($N_{\mathrm{samp}} \ll 100$)` to dataset or population nouns. Express dimensional regimes and sample scarcity naturally through running academic prose (e.g., *"Given a high-dimensional dataset $\mathcal{D}$ characterized by severe sample scarcity..."* or *"in ultra-high-dimensional and sample-scarce regimes where candidate dimensions $D \gg 10^3$ vastly exceed sample observations $N_{\mathrm{samp}} \ll 100$..."*).
+- **Eliminate Parenthetical Symbol Dumps & Calculations**: Never dump mathematical symbols, subpopulation tags, or arithmetic expressions into parentheses following a noun phrase (e.g., strictly prohibit `collaborative dual-swarm co-evolution ($\mathcal{P}_1$ and $\mathcal{P}_2$)`, `equal size ($N/2$)`, or `guided by the global best solution of $\mathcal{P}_2$ ($\mathbf{g}_{\mathrm{best},2}$)`). Express them as natural appositive or prepositional prose (e.g., *"collaborative dual-swarm co-evolution between subpopulations $\mathcal{P}_1$ and $\mathcal{P}_2$"*, *"each comprising $N/2$ particles"*, *"guided by the global best solution $\mathbf{g}_{\mathrm{best},2}$ of $\mathcal{P}_2$"*).
+- **No Premature Parameter Dumping**: In high-level architecture/framework sections (such as Section 3.1) and general prose, never hardcode specific hyperparameter values (e.g., `(wf,1 = 0.30)`, `(wa,2 = 0.95)`, `(theta = 0.60)`, `(knn = 3)`) or inline formula fragments in parentheses. Specific parameter values belong strictly in dedicated technical subsections (where they are introduced as standard syntactic sentences, e.g., *"where $k_{\mathrm{nn}} = 3$ is the neighborhood parameter..."*) and the experimental parameter setup table.
+- **Eliminate Pseudo-Code Conditions & Explanatory Clauses in Text**: Never write parenthetical code-like logic in prose (e.g., `(rank(i) <= N/2)` or `(MI_init_ratio = 0.50)`). Translate them into rigorous academic English (e.g., *"the superior half of the swarm is preserved intact..."*). Furthermore, never enclose entire English explanatory sub-clauses in parentheses (e.g., do not write `(where candidate dimensions outnumber observational samples...)`; integrate them directly into the sentence cadence using commas or em-dashes).
+- **Two-Tier Parenthesis Taxonomy (Banned Clutter vs. Mandatory Math)**:
+  - *Prohibited Parenthetical Clutter (Strictly Banned)*: Inline hyperparameter values `($k_{\mathrm{nn}} = 3$)`, dimension attractor notes `($d \approx D/2$)`, embedded Big-$\mathcal{O}$ complexity insertions `($\mathcal{O}(N_{\mathrm{samp}}^2 d)$)`, parenthetical subpopulation lists `($\mathcal{P}_1$ and $\mathcal{P}_2$)`, parenthetical inequality bounds `($D \gg N_{\mathrm{samp}}$)`, and English explanatory clauses.
+  - *Mandatory Mathematical Notations (Strictly Preserved)*: Standard continuous intervals ($\theta \in (0.5, 1)$, $\rho \in (0, 1)$, $\gamma \in (0, 1)$), probability distribution arguments ($\boldsymbol{\varepsilon}_i \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_D)$, $\mathbf{u}_i \sim \mathcal{U}(0, 1)^D$), standard function/operator placeholders ($\mathbb{I}(\cdot)$, $\psi(\cdot)$, $\mathrm{clip}(z, 0, 1)$), algebraic grouping factors ($(1 - \rho)N$, $(2 x_{i,j}^{(t)} - 1)$), and LaTeX cross-references (`Eq.~\eqref{eq:mi_ksg}`, `Section~\ref{sec:framework}`).
 
 ---
 
@@ -67,8 +72,23 @@ Every generation and modification must strictly comply with all criteria outline
 
 ---
 
-### Pillar 8: Measured Academic Tone & Tight Causality
+### Pillar 8: Measured Academic Tone, Strict Colloquialism Prohibition & Tight Causality
 - **Zero Promotional Fluff**: Strictly avoid unscientific subjective terms (`revolutionary`, `miraculous`, `flawless`, `unprecedented`).
+- **Strict Prohibition of Colloquialisms, Pseudo-Jargon & Literal Translations (禁绝口语化表达与中式字面直译)**:
+  - *Prohibition of "One-to-One" for Algorithmic Heuristics*: Strictly prohibit using `one-to-one` (or `1-to-1`) to describe candidate selection, replacement, competition, or operational steps (e.g., strictly ban `one-to-one replacement`, `one-to-one in-place replacement`, `one-to-one competition`). The term `one-to-one` is strictly reserved for formal mathematical bijections/injections ($f: A \to B$). In evolutionary algorithms and optimization heuristics, candidate-versus-parent competition must strictly be formalized as **greedy pairwise in-place replacement** (`greedy pairwise replacement`, `pairwise competition`, `elitist direct replacement`).
+  - *Comprehensive Colloquialism Blacklist & Scholarly Substitutions*:
+    - `one-to-one replacement` $\longrightarrow$ `greedy pairwise in-place replacement`, `elitist direct replacement`
+    - `step by step` / `step-by-step` $\longrightarrow$ `progressively`, `sequentially`, `in an iterative pipeline`
+    - `hand in hand` / `hand-in-hand` $\longrightarrow$ `synergistically`, `in concerted synergy`
+    - `deal with` $\longrightarrow$ `address`, `mitigate`, `tackle`, `resolve`
+    - `a lot of` / `lots of` $\longrightarrow$ `numerous`, `extensive`, `a substantial volume of`
+    - `more and more` $\longrightarrow$ `increasingly`, `progressively`
+    - `make sure` $\longrightarrow$ `ensure`, `guarantee`, `verify`
+    - `get` / `got` $\longrightarrow$ `obtain`, `derive`, `harvest`, `extract`
+    - `side effect` $\longrightarrow$ `unintended degeneration`, `suboptimal penalty`
+    - `good result` / `good performance` $\longrightarrow$ `superior empirical performance`, `favorable convergence profile`
+    - `try to` $\longrightarrow$ `is designed to`, `aims to`, `seeks to`
+    - `huge` / `big` $\longrightarrow$ `substantial`, `pronounced`, `prominent`
 - **Precision Causality**: Use precise inferential connectors:
   - *Mitigation*: `effectively mitigates`, `substantially alleviates`, `suppresses`.
   - *Improvement*: `significantly improves`, `consistently outperforms`.
@@ -243,6 +263,7 @@ In top-tier Elsevier journals, the functional boundaries of table titles, table 
   1. *Main Subject Clause (8–15 words)*: Succinct statement of the visual metric or architectural workflow (e.g., *"Overall convergence trajectories of mean objective fitness across 100 evolutionary generations."*).
   2. *Sub-Panel Navigation Guide (分图导引)*: Explicit mapping of all subfigures (e.g., *"(a) Omnibus mean trajectory across the 20 benchmark datasets, and (b)–(i) eight representative ultra-high-dimensional datasets."*).
   3. *Visual Cue & Landmark Decoding (图符与视觉标记解析)*: Explicit explanation of visual indicators, including dashed division lines, shaded confidence ribbons, secondary axes, and marker shapes (e.g., *"The vertical dotted line marks the transition boundary from Phase 1 (dimensional pruning) to Phase 2 (fine accuracy refinement) under Two-Phase Weight Scheduling."*).
+- **Parenthetical Sanitation in Captions**: Eliminate informal parenthetical shorthands for algorithmic conditions (e.g., write *"under condition $t_{\mathrm{stag}} \ge \tau$"* rather than *"($t_{\mathrm{stag}} \ge \tau$)"*), and integrate visual marker decodings smoothly (e.g., *"highlighted by green boxes"*) without excessive nested parentheses.
 - **Self-Containment Criterion**: An expert reader must be able to comprehend the entire figure, the meaning of each curve, and all graphical landmarks purely from the caption and the visual artifact, with zero ambiguity.
 
 #### Protocol CAP-3: Typographic & Symbol Synchronization (符号完全同构规范)
@@ -283,9 +304,11 @@ Every mathematical equation must be introduced through a complete 4-step progres
   - *Standard Functions & Operators*: Upright roman ($\min, \max, \arg\max, \mathrm{clip}(\cdot), \mathbb{I}(\cdot), \mathrm{Acc}(\cdot)$).
 - **Vector Orientation Consistency**: Solutions $\mathbf{x}_i$ are treated consistently as row or column vectors throughout; random or arbitrary transposition marks ($\mathbf{x}_i^T$) are strictly prohibited.
 
-#### Protocol PM-4: Component Terminology & Strict "Operator" Prohibition (组件称谓与算子禁令)
+#### Protocol PM-4: Component Terminology, Parenthetical Decoupling & Strict "Operator" Prohibition (组件称谓、去括号化与算子禁令)
 - **Strict Prohibition of "Operator"**: KDS-EL's own constituent innovations must strictly be termed **strategy** or **mechanism** (e.g., `the KER strategy`, `the elite refinement mechanism`, `the dynamic TPS strategy`, `the adaptive recovery mechanism`). The word `operator` is reserved exclusively for low-level genetic/evolutionary heuristics of peer algorithms (e.g., `crossover operator`, `stochastic bit-flip operator`).
 - **Zero Duplicate Acronym Tags**: Acronyms already introduced must not be expanded again with parenthetical tags like `(KER)` or `(TPS)`.
+- **Zero Parenthetical Symbol Dumps**: Never dump subpopulation designations or variable tags into parentheses following a noun (e.g., write *"between subpopulations $\mathcal{P}_1$ and $\mathcal{P}_2$"* instead of *"($\mathcal{P}_1$ and $\mathcal{P}_2$)"*; write *"guided by the global best solution $\mathbf{g}_{\mathrm{best},2}$ of $\mathcal{P}_2$"* instead of *"guided by the global best solution of $\mathcal{P}_2$ ($\mathbf{g}_{\mathrm{best},2}$)"*).
+- **Strict Prohibition of "One-to-One" Replacement Phrasing**: Strictly prohibit calling selection or replacement heuristics `one-to-one replacement` or `one-to-one in-place replacement`. In evolutionary computing and optimization, candidate-parent competition must strictly be designated as **greedy pairwise in-place replacement** (`greedy pairwise replacement`, `pairwise competition`, `elitist direct replacement`).
 - **Prose Translation of Code Conditions**: Never write raw code syntax like `if rank <= N/2` or `while stall >= 20` in running text. Translate into formal academic English (e.g., *"the lower-performing half of the swarm is refreshed..."*).
 
 #### Protocol PM-5: Deep Figure-Text Linkage & 100% Symbol Homomorphism (图文同构与深层指引)
@@ -294,7 +317,7 @@ Every mathematical equation must be introduced through a complete 4-step progres
 
 #### Protocol PM-6: Hierarchical & Standardized Modular Pseudocode (层次化算法伪代码)
 - **Two-Tier Hierarchical Decomposition**:
-  - *Sub-routine Algorithm 1 (`Algorithm 1`)*: Formalizes the self-contained operational logic of Knowledge-Guided Elite Refinement (`KER`), isolating detailed bit-flip score calculations and greedy one-to-one acceptance.
+  - *Sub-routine Algorithm 1 (`Algorithm 1`)*: Formalizes the self-contained operational logic of Knowledge-Guided Elite Refinement (`KER`), isolating detailed bit-flip score calculations and greedy pairwise acceptance.
   - *Master Coordination Algorithm 2 (`Algorithm 2`)*: Maintains a high-level executive perspective of the end-to-end KDS-EL lifecycle across generational iterations.
 - **Exhaustive Require / Ensure Blocks**:
   - `\Require`: Formally declares all inputs, datasets, dimensions ($N, D, T$), and all 9 hyperparameters ($\theta, \rho, \sigma, \gamma, k_e, \phi, p_{\mathrm{rand}}, \kappa, \tau$) with their respective mathematical domains.
@@ -312,30 +335,31 @@ Every mathematical equation must be introduced through a complete 4-step progres
 Every equation in Section 3 must strictly correspond 1-to-1 with the actual Python implementation in `code/algorithms/kds_el_twophase.py` and `code/utils.py`:
 1. *Mutual Information Prior Seeding*: `compute_mi_scores` $\longleftrightarrow$ Eq.~\eqref{eq:mi_ksg} (KSG non-parametric estimator) & Eq.~\eqref{eq:mi_norm} (Min-Max normalization into $\mathbf{m} \in [0, 1]^D$).
 2. *Hybrid Seeding & Step Binarization*: `P[:half] = np.clip(mi + N(0, 0.1), 0, 1)`, `P[half:] = U(0, 1)`, `(P > thres)` $\longleftrightarrow$ Eq.~\eqref{eq:mi_seeding} (Gaussian soft prior) & Eq.~\eqref{eq:binarize} (Heaviside step mapping with cut-off threshold $\theta$).
-3. *Adaptive Stagnation Recovery*: `stall_counter >= patience` resetting lower $N/2$ particles $\longleftrightarrow$ Eq.~\eqref{eq:reinit_formula} (elite retention and Gaussian re-seeding).
+3. *Adaptive Stagnation Recovery*: `stall_counter >= patience` resetting lower $N/2$ particles: both current positions $\mathbf{p}_i$ and personal-best positions $\mathbf{p}_{\mathrm{best},i}$ are refreshed around prior vector $\mathbf{m}$ under Gaussian perturbation ($\mathbf{p}_i \leftarrow \mathrm{clip}(\mathbf{m} + \boldsymbol{\varepsilon}_i, 0, 1), \mathbf{p}_{\mathrm{best},i} \leftarrow \mathbf{p}_i$), followed by immediate wrapper re-evaluation under current phase weights $\mathbf{w}(t)$ to update personal-best fitness values, and resetting the stagnation counter to zero $\longleftrightarrow$ Eq.~\eqref{eq:reinit_formula}.
 4. *Cumulative Importance Harvesting & Decay*: `weight[change & (fv_n > fv_o)] += inc`, `weight *= decay` $\longleftrightarrow$ Eq.~\eqref{eq:importance_update} (directional fitness differential accumulation) & Eq.~\eqref{eq:decay} (exponential memory forgetting via $\gamma$).
-5. *Knowledge-Guided Elite Refinement*: `ker_flip` with directional flip scores $\sigma_j = (1 - 2x_{e,j})W_j$ $\longleftrightarrow$ Eq.~\eqref{eq:flip_score} (state-dependent scoring), Eq.~\eqref{eq:top_scores} (top-$k_{\mathrm{flip}}$ selection), & Eq.~\eqref{eq:inplace} (greedy in-place replacement).
+5. *Knowledge-Guided Elite Refinement*: `ker_flip` with directional flip scores $\sigma_j = (1 - 2x_{e,j})W_j$ $\longleftrightarrow$ Eq.~\eqref{eq:flip_score} (state-dependent scoring), Eq.~\eqref{eq:top_scores} (top-$k_{\mathrm{flip}}$ selection), & Eq.~\eqref{eq:inplace} (greedy pairwise in-place replacement).
 6. *Dynamic Two-Phase Weight Scheduling*: `ws_phase1 = [0.70, 0.30]`, `ws_phase2 = [0.95, 0.05]`, `switch_t = 0.7*T`, and instantaneous Pbest re-evaluation at switch $\longleftrightarrow$ Eq.~\eqref{eq:twophase} (step-wise weight formulation) & Eq.~\eqref{eq:fitness} (unified scalar fitness).
 
 ---
 
 ## 🔍 Automated Pre-Response & Pre-Compilation Verification Checklist
 
-For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 25-point internal audit before outputting:
+For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 26-point internal audit before outputting:
 
 1. [ ] **Zero Baseline Terminology Check**: Is the word "baseline" / "baselines" completely eliminated from manuscript text, tables, captions, footnotes, and dialogue responses in favor of "competitor", "comparison method", "peer algorithm", or "benchmark"?
-2. [ ] **Acronym Check**: Are there duplicate acronym expansions (e.g., `(KER)`, `(TPS)`)?
-3. [ ] **Parameter Leakage Check**: Are specific numbers/parameters prematurely leaked into high-level descriptive sections?
-4. [ ] **Parenthetical Scan**: Are there redundant parenthetical explanations or code-like conditions?
-5. [ ] **Narrative Rhythm Check**: Does the text use natural pipeline verbs instead of mechanical bulleted ordinals?
-6. [ ] **Mathematical Rigor Check**: Are all variables given explicit mathematical domains? Are vector orientations consistent?
-7. [ ] **Figure/Equation Cross-Ref Check**: Are all figure, table, and equation references resolved with 0 compilation errors?
-8. [ ] **Causal Logic Check**: Does every proposed design component have a clearly articulated physical motivation?
-9. [ ] **Elsevier Booktabs Check**: Do all tables strictly avoid vertical lines (`|`) and use standard `\toprule`, `\midrule`, `\bottomrule`?
-10. [ ] **Statistical Verification Check**: Are standard deviation ($\pm \mathrm{Std}$) and Wilcoxon $+/-/\approx$ counts properly presented?
-11. [ ] **Vector Graphic Check**: Are all embedded figures in pure vector `.pdf` format?
-12. [ ] **Highlight Length Check**: Are Research Highlights strictly between 3–5 bullets and under 85 characters each?
-13. [ ] **BibTeX Integrity Check**: Are all `\cite{...}` keys resolved without undefined reference warnings?
+2. [ ] **Colloquialism & Literal Translation Scan**: Have all colloquial phrasing and literal translations (e.g., 'one-to-one replacement' $\to$ 'greedy pairwise replacement', 'step by step', 'deal with', 'hand in hand', 'a lot of', 'make sure') been thoroughly purged and replaced with rigorous academic terminology?
+3. [ ] **Acronym Check**: Are there duplicate acronym expansions (e.g., `(KER)`, `(TPS)`)?
+4. [ ] **Parameter Leakage Check**: Are specific numbers/parameters prematurely leaked into high-level descriptive sections?
+5. [ ] **Parenthetical Scan & Clutter Audit**: Have all parenthetical inequalities (`($D \gg N_{\mathrm{samp}}$)`), parenthetical symbol dumps (`($\mathcal{P}_1$ and $\mathcal{P}_2$)`, `($N/2$)`, `($\mathbf{g}_{\mathrm{best},2}$)`), premature parameter values (`($k_{\mathrm{nn}} = 3$)`), dimension attractors (`($d \approx D/2$)`), and English explanatory clauses in parentheses been completely purged in favor of fluent narrative prose, while preserving strictly mandatory mathematical notations (intervals, distributions, operators)?
+6. [ ] **Narrative Rhythm Check**: Does the text use natural pipeline verbs instead of mechanical bulleted ordinals?
+7. [ ] **Mathematical Rigor Check**: Are all variables given explicit mathematical domains? Are vector orientations consistent?
+8. [ ] **Figure/Equation Cross-Ref Check**: Are all figure, table, and equation references resolved with 0 compilation errors?
+9. [ ] **Causal Logic Check**: Does every proposed design component have a clearly articulated physical motivation?
+10. [ ] **Elsevier Booktabs Check**: Do all tables strictly avoid vertical lines (`|`) and use standard `\toprule`, `\midrule`, `\bottomrule`?
+11. [ ] **Statistical Verification Check**: Are standard deviation ($\pm \mathrm{Std}$) and Wilcoxon $+/-/\approx$ counts properly presented?
+12. [ ] **Vector Graphic Check**: Are all embedded figures in pure vector `.pdf` format?
+13. [ ] **Highlight Length Check**: Are Research Highlights strictly between 3–5 bullets and under 85 characters each?
+14. [ ] **BibTeX Integrity Check**: Are all `\cite{...}` keys resolved without undefined reference warnings?
 
 ### 🔬 Additional Section 2 (Related Work) Specific Audit Items:
 14. [ ] **Section 2 Narrative Chain**: Does each subsection follow the 4-step chain (*Merits $\to$ High-D Bottleneck $\to$ Remedy Limits $\to$ Proposed Rationale*) rather than mechanical literature listing?
@@ -352,7 +376,7 @@ For **every user prompt, LaTeX edit, or section rewriting**, the agent must exec
 
 ### 📐 Additional Section 3 (The Proposed Method) Specific Audit Items:
 21. [ ] **Section 3 Tier 1 Zero-Data Audit**: Is Section 3 completely devoid of empirical test results, performance numbers, and future spoilers?
-22. [ ] **Section 3 Code-Formula Mirror Audit**: Does every equation and algorithmic step strictly mirror the Python implementation in `code/algorithms/kds_el_twophase.py` and `code/utils.py`?
+22. [ ] **Section 3 Code-Formula Mirror Audit**: Does every equation and algorithmic step strictly mirror the Python implementation in `code/algorithms/kds_el_twophase.py` and `code/utils.py` (e.g., verifying that Equation~\eqref{eq:reinit_formula} simultaneously resets continuous positions $\mathbf{p}_i$ and personal-best memory vectors $\mathbf{p}_{\mathrm{best},i}$, followed by immediate wrapper re-evaluation and zeroing of the stall counter)?
 23. [ ] **Section 3 "Why Before How" Audit**: Does each formula follow the 4-step causal chain with physical bottleneck analysis and boundary condition interpretation?
 24. [ ] **Section 3 Complexity Closed-Loop Audit**: Are offline preprocessing and online evaluation decoupled, with $\bar{d}_{\mathrm{selected}}$ and linear spatial bounds explicitly formulated?
 25. [ ] **Section 3 Modular Pseudocode Audit**: Are Algorithm 1 (KER) and Algorithm 2 (KDS-EL) fully declared with mathematical domains in `\Require`/`\Ensure` and stage-wise segmentation?
