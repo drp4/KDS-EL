@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  9 SEP 2026 20:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  9 SEP 2026 20:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -900,21 +900,15 @@ LaTeX Font Info:    Font shape `T1/txr/b/n' in size <8.5> not available
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <8> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 1.
 
-Underfull \hbox (badness 1009) in paragraph at lines 7--8
-\T1/txr/m/n/8 still en-counter three struc-tural lim-i-ta-tions when deal-ing w
-ith sparse and
+Underfull \hbox (badness 3019) in paragraph at lines 3--4
+\T1/txr/m/n/8 Fur-ther-more, uni-vari-ate fea-ture rank-ing cri-te-ria eval-u-a
+te di-men-sions in
  []
 
 
-Underfull \hbox (badness 4673) in paragraph at lines 7--8
-\T1/txr/m/n/8 high-dimensional search spaces. First, ran-dom ini-tial-iza-tion 
-dis-tributes
- []
-
-
-Underfull \hbox (badness 1460) in paragraph at lines 15--16
-\T1/txr/m/n/8 with an adap-tive re-initialization mech-a-nism that re-stores sw
-arm
+Underfull \hbox (badness 2726) in paragraph at lines 9--10
+\T1/txr/m/n/8 per-tur-ba-tion, and weight-ing in iso-la-tion, lack-ing a uni-fi
+ed closed-loop
  []
 
 
@@ -922,21 +916,15 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.18 \item \textit
-                  {Comprehensive Empirical Validation}: Extensive evaluation...
+l.17 \item \textit
+                  {Two-Phase Weight Scheduling (TPS)}: A stage-aware objecti...
 [1
 
 
 ]
-Underfull \hbox (badness 1048) in paragraph at lines 18--19
-[]\T1/txr/m/it/8 Comprehensive Em-pir-i-cal Val-i-da-tion\T1/txr/m/n/8 : Ex-ten
--sive eval-u-a-tions across
- []
-
-
-Underfull \hbox (badness 3019) in paragraph at lines 18--19
-\T1/txr/m/n/8 and the orig-i-nal MEL frame-work, rig-or-ously val-i-dated throu
-gh
+Underfull \hbox (badness 1616) in paragraph at lines 18--19
+\T1/txr/m/n/8 through non-parametric sta-tis-ti-cal test-ing, com-po-nent con-t
+ri-bu-tion
  []
 
 ) (sections/02_related_work.tex
@@ -1045,22 +1033,16 @@ $\OMS/txsy/m/n/8 O\OT1/txr/m/n/8 (\OML/txmi/m/it/8 N[]d[]\OT1/txr/m/n/8 )$
  []
 
 
-Underfull \hbox (badness 1048) in paragraph at lines 95--96
-\OT1/txr/bx/n/8 W[]$ \T1/txr/m/n/8 ac-cu-mu-lates his-tor-i-cal fea-ture fre-qu
-en-cies un-con-di-tion-ally with-out
- []
-
-
-Underfull \hbox (badness 1275) in paragraph at lines 95--96
-\T1/txr/m/n/8 in Sec-tion [][]3.4[][]. By sys-tem-at-i-cally re-solv-ing these 
-struc-tural de-fi-cien-cies,
+Underfull \hbox (badness 1092) in paragraph at lines 95--96
+[]\T1/txr/m/n/8 While MEL es-tab-lishes the util-ity of cross-task knowl-edge t
+rans-fer,
  []
 
 
 
 pdfTeX warning: pdflatex.exe (file ../output/figures/F1_dataflow_journal.pdf): 
 PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<../output/figures/F1_dataflow_journal.pdf, id=261, 892.29356pt x 449.76028pt>
+<../output/figures/F1_dataflow_journal.pdf, id=262, 892.29356pt x 449.76028pt>
 File: ../output/figures/F1_dataflow_journal.pdf Graphic file (type pdf)
 <use ../output/figures/F1_dataflow_journal.pdf>
 Package pdftex.def Info: ../output/figures/F1_dataflow_journal.pdf  used on inp
@@ -1130,7 +1112,7 @@ lutionary de-sign
 
 pdfTeX warning: pdflatex.exe (file ../output/figures/F2_flowchart_journal.pdf):
  PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<../output/figures/F2_flowchart_journal.pdf, id=354, 690.66026pt x 653.56169pt>
+<../output/figures/F2_flowchart_journal.pdf, id=355, 690.66026pt x 653.56169pt>
 
 File: ../output/figures/F2_flowchart_journal.pdf Graphic file (type pdf)
 <use ../output/figures/F2_flowchart_journal.pdf>
@@ -1142,7 +1124,7 @@ put line 32.
 pdfTeX warning: pdflatex.exe (file ../output/figures/F3_mi_initialization_journ
 al.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allo
 wed
-<../output/figures/F3_mi_initialization_journal.pdf, id=356, 826.04607pt x 204.
+<../output/figures/F3_mi_initialization_journal.pdf, id=357, 826.04607pt x 204.
 765pt>
 File: ../output/figures/F3_mi_initialization_journal.pdf Graphic file (type pdf
 )
@@ -1210,7 +1192,7 @@ on-tin-u-ous
 
 pdfTeX warning: pdflatex.exe (file ../output/figures/F4_ker_strategy_journal.pd
 f): PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<../output/figures/F4_ker_strategy_journal.pdf, id=452, 1010.81638pt x 277.9986
+<../output/figures/F4_ker_strategy_journal.pdf, id=453, 1010.81638pt x 277.9986
 pt>
 File: ../output/figures/F4_ker_strategy_journal.pdf Graphic file (type pdf)
 <use ../output/figures/F4_ker_strategy_journal.pdf>
@@ -1277,7 +1259,7 @@ tar-geted trade-off
  []
 
 [11]
-<../output/figures/F8_sota_convergence.pdf, id=598, 744.45474pt x 516.62903pt>
+<../output/figures/F8_sota_convergence.pdf, id=599, 744.45474pt x 516.62903pt>
 File: ../output/figures/F8_sota_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_sota_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_sota_convergence.pdf  used on inp
@@ -1285,7 +1267,7 @@ ut line 33.
 (pdftex.def)             Requested size: 522.0pt x 362.25273pt.
  (../output/tables/T6_wilcoxon.tex)
 (../output/tables/T6b_holm_bonferroni.tex)
-<../output/figures/F13_friedman_rank.pdf, id=620, 477.06169pt x 260.23975pt>
+<../output/figures/F13_friedman_rank.pdf, id=621, 477.06169pt x 260.23975pt>
 File: ../output/figures/F13_friedman_rank.pdf Graphic file (type pdf)
 <use ../output/figures/F13_friedman_rank.pdf>
 Package pdftex.def Info: ../output/figures/F13_friedman_rank.pdf  used on input
@@ -1295,13 +1277,13 @@ Package pdftex.def Info: ../output/figures/F13_friedman_rank.pdf  used on input
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <6.8> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 14.
 )
-<../output/figures/F6_ablation_radar.pdf, id=623, 394.7861pt x 402.05098pt>
+<../output/figures/F6_ablation_radar.pdf, id=624, 394.7861pt x 402.05098pt>
 File: ../output/figures/F6_ablation_radar.pdf Graphic file (type pdf)
 <use ../output/figures/F6_ablation_radar.pdf>
 Package pdftex.def Info: ../output/figures/F6_ablation_radar.pdf  used on input
  line 71.
 (pdftex.def)             Requested size: 221.76123pt x 225.84024pt.
-<../output/figures/F5_ablation_convergence.pdf, id=624, 636.01959pt x 467.09317
+<../output/figures/F5_ablation_convergence.pdf, id=625, 636.01959pt x 467.09317
 pt>
 File: ../output/figures/F5_ablation_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F5_ablation_convergence.pdf>
@@ -1321,7 +1303,7 @@ i-able.
  []
 
 [12] [13 <../output/figures/F8_sota_convergence.pdf>]
-<../output/figures/F11_runtime_scatter.pdf, id=765, 506.4339pt x 304.73952pt>
+<../output/figures/F11_runtime_scatter.pdf, id=766, 506.4339pt x 304.73952pt>
 File: ../output/figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use ../output/figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: ../output/figures/F11_runtime_scatter.pdf  used on inp
@@ -1330,7 +1312,7 @@ ut line 93.
  [14 <../output/figures/F13_friedman_rank.pdf> <../output/figures/F6_ablation_r
 adar.pdf>]
 (../output/tables/T8_parameter_sensitivity.tex)
-<../output/figures/F14_parameter_sensitivity.pdf, id=819, 817.31973pt x 182.140
+<../output/figures/F14_parameter_sensitivity.pdf, id=820, 817.31973pt x 182.140
 49pt>
 File: ../output/figures/F14_parameter_sensitivity.pdf Graphic file (type pdf)
 <use ../output/figures/F14_parameter_sensitivity.pdf>
@@ -1356,7 +1338,7 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  13878 strings out of 467690
  210054 string characters out of 5431801
- 696025 words of memory out of 5000000
+ 695025 words of memory out of 5000000
  42466 multiletter control sequences out of 15000+600000
  794559 words of font info for 342 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1372,9 +1354,9 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (18 pages, 2680342 bytes).
+Output written on main.pdf (18 pages, 2680630 bytes).
 PDF statistics:
- 1165 PDF objects out of 1200 (max. 8388607)
+ 1166 PDF objects out of 1200 (max. 8388607)
  148 named destinations out of 1000 (max. 500000)
  307 words of extra memory for PDF output out of 10000 (max. 10000000)
 
