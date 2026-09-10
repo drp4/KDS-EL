@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  9 SEP 2026 20:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  10 SEP 2026 10:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -922,6 +922,12 @@ l.17 \item \textit
 
 
 ]
+Underfull \hbox (badness 1460) in paragraph at lines 18--19
+\T1/txr/m/n/8 al-go-rithms and the orig-i-nal MEL al-go-rithm, rig-or-ously val
+-i-dated
+ []
+
+
 Underfull \hbox (badness 1616) in paragraph at lines 18--19
 \T1/txr/m/n/8 through non-parametric sta-tis-ti-cal test-ing, com-po-nent con-t
 ri-bu-tion
@@ -1097,15 +1103,9 @@ Underfull \hbox (badness 1975) in paragraph at lines 116--117
  []
 
 ) (sections/04_kds_el.tex [4 <../output/figures/F1_dataflow_journal.pdf>]
-Underfull \hbox (badness 1565) in paragraph at lines 26--27
-\T1/txr/m/n/8 con-duct-ing dis-crete probability-driven fea-ture sam-pling in-f
-ormed by the
- []
-
-
-Underfull \hbox (badness 3138) in paragraph at lines 26--27
-\T1/txr/m/n/8 single-population ar-chi-tec-tures, this col-lab-o-ra-tive co-evo
-lutionary de-sign
+Underfull \hbox (badness 5787) in paragraph at lines 26--27
+\T1/txr/m/n/8 dimensional spaces, the swarm is par-ti-tioned into two col-lab-o
+-ra-tive
  []
 
 
@@ -1138,8 +1138,7 @@ Underfull \hbox (badness 2521) in paragraph at lines 81--83
 -ver-gence to-ward
  []
 
-[5] [6 <../output/figures/F2_flowchart_journal.pdf> <../output/figures/F3_mi_in
-itialization_journal.pdf>]
+[5]
 Underfull \hbox (badness 4353) in paragraph at lines 92--93
 []\T1/txr/m/n/8 To re-solve this struc-tural dilemma with-out in-cur-ring catas
 -trophic
@@ -1170,7 +1169,8 @@ Underfull \hbox (badness 3088) in paragraph at lines 92--93
 ac-cu-mu-lated
  []
 
-
+[6 <../output/figures/F2_flowchart_journal.pdf> <../output/figures/F3_mi_initia
+lization_journal.pdf>]
 Underfull \hbox (badness 3449) in paragraph at lines 112--113
 \T1/txr/m/n/8 im-me-di-ately fol-low-ing gen-er-a-tional up-dates. Con-se-quent
 ly, evo-lu-tion-ary
@@ -1245,8 +1245,8 @@ Underfull \hbox (badness 1215) in paragraph at lines 15--16
  []
 
 ) (../output/tables/T2_datasets.tex) (../output/tables/T3_params.tex)
-(sections/06_experimental_analysis.tex [10] (../output/tables/T4_accuracy.tex)
-(../output/tables/T5_features.tex)
+(sections/06_experimental_analysis.tex (../output/tables/T4_accuracy.tex)
+[10] (../output/tables/T5_features.tex)
 Underfull \hbox (badness 4072) in paragraph at lines 25--26
 \T1/txr/m/n/8 re-flects a de-lib-er-ate, domain-specific trade-off gov-erned by
  two-phase
@@ -1258,76 +1258,65 @@ Underfull \hbox (badness 1072) in paragraph at lines 25--26
 tar-geted trade-off
  []
 
-[11]
-<../output/figures/F8_sota_convergence.pdf, id=599, 744.45474pt x 516.62903pt>
+<../output/figures/F8_sota_convergence.pdf, id=594, 744.45474pt x 516.62903pt>
 File: ../output/figures/F8_sota_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_sota_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_sota_convergence.pdf  used on inp
 ut line 33.
 (pdftex.def)             Requested size: 522.0pt x 362.25273pt.
- (../output/tables/T6_wilcoxon.tex)
-(../output/tables/T6b_holm_bonferroni.tex)
-<../output/figures/F13_friedman_rank.pdf, id=621, 477.06169pt x 260.23975pt>
+[11] [12 <../output/figures/F8_sota_convergence.pdf>]
+(../output/tables/T6_wilcoxon.tex) (../output/tables/T6b_holm_bonferroni.tex)
+<../output/figures/F13_friedman_rank.pdf, id=742, 477.06169pt x 260.23975pt>
 File: ../output/figures/F13_friedman_rank.pdf Graphic file (type pdf)
 <use ../output/figures/F13_friedman_rank.pdf>
 Package pdftex.def Info: ../output/figures/F13_friedman_rank.pdf  used on input
  line 58.
 (pdftex.def)             Requested size: 206.64185pt x 112.72685pt.
- (../output/tables/T7_ablation.tex
+
+(../output/tables/T7_ablation.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <6.8> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 14.
 )
-<../output/figures/F6_ablation_radar.pdf, id=624, 394.7861pt x 402.05098pt>
+<../output/figures/F6_ablation_radar.pdf, id=745, 394.7861pt x 402.05098pt>
 File: ../output/figures/F6_ablation_radar.pdf Graphic file (type pdf)
 <use ../output/figures/F6_ablation_radar.pdf>
 Package pdftex.def Info: ../output/figures/F6_ablation_radar.pdf  used on input
  line 71.
 (pdftex.def)             Requested size: 221.76123pt x 225.84024pt.
-<../output/figures/F5_ablation_convergence.pdf, id=625, 636.01959pt x 467.09317
+<../output/figures/F5_ablation_convergence.pdf, id=746, 636.01959pt x 467.09317
 pt>
 File: ../output/figures/F5_ablation_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F5_ablation_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F5_ablation_convergence.pdf  used on
  input line 78.
 (pdftex.def)             Requested size: 480.23904pt x 352.69238pt.
-
-Underfull \hbox (badness 2134) in paragraph at lines 83--84
-\T1/txr/m/n/8 that the ar-chi-tec-tural en-hance-ments from prior-guided ini-ti
-al-iza-tion, the
- []
-
-
-Underfull \hbox (badness 1609) in paragraph at lines 83--84
-\T1/txr/m/n/8 KER strat-egy, and dy-namic Two-Phase Weight Schedul-ing are re-l
-i-able.
- []
-
-[12] [13 <../output/figures/F8_sota_convergence.pdf>]
-<../output/figures/F11_runtime_scatter.pdf, id=766, 506.4339pt x 304.73952pt>
+ [13 <../output/figures/F13_friedman_rank.pdf> <../output/figures/F6_ablation_r
+adar.pdf>]
+<../output/figures/F11_runtime_scatter.pdf, id=797, 506.4339pt x 304.73952pt>
 File: ../output/figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use ../output/figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: ../output/figures/F11_runtime_scatter.pdf  used on inp
 ut line 93.
 (pdftex.def)             Requested size: 221.76123pt x 133.44409pt.
- [14 <../output/figures/F13_friedman_rank.pdf> <../output/figures/F6_ablation_r
-adar.pdf>]
-(../output/tables/T8_parameter_sensitivity.tex)
-<../output/figures/F14_parameter_sensitivity.pdf, id=820, 817.31973pt x 182.140
+ [14 <../output/figures/F5_ablation_convergence.pdf>] (../output/tables/T8_para
+meter_sensitivity.tex)
+<../output/figures/F14_parameter_sensitivity.pdf, id=870, 817.31973pt x 182.140
 49pt>
 File: ../output/figures/F14_parameter_sensitivity.pdf Graphic file (type pdf)
 <use ../output/figures/F14_parameter_sensitivity.pdf>
 Package pdftex.def Info: ../output/figures/F14_parameter_sensitivity.pdf  used 
 on input line 110.
 (pdftex.def)             Requested size: 480.23904pt x 107.02005pt.
- [15 <../output/figures/F5_ablation_convergence.pdf> <../output/figures/F11_run
-time_scatter.pdf>]
+ [15 <../output/figures/F11_runtime_scatter.pdf>]
 Underfull \hbox (badness 1270) in paragraph at lines 129--130
 []\T1/txr/m/n/8 Furthermore, trans-lat-ing com-pu-ta-tional fea-ture se-lec-tio
 n into clin-i-cal
  []
 
 ) (sections/09_conclusion.tex) [16 <../output/figures/F14_parameter_sensitivity
-.pdf>] (main.bbl) [17] (main.aux)
+.pdf>] (main.bbl) [17
+
+] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
@@ -1336,11 +1325,11 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: DCC7EB2486901E0978242E402E52BC92;8235.
  ) 
 Here is how much of TeX's memory you used:
- 13878 strings out of 467690
- 210054 string characters out of 5431801
- 695025 words of memory out of 5000000
- 42466 multiletter control sequences out of 15000+600000
- 794559 words of font info for 342 fonts, out of 8000000 for 9000
+ 13855 strings out of 467690
+ 209658 string characters out of 5431801
+ 692282 words of memory out of 5000000
+ 42445 multiletter control sequences out of 15000+600000
+ 786304 words of font info for 319 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,15n,79p,2718b,579s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi525\ectt
@@ -1354,7 +1343,7 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (18 pages, 2680630 bytes).
+Output written on main.pdf (18 pages, 2678368 bytes).
 PDF statistics:
  1166 PDF objects out of 1200 (max. 8388607)
  148 named destinations out of 1000 (max. 500000)

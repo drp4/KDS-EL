@@ -23,14 +23,14 @@ x_{N,1} & x_{N,2} & \cdots & x_{N,D}
 \end{equation}
 where the $i$-th row vector $\mathbf{x}_i = [x_{i,1}, x_{i,2}, \dots, x_{i,D}] \in \{0, 1\}^D$ denotes an individual candidate solution, with $x_{i,j} = 1$ indicating that feature $f_j$ is selected and $x_{i,j} = 0$ indicating exclusion. The mapping from continuous particle position $\mathbf{p}_i = [p_{i,1}, \dots, p_{i,D}] \in [0, 1]^D$ to binary decision mask $\mathbf{x}_i$ is governed by a deterministic threshold condition $x_{i,j} = \mathbb{I}(p_{i,j} \ge \theta)$, where $\mathbb{I}(\cdot)$ denotes the indicator function and $\theta \in (0.5, 1)$ represents the binarization cut-off threshold.
 
-To balance global exploration and local exploitation in sparse high-dimensional spaces, the swarm is partitioned into two collaborative subpopulations $\mathcal{P}_1$ and $\mathcal{P}_2$, each comprising $N/2$ particles, extending the multi-task evolutionary learning paradigm of the foundational MEL framework~\cite{mel2024}. As delineated in the upper dashed sub-panel of Fig.~\ref{fig:kds_el_flowchart}, Subpopulation $\mathcal{P}_1$ functions as a continuous explorer, executing continuous velocity--position updates with an inter-task knowledge transfer channel guided by the global best solution $\mathbf{g}_{\mathrm{best},2}$ of $\mathcal{P}_2$. Concurrently, Subpopulation $\mathcal{P}_2$ acts as a discrete exploiter, conducting discrete probability-driven feature sampling informed by the accumulated feature-importance landscape $\mathbf{W}$. Compared with conventional single-population architectures, this collaborative co-evolutionary design establishes complementary search dynamics: continuous swarm movement preserves momentum to traverse unvisited spaces, while discrete sampling focuses evaluations on verified high-relevance dimensions, effectively mitigating premature stagnation.
+To balance global exploration and local exploitation in sparse high-dimensional spaces, the swarm is partitioned into two collaborative subpopulations $\mathcal{P}_1$ and $\mathcal{P}_2$, each comprising $N/2$ particles, extending the multi-task evolutionary learning paradigm of the original MEL algorithm~\cite{mel2024}. As delineated in the upper dashed sub-panel of Fig.~\ref{fig:kds_el_flowchart}, Subpopulation $\mathcal{P}_1$ functions as a continuous explorer, executing continuous velocity--position updates with an inter-task knowledge transfer channel guided by the global best solution $\mathbf{g}_{\mathrm{best},2}$ of $\mathcal{P}_2$. Concurrently, Subpopulation $\mathcal{P}_2$ acts as a discrete exploiter, conducting discrete probability-driven feature sampling informed by the accumulated feature-importance landscape $\mathbf{W}$. Compared with conventional single-population architectures, this collaborative co-evolutionary design establishes complementary search dynamics: continuous swarm movement preserves momentum to traverse unvisited spaces, while discrete sampling focuses evaluations on verified high-relevance dimensions, effectively mitigating premature stagnation.
 
 During iterative optimization, KDS-EL orchestrates three complementary mechanisms into an integrated closed loop. First, population initialization injects Gaussian-perturbed mutual information priors to establish an ultra-sparse candidate basin, while an adaptive re-initialization mechanism restores swarm diversity whenever search progress halts. Second, differential fitness improvements across generations are accumulated into a continuous importance vector $\mathbf{W} \in \mathbb{R}^D$ under exponential memory decay, actively steering the KER strategy to execute targeted directional bit flips under a greedy pairwise in-place replacement rule, as illustrated in the lower dashed sub-panel of Fig.~\ref{fig:kds_el_flowchart}. Third, the dynamic TPS strategy temporally shifts objective weights across evolutionary stages, enforcing aggressive feature pruning during the early phase and fine-grained accuracy tuning during the late phase. By continuously cycling through these coordinated stages, KDS-EL systematically prunes non-informative dimensions while progressively refining compact biomarker signatures.
 
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.72\textwidth]{../output/figures/F2_flowchart_journal.pdf}
-\caption{Algorithmic execution flowchart of the KDS-EL framework. The left main stream outlines the global iterative lifecycle across evolutionary generations, while the upper and lower dashed panels detail the collaborative dual-swarm co-evolutionary dynamics between subpopulations $\mathcal{P}_1$ and $\mathcal{P}_2$ and the knowledge-guided elite refinement mechanism, respectively.}
+\caption{Algorithmic execution flowchart of the proposed KDS-EL framework.}
 \label{fig:kds_el_flowchart}
 \end{figure*}
 
@@ -41,7 +41,7 @@ In ultra-high-dimensional wrapper feature selection, standard uniform random ini
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.90\textwidth]{../output/figures/F3_mi_initialization_journal.pdf}
-\caption{Schematic representation of prior-guided sparse population initialization and adaptive diversity recovery. Steps~1--2 trace prior-guided sparse seeding and generational convergence; Step~3 identifies search stagnation under condition $t_{\mathrm{stag}} \ge \tau$ with the dashed line bisecting the swarm; and Step~4 restores diversity by re-seeding the lower-performing subpopulation around $\mathbf{m} + \boldsymbol{\varepsilon}_i$, highlighted by green boxes.}
+\caption{Schematic of prior-guided sparse population initialization and adaptive diversity recovery.}
 \label{fig:mi_seeding}
 \end{figure*}
 
@@ -137,7 +137,7 @@ In ultra-high-dimensional regimes where candidate dimensions $D \gg 10^3$ vastly
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.98\textwidth]{../output/figures/F4_ker_strategy_journal.pdf}
-\caption{Operational mechanism of the knowledge-guided elite refinement strategy across consecutive generations. Cumulative feature-importance scores $\mathbf{W}$ harvested from cross-iteration fitness differentials steer targeted directional mutations on top-$k_e$ elite candidates, where coordinate inversions undergo greedy pairwise in-place replacement to preserve elite trajectory integrity.}
+\caption{Operational mechanism of the knowledge-guided elite refinement strategy.}
 \label{fig:ker_refinement}
 \end{figure*}
 
@@ -234,7 +234,7 @@ Algorithm~\ref{alg:kds_el} synthesizes the overall execution pipeline of KDS-EL 
 
 \begin{algorithm}[!htb]
 \small
-\caption{The overall framework of KDS-EL}
+\caption{Overall algorithmic framework of KDS-EL}
 \label{alg:kds_el}
 \begin{algorithmic}[1]
 \Require Training dataset $\mathcal{D} = \{(\mathbf{f}_i, y_i)\}_{i=1}^{N_{\mathrm{samp}}}$, population size $N \in \mathbb{Z}_+$, maximum generations $T \in \mathbb{Z}_+$, binarization threshold $\theta \in (0, 1)$, prior seeding ratio $\rho \in (0, 1)$, perturbation scale $\sigma \in \mathbb{R}_+$, forgetting factor $\gamma \in (0, 1)$, elite pool size $k_e \in \mathbb{Z}_+$, perturbation fraction $\phi \in (0, 1)$, random branch probability $p_{\mathrm{rand}} \in [0, 1]$, phase transition split ratio $\kappa \in (0, 1)$, stagnation threshold $\tau \in \mathbb{Z}_+$

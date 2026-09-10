@@ -95,10 +95,13 @@ Every generation and modification must strictly comply with all criteria outline
   - *Causality*: `thereby facilitating...`, `consequently avoiding...`, `which in turn accelerates...`.
 - **Strict Prohibition of the Term "Baseline"**: Strictly prohibit the words `baseline` / `baselines` across all LaTeX manuscript text, table captions, table footnotes, and agent dialogue responses. Peer algorithms must never be casually or dismissively labeled as "baselines" or "baseline MEL". Adhere strictly to formal scholarly terminology:
   - *For peer algorithms*: `competitor algorithms`, `competing methods`, `comparison approaches`, `peer algorithms`, `counterparts`, `benchmark methods`.
-  - *For the backbone algorithm MEL*: `the original MEL algorithm`, `the foundational MEL framework`, or directly `MEL` (never `baseline MEL`, `MEL baseline`, or `precursor MEL`, perfectly aligning with EMSWOA's treatment of its base algorithm WOA as `the original WOA` or `the basic WOA`).
+  - *For the backbone algorithm MEL*: `the original MEL algorithm` or directly `MEL` (never `baseline MEL`, `MEL baseline`, `precursor MEL`, or `the foundational MEL framework`, perfectly aligning with EMSWOA's treatment of its base algorithm WOA as `the original WOA` or `the basic WOA`).
   - *For unreduced data / raw feature sets*: `unreduced full-dimensional feature sets`, `raw feature spaces` (never `full-dimensional baselines`).
   - *For reference fitness / starting levels*: `initial fitness value`, `initial reference fitness` (never `fitness baseline`).
   - *For algorithmic comparison collections*: `comparison suite`, `benchmark suite`, `competitor suite` (never `baseline suite`).
+- **Strict Prohibition of Machine Learning Jargon "Ablation" (禁绝 "Ablation" 等机器学习术语，全面采用群体智能/进化计算经典范式 "Before and After Algorithm Improvement")**:
+  - In evolutionary computation and swarm intelligence literature (especially top Elsevier journals like *Applied Soft Computing*, strictly mirroring EMSWOA), strictly prohibit machine learning terminology such as `ablation study`, `ablation experiments`, `ablation configurations`, or `ablative variants`.
+  - Component contribution analysis must strictly be formalized as **performance comparison before and after algorithm improvement** (`before and after algorithm improvement`, `intermediate algorithmic configurations before and after improvement`, `pre- and post-improvement algorithms`, `constituent mechanism analysis`).
 
 ---
 
@@ -237,7 +240,7 @@ Before generating or applying any text edit to the manuscript:
 
 ## 📌 Section V: Scientific Figure and Table Caption Protocols (图表标题与图注设计规范)
 
-*These protocols must be strictly enforced whenever creating, drafting, or revising any Figure or Table captions in the manuscript.*
+*These protocols must be strictly enforced whenever creating, drafting, or revising any Figure or Table captions in the manuscript, matching the highest standards of Elsevier journals (e.g., ASOC, ESWA, SWEVO) and published exemplars such as EMSWOA.*
 
 ### 🎯 Core Philosophy: "Table Captions Define the Entities; Table Footnotes Explain the Rules; Figure Captions Provide Self-Contained Visual Narratives"
 In top-tier Elsevier journals, the functional boundaries of table titles, table footnotes, and figure captions are strictly decoupled to maximize visual legibility and self-containment:
@@ -249,26 +252,73 @@ In top-tier Elsevier journals, the functional boundaries of table titles, table 
 
 ### 🔑 Detailed Operational Caption Protocols
 
-#### Protocol CAP-1: Table Caption Standards (表格标题规范)
+#### Protocol CAP-1: Table Caption & Footnote Decoupling Standards (表格标题与表注解耦规范)
 - **Position**: Placed strictly **above** the tabular content (`\caption{...}` immediately follows `\begin{table}` or `\begin{table*}`).
 - **Length & Style**: Ultra-concise noun phrase, strictly within **6 to 15 words** (ideally 1 line across the column width; never exceeding 2 lines).
-- **Content Scope**: Solely describe the subject matter and benchmark scope (e.g., *"Table 4. Comparison of classification accuracy between KDS-EL and competitor algorithms across the benchmark suite."*).
+- **Content Scope**: Solely describe the subject matter and benchmark scope (e.g., *"Table 4. Comparison of classification accuracy between KDS-EL and competitor algorithms."*).
 - **Strict Anti-Clutter Rule**: Strictly prohibit dumping formatting rules (such as *"The best results are shown in bold and the second-best are underlined..."*), significance thresholds ($p < 0.05$), or win/tie/loss explanations into the `\caption{...}` title string.
-- **Delegation to Table Footnotes**: All formatting definitions, abbreviations, and statistical testing notes must be placed exclusively at the base of the table using `\par\raggedright\footnotesize` or standard table note environments (e.g., *"Entries in bold denote the best performance, while underlined entries indicate the second-best. $+ / \approx / -$ indicates that KDS-EL is statistically significantly superior, statistically equivalent, or inferior to the corresponding competitor according to the pairwise Wilcoxon signed-rank test at $\alpha = 0.05$."*).
+- **Delegation to Table Footnotes**: All formatting definitions, abbreviations, and statistical testing notes must be placed exclusively at the base of the table using `\par\raggedright\footnotesize` or standard table note environments.
+- **EMSWOA Published Table Exemplars**:
+  - *Prohibited Negative Pattern (Cluttered Table Title)*:
+    `\caption{Comparison of classification accuracy between KDS-EL and baseline algorithms across 20 datasets (bold indicates the best, underline indicates the second-best, +/-/approx denotes Wilcoxon test at p < 0.05)}`
+  - *Recommended Positive Pattern (Decoupled Standard Table Title)*:
+    `\caption{Comparison of classification accuracy between KDS-EL and competitor algorithms.}`
+    Followed at the table footer by:
+    `\par\raggedright\footnotesize\textbf{Note:} Entries in bold denote the best performance, while underlined entries indicate the second-best. $+ / \approx / -$ indicates that KDS-EL is statistically significantly superior, statistically equivalent, or inferior to the corresponding competitor according to the pairwise Wilcoxon signed-rank test at $\alpha = 0.05$.`
 
-#### Protocol CAP-2: Figure Caption Standards (插图标题与图注规范)
+#### Protocol CAP-2: Ultra-Concise Figure Caption Standards (插图标题超精炼规范，100% 对齐 EMSWOA)
 - **Position**: Placed strictly **below** the visual graphic (`\caption{...}` placed after all subfigures or `\includegraphics`).
-- **Length & Style**: Self-contained scientific paragraph, strictly within **20 to 50 words** (typically 1 to 3 structured sentences; occupying 1 to 3 printed lines).
-- **Mandatory Three-Part Anatomy**:
-  1. *Main Subject Clause (8–15 words)*: Succinct statement of the visual metric or architectural workflow (e.g., *"Overall convergence trajectories of mean objective fitness across 100 evolutionary generations."*).
-  2. *Sub-Panel Navigation Guide (分图导引)*: Explicit mapping of all subfigures (e.g., *"(a) Omnibus mean trajectory across the 20 benchmark datasets, and (b)–(i) eight representative ultra-high-dimensional datasets."*).
-  3. *Visual Cue & Landmark Decoding (图符与视觉标记解析)*: Explicit explanation of visual indicators, including dashed division lines, shaded confidence ribbons, secondary axes, and marker shapes (e.g., *"The vertical dotted line marks the transition boundary from Phase 1 (dimensional pruning) to Phase 2 (fine accuracy refinement) under Two-Phase Weight Scheduling."*).
-- **Parenthetical Sanitation in Captions**: Eliminate informal parenthetical shorthands for algorithmic conditions (e.g., write *"under condition $t_{\mathrm{stag}} \ge \tau$"* rather than *"($t_{\mathrm{stag}} \ge \tau$)"*), and integrate visual marker decodings smoothly (e.g., *"highlighted by green boxes"*) without excessive nested parentheses.
-- **Self-Containment Criterion**: An expert reader must be able to comprehend the entire figure, the meaning of each curve, and all graphical landmarks purely from the caption and the visual artifact, with zero ambiguity.
+- **Length & Style**: Ultra-concise, elegant noun phrase of strictly **8 to 15 words** (ideally 1 clean printed line across column width; never exceeding 2 lines).
+- **Strict Anti-Regurgitation & Zero Text Clutter Rule**:
+  - Figure captions must never read like mini-abstracts, empirical result summaries, or multi-sentence narrative paragraphs.
+  - Never recount details already visible in diagram boxes or discussed in the accompanying main text (e.g., do not dump Holm tests, red curve definitions, $\alpha = 0.05$, or sub-panel lists into the caption).
+  - All detailed interpretations, visual landmarks (colors, markers, phase division boundaries), and statistical significance analyses belong strictly in the **main text paragraphs** adjacent to the figure callout.
+- **Strict Prohibition of Mechanical Filler Suffixes (禁绝生硬机械后缀)**:
+  - Strictly prohibit artificially appending repetitive lifecycle suffixes to figure titles (e.g., strictly ban `across evolutionary generations`, `across evolutionary stages`, `across consecutive generations`, `across the benchmark suite`, `across the 20 benchmark datasets`). A flowchart is simply an *Algorithmic execution flowchart*, and an operational schematic is simply an *Operational schematic*.
+- **EMSWOA Published Figure Exemplars**:
+  - `Fig. 1. Example of an EMSWOA-based feature selection process.` (8 words)
+  - `Fig. 2. Flowchart of the EMSWOA algorithm.` (6 words)
+  - `Fig. 5. Convergence curves of average fitness values on representative datasets.` (10 words)
+  - `Fig. 6. Average Friedman rank of comparison algorithms.` (7 words)
+- **KDS-EL Figure Title Reference Suite**:
+  - `Fig. 1`: `Overall dataflow architecture of the proposed KDS-EL framework for high-dimensional feature selection.` (13 words)
+  - `Fig. 2`: `Algorithmic execution flowchart of the proposed KDS-EL framework.` (8 words)
+  - `Fig. 3`: `Schematic of prior-guided sparse population initialization and adaptive diversity recovery.` (10 words)
+  - `Fig. 4`: `Operational mechanism of the knowledge-guided elite refinement strategy.` (8 words)
+  - `Fig. 5`: `Convergence trajectories of mean objective fitness.` (6 words)
+  - `Fig. 6`: `Average Friedman ranking distribution across the 20 benchmark datasets.` (9 words)
+  - `Fig. 7`: `Multi-dataset radar visualization of classification accuracy.` (6 words)
+  - `Fig. 8`: `Convergence trajectories of classification accuracy before and after algorithm improvement.` (10 words)
+  - `Fig. 9`: `Trade-off distribution between classification accuracy and selected feature cardinality.` (9 words)
+  - `Fig. 10`: `Parameter sensitivity and stability profiles of KDS-EL across five key hyperparameters.` (11 words)
 
 #### Protocol CAP-3: Typographic & Symbol Synchronization (符号完全同构规范)
 - **100% Symbol Consistency**: Every mathematical symbol appearing in figure captions or table notes must match the in-text LaTeX math notation and the embedded vector PDF labels with 100% fidelity (e.g., $d_{\mathrm{selected}}$, $k_e$, $\kappa$, $\mathbf{W}$, $f_{\mathrm{gbest}}$).
 - **Capitalization Standard**: Follow standard Elsevier sentence-style capitalization for caption titles (capitalizing only the first word and proper nouns/acronyms).
+- **Terminology Strictness**: Prohibit the word `baseline` in any caption or footnote, replacing it with `competitor algorithms`, `competing methods`, `peer algorithms`, or `the original MEL algorithm`.
+
+#### Protocol CAP-4: Comprehensive Manuscript Asset Inventory Mapping (手稿图表资产全景映射)
+- **Table Inventory & Standardized Targets**:
+  - `Table 1` (`tab:comparison_literature`): Orthogonal taxonomy contrasting representative evolutionary feature selection paradigms.
+  - `Table 2` (`tab:datasets`): Summary of the 20 benchmark datasets across diverse high-dimensional biomedical regimes.
+  - `Table 3` (`tab:parameters`): Parameter settings of KDS-EL and competitor algorithms across the benchmark suite.
+  - `Table 4` (`tab:accuracy`): Comparison of classification accuracy between KDS-EL and competitor algorithms.
+  - `Table 5` (`tab:features`): Comparison of selected feature subset size between KDS-EL and competitor algorithms.
+  - `Table 6` (`tab:wilcoxon`): Pairwise Wilcoxon signed-rank test results comparing KDS-EL against competitor algorithms at $\alpha = 0.05$.
+  - `Table 7` (`tab:holm`): Post-hoc Holm-Bonferroni step-down procedure for family-wise error rate control.
+  - `Table 8` (`tab:improvement`): Performance comparison of intermediate configurations before and after algorithm improvement.
+  - `Table 9` (`tab:parametersensitivity`): Sensitivity analysis of key hyperparameters across representative benchmark datasets.
+- **Figure Inventory & Standardized Targets**:
+  - `Fig. 1` (`fig:kds_el_dataflow`): High-level data-flow architecture of the proposed KDS-EL framework.
+  - `Fig. 2` (`fig:kds_el_flowchart`): Detailed operational flowchart of the collaborative dual-swarm co-evolutionary pipeline.
+  - `Fig. 3` (`fig:mi_initialization`): Conceptual schematic of mutual-information continuous soft prior seeding and adaptive stagnation recovery.
+  - `Fig. 4` (`fig:ker_strategy`): Algorithmic workflow of the Knowledge-Guided Elite Refinement (KER) mechanism.
+  - `Fig. 5` (`fig:convergence`): Convergence trajectories of average objective fitness across 100 generations.
+  - `Fig. 6` (`fig:radar`): Multi-faceted radar comparison of classification accuracy and feature compression ratio.
+  - `Fig. 7` / `Fig. 8`: Classification accuracy radar chart and convergence trajectories before and after algorithm improvement.
+  - `Fig. 11` (`fig:sensitivity_surface`): Parameter sensitivity response landscapes across varying hyperparameter configurations.
+  - `Fig. 13` (`fig:bubble_tradeoff`): Multi-objective trade-off landscape between classification error, feature cardinality, and execution time.
+  - `Fig. 14` (`fig:biological_pathway`): Biological pathway enrichment and feature co-expression correlation heatmap for identified biomarker subsets.
 
 ---
 
