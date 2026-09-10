@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  10 SEP 2026 18:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  10 SEP 2026 19:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1036,6 +1036,12 @@ Underfull \hbox (badness 1199) in paragraph at lines 55--56
 objective evo-lu-
  []
 
+
+Underfull \hbox (badness 1590) in paragraph at lines 55--56
+\T1/txr/m/n/8 Fur-ther-more, stochas-tic vari-a-tion op-er-a-tors treat fea-tur
+e per-tur-ba-tions as
+ []
+
 [2]
 Underfull \hbox (badness 2181) in paragraph at lines 78--80
 \T1/txr/m/n/8 it en-coun-ters se-vere exploration-exploitation dilem-mas when a
@@ -1137,6 +1143,42 @@ Package pdftex.def Info: ../output/figures/F3_mi_initialization_journal.pdf  us
 ed on input line 43.
 (pdftex.def)             Requested size: 469.79681pt x 116.45479pt.
 [5]
+Underfull \hbox (badness 2932) in paragraph at lines 90--91
+\T1/txr/m/n/8 lo-cal basins. In high-dimensional regimes where can-di-date di-m
+en-sions
+ []
+
+
+Underfull \hbox (badness 2393) in paragraph at lines 90--91
+\T1/txr/m/n/8 re-initialization or heavy-tailed mu-ta-tion per-tur-ba-tions, su
+ch as Cauchy
+ []
+
+
+Underfull \hbox (badness 1852) in paragraph at lines 90--91
+\T1/txr/m/n/8 heavy-tailed mu-ta-tions in $\OT1/txr/m/n/8 2[]$ \T1/txr/m/n/8 co
+m-bi-na-to-rial space per-turb can-di-date bit
+ []
+
+
+Underfull \hbox (badness 1845) in paragraph at lines 90--91
+\OT1/txr/m/n/8 99\OML/txmi/m/it/8 :\OT1/txr/m/n/8 9%$\T1/txr/m/n/8 . Fur-ther-m
+ore, clas-si-cal opposition-based learn-ing strate-gies in-vert
+ []
+
+
+Underfull \hbox (badness 1762) in paragraph at lines 90--91
+\T1/txr/m/n/8 clas-si-fier over-fit-ting and com-pu-ta-tional la-tency. Con-se-
+quently, sus-tain-ing
+ []
+
+
+Underfull \hbox (badness 3977) in paragraph at lines 90--91
+\T1/txr/m/n/8 ex-ploratory di-ver-sity in ultra-high di-men-sions re-quires an 
+asym-met-ric
+ []
+
+
 Underfull \hbox (badness 4353) in paragraph at lines 92--93
 []\T1/txr/m/n/8 To re-solve this struc-tural dilemma with-out in-cur-ring catas
 -trophic
@@ -1163,12 +1205,6 @@ as both its cur-rent con-tin-u-ous
 
 [6 <../output/figures/F2_flowchart_journal.pdf> <../output/figures/F3_mi_initia
 lization_journal.pdf>]
-Underfull \hbox (badness 3449) in paragraph at lines 112--113
-\T1/txr/m/n/8 im-me-di-ately fol-low-ing gen-er-a-tional up-dates. Con-se-quent
-ly, evo-lu-tion-ary
- []
-
-
 Underfull \hbox (badness 1394) in paragraph at lines 135--136
 \T1/txr/m/n/8 vastly ex-ceed sam-ple ob-ser-va-tions, uni-form bit-flipping de-
 gen-er-ates into
@@ -1227,6 +1263,24 @@ cross-validation
 ) (../output/tables/T2_datasets.tex) (../output/tables/T3_params.tex)
 (sections/06_experimental_analysis.tex (../output/tables/T4_accuracy.tex)
 [10] (../output/tables/T5_features.tex)
+Underfull \hbox (badness 1603) in paragraph at lines 21--22
+\T1/txr/m/n/8 re-dun-dant fea-tures across high-dimensional land-scapes. This d
+egra-da-tion
+ []
+
+
+Underfull \hbox (badness 1337) in paragraph at lines 21--22
+\T1/txr/m/n/8 di-men-sion prob-a-bil-i-ties around 0.50 when proac-tive prun-in
+g pres-sure is
+ []
+
+
+Underfull \hbox (badness 2529) in paragraph at lines 21--22
+\T1/txr/m/n/8 ab-sent. By con-trast, KDS-EL com-bines con-tin-u-ous mu-tual in-
+for-ma-tion
+ []
+
+
 Underfull \hbox (badness 4072) in paragraph at lines 25--26
 \T1/txr/m/n/8 re-flects a de-lib-er-ate, domain-specific trade-off gov-erned by
  two-phase
@@ -1317,7 +1371,7 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  14086 strings out of 467690
  212546 string characters out of 5431801
- 720530 words of memory out of 5000000
+ 719530 words of memory out of 5000000
  42672 multiletter control sequences out of 15000+600000
  786304 words of font info for 319 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1333,7 +1387,7 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (18 pages, 2689027 bytes).
+Output written on main.pdf (18 pages, 2688833 bytes).
 PDF statistics:
  1180 PDF objects out of 1200 (max. 8388607)
  145 named destinations out of 1000 (max. 500000)
