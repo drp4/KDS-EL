@@ -22,7 +22,7 @@ x_{i,j}^{(t+1)} = \begin{cases}
 \end{cases}
 \label{eq:bpsosigmoid}
 \end{equation}
-While effective for low-dimensional problems, standard BPSO suffers severe exploration-exploitation dilemmas in ultra-high-dimensional spaces with $p \gg n$: continuous velocity updates provide no domain-grounded guidance toward sparse, informative biomarker subspaces. In KDS-EL, particles maintain continuous normalized position coordinates $\mathbf{p}_i \in [0, 1]^D$, mapped deterministically to binary feature masks via a strict thresholded Heaviside step function $x_{i,j} = \mathbb{I}(p_{i,j} \ge \theta)$ with $\theta = 0.60$, eliminating stochastic binarization variance.
+While effective for low-dimensional problems, standard BPSO suffers severe exploration-exploitation dilemmas in ultra-high-dimensional spaces with $p \gg n$: continuous velocity updates provide no domain-grounded guidance toward sparse, informative feature subspaces. In KDS-EL, particles maintain continuous normalized position coordinates $\mathbf{p}_i \in [0, 1]^D$, mapped deterministically to binary feature masks via a strict thresholded Heaviside step function $x_{i,j} = \mathbb{I}(p_{i,j} \ge \theta)$ with $\theta = 0.60$, suppressing stochastic binarization variance.
 
 \subsection{Mutual Information for Information-Theoretic Feature Relevance}\label{sec:mi-relevance}
 
@@ -38,7 +38,7 @@ Conventional filter feature selection methods~\cite{peng2005,deng2025nns} evalua
 \mathcal{S}_{\mathrm{Filter}} = \bigl\{\mathrm{IDX}(1), \mathrm{IDX}(2), \ldots, \mathrm{IDX}(\lfloor k \cdot D \rfloor)\bigr\},
 \label{eq:hard_filter}
 \end{equation}
-where $\mathrm{IDX}$ denotes the feature indices sorted in descending order of $I(f_j; Y)$ and $k \in (0, 1]$ represents the retention ratio, permanently discarding all features outside the top-$k$ ranking. While computationally rapid ($O(D \log D)$), hard truncation fundamentally ignores multi-feature synergy: individual features with moderate MI scores that are collectively decisive when combined are permanently eliminated. Rather than using hard truncation, KDS-EL utilizes normalized MI scores as a soft prior to construct continuous initial population seeds (Section~\ref{sec:mi}), injecting filter knowledge into the evolutionary wrapper without irreversibly shrinking the search space.
+where $\mathrm{IDX}$ denotes the feature indices sorted in descending order of $I(f_j; Y)$ and $k \in (0, 1]$ represents the retention ratio, permanently discarding all features outside the top-$k$ ranking. While computationally rapid ($O(D \log D)$), hard truncation fundamentally ignores multi-feature synergy: individual features with moderate MI scores that are collectively informative when combined are permanently discarded. Rather than using hard truncation, KDS-EL utilizes normalized MI scores as a soft prior to construct continuous initial population seeds (Section~\ref{sec:mi}), injecting filter knowledge into the evolutionary wrapper without irreversibly shrinking the search space.
 
 \subsection{Dual-Subpopulation Multi-Task Swarm Framework (MEL)}\label{sec:mel}
 
@@ -50,7 +50,7 @@ Multi-Task Evolutionary Learning (MEL), recently proposed by Wang et al.~\cite{m
 \label{eq:mel_sub1}
 \end{equation}
 
-\textit{Subpopulation~2 ($\mathcal{P}_2$): Importance-guided discrete sampling.} Rather than continuous mechanics, $\mathcal{P}_2$ samples binary feature masks directly based on a shared feature-importance matrix $W_{\mathrm{MEL}} \in \mathbb{R}^D$.
+\textit{Subpopulation~2 ($\mathcal{P}_2$): Importance-guided discrete sampling.} Rather than continuous mechanics, $\mathcal{P}_2$ samples binary feature masks directly based on a shared feature-importance vector $\mathbf{W}_{\mathrm{MEL}} \in \mathbb{R}^D$.
 
 In MEL, both subpopulations share a scalar fitness function combining classification error and feature subset ratio via static weights:
 \begin{equation}

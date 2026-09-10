@@ -4,6 +4,8 @@
 \usepackage{amsmath,amssymb}
 \setlength{\mathindent}{0pt}
 \usepackage{booktabs}
+\usepackage{array}
+\usepackage{makecell}
 \usepackage{graphicx}
 \usepackage{stfloats}
 \usepackage{algorithm}
@@ -46,13 +48,13 @@ This supplementary document provides comprehensive extended experimental records
     \item \textit{Section S1}: Benchmark Dataset Characteristics and Selection Rationale (Table~S1)
     \item \textit{Section S2}: Comparison Algorithms and Detailed Hyper-Parameter Configurations (Table~S2 and Table~S3)
     \item \textit{Section S3}: Extended Empirical Visualizations and Performance Profiles (Fig.~S1 and Fig.~S2)
-    \item \textit{Section S4}: Granular Per-Dataset Component Contribution (Ablation) Results (Table~S4 and Fig.~S3)
+    \item \textit{Section S4}: Granular Per-Dataset Performance Comparison Before and After Algorithm Improvement (Table~S4 and Fig.~S3)
     \item \textit{Section S5}: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (Table~S5 and Fig.~S4)
     \item \textit{Section S6}: Full Multi-Dataset Parameter Sensitivity Evaluation Grids (Table~S6)
     \item \textit{Section S7}: Full Convergence Trajectories and Boxplot Distributions (Fig.~S5 and Fig.~S6)
     \item \textit{Section S8}: Extended Statistical Significance Testing Matrices (Table~S7, Table~S8, and Fig.~S7)
     \item \textit{Section S9}: Cross-Classifier Inductive Generalization and Robustness (Table~S9)
-    \item \textit{Section S10}: Biological and Clinical Target Annotation of Compact Biomarker Subsets (Table~S10)
+    \item \textit{Section S10}: Biological and Literature Annotation of Prominent Candidate Genes (Table~S10)
 \end{itemize}
 
 \newpage
@@ -93,16 +95,16 @@ Fig.~\ref{fig:supp_acc_all} visualizes the complete per-dataset classification a
 
 \newpage
 
-\section*{Section S4: Granular Per-Dataset Component Contribution (Ablation) Results (Table~S4)}\label{sec:supp_ablation}
+\section*{Section S4: Granular Per-Dataset Performance Comparison Before and After Algorithm Improvement (Table~S4)}\label{sec:supp_ablation}
 
-Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential configurations of the subtractive ablation chain: (i) Standard MEL~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL$_{\mathrm{KER}}$ (w/o TPS), and (iv) Complete KDS-EL. Furthermore, Fig.~\ref{fig:supp_ablation_heatmap} presents the component contribution heatmap illustrating the step-wise accuracy progression.
+Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential intermediate algorithmic configurations before and after improvement: (i) the original MEL algorithm~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL$_{\mathrm{KER}}$ (w/o TPS), and (iv) Complete KDS-EL. Furthermore, Fig.~\ref{fig:supp_ablation_heatmap} presents the component contribution progression heatmap illustrating the step-wise accuracy progression.
 
 \input{../output/tables/T-A4_per_dataset_ablation}
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.75\linewidth]{F6_ablation_heatmap.pdf}
-\caption{Component contribution heatmap of ablative variants across 20 benchmark datasets.}
+\caption{Component contribution progression heatmap across intermediate algorithmic configurations on 20 benchmark datasets.}
 \label{fig:supp_ablation_heatmap}
 \end{figure}
 
@@ -174,9 +176,9 @@ To evaluate whether the feature subsets identified by KDS-EL under the 3-NN wrap
 
 \newpage
 
-\section*{Section S10: Biological and Clinical Target Annotation of Compact Biomarker Subsets}\label{sec:supp_biomarkers}
+\section*{Section S10: Biological and Literature Annotation of Prominent Candidate Genes}\label{sec:supp_biomarkers}
 
-Table~\ref{T-S10} details the functional and oncological annotations of top-ranked biomarker genes identified by KDS-EL in the \textit{Colon} and \textit{Prostate} cancer microarrays. Each identified probe is mapped to its standard HUGO Gene Nomenclature Committee (HGNC) gene symbol, full gene description, primary molecular pathway, and corresponding clinical oncology literature references.
+Table~\ref{T-S10} details the functional and oncological literature annotations of prominent candidate genes identified by KDS-EL in the \textit{Colon} and \textit{Prostate} cancer microarrays. Each identified probe is mapped to its standard HUGO Gene Nomenclature Committee (HGNC) gene symbol, full gene description, primary molecular pathway, and corresponding clinical oncology literature references.
 
 \input{../output/tables/T_supp_biomarkers}
 
