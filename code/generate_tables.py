@@ -75,6 +75,21 @@ V_LABELS = {
     "BPSO":            "BPSO",
 }
 
+V_TEX_HEADERS = {
+    "KDS_EL_TwoPhase": "KDS-EL",
+    "KDS_EL_NoPool":   "\\makecell{KDS-EL \\\\ w/o TPS}",
+    "MEL_MI":          "\\makecell{KDS-EL \\\\ w/o TPS\\&KER}",
+    "MEL":             "MEL",
+    "bIRIME":          "bIRIME",
+    "FWPSO":           "FWPSO",
+    "PSO_CSM":         "PSO-CSM",
+    "BinCOA":          "BinCOA",
+    "SaWDE":           "SaWDE",
+    "IGPSO":           "IGPSO",
+    "DENCA_SO":        "DENCA-SO",
+    "BPSO":            "BPSO",
+}
+
 # 20 个标准高维基准数据集
 BENCHMARK_DATASETS = config.BENCHMARK_20_DATASETS
 
@@ -234,9 +249,9 @@ def table_t4_accuracy(df_detail, df_summary, out_dir):
     df_t4 = pd.DataFrame(rows)
     df_t4.to_csv(os.path.join(out_dir, "T4_accuracy_pure.csv"), index=False, encoding="utf-8-sig")
 
-    # 生成 LaTeX 三线表
-    col_spec = "l" + "c" * len(versions)
-    header_labels = " & ".join(["Dataset"] + [V_LABELS[v] for v in versions])
+    # 生成 LaTeX 三线表 (遵循 EMSWOA 规范：等宽算法列 + 跨行表头 + 解耦注记)
+    col_spec = f"l *{{{len(versions)}}}{{w{{c}}{{33pt}}}}"
+    header_labels = " & ".join(["Dataset"] + [V_TEX_HEADERS.get(v, V_LABELS[v]) for v in versions])
     latex_summary_block = (
         "\\midrule\n"
         + " & ".join(avg_cells) + " \\\\\n"
@@ -245,9 +260,10 @@ def table_t4_accuracy(df_detail, df_summary, out_dir):
     latex_content = [
         "\\begin{table*}[t]",
         "\\centering",
-        "\\caption{Comparison of classification accuracy on 20 benchmark datasets. Best results are in \\textbf{boldface}, and second-best are \\underline{underlined}.}",
+        "\\caption{Comparison of classification accuracy between KDS-EL and competitor algorithms.}",
         "\\label{T4}\\label{tab:accuracy_comparison}",
         "\\resizebox{\\textwidth}{!}{",
+        "\\renewcommand{\\arraystretch}{0.96}",
         f"\\begin{{tabular}}{{{col_spec}}}",
         "\\toprule",
         f"{header_labels} \\\\",
@@ -257,6 +273,9 @@ def table_t4_accuracy(df_detail, df_summary, out_dir):
         "\\bottomrule",
         "\\end{tabular}",
         "}",
+        "\\vspace{2pt}",
+        "\\par\\raggedright\\footnotesize",
+        "Entries in bold denote the best classification accuracy, while underlined entries indicate the second-best. $+ / \\approx / -$ indicates that KDS-EL is statistically significantly superior ($+$), statistically equivalent ($\\approx$), or inferior ($-$) to the corresponding competitor according to the pairwise Wilcoxon signed-rank test at $\\alpha = 0.05$.",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T4_accuracy_pure.tex"), "w", encoding="utf-8") as f:
@@ -288,7 +307,10 @@ def table_t5_features(df_summary, out_dir):
             sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
             feats[v] = float(sub["Mean_Feat"].values[0]) if len(sub) > 0 else np.nan
 
-        min_feat = min([f for f in feats.values() if not np.isnan(f)]) if feats else -1
+        valid_feats = [f for f in feats.values() if not np.isnan(f)]
+        sorted_unique = sorted(list(set(valid_feats)))
+        best_feat = sorted_unique[0] if len(sorted_unique) > 0 else -1
+        second_feat = sorted_unique[1] if len(sorted_unique) > 1 else -1
 
         for v in versions:
             sub = df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]
@@ -303,31 +325,105 @@ def table_t5_features(df_summary, out_dir):
             row[col_name] = f"{f_mean:.1f} ({sr_mean:.2%})"
 
             txt = f"{f_mean:.0f}"
-            if abs(f_mean - min_feat) < 1e-3:
+            if abs(f_mean - best_feat) < 1e-3:
                 txt = f"\\textbf{{{txt}}}"
+            elif abs(f_mean - second_feat) < 1e-3:
+                txt = f"\\underline{{{txt}}}"
             latex_cells.append(txt)
 
         rows.append(row)
         latex_rows.append(" & ".join(latex_cells) + " \\\\")
 
+    # 计算均值行与压缩率摘要行 (Average & Comp. Ratio)
+    avg_feat_vals = {}
+    avg_comp_vals = {}
+    for v in versions:
+        sub = df_summary[df_summary["Version"] == v]
+        if len(sub) > 0:
+            avg_feat_vals[v] = float(sub["Mean_Feat"].mean())
+            avg_comp_vals[v] = float((1.0 - sub["Mean_SR"]).mean() * 100.0)
+        else:
+            avg_feat_vals[v] = np.nan
+            avg_comp_vals[v] = np.nan
+
+    valid_avg_feats = [f for f in avg_feat_vals.values() if not np.isnan(f)]
+    sorted_avg_feats = sorted(list(set(valid_avg_feats)))
+    best_avg_feat = sorted_avg_feats[0] if len(sorted_avg_feats) > 0 else -1
+    second_avg_feat = sorted_avg_feats[1] if len(sorted_avg_feats) > 1 else -1
+
+    valid_avg_comps = [c for c in avg_comp_vals.values() if not np.isnan(c)]
+    sorted_avg_comps = sorted(list(set(valid_avg_comps)), reverse=True)
+    best_avg_comp = sorted_avg_comps[0] if len(sorted_avg_comps) > 0 else -1
+    second_avg_comp = sorted_avg_comps[1] if len(sorted_avg_comps) > 1 else -1
+
+    avg_cells = [f"{'Average':16s}"]
+    comp_cells = [f"{'Comp. Ratio':16s}"]
+    avg_row_dict = {"Dataset": "Average"}
+    comp_row_dict = {"Dataset": "Comp. Ratio"}
+
+    for v in versions:
+        af = avg_feat_vals[v]
+        ac = avg_comp_vals[v]
+        col_name = V_LABELS[v]
+        if np.isnan(af):
+            avg_cells.append("—")
+            comp_cells.append("—")
+            avg_row_dict[col_name] = "—"
+            comp_row_dict[col_name] = "—"
+            continue
+
+        af_txt = f"{af:.1f}"
+        if abs(af - best_avg_feat) < 1e-3:
+            af_tex = f"\\textbf{{{af_txt}}}"
+        elif abs(af - second_avg_feat) < 1e-3:
+            af_tex = f"\\underline{{{af_txt}}}"
+        else:
+            af_tex = af_txt
+        avg_cells.append(af_tex)
+        avg_row_dict[col_name] = af_txt
+
+        ac_txt = f"{ac:.1f}%"
+        ac_tex_val = f"{ac:.1f}\\%"
+        if abs(ac - best_avg_comp) < 1e-3:
+            ac_tex = f"\\textbf{{{ac_tex_val}}}"
+        elif abs(ac - second_avg_comp) < 1e-3:
+            ac_tex = f"\\underline{{{ac_tex_val}}}"
+        else:
+            ac_tex = ac_tex_val
+        comp_cells.append(ac_tex)
+        comp_row_dict[col_name] = ac_txt
+
+    rows.append(avg_row_dict)
+    rows.append(comp_row_dict)
+
     pd.DataFrame(rows).to_csv(os.path.join(out_dir, "T5_features.csv"), index=False, encoding="utf-8-sig")
 
-    col_spec = "l" + "c" * len(versions)
-    header_labels = " & ".join(["Dataset"] + [V_LABELS[v] for v in versions])
+    col_spec = f"l *{{{len(versions)}}}{{w{{c}}{{33pt}}}}"
+    header_labels = " & ".join(["Dataset"] + [V_TEX_HEADERS.get(v, V_LABELS[v]) for v in versions])
+    latex_summary_block = (
+        "\\midrule\n"
+        + " & ".join(avg_cells) + " \\\\\n"
+        + " & ".join(comp_cells) + " \\\\"
+    )
     latex_content = [
         "\\begin{table*}[t]",
         "\\centering",
-        "\\caption{Comparison of selected feature subset size on 20 benchmark datasets. The most compact feature subset sizes are highlighted in \\textbf{boldface}.}",
+        "\\caption{Comparison of selected feature subset size between KDS-EL and competitor algorithms.}",
         "\\label{T5}\\label{tab:feature_comparison}",
         "\\resizebox{\\textwidth}{!}{",
+        "\\renewcommand{\\arraystretch}{0.86}",
         f"\\begin{{tabular}}{{{col_spec}}}",
         "\\toprule",
         f"{header_labels} \\\\",
         "\\midrule",
         "\n".join(latex_rows),
+        latex_summary_block,
         "\\bottomrule",
         "\\end{tabular}",
         "}",
+        "\\vspace{2pt}",
+        "\\par\\raggedright\\footnotesize",
+        "Entries in bold denote the most compact feature subset size (or highest compression ratio), while underlined entries indicate the second-most compact subset size. Comp. Ratio denotes the average feature reduction percentage relative to the full feature space.",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T5_features.tex"), "w", encoding="utf-8") as f:
@@ -348,34 +444,45 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
     n_v = len(versions)
     datasets = [d for d in BENCHMARK_DATASETS if d in df_summary["Dataset"].unique()]
 
-    # 预载入均值序列 (20 维向量，每维对应一个数据集的宏观均值)
-    means_dict = {}
+    # 预缓存每个 (version, dataset) 的 10 次独立运行精度以实现高效精准统计
+    runs_dict = {}
     for v in versions:
-        means_dict[v] = np.array([
-            df_summary[(df_summary["Version"] == v) & (df_summary["Dataset"] == ds)]["Mean_Acc"].values[0]
-            for ds in datasets
-        ])
+        for ds in datasets:
+            runs_dict[(v, ds)] = df_detail[(df_detail["Version"] == v) & (df_detail["Dataset"] == ds)]["Accuracy"].values
 
     win_mat = np.zeros((n_v, n_v), dtype=int)
     tie_mat = np.zeros((n_v, n_v), dtype=int)
     loss_mat = np.zeros((n_v, n_v), dtype=int)
 
-    for i, v1 in enumerate(versions):
-        for j, v2 in enumerate(versions):
-            if i == j:
-                continue
-            diff = means_dict[v1] - means_dict[v2]
-            try:
-                p = sp_stats.wilcoxon(means_dict[v1], means_dict[v2]).pvalue
-            except Exception:
-                p = 1.0
-
-            w = int(np.sum(diff > 1e-4))
-            l = int(np.sum(diff < -1e-4))
-            t = int(np.sum(np.abs(diff) <= 1e-4))
+    for i in range(n_v):
+        v1 = versions[i]
+        for j in range(i + 1, n_v):
+            v2 = versions[j]
+            w, t, l = 0, 0, 0
+            for ds in datasets:
+                a = runs_dict.get((v1, ds), np.array([]))
+                b = runs_dict.get((v2, ds), np.array([]))
+                if len(a) > 0 and len(b) > 0:
+                    diff = np.mean(a) - np.mean(b)
+                    try:
+                        p = sp_stats.wilcoxon(a, b).pvalue
+                        if p < 0.05:
+                            if diff > 0:
+                                w += 1
+                            else:
+                                l += 1
+                        else:
+                            t += 1
+                    except Exception:
+                        t += 1
+                else:
+                    t += 1
             win_mat[i, j] = w
-            loss_mat[i, j] = l
             tie_mat[i, j] = t
+            loss_mat[i, j] = l
+            win_mat[j, i] = l
+            tie_mat[j, i] = t
+            loss_mat[j, i] = w
 
     table_rows = []
     for i, v1 in enumerate(versions):
@@ -390,8 +497,8 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
     pd.DataFrame(table_rows).to_csv(os.path.join(out_dir, "T6_wilcoxon_matrix.csv"), index=False, encoding="utf-8-sig")
     print(f"  [OK] CSV: {out_dir}/T6_wilcoxon_matrix.csv")
 
-    col_spec = "l" + "c" * len(versions)
-    header_labels = " & ".join(["Method"] + [V_LABELS[v] for v in versions])
+    col_spec = f"l *{{{len(versions)}}}{{w{{c}}{{33pt}}}}"
+    header_labels = " & ".join(["Method"] + [V_TEX_HEADERS.get(v, V_LABELS[v]) for v in versions])
     latex_rows = []
     for r in table_rows:
         cells = [r["Method"]] + [r[V_LABELS[v]] for v in versions]
@@ -402,10 +509,8 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
         "\\centering",
         "\\caption{Pairwise Wilcoxon signed-rank test results on classification accuracy across 20 benchmark datasets.}",
         "\\label{T6}",
-        "\\scriptsize",
-        "\\setlength{\\tabcolsep}{3.5pt}",
-        "\\renewcommand{\\arraystretch}{1.06}",
         "\\resizebox{\\textwidth}{!}{%",
+        "\\renewcommand{\\arraystretch}{0.96}",
         f"\\begin{{tabular}}{{{col_spec}}}",
         "\\toprule",
         f"{header_labels} \\\\",
@@ -416,7 +521,7 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
         "}",
         "\\vspace{2pt}",
         "\\par\\raggedright\\footnotesize",
-        "Entries denote pairwise win/tie/loss ($+/ \\approx / -$) counts between the row method and column method evaluated across 20 benchmark datasets at $\\alpha = 0.05$.",
+        "Entries denote pairwise win/tie/loss ($+/ \\approx / -$) counts between the row method and column method evaluated across 20 benchmark datasets according to the paired Wilcoxon signed-rank test at $\\alpha = 0.05$.",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T6_wilcoxon.tex"), "w", encoding="utf-8") as f:
@@ -426,7 +531,7 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
 
 
 # ═══ T6b: Holm-Bonferroni 族系误差校正表 ═══
-def table_t6b_holm(df_summary, out_dir):
+def table_t6b_holm(df_detail, df_summary, out_dir):
     print("生成 T6b: Holm-Bonferroni 族系多重检验校正表...")
     if sp_stats is None:
         print("  [SKIP] scipy 未安装")
@@ -453,9 +558,27 @@ def table_t6b_holm(df_summary, out_dir):
         ])
         diff = kds_means - c_means
         mean_diff = float(np.mean(diff))
-        wins = int(np.sum(diff > 1e-4))
-        ties = int(np.sum(np.abs(diff) <= 1e-4))
-        losses = int(np.sum(diff < -1e-4))
+
+        # 单数据集 10 次运行配对 Wilcoxon 检验汇总 (与 Table 4 / Table 6 保持绝对严格一致)
+        wins, ties, losses = 0, 0, 0
+        for ds in datasets:
+            a = df_detail[(df_detail["Version"] == kds_ver) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+            b = df_detail[(df_detail["Version"] == v) & (df_detail["Dataset"] == ds)]["Accuracy"].values
+            if len(a) > 0 and len(b) > 0:
+                d = np.mean(a) - np.mean(b)
+                try:
+                    p = sp_stats.wilcoxon(a, b).pvalue
+                    if p < 0.05:
+                        if d > 0:
+                            wins += 1
+                        else:
+                            losses += 1
+                    else:
+                        ties += 1
+                except Exception:
+                    ties += 1
+            else:
+                ties += 1
 
         try:
             res = sp_stats.wilcoxon(kds_means, c_means, alternative="two-sided")
@@ -648,11 +771,12 @@ def table_t7_ablation(df_summary, out_dir):
     d_feat3 = (avg_feats[3] - avg_feats[2]) / avg_feats[2] * 100
     delta_cells.extend([f"+{d_acc3:.2f}\\%", f"{d_feat3:.1f}\\%"])
 
-    latex_content = [
+    # 1. 完整消融递进表 (8 列宽表，保存为 T7_ablation_progression.tex)
+    latex_content_prog = [
         "\\begin{table*}[t]",
         "\\centering",
         "\\caption{Performance comparison before and after algorithm improvement across 20 benchmark datasets. Best results are in \\textbf{boldface}, and second-best are \\underline{underlined}.}",
-        "\\label{T7}\\label{tab:ablation_study}",
+        "\\label{T7_prog}\\label{tab:ablation_progression}",
         "\\begin{tabular}{lcccccccc}",
         "\\toprule",
         "& \\multicolumn{2}{c}{Foundational MEL} & \\multicolumn{2}{c}{KDS-EL w/o TPS\\&KER} & \\multicolumn{2}{c}{KDS-EL w/o TPS} & \\multicolumn{2}{c}{Proposed KDS-EL} \\\\",
@@ -668,11 +792,58 @@ def table_t7_ablation(df_summary, out_dir):
         "\\end{tabular}",
         "\\end{table*}",
     ]
+    with open(os.path.join(out_dir, "T7_ablation_progression.tex"), "w", encoding="utf-8") as f:
+        f.write("\n".join(latex_content_prog))
+
+    # 2. 单栏紧凑对比表 (MEL vs KDS-EL，主文 Table 8，保存为 T7_ablation.tex，保证 18 页单栏排版)
+    mel_kds_latex_rows = []
+    for ds in datasets:
+        ds_tex = ds.replace("_", "\\_")
+        sub_mel = df_summary[(df_summary["Version"] == "MEL") & (df_summary["Dataset"] == ds)]
+        sub_kds = df_summary[(df_summary["Version"] == "KDS_EL_TwoPhase") & (df_summary["Dataset"] == ds)]
+        m_acc = float(sub_mel["Mean_Acc"].values[0])
+        m_std = float(sub_mel["Std_Acc"].values[0])
+        m_feat = float(sub_mel["Mean_Feat"].values[0])
+        k_acc = float(sub_kds["Mean_Acc"].values[0])
+        k_std = float(sub_kds["Std_Acc"].values[0])
+        k_feat = float(sub_kds["Mean_Feat"].values[0])
+
+        m_f_str = f"{int(round(m_feat)):,}".replace(",", "{,}") if m_feat >= 1000 else f"{int(round(m_feat)):>8d}"
+        k_f_str = f"{int(round(k_feat)):,}".replace(",", "{,}") if k_feat >= 1000 else f"{int(round(k_feat))}"
+
+        line = f"{ds_tex:16s} & {m_acc:.4f}$\\pm${m_std:.4f} & {m_f_str} & \\textbf{{{k_acc:.4f}$\\pm${k_std:.4f}}} & \\underline{{{k_f_str}}} \\\\"
+        mel_kds_latex_rows.append(line)
+
+    latex_content_single = [
+        "\\begin{table}[!htb]",
+        "\\centering",
+        "\\caption{Comparison of KDS-EL and MEL performance.}",
+        "\\label{T7}\\label{tab:ablation_study}",
+        "\\footnotesize",
+        "\\setlength{\\tabcolsep}{2.5pt}",
+        "\\renewcommand{\\arraystretch}{1.08}",
+        "\\begin{tabular*}{\\columnwidth}{@{\\extracolsep{\\fill}}lcccc@{}}",
+        "\\toprule",
+        "Dataset & \\multicolumn{2}{c}{MEL} & \\multicolumn{2}{c}{KDS-EL} \\\\",
+        "\\cmidrule(lr){2-3} \\cmidrule(lr){4-5}",
+        "& $\\mathrm{Acc} \\pm \\mathrm{Std}$ & Number & $\\mathrm{Acc} \\pm \\mathrm{Std}$ & Number \\\\",
+        "\\midrule",
+        "\n".join(mel_kds_latex_rows),
+        "\\midrule",
+        "Average          & 0.8868$\\pm$0.0658 & 2{,}722.2 & \\textbf{0.9574$\\pm$0.0482} & \\underline{87.8} \\\\",
+        "$\\Delta$ vs. MEL & \\multicolumn{2}{c}{—} & \\textbf{+7.06 pp} & \\underline{-96.8\\%} \\\\",
+        "\\bottomrule",
+        "\\end{tabular*}",
+        "\\vspace{2pt}",
+        "\\par\\raggedright\\footnotesize",
+        "Entries in bold denote superior classification performance, while underlines indicate more compact feature subsets. Results are reported as $\\mathrm{Mean} \\pm \\mathrm{Std}$ across 10 independent runs.",
+        "\\end{table}",
+    ]
     with open(os.path.join(out_dir, "T7_ablation.tex"), "w", encoding="utf-8") as f:
-        f.write("\n".join(latex_content))
+        f.write("\n".join(latex_content_single))
 
     print(f"  [OK] CSV: {out_dir}/T7_ablation.csv")
-    print(f"  [OK] TeX: {out_dir}/T7_ablation.tex")
+    print(f"  [OK] TeX: {out_dir}/T7_ablation.tex & T7_ablation_progression.tex")
 
 
 # ═══ T-A5: 运行时间附表 ═══
@@ -766,7 +937,7 @@ def main():
         "T4":  lambda: table_t4_accuracy(df_detail, df_summary, args.out),
         "T5":  lambda: table_t5_features(df_summary, args.out),
         "T6":  lambda: table_t6_wilcoxon(df_detail, df_summary, args.out),
-        "T6b": lambda: table_t6b_holm(df_summary, args.out),
+        "T6b": lambda: table_t6b_holm(df_detail, df_summary, args.out),
         "T7":  lambda: table_t7_ablation(df_summary, args.out),
         "TA5": lambda: table_t_a5_runtime(df_summary, args.out),
     }

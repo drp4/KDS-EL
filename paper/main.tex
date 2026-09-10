@@ -18,6 +18,8 @@
 \usepackage{amssymb}
 \setlength{\mathindent}{0pt}
 \usepackage{booktabs}
+\usepackage{array}
+\usepackage{makecell}
 \usepackage{graphicx}
 \usepackage{stfloats}
 \usepackage{algorithm}
@@ -188,7 +190,7 @@
     \hrule height 0.4pt
     \vspace{5pt}
     {\fontsize{7.5}{9.2}\selectfont
-    Feature selection in ultra-high-dimensional and sample-scarce regimes presents severe combinatorial complexity and heightened risk of classifier overfitting. Evolutionary swarm algorithms encounter three structural search degenerations: undirected initialization provokes cold-start evaluation waste in sparse feature spaces, memoryless uniform perturbation fails to harvest cross-iteration feature feedback, and static objective weighting causes a fundamental phase misalignment across evolutionary stages. To overcome these bottlenecks, this paper proposes Knowledge-Guided Dual-Phase Swarm Evolutionary Learning (KDS-EL), a closed-loop framework for cooperative multi-task swarms. Specifically, mutual-information prior seeding and adaptive recovery eliminate cold-start inefficiency while preserving swarm diversity. A differential importance memory model with exponential forgetting guides targeted elite refinement within strictly bounded evaluations. Furthermore, dynamic two-phase weight scheduling temporally decouples early dimensional pruning from late classification refinement. Extensive evaluations across 20 high-dimensional benchmark datasets demonstrate that KDS-EL achieves a leading average classification accuracy of 95.74\% while isolating an ultra-sparse signature of only 87.8 features, delivering a 3.4-fold empirical speedup over the foundational MEL framework. Non-parametric statistical tests with Holm--Bonferroni correction confirm that the performance advantages are statistically significant over all peer competitor algorithms.\par
+    Feature selection in ultra-high-dimensional and sample-scarce regimes presents severe combinatorial complexity and heightened risk of classifier overfitting. Evolutionary swarm algorithms encounter three structural search degenerations: undirected initialization provokes cold-start evaluation waste in sparse feature spaces, memoryless uniform perturbation fails to harvest cross-iteration feature feedback, and static objective weighting causes a fundamental phase misalignment across evolutionary stages. To overcome these bottlenecks, this paper proposes Knowledge-Guided Dual-Swarm Evolutionary Learning (KDS-EL), a closed-loop framework for cooperative multi-task swarms. Specifically, mutual-information prior seeding and adaptive recovery eliminate cold-start inefficiency while preserving swarm diversity. A differential importance memory model with exponential forgetting guides targeted elite refinement within strictly bounded evaluations. Furthermore, dynamic two-phase weight scheduling temporally decouples early dimensional pruning from late classification refinement. Extensive evaluations across 20 high-dimensional benchmark datasets demonstrate that KDS-EL establishes comprehensive leadership under multi-criteria evaluation, achieving an overall mean classification accuracy of 95.74\% while isolating an ultra-sparse signature averaging merely 87.8 features and delivering a 3.4-fold acceleration over the original MEL algorithm. Non-parametric Friedman rankings and post-hoc statistical tests corroborate its omnibus performance superiority across heterogeneous problem domains.\par
     }
   \end{minipage}
 
@@ -228,14 +230,17 @@ This section outlines the experimental framework and presents a comprehensive em
 
 \input{sections/09_conclusion}
 
-\section*{CRediT Author Statement}
-\textbf{Anonymous Author}: Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Writing -- original draft, Writing -- review \& editing, Visualization.
+\vspace{2pt}
+\noindent\textbf{CRediT authorship contribution statement}\par
+{\small\textbf{Anonymous Author}: Conceptualization, Methodology, Software, Validation, Formal analysis, Investigation, Data curation, Writing -- original draft, Writing -- review \& editing, Visualization.\par}
 
-\section*{Declaration of competing interest}
-The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+\vspace{2pt}
+\noindent\textbf{Declaration of competing interest}\par
+{\small The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.\par}
 
-\section*{Data availability}
-Data will be made available on request.
+\vspace{2pt}
+\noindent\textbf{Data availability}\par
+{\small Data will be made available on request.\par}
 
 % --------------------------- References --------------------------------
 \clearpage

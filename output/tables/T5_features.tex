@@ -3,34 +3,38 @@
 \caption{Comparison of selected feature subset size between KDS-EL and competitor algorithms.}
 \label{T5}\label{tab:feature_comparison}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{lcccccccccccc}
+\renewcommand{\arraystretch}{0.86}
+\begin{tabular}{l *{12}{w{c}{33pt}}}
 \toprule
-Dataset & KDS-EL & KDS-EL w/o TPS & KDS-EL w/o TPS\&KER & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
+Dataset & KDS-EL & \makecell{KDS-EL \\ w/o TPS} & \makecell{KDS-EL \\ w/o TPS\&KER} & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
 \midrule
-ALL1             & \textbf{39} & 55 & 55 & 4248 & 65 & 612 & 1206 & 6120 & 3667 & 2501 & 5877 & 5886 \\
-ALL4             & 124 & 152 & \textbf{64} & 1082 & 393 & 1326 & 1447 & 6301 & 4581 & 2677 & 6111 & 6217 \\
-ALL\_AML         & \textbf{67} & 70 & 473 & 2369 & 119 & 521 & 949 & 3419 & 1996 & 1444 & 3251 & 3266 \\
-Adenoma          & 66 & \textbf{33} & 120 & 2483 & 40 & 278 & 937 & 3554 & 2102 & 1608 & 3397 & 3399 \\
-BASEHOCK         & \textbf{134} & 208 & 812 & 1965 & 1721 & 2066 & 1113 & 2445 & 1912 & 1894 & 2359 & 2419 \\
-COIL20           & 84 & 60 & 348 & 323 & \textbf{54} & 90 & 167 & 454 & 232 & 255 & 634 & 407 \\
-Colon            & \textbf{14} & 35 & 105 & 702 & 113 & 240 & 284 & 960 & 621 & 448 & 845 & 935 \\
-DLBCL            & 64 & \textbf{52} & 615 & 2784 & 247 & 876 & 1074 & 3514 & 2155 & 1718 & 3784 & 3379 \\
-Gastric          & 100 & 97 & \textbf{62} & 3604 & 258 & 1070 & 2782 & 11157 & 7072 & 4916 & 10625 & 11004 \\
-Gastric1         & \textbf{31} & 217 & 678 & 7393 & 213 & 1420 & 2966 & 10937 & 6963 & 5074 & 10911 & 10661 \\
-Gastric2         & \textbf{83} & 140 & 444 & 7084 & 348 & 1362 & 3062 & 11041 & 6708 & 5134 & 10971 & 10627 \\
-ISOLET           & \textbf{60} & 100 & 225 & 250 & 133 & 172 & 194 & 298 & 213 & 195 & 374 & 272 \\
-Leukaemia        & 66 & \textbf{47} & 488 & 2409 & 132 & 534 & 934 & 3406 & 2026 & 1440 & 3218 & 3246 \\
-Lymphoma         & 45 & \textbf{23} & 50 & 1404 & 137 & 304 & 524 & 1934 & 1204 & 880 & 1765 & 1832 \\
-Myeloma          & 250 & 365 & \textbf{175} & 2137 & 1160 & 1863 & 1847 & 6278 & 4543 & 2859 & 6596 & 6259 \\
-PCMAC            & \textbf{91} & 329 & 637 & 1339 & 928 & 1209 & 651 & 1621 & 1292 & 1137 & 1590 & 1635 \\
-Prostate         & 26 & \textbf{23} & 27 & 5058 & 418 & 1898 & 1541 & 6282 & 4229 & 2729 & 5837 & 6211 \\
-SRBCT            & 64 & \textbf{36} & 129 & 906 & 172 & 431 & 366 & 1136 & 739 & 515 & 1056 & 1083 \\
-T1D              & 330 & 366 & \textbf{174} & 6715 & 1459 & 4984 & 9047 & 27318 & 18009 & 13170 & 27145 & 26971 \\
-madelon          & \textbf{18} & 26 & 130 & 190 & 46 & 122 & 95 & 240 & 162 & 171 & 122 & 221 \\
+ALL1             & \textbf{39} & \underline{55} & 55 & 4248 & 65 & 612 & 1206 & 6120 & 3667 & 2501 & 5877 & 5886 \\
+ALL4             & \underline{124} & 152 & \textbf{64} & 1082 & 393 & 1326 & 1447 & 6301 & 4581 & 2677 & 6111 & 6217 \\
+ALL\_AML         & \textbf{67} & \underline{70} & 473 & 2369 & 119 & 521 & 949 & 3419 & 1996 & 1444 & 3251 & 3266 \\
+Adenoma          & 66 & \textbf{33} & 120 & 2483 & \underline{40} & 278 & 937 & 3554 & 2102 & 1608 & 3397 & 3399 \\
+BASEHOCK         & \textbf{134} & \underline{208} & 812 & 1965 & 1721 & 2066 & 1113 & 2445 & 1912 & 1894 & 2359 & 2419 \\
+COIL20           & 84 & \underline{60} & 348 & 323 & \textbf{54} & 90 & 167 & 454 & 232 & 255 & 634 & 407 \\
+Colon            & \textbf{14} & \underline{35} & 105 & 702 & 113 & 240 & 284 & 960 & 621 & 448 & 845 & 935 \\
+DLBCL            & \underline{64} & \textbf{52} & 615 & 2784 & 247 & 876 & 1074 & 3514 & 2155 & 1718 & 3784 & 3379 \\
+Gastric          & 100 & \underline{97} & \textbf{62} & 3604 & 258 & 1070 & 2782 & 11157 & 7072 & 4916 & 10625 & 11004 \\
+Gastric1         & \textbf{31} & 217 & 678 & 7393 & \underline{213} & 1420 & 2966 & 10937 & 6963 & 5074 & 10911 & 10661 \\
+Gastric2         & \textbf{83} & \underline{140} & 444 & 7084 & 348 & 1362 & 3062 & 11041 & 6708 & 5134 & 10971 & 10627 \\
+ISOLET           & \textbf{60} & \underline{100} & 225 & 250 & 133 & 172 & 194 & 298 & 213 & 195 & 374 & 272 \\
+Leukaemia        & \underline{66} & \textbf{47} & 488 & 2409 & 132 & 534 & 934 & 3406 & 2026 & 1440 & 3218 & 3246 \\
+Lymphoma         & \underline{45} & \textbf{23} & 50 & 1404 & 137 & 304 & 524 & 1934 & 1204 & 880 & 1765 & 1832 \\
+Myeloma          & \underline{250} & 365 & \textbf{175} & 2137 & 1160 & 1863 & 1847 & 6278 & 4543 & 2859 & 6596 & 6259 \\
+PCMAC            & \textbf{91} & \underline{329} & 637 & 1339 & 928 & 1209 & 651 & 1621 & 1292 & 1137 & 1590 & 1635 \\
+Prostate         & \underline{26} & \textbf{23} & 27 & 5058 & 418 & 1898 & 1541 & 6282 & 4229 & 2729 & 5837 & 6211 \\
+SRBCT            & \underline{64} & \textbf{36} & 129 & 906 & 172 & 431 & 366 & 1136 & 739 & 515 & 1056 & 1083 \\
+T1D              & \underline{330} & 366 & \textbf{174} & 6715 & 1459 & 4984 & 9047 & 27318 & 18009 & 13170 & 27145 & 26971 \\
+madelon          & \textbf{18} & \underline{26} & 130 & 190 & 46 & 122 & 95 & 240 & 162 & 171 & 122 & 221 \\
+\midrule
+Average          & \textbf{87.8} & \underline{121.7} & 290.5 & 2722.2 & 407.7 & 1068.9 & 1559.4 & 5420.7 & 3521.1 & 2538.2 & 5323.4 & 5296.5 \\
+Comp. Ratio      & \textbf{98.0\%} & \underline{97.2\%} & 91.2\% & 68.4\% & 92.7\% & 86.0\% & 84.5\% & 51.3\% & 68.2\% & 75.3\% & 52.3\% & 53.0\% \\
 \bottomrule
 \end{tabular}
 }
 \vspace{2pt}
 \par\raggedright\footnotesize
-Entries in bold denote the most compact feature subset size, while underlined entries indicate the second-most compact subset size.
+Entries in bold denote the most compact feature subset size (or highest compression ratio), while underlined entries indicate the second-most compact subset size. Comp. Ratio denotes the average feature reduction percentage relative to the full feature space.
 \end{table*}
