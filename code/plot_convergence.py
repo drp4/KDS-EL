@@ -233,9 +233,9 @@ def fig_f8_convergence(out_dir):
 
     ABL_PLOT_COLORS = {
         "KDS_EL_TwoPhase": COLORS["KDS_EL_TwoPhase"],   # Nature Vermilion (#C82423)
-        "KDS_EL_NoPool":   COLORS["KDS_EL_NoPool"],     # Deep Ocean Blue (#2B6CB0)
-        "MEL_MI":          COLORS["MEL_MI"],            # Slate Blue (#5C82A6)
-        "MEL":             COLORS["MEL"],               # Slate Gray (#718096)
+        "KDS_EL_NoPool":   COLORS["KDS_EL_NoPool"],     # Professional Blue (#1E88E5)
+        "MEL_MI":          COLORS["MEL_MI"],            # Jade Teal (#00897B)
+        "MEL":             COLORS["MEL"],               # Slate Violet / Purple (#7E57C2)
     }
     ABL_PLOT_STYLES = {
         "KDS_EL_TwoPhase": "-",
@@ -258,7 +258,7 @@ def fig_f8_convergence(out_dir):
     ABL_PLOT_LABELS = {
         "KDS_EL_TwoPhase": "KDS-EL",
         "KDS_EL_NoPool":   "KDS-EL w/o TPS",
-        "MEL_MI":          "KDS-EL w/o TPS&KER",
+        "MEL_MI":          "KDS-EL w/o TPS & KER",
         "MEL":             "MEL",
     }
 

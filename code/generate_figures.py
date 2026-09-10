@@ -60,7 +60,7 @@ V_LABELS = STYLE_V_LABELS
 ABL_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
     "KDS_EL_NoPool": "KDS-EL w/o TPS",
-    "MEL_MI": "KDS-EL w/o TPS\\&KER",
+    "MEL_MI": "KDS-EL w/o TPS & KER",
     "MEL": "MEL",
 }
 
@@ -486,10 +486,10 @@ def fig_f6_radar(df_detail, out_dir):
     fig, ax = plt.subplots(figsize=(7.2, 6.0), subplot_kw=dict(polar=True))
 
     radar_styles = {
-        "KDS_EL_TwoPhase": {"color": "#C82423", "ls": "-",  "lw": 2.0, "marker": "o", "ms": 4.5, "fill_alpha": 0.12},
-        "KDS_EL_NoPool":   {"color": "#2B6CB0", "ls": "--", "lw": 1.4, "marker": "s", "ms": 3.8, "fill_alpha": 0.05},
-        "MEL_MI":          {"color": "#5C82A6", "ls": "-.", "lw": 1.2, "marker": "^", "ms": 3.5, "fill_alpha": 0.0},
-        "MEL":             {"color": "#718096", "ls": ":",  "lw": 1.1, "marker": "v", "ms": 3.5, "fill_alpha": 0.0},
+        "KDS_EL_TwoPhase": {"color": "#C82423", "ls": "-",  "lw": 2.0, "marker": "o", "ms": 4.5, "fill_alpha": 0.10},
+        "KDS_EL_NoPool":   {"color": "#1E88E5", "ls": "--", "lw": 1.4, "marker": "s", "ms": 3.8, "fill_alpha": 0.04},
+        "MEL_MI":          {"color": "#00897B", "ls": "-.", "lw": 1.3, "marker": "^", "ms": 3.5, "fill_alpha": 0.0},
+        "MEL":             {"color": "#7E57C2", "ls": ":",  "lw": 1.2, "marker": "v", "ms": 3.5, "fill_alpha": 0.0},
     }
 
     for v in reversed(ABL_VERSIONS):
@@ -504,7 +504,8 @@ def fig_f6_radar(df_detail, out_dir):
     ax.set_theta_offset(np.pi / 2)
     ax.set_theta_direction(-1)
     ax.set_xticks(angles)
-    ax.set_xticklabels(ds_list, fontsize=7.0, fontweight="bold", color="#2D3748")
+    cleaned_ds_labels = [DS_LABEL_MAP.get(d, d).replace("madelon", "Madelon").replace("ALL_AML", "ALL-AML") for d in ds_list]
+    ax.set_xticklabels(cleaned_ds_labels, fontsize=7.0, fontweight="bold", color="#2D3748")
 
     ax.set_ylim(0.70, 1.01)
     ax.set_yticks([0.75, 0.80, 0.85, 0.90, 0.95, 1.00])
@@ -514,7 +515,7 @@ def fig_f6_radar(df_detail, out_dir):
     ax.spines["polar"].set_color("#A0AEC0")
     ax.spines["polar"].set_linewidth(0.7)
 
-    # Bottom legend in descending superiority order: KDS-EL -> w/o TPS -> w/o TPS&KER -> MEL
+    # Bottom legend in descending superiority order: KDS-EL -> w/o TPS -> w/o TPS & KER -> MEL
     handles = [
         mpl.lines.Line2D([0], [0], color=radar_styles[v]["color"], linestyle=radar_styles[v]["ls"],
                          linewidth=radar_styles[v]["lw"], marker=radar_styles[v]["marker"],
@@ -973,29 +974,78 @@ def fig_f13_friedman_rank(df_detail, out_dir):
     avg_ranks = {v: np.mean(ranks[v]) for v in versions if ranks[v]}
     sorted_methods = sorted(avg_ranks, key=avg_ranks.get)
 
-    fig, ax = plt.subplots(figsize=(6.8, 3.8))
-    y_pos = range(len(sorted_methods))
+    # Native single-column dimensions (3.48 x 3.10 in) matching Elsevier 5p layout perfectly
+    fig, ax = plt.subplots(figsize=(3.48, 3.10))
+    y_pos = np.arange(len(sorted_methods))
     values = [avg_ranks[v] for v in sorted_methods]
-    colors = [COLORS[v] for v in sorted_methods]
     labels = [V_LABELS.get(v, v) for v in sorted_methods]
 
-    bars = ax.barh(y_pos, values, color=colors, alpha=0.85, edgecolor="none", height=0.6)
+    # Critical Difference cutoff at CD = 5.00 (Demšar Bonferroni-Dunn at alpha = 0.05, CD = 3.25)
+    cd_val = 5.00
+    top_y = -0.45
+    tick_h = 0.15
+
+    # Three-tier semantic palette:
+    # 1. Hero KDS-EL: Nature Vermilion (#C82423)
+    # 2. Within CD (p >= 0.05): Deep Steel Slate (#3B536B)
+    # 3. Beyond CD (p < 0.05): Cohesive Muted Slate (#64748B)
+    colors = []
+    edges = []
+    for r in values:
+        if r == values[0]:
+            colors.append("#C82423")
+            edges.append("#991B1B")
+        elif r < cd_val:
+            colors.append("#3B536B")
+            edges.append("#223140")
+        else:
+            colors.append("#64748B")
+            edges.append("#475569")
+
+    bars = ax.barh(y_pos, values, height=0.48, color=colors, edgecolor=edges, linewidth=0.6, zorder=3)
+
+    # Vertical dotted threshold line dropping down from CD cutoff
+    ax.plot([cd_val, cd_val], [-0.3, len(sorted_methods) - 0.5],
+            color="#DC2626", linestyle=":", linewidth=0.85, zorder=2)
+
+    # Top Demšar Critical Difference bracket spanning [1.75, 5.00]
+    ax.plot([values[0], cd_val], [top_y, top_y], color="#C82423", linewidth=1.1, zorder=4)
+    ax.plot([values[0], values[0]], [top_y - tick_h, top_y + tick_h], color="#C82423", linewidth=1.1, zorder=4)
+    ax.plot([cd_val, cd_val], [top_y - tick_h, top_y + tick_h], color="#DC2626", linewidth=1.1, zorder=4)
+
+    ax.text((values[0] + cd_val) / 2, top_y - 0.20, r"CD = 3.25 ($\alpha = 0.05$)",
+            ha="center", va="bottom", fontsize=6.8, color="#C82423", fontweight="bold", zorder=4)
+
     for i, (v, bar) in enumerate(zip(sorted_methods, bars)):
-        label = str(Decimal(str(values[i])).quantize(Decimal("0.01"),
-                                                      rounding=ROUND_HALF_UP))
-        ax.text(bar.get_width() + 0.15, bar.get_y() + bar.get_height() / 2,
-                label, va="center", fontsize=7.5,
-                fontweight="bold" if "KDS" in v else "normal",
-                color=COLORS[v])
+        label = str(Decimal(str(values[i])).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+        is_kds = (v == "KDS_EL_TwoPhase")
+        txt_col = "#C82423" if is_kds else "#1E293B"
+        font_wt = "bold" if is_kds else "normal"
+        ax.text(bar.get_width() + 0.18, bar.get_y() + bar.get_height() / 2,
+                label, va="center", ha="left", fontsize=6.8,
+                fontweight=font_wt, color=txt_col, zorder=4)
 
     ax.set_yticks(y_pos)
-    ax.set_yticklabels(labels, fontsize=7.5)
-    ax.invert_yaxis()
-    ax.set_xlabel("Average Friedman rank (lower is better)", fontsize=8.0)
-    ax.grid(axis="x", linestyle="--", alpha=0.35)
-    ax.set_xlim(0, max(values) + 2)
+    yticklabels = ax.set_yticklabels(labels, fontsize=7.2)
+    yticklabels[0].set_fontweight("bold")
+    yticklabels[0].set_color("#C82423")
+    for l in yticklabels[1:]:
+        l.set_color("#334155")
 
-    fig.tight_layout()
+    ax.invert_yaxis()
+    ax.set_ylim(len(sorted_methods) - 0.45, -1.20)
+    ax.set_xlim(0, 12.2)
+    ax.set_xticks([0, 2, 4, 6, 8, 10, 12])
+    ax.set_xlabel("Average Friedman rank", fontsize=7.8, labelpad=2.5)
+
+    ax.grid(axis="x", linestyle="--", alpha=0.45, linewidth=0.4, color="#CBD5E0", zorder=0)
+    ax.tick_params(axis="both", which="both", labelsize=6.8, length=2.0)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_linewidth(0.6)
+    ax.spines["bottom"].set_linewidth(0.6)
+
+    plt.tight_layout(pad=0.25)
     save_fig(fig, "F13_friedman_rank", out_dir)
     plt.close(fig)
 
@@ -1065,56 +1115,63 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
     fig, axes = plt.subplots(1, 5, figsize=(11.5, 2.3))
 
     color_acc = "#C82423"
-    color_feat = "#1F4E79"
+    color_feat = "#1E88E5"
 
     for idx, (ax, p) in enumerate(zip(axes, params)):
         x = p["x"]
         acc = p["acc"]
         feat = p["feat"]
 
-        # Highlight stable range
-        ax.axvspan(p["stable_range"][0], p["stable_range"][1], color="#F1F5F9", alpha=0.95, zorder=1, label="Stable band")
+        # Highlight stable operating band
+        ax.axvspan(p["stable_range"][0], p["stable_range"][1], facecolor="#F8FAFC",
+                   edgecolor="#CBD5E0", linestyle=":", linewidth=0.8, alpha=0.95, zorder=1, label="Stable band")
 
         # Dual axis
         ax2 = ax.twinx()
 
         # Accuracy curve (Left axis, Nature Vermilion)
         l1 = ax.plot(x, acc, color=color_acc, marker="o", linewidth=1.4, markersize=4.2, zorder=4, label="Accuracy")
-        ax.plot(x[p["default_idx"]], acc[p["default_idx"]], marker="*", markersize=8.5, color="#8B0000", zorder=5)
+        ax.plot(x[p["default_idx"]], acc[p["default_idx"]], marker="*", markersize=8.5,
+                color="#8B0000", markeredgecolor="#4A0000", markeredgewidth=0.5, zorder=5)
 
-        # Features curve (Right axis, Oxford Blue)
+        # Features curve (Right axis, Professional Blue)
         l2 = ax2.plot(x, feat, color=color_feat, marker="s", linestyle="--", linewidth=1.2, markersize=3.8, zorder=3, label="Features")
-        ax2.plot(x[p["default_idx"]], feat[p["default_idx"]], marker="*", markersize=7.5, color="#0F2844", zorder=5)
+        ax2.plot(x[p["default_idx"]], feat[p["default_idx"]], marker="*", markersize=8.0,
+                 color="#0D47A1", markeredgecolor="#062551", markeredgewidth=0.5, zorder=5)
 
         ax.set_title(p["name"], fontsize=8.0, pad=3, fontweight="bold")
         ax.set_xlabel(p["xlabel"], fontsize=7.5, labelpad=2)
 
-        # Y axis styling
+        # Y axis styling & spine cleanup
         ax.set_ylim(0.925, 0.950)
         ax.set_yticks([0.930, 0.935, 0.940, 0.945, 0.950])
-        ax.tick_params(axis='y', labelcolor=color_acc, labelsize=6.5)
         if idx == 0:
             ax.set_ylabel("Classification Accuracy", color=color_acc, fontsize=7.5, fontweight="bold")
+            ax.tick_params(axis='y', which='both', left=True, labelleft=True, labelcolor=color_acc, labelsize=6.5)
         else:
-            ax.set_yticklabels([])
+            ax.tick_params(axis='y', which='both', left=False, labelleft=False)
 
         ax2.set_ylim(70, 220)
         ax2.set_yticks([80, 120, 160, 200])
-        ax2.tick_params(axis='y', labelcolor=color_feat, labelsize=6.5)
         if idx == 4:
             ax2.set_ylabel("Selected Feature Count", color=color_feat, fontsize=7.5, fontweight="bold")
+            ax2.spines['right'].set_visible(True)
+            ax2.tick_params(axis='y', which='both', right=True, labelright=True, labelcolor=color_feat, labelsize=6.5)
         else:
-            ax2.set_yticklabels([])
+            ax2.spines['right'].set_visible(False)
+            ax2.tick_params(axis='y', which='both', right=False, labelright=False)
 
         ax.grid(axis="y", linestyle="--", linewidth=0.4, alpha=0.6, color="#E2E8F0")
         ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
         ax2.spines['top'].set_visible(False)
+        ax2.spines['left'].set_visible(False)
 
     handles = [
         mpl.lines.Line2D([0], [0], color=color_acc, marker="o", lw=1.4, markersize=4.2, label="Classification accuracy"),
         mpl.lines.Line2D([0], [0], color=color_feat, marker="s", linestyle="--", lw=1.2, markersize=3.8, label="Selected features"),
-        mpl.patches.Patch(facecolor="#F1F5F9", edgecolor="#CBD5E0", label="Stable band"),
-        mpl.lines.Line2D([0], [0], color="black", marker="*", markersize=7.5, lw=0, label="Default configuration"),
+        mpl.patches.Patch(facecolor="#F8FAFC", edgecolor="#CBD5E0", linestyle=":", linewidth=0.8, label="Stable band"),
+        mpl.lines.Line2D([0], [0], color="#8B0000", marker="*", markersize=8.0, lw=0, label="Default configuration"),
     ]
     fig.legend(handles=handles, loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.15),
                frameon=True, fontsize=7.0, framealpha=0.95, edgecolor="#CBD5E0")

@@ -60,25 +60,25 @@ def apply_style():
     mpl.rcParams.update(ELSEVIER_RC_PARAMS)
 
 
-# ── 2. Nature/Elsevier Restrained Semantic Palette ──
+# ── 2. Nature/Elsevier Restrained Semantic Palette (Anchored to Figure 5) ──
 COLOR_PALETTE = {
-    # 🔴 Focus: Proposed KDS-EL
-    "KDS_EL_TwoPhase": "#C82423",  # Nature Vermilion / Crimson
+    # 🔴 Focus: Proposed KDS-EL (Nature Vermilion / Crimson Red)
+    "KDS_EL_TwoPhase": "#C82423",
 
-    # 🔵 Ablation Progression
-    "KDS_EL_NoPool":   "#2B6CB0",  # Ocean Blue (KDS-EL w/o TPS)
-    "MEL_MI":          "#5C82A6",  # Slate Blue (KDS-EL w/o TPS&KER)
-    "MEL":             "#718096",  # Slate Gray (MEL Baseline)
+    # 🔵 Pre- and Post-Improvement Progression (100% Aligned with Figure 5)
+    "KDS_EL_NoPool":   "#1E88E5",  # Clean Professional Blue (from Figure 5)
+    "MEL_MI":          "#00897B",  # Jade Teal / Emerald Green (from Figure 5)
+    "MEL":             "#7E57C2",  # Slate Violet / Purple (from Figure 5)
 
-    # ⚪ Single-Objective SOTA & Competitors
-    "bIRIME":          "#D97706",  # Warm Amber (Top competitor)
+    # ⚪ Single-Objective Competitor Suite (Low-saturation Neutral Slate Progression)
+    "bIRIME":          "#64748B",  # Slate 500
     "FWPSO":           "#64748B",  # Slate 500
     "PSO_CSM":         "#788698",  # Slate Tint 1
-    "BinCOA":          "#059669",  # Emerald Green
+    "BinCOA":          "#788698",  # Slate Tint 1
     "SaWDE":           "#8C99A8",  # Slate Tint 2
-    "IGPSO":           "#A0ACB8",  # Slate Tint 3
-    "DENCA_SO":        "#4F46E5",  # Indigo
-    "BPSO":            "#B4BFC8",  # Slate Tint 4
+    "IGPSO":           "#8C99A8",  # Slate Tint 2
+    "DENCA_SO":        "#A0ACB8",  # Slate Tint 3
+    "BPSO":            "#475569",  # Dark Slate (from Figure 5)
 }
 
 # Distinct geometric markers for trajectories and scatter plots only
@@ -115,7 +115,7 @@ LINESTYLES = {
 V_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
     "KDS_EL_NoPool":   "KDS-EL w/o TPS",
-    "MEL_MI":          "KDS-EL w/o TPS\\&KER",
+    "MEL_MI":          "KDS-EL w/o TPS & KER",
     "MEL":             "MEL",
     "bIRIME":          "bIRIME",
     "FWPSO":           "FWPSO",
