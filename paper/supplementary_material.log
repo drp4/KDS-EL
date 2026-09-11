@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  11 SEP 2026 10:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  11 SEP 2026 16:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**./supplementary_material.tex
-(supplementary_material.tex
+**X:/paper/supplementary_material.tex
+(X:/paper/supplementary_material.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
 (E:\MiKTeX\tex/latex/elsarticle\elsarticle.cls
@@ -95,8 +95,8 @@ File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 \@enLab=\toks19
 \@sep=\skip52
 \@@sep=\skip53
- (supplementary_material.spl)
-(E:\MiKTeX\tex/latex/natbib\natbib.sty
+
+(X:\paper\supplementary_material.spl) (E:\MiKTeX\tex/latex/natbib\natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip54
 \bibsep=\skip55
@@ -741,7 +741,7 @@ LaTeX Font Info:    Trying to load font information for T1+txr on input line 32
 .
 (E:\MiKTeX\tex/latex/txfonts\t1txr.fd
 File: t1txr.fd 2000/12/15 v3.1
-) (supplementary_material.aux)
+) (X:\paper\supplementary_material.aux)
 \openout1 = `supplementary_material.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 32.
@@ -854,8 +854,8 @@ Package color Info: Driver file: pdftex.def on input line 149.
 
 (E:\MiKTeX\tex/latex/graphics\mathcolor.ltx))
 Package hyperref Info: Link coloring ON on input line 32.
- (supplementary_material.out)
-(supplementary_material.out)
+
+(X:\paper\supplementary_material.out) (X:\paper\supplementary_material.out)
 \@outlinefile=\write4
 \openout4 = `supplementary_material.out'.
 
@@ -863,42 +863,40 @@ LaTeX Font Info:    Font shape `T1/txr/b/n' in size <10> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 40.
 LaTeX Font Info:    Trying to load font information for OT1+txr on input line 4
 4.
- (E:\MiKTeX\tex/latex/txfonts\ot1txr.fd
+
+(E:\MiKTeX\tex/latex/txfonts\ot1txr.fd
 File: ot1txr.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Trying to load font information for U+txmia on input line 4
 4.
-
-(E:\MiKTeX\tex/latex/txfonts\utxmia.fd
+ (E:\MiKTeX\tex/latex/txfonts\utxmia.fd
 File: utxmia.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Trying to load font information for U+msa on input line 44.
 
- (E:\MiKTeX\tex/latex/amsfonts\umsa.fd
+(E:\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Trying to load font information for U+msb on input line 44.
 
-
-(E:\MiKTeX\tex/latex/amsfonts\umsb.fd
+ (E:\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for U+txsyc on input line 4
 4.
- (E:\MiKTeX\tex/latex/txfonts\utxsyc.fd
+
+(E:\MiKTeX\tex/latex/txfonts\utxsyc.fd
 File: utxsyc.fd 2000/12/15 v3.1
 )
 LaTeX Font Info:    Trying to load font information for TS1+txr on input line 4
 8.
-
-(E:\MiKTeX\tex/latex/txfonts\ts1txr.fd
+ (E:\MiKTeX\tex/latex/txfonts\ts1txr.fd
 File: ts1txr.fd 2000/12/15 v3.1
 ) [1
 
 {C:/Users/86185/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{E:/MiKTeX/fon
-ts/enc/dvips/base/8r.enc}]
-(../output/tables/T2_datasets.tex) (../output/tables/T1_methods.tex)
-(../output/tables/T3_params.tex) [2]
+ts/enc/dvips/base/8r.enc}] (X:\output\tables\T2_datasets.tex)
+(X:\output\tables\T1_methods.tex) (X:\output\tables\T3_params.tex) [2]
 <../output/figures/F4_accuracy_all.pdf, id=55, 985.76282pt x 575.19139pt>
 File: ../output/figures/F4_accuracy_all.pdf Graphic file (type pdf)
 <use ../output/figures/F4_accuracy_all.pdf>
@@ -914,16 +912,19 @@ Package pdftex.def Info: ../output/figures/F4_accuracy_performance_profile.pdf
  used on input line 91.
 (pdftex.def)             Requested size: 386.96027pt x 228.88019pt.
  [3]
-(../output/tables/T-A4_per_dataset_ablation.tex)
-<../output/figures/F6_ablation_heatmap.pdf, id=69, 394.7861pt x 402.05098pt>
+(X:\output\tables\T-A4_per_dataset_ablation.tex
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <7> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 40.
+)
+<../output/figures/F6_ablation_heatmap.pdf, id=69, 500.62093pt x 454.64526pt>
 File: ../output/figures/F6_ablation_heatmap.pdf Graphic file (type pdf)
 <use ../output/figures/F6_ablation_heatmap.pdf>
 Package pdftex.def Info: ../output/figures/F6_ablation_heatmap.pdf  used on inp
 ut line 106.
-(pdftex.def)             Requested size: 341.43307pt x 347.7141pt.
- [4 <../output/figures/F4_accuracy_all.pdf> <../output/figures/F4_accuracy_perf
+(pdftex.def)             Requested size: 341.43307pt x 310.09122pt.
+ [4 <X:/output/figures/F4_accuracy_all.pdf> <X:/output/figures/F4_accuracy_perf
 ormance_profile.pdf>]
-(../output/tables/T-A5_runtime.tex)
+(X:\output\tables\T-A5_runtime.tex)
 <../output/figures/F11_runtime_scatter.pdf, id=163, 506.4339pt x 304.73952pt>
 File: ../output/figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use ../output/figures/F11_runtime_scatter.pdf>
@@ -931,36 +932,42 @@ Package pdftex.def Info: ../output/figures/F11_runtime_scatter.pdf  used on inp
 ut line 121.
 (pdftex.def)             Requested size: 386.96027pt x 232.85991pt.
  [5]
-(../output/tables/T-A6_parameter_sensitivity_full.tex
+(X:\output\tables\T-A6_parameter_sensitivity_full.tex
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <9> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 15.
- [6 <../output/figures/F6_ablation_heatmap.pdf> <../output/figures/F11_runtime_
-scatter.pdf>]) [7]
-<../output/figures/F8_convergence.pdf, id=217, 636.01959pt x 467.09317pt>
+) [6 <X:/output/figures/F6_ablation_heatmap.pdf> <X:/output/figures/F11_runtime
+_scatter.pdf>]
+<../output/figures/F8_convergence.pdf, id=214, 636.01959pt x 467.09317pt>
 File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
 <use ../output/figures/F8_convergence.pdf>
 Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
 ne 140.
 (pdftex.def)             Requested size: 432.48051pt x 317.61916pt.
-<../output/figures/F7_boxplot_all.pdf, id=218, 808.7013pt x 575.19139pt>
+<../output/figures/F7_boxplot_all.pdf, id=215, 808.7013pt x 575.19139pt>
 File: ../output/figures/F7_boxplot_all.pdf Graphic file (type pdf)
 <use ../output/figures/F7_boxplot_all.pdf>
 Package pdftex.def Info: ../output/figures/F7_boxplot_all.pdf  used on input li
 ne 147.
 (pdftex.def)             Requested size: 432.48051pt x 307.60587pt.
+ [7]
 
-[8 <../output/figures/F8_convergence.pdf>] (../output/tables/T6_wilcoxon.tex)
-(../output/tables/T6b_holm_bonferroni.tex)
-<../output/figures/F10_wilcoxon_heatmap.pdf, id=279, 588.39417pt x 586.24568pt>
+LaTeX Warning: Text page 8 contains only floats.
 
+
+Overfull \vbox (0.90593pt too high) has occurred while \output is active []
+
+
+[8 <X:/output/figures/F8_convergence.pdf> <X:/output/figures/F7_boxplot_all.pdf
+>] (X:\output\tables\T6_wilcoxon.tex) (X:\output\tables\T6b_holm_bonferroni.tex
+)
+<../output/figures/F10_wilcoxon_heatmap.pdf, id=334, 588.5921pt x 586.24568pt>
 File: ../output/figures/F10_wilcoxon_heatmap.pdf Graphic file (type pdf)
 <use ../output/figures/F10_wilcoxon_heatmap.pdf>
 Package pdftex.def Info: ../output/figures/F10_wilcoxon_heatmap.pdf  used on in
 put line 164.
-(pdftex.def)             Requested size: 341.43307pt x 340.19269pt.
- [9 <../output/figures/F7_boxplot_all.pdf>] (../output/tables/T_supp_cross_clas
-sifier.tex) [10 <../output/figures/F10_wilcoxon_heatmap.pdf>] (../output/tables
-/T_supp_biomarkers.tex
+(pdftex.def)             Requested size: 341.43307pt x 340.08534pt.
+ [9] (X:\output\tables\T_supp_cross_classifier.tex) [10 <X:/output/figures/F10_
+wilcoxon_heatmap.pdf>] (X:\output\tables\T_supp_biomarkers.tex
 Underfull \hbox (badness 2088) in paragraph at lines 14--15
 []|\T1/txr/m/n/8 Smooth mus-cle in-ter-me-di-ate fil-a-ment; dis-tin-
  []
@@ -990,7 +997,8 @@ Underfull \hbox (badness 1112) in paragraph at lines 21--22
 []|\T1/txr/m/n/8 Small nu-clear pro-tein; prostate-specific dif-fer-
  []
 
-) (supplementary_material.bbl [11]) [12] (supplementary_material.aux)
+) (X:\paper\supplementary_material.bbl [11]) [12]
+(X:\paper\supplementary_material.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
@@ -1000,22 +1008,23 @@ Package rerunfilecheck Info: File `supplementary_material.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 13494 strings out of 467690
- 202313 string characters out of 5431801
- 655233 words of memory out of 5000000
- 42225 multiletter control sequences out of 15000+600000
- 689311 words of font info for 150 fonts, out of 8000000 for 9000
+ 13504 strings out of 467690
+ 202080 string characters out of 5431801
+ 659111 words of memory out of 5000000
+ 42230 multiletter control sequences out of 15000+600000
+ 692360 words of font info for 153 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,17n,79p,802b,569s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,17n,79p,1356b,581s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
 1000.pk><E:/MiKTeX/fonts/type1/public/txfonts/rtcxr.pfb><E:/MiKTeX/fonts/type1/
-public/txfonts/rtxmi.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxr.pfb><E:/MiK
-TeX/fonts/type1/public/txfonts/txsy.pfb><E:/MiKTeX/fonts/type1/urw/times/utmb8a
-.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/fonts/type1/urw/tim
-es/utmri8a.pfb>
-Output written on supplementary_material.pdf (12 pages, 468395 bytes).
+public/txfonts/rtxb.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxmi.pfb><E:/MiK
+TeX/fonts/type1/public/txfonts/rtxr.pfb><E:/MiKTeX/fonts/type1/public/txfonts/t
+xsy.pfb><E:/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/
+times/utmr8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on X:\paper\supplementary_material.pdf (12 pages, 486978 bytes).
+
 PDF statistics:
- 496 PDF objects out of 1000 (max. 8388607)
- 55 named destinations out of 1000 (max. 500000)
+ 509 PDF objects out of 1000 (max. 8388607)
+ 56 named destinations out of 1000 (max. 500000)
  36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

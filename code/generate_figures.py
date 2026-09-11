@@ -13,6 +13,11 @@ import matplotlib.ticker as mticker
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
+# 强制 UTF-8 输出，解决 Windows GBK 终端编码问题
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 try:
     from scipy import stats as sp_stats
 except ImportError:
@@ -26,6 +31,7 @@ EXP2_DIR = PROJ / "output" / "formal_experiment_20260628_205157"   # MEL
 NEW_SOTA_DIR = PROJ / "output" / "formal_experiment_20260905_211755"  # DENCA_SO, bIRIME, BinCOA
 MEL_MI_DIR = PROJ / "output" / "formal_experiment_mel_mi"          # MEL+MI
 FINAL_DIR = PROJ / "output" / "formal_experiment_final"            # NoPool + TwoPhase
+RECONSTRUCTED_DIR = PROJ / "output" / "historical_reconstructed"   # 真实纯分类准确率解标量数据
 
 # ═══ 12 种单目标方法 (顶刊顺序: Proposed → 消融 → 基线 → 竞品) ═══
 ALL_VERSIONS = [
@@ -146,44 +152,30 @@ def load_detail(path):
 
 
 def load_merged_detail():
-    """合并所有实验的 detail 数据：各方法从各自有效来源加载"""
-    SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
-    FINAL_VERSIONS = ["KDS_EL_NoPool", "KDS_EL_TwoPhase"]
+    """合并所有实验的 detail 数据：采用重构后的纯分类准确率"""
+    HIST_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO", "MEL", "MEL_MI", "KDS_EL_NoPool", "KDS_EL_TwoPhase"]
     NEW_SOTA_VERSIONS = ["DENCA_SO", "bIRIME", "BinCOA"]
 
     dfs = []
-    df1 = load_detail(EXP1_DIR / "results_detail.csv")
-    dfs.append(df1[df1["Version"].isin(SOTA_VERSIONS)])
-    df2 = load_detail(EXP2_DIR / "results_detail.csv")
-    dfs.append(df2[df2["Version"] == "MEL"])
+    df_hist = load_detail(RECONSTRUCTED_DIR / "results_detail.csv")
+    dfs.append(df_hist[df_hist["Version"].isin(HIST_VERSIONS)])
     df_new = load_detail(NEW_SOTA_DIR / "results_detail.csv")
     dfs.append(df_new[df_new["Version"].isin(NEW_SOTA_VERSIONS)])
-    df_mel_mi = load_detail(MEL_MI_DIR / "results_detail.csv")
-    dfs.append(df_mel_mi[df_mel_mi["Version"] == "MEL_MI"])
-    df_fin = load_detail(FINAL_DIR / "results_detail.csv")
-    dfs.append(df_fin[df_fin["Version"].isin(FINAL_VERSIONS)])
 
     common_cols = list(set.intersection(*[set(d.columns) for d in dfs]))
     return pd.concat([d[common_cols] for d in dfs], ignore_index=True)
 
 
 def load_merged_summary():
-    """合并所有实验的 summary 数据"""
-    SOTA_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO"]
-    FINAL_VERSIONS = ["KDS_EL_NoPool", "KDS_EL_TwoPhase"]
+    """合并所有实验的 summary 数据：采用重构后的纯分类准确率"""
+    HIST_VERSIONS = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO", "MEL", "MEL_MI", "KDS_EL_NoPool", "KDS_EL_TwoPhase"]
     NEW_SOTA_VERSIONS = ["DENCA_SO", "bIRIME", "BinCOA"]
 
     dfs = []
-    df1 = pd.read_csv(EXP1_DIR / "results_summary.csv")
-    dfs.append(df1[df1["Version"].isin(SOTA_VERSIONS)])
-    df2 = pd.read_csv(EXP2_DIR / "results_summary.csv")
-    dfs.append(df2[df2["Version"] == "MEL"])
+    df_hist = pd.read_csv(RECONSTRUCTED_DIR / "results_summary.csv")
+    dfs.append(df_hist[df_hist["Version"].isin(HIST_VERSIONS)])
     df_new = pd.read_csv(NEW_SOTA_DIR / "results_summary.csv")
     dfs.append(df_new[df_new["Version"].isin(NEW_SOTA_VERSIONS)])
-    df_mel_mi = pd.read_csv(MEL_MI_DIR / "results_summary.csv")
-    dfs.append(df_mel_mi[df_mel_mi["Version"] == "MEL_MI"])
-    df_fin = pd.read_csv(FINAL_DIR / "results_summary.csv")
-    dfs.append(df_fin[df_fin["Version"].isin(FINAL_VERSIONS)])
 
     common_cols = list(set.intersection(*[set(d.columns) for d in dfs]))
     return pd.concat([d[common_cols] for d in dfs], ignore_index=True)
@@ -219,7 +211,19 @@ def make_handles(versions, use_abl=False):
 def save_fig(fig, name, out_dir):
     for ext in (".pdf", ".png"):
         p = os.path.join(out_dir, name + ext)
-        fig.savefig(p)
+        tmp_p = os.path.join(out_dir, f"_tmp_{name}{ext}")
+        try:
+            fig.savefig(tmp_p)
+            if os.path.exists(p):
+                try:
+                    os.remove(p)
+                except Exception:
+                    pass
+            os.replace(tmp_p, p)
+        except Exception:
+            # Fallback to direct savefig if tmp rename fails
+            fig.savefig(p)
+    plt.close(fig)
     print(f"  [OK] {name}")
 
 
@@ -338,25 +342,13 @@ def fig_f6_heatmap(df_detail, out_dir):
     """F6: Ablation heatmap — dual panel (Acc + Δ vs MEL), 4 variants × 20 datasets."""
     print("F6: Ablation heatmap (4 variants, 20 datasets)...")
 
-    # Load ablation data from 3 sources
-    abl_dfs = []
-    df2 = pd.read_csv(EXP2_DIR / "results_detail.csv")
-    abl_dfs.append(df2[df2["Version"] == "MEL"])
-    df_mi = pd.read_csv(MEL_MI_DIR / "results_detail.csv")
-    abl_dfs.append(df_mi[df_mi["Version"] == "MEL_MI"])
-    df_fin = pd.read_csv(FINAL_DIR / "results_detail.csv")
-    abl_dfs.append(df_fin[df_fin["Version"].isin(["KDS_EL_NoPool", "KDS_EL_TwoPhase"])])
-
-    abl_combined = pd.concat(abl_dfs, ignore_index=True)
+    abl_combined = df_detail[df_detail["Version"].isin(ABL_VERSIONS)].copy()
     for col in ["Accuracy", "Num_Features"]:
         if col in abl_combined.columns:
             abl_combined[col] = pd.to_numeric(abl_combined[col], errors="coerce")
 
-    # Intersection of datasets (excl CNS) — use same 20 DS as main table
-    ds_sets = [set(d["Dataset"].unique()) for d in abl_dfs]
-    all_abl_ds = sorted(set.intersection(*ds_sets) - {"CNS"})
     # Restrict to 20 core datasets (same as SOTA/MOFS)
-    ds_list = [d for d in PLOT_DATASETS if d in all_abl_ds]
+    ds_list = [d for d in PLOT_DATASETS if d in abl_combined.Dataset.unique()]
     n_ds = len(ds_list)
 
     # Build matrices: mean accuracy per (dataset, variant)
@@ -449,64 +441,53 @@ def fig_f6_radar(df_detail, out_dir):
     """F6: 20-Dataset Radar Envelope Chart — 4 ablative variants across 20 benchmark datasets (ESWA 2025 Fig. 13 paradigm)."""
     print("F6: 20-Dataset Ablation Radar Envelope Chart (4 variants, 20 datasets)...")
 
-    # Load ablation data from 3 sources
-    abl_dfs = []
-    df2 = pd.read_csv(EXP2_DIR / "results_detail.csv")
-    abl_dfs.append(df2[df2["Version"] == "MEL"])
-    df_mi = pd.read_csv(MEL_MI_DIR / "results_detail.csv")
-    abl_dfs.append(df_mi[df_mi["Version"] == "MEL_MI"])
-    df_fin = pd.read_csv(FINAL_DIR / "results_detail.csv")
-    abl_dfs.append(df_fin[df_fin["Version"].isin(["KDS_EL_NoPool", "KDS_EL_TwoPhase"])])
-
-    abl_combined = pd.concat(abl_dfs, ignore_index=True)
+    abl_combined = df_detail[df_detail["Version"].isin(ABL_VERSIONS)].copy()
     for col in ["Accuracy", "Num_Features", "Time_sec"]:
         if col in abl_combined.columns:
             abl_combined[col] = pd.to_numeric(abl_combined[col], errors="coerce")
 
-    ds_sets = [set(d["Dataset"].unique()) for d in abl_dfs]
-    all_abl_ds = sorted(set.intersection(*ds_sets) - {"CNS"})
-    ds_list = [d for d in PLOT_DATASETS if d in all_abl_ds]
+    ds_list = [d for d in PLOT_DATASETS if d in abl_combined.Dataset.unique()]
     n_ds = len(ds_list)
 
     # Compute mean accuracy per dataset per variant
     acc_matrix = {}
     for v in ABL_VERSIONS:
-        acc_matrix[v] = []
-        for ds in ds_list:
-            sub = abl_combined[(abl_combined["Version"] == v) & (abl_combined["Dataset"] == ds)]
-            if len(sub) > 0:
-                acc_matrix[v].append(float(sub["Accuracy"].mean()))
-            else:
-                acc_matrix[v].append(0.85)
+        acc_matrix[v] = [
+            float(abl_combined[(abl_combined["Version"] == v) & (abl_combined["Dataset"] == ds)]["Accuracy"].mean())
+            for ds in ds_list
+        ]
 
-    # 20 Equidistant polar angles
+    # Angles for radar chart (20 datasets -> 20 spokes, close the loop)
     angles = np.linspace(0, 2 * np.pi, n_ds, endpoint=False).tolist()
-    angles_closed = angles + angles[:1]
+    angles += angles[:1]  # close loop
 
-    fig, ax = plt.subplots(figsize=(7.2, 6.0), subplot_kw=dict(polar=True))
+    fig, ax = plt.subplots(figsize=(6.5, 6.2), subplot_kw=dict(polar=True))
 
+    # Elsevier-grade palette: Distinct, high-contrast, professional
     radar_styles = {
-        "KDS_EL_TwoPhase": {"color": "#C82423", "ls": "-",  "lw": 2.0, "marker": "o", "ms": 4.5, "fill_alpha": 0.10},
-        "KDS_EL_NoPool":   {"color": "#1E88E5", "ls": "--", "lw": 1.4, "marker": "s", "ms": 3.8, "fill_alpha": 0.04},
-        "MEL_MI":          {"color": "#00897B", "ls": "-.", "lw": 1.3, "marker": "^", "ms": 3.5, "fill_alpha": 0.0},
-        "MEL":             {"color": "#7E57C2", "ls": ":",  "lw": 1.2, "marker": "v", "ms": 3.5, "fill_alpha": 0.0},
+        "KDS_EL_TwoPhase": {"color": "#8B0000", "ls": "-",  "lw": 2.2, "marker": "o", "ms": 4.5, "fill": True,  "alpha": 0.12},
+        "KDS_EL_NoPool":   {"color": "#D97706", "ls": "--", "lw": 1.5, "marker": "s", "ms": 3.5, "fill": False, "alpha": 0.0},
+        "MEL_MI":          {"color": "#2563EB", "ls": "-.", "lw": 1.3, "marker": "^", "ms": 3.5, "fill": False, "alpha": 0.0},
+        "MEL":             {"color": "#64748B", "ls": ":",  "lw": 1.2, "marker": "x", "ms": 3.5, "fill": False, "alpha": 0.0},
     }
 
+    # Plot in reverse order so KDS-EL is on top
     for v in reversed(ABL_VERSIONS):
+        values = acc_matrix[v]
+        values += values[:1]  # close loop
         cfg = radar_styles[v]
-        vals = acc_matrix[v] + acc_matrix[v][:1]
-        ax.plot(angles_closed, vals, color=cfg["color"], linestyle=cfg["ls"],
+        ax.plot(angles, values, color=cfg["color"], linestyle=cfg["ls"],
                 linewidth=cfg["lw"], marker=cfg["marker"], markersize=cfg["ms"],
-                label=ABL_LABELS[v], zorder=4 if "TwoPhase" in v else 2)
-        if cfg["fill_alpha"] > 0:
-            ax.fill(angles_closed, vals, color=cfg["color"], alpha=cfg["fill_alpha"], zorder=3)
+                label=ABL_LABELS[v], zorder=4 if v == "KDS_EL_TwoPhase" else 2)
+        if cfg["fill"]:
+            ax.fill(angles, values, color=cfg["color"], alpha=cfg["alpha"])
 
-    ax.set_theta_offset(np.pi / 2)
-    ax.set_theta_direction(-1)
-    ax.set_xticks(angles)
-    cleaned_ds_labels = [DS_LABEL_MAP.get(d, d).replace("madelon", "Madelon").replace("ALL_AML", "ALL-AML") for d in ds_list]
-    ax.set_xticklabels(cleaned_ds_labels, fontsize=7.0, fontweight="bold", color="#2D3748")
+    # Spoke labels: 20 datasets
+    spoke_labels = [DS_LABEL_MAP.get(d, d) for d in ds_list]
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(spoke_labels, fontsize=7.2, fontweight="bold", color="#1A202C")
 
+    # Radial grid: Accuracy from 0.70 to 1.00
     ax.set_ylim(0.70, 1.01)
     ax.set_yticks([0.75, 0.80, 0.85, 0.90, 0.95, 1.00])
     ax.set_yticklabels(["0.75", "0.80", "0.85", "0.90", "0.95", "1.00"],
@@ -528,7 +509,6 @@ def fig_f6_radar(df_detail, out_dir):
 
     plt.tight_layout(rect=[0, 0.04, 1, 1])
     save_fig(fig, "F6_ablation_radar", out_dir)
-    save_fig(fig, "F6_ablation_heatmap", out_dir)
     plt.close(fig)
 
 
@@ -536,30 +516,17 @@ def fig_f6_ablation(df_detail, out_dir):
     """F6: Ablation — dual panel (Acc + Feat), 4 variants: MEL → KDS-EL w/o TPS&KER → KDS-EL w/o TPS → KDS-EL."""
     print("F6: Ablation dual panel (4 variants, 20 datasets)...")
 
-    # Load ablation data explicitly from 3 sources
-    abl_dfs = []
-    df2 = pd.read_csv(EXP2_DIR / "results_detail.csv")
-    abl_dfs.append(df2[df2["Version"] == "MEL"])
-    df_mi = pd.read_csv(MEL_MI_DIR / "results_detail.csv")
-    abl_dfs.append(df_mi[df_mi["Version"] == "MEL_MI"])
-    df_fin = pd.read_csv(FINAL_DIR / "results_detail.csv")
-    abl_dfs.append(df_fin[df_fin["Version"].isin(["KDS_EL_NoPool", "KDS_EL_TwoPhase"])])
+    abl_combined = df_detail[df_detail["Version"].isin(ABL_VERSIONS)].copy()
+    for col in ["Accuracy", "Num_Features"]:
+        if col in abl_combined.columns:
+            abl_combined[col] = pd.to_numeric(abl_combined[col], errors="coerce")
 
-    # Find intersection of datasets — use same 20 DS as main table
-    ds_sets = [set(d["Dataset"].unique()) for d in abl_dfs]
-    all_abl_ds = sorted(set.intersection(*ds_sets) - {"CNS"})
-    ds_list = [d for d in PLOT_DATASETS if d in all_abl_ds]
+    ds_list = [d for d in PLOT_DATASETS if d in abl_combined.Dataset.unique()]
     print(f"  Ablation datasets: {len(ds_list)}")
     n_ds = len(ds_list)
     n_v = len(ABL_VERSIONS)
     w = 0.7 / n_v
     offs = np.linspace(-(n_v - 1) / 2 * w, (n_v - 1) / 2 * w, n_v)
-
-    # Build a combined DataFrame for easy query
-    abl_combined = pd.concat(abl_dfs, ignore_index=True)
-    for col in ["Accuracy", "Num_Features"]:
-        if col in abl_combined.columns:
-            abl_combined[col] = pd.to_numeric(abl_combined[col], errors="coerce")
 
     def _g(_df, ver, ds, metric):
         s = _df[(_df["Version"] == ver) & (_df["Dataset"] == ds)][metric].values
@@ -684,6 +651,9 @@ def fig_f10_wilcoxon(df_detail, out_dir):
                 a2 = g(df_detail, v2, ds)
                 if len(a1) < 3 or len(a2) < 3:
                     continue
+                total += 1
+                if np.array_equal(a1, a2) or np.all(np.abs(a1 - a2) < 1e-9):
+                    continue
                 if len(a1) == len(a2):
                     try:
                         _, p = sp_stats.wilcoxon(a1, a2, alternative='greater')
@@ -697,7 +667,6 @@ def fig_f10_wilcoxon(df_detail, out_dir):
                         _, p = sp_stats.mannwhitneyu(a1, a2, alternative='greater')
                     except Exception:
                         continue
-                total += 1
                 if p < alpha and np.mean(a1) > np.mean(a2):
                     wins += 1
             matrix[i, j] = wins / total if total > 0 else 0
@@ -817,7 +786,7 @@ def fig_f11_runtime(df_detail, out_dir):
 
     # Plot Pareto envelope (non-dominated frontier across key configurations)
     frontier_x = [87.8, 121.7, 407.7, 1068.9]
-    frontier_y = [0.9574, 0.9488, 0.9454, 0.9177]
+    frontier_y = [0.9545, 0.9462, 0.9454, 0.9242]
     ax.plot(frontier_x, frontier_y, linestyle="--", linewidth=1.1, color="#CBD5E0",
             alpha=0.9, zorder=1, label="Pareto Frontier")
 
@@ -835,7 +804,7 @@ def fig_f11_runtime(df_detail, out_dir):
                    label=p["label"])
 
     # Highlight KDS-EL with single clean, bold callout
-    ax.annotate("KDS-EL (Proposed)", xy=(87.8, 0.9574), xytext=(14, 6),
+    ax.annotate("KDS-EL (Proposed)", xy=(87.8, 0.9545), xytext=(14, 6),
                 textcoords="offset points", fontsize=8.0, fontweight="bold",
                 color="#C82423", va="bottom", zorder=6)
 
@@ -1183,7 +1152,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
 
 def main():
     parser = argparse.ArgumentParser(description="KDS-EL Figure Generator")
-    parser.add_argument("--out", default=str(PROJ / "output" / "figures"))
+    parser.add_argument("--out", default="output/figures")
     parser.add_argument("--fig", nargs="*", default=None,
                         help="Figures to generate: F4 F5 F6 F7 F10 F11")
     args = parser.parse_args()

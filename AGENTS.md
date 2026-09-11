@@ -2,6 +2,8 @@
 
 This document defines the strict academic standards, mathematical conventions, experimental protocols, and Elsevier-specific submission guidelines governing all writing, revising, and LaTeX code generation for the **KDS-EL** research paper targeting top-tier Elsevier SCI journals (e.g., *Applied Soft Computing* [ASOC], *Expert Systems with Applications* [ESWA], *Swarm and Evolutionary Computation* [SWEVO], *Information Sciences*, *Knowledge-Based Systems*).
 
+**Core Axiom (绝对铁律)**: All text, formulas, algorithmic pseudocode, parameter values, and empirical claims must strictly and faithfully mirror the actual code in `code/` and the actual experimental data in `output/`. Zero hallucination, zero data fabrication, zero conceptual misalignment, and zero unverified literature copying.
+
 Every generation and modification must strictly comply with all criteria outlined below.
 
 ---
@@ -14,10 +16,10 @@ Every generation and modification must strictly comply with all criteria outline
 - **Eliminate Parenthetical Inequalities & Dimensional Clutter**: Never append parenthetical inequality shorthands or dimension fragments like `($D \gg N_{\mathrm{samp}}$)` or `($N_{\mathrm{samp}} \ll 100$)` to dataset or population nouns. Express dimensional regimes and sample scarcity naturally through running academic prose (e.g., *"Given a high-dimensional dataset $\mathcal{D}$ characterized by severe sample scarcity..."* or *"in ultra-high-dimensional and sample-scarce regimes where candidate dimensions $D \gg 10^3$ vastly exceed sample observations $N_{\mathrm{samp}} \ll 100$..."*).
 - **Eliminate Parenthetical Symbol Dumps & Calculations**: Never dump mathematical symbols, subpopulation tags, or arithmetic expressions into parentheses following a noun phrase (e.g., strictly prohibit `collaborative dual-swarm co-evolution ($\mathcal{P}_1$ and $\mathcal{P}_2$)`, `equal size ($N/2$)`, or `guided by the global best solution of $\mathcal{P}_2$ ($\mathbf{g}_{\mathrm{best},2}$)`). Express them as natural appositive or prepositional prose (e.g., *"collaborative dual-swarm co-evolution between subpopulations $\mathcal{P}_1$ and $\mathcal{P}_2$"*, *"each comprising $N/2$ particles"*, *"guided by the global best solution $\mathbf{g}_{\mathrm{best},2}$ of $\mathcal{P}_2$"*).
 - **No Premature Parameter Dumping**: In high-level architecture/framework sections (such as Section 3.1) and general prose, never hardcode specific hyperparameter values (e.g., `(wf,1 = 0.30)`, `(wa,2 = 0.95)`, `(theta = 0.60)`, `(knn = 3)`) or inline formula fragments in parentheses. Specific parameter values belong strictly in dedicated technical subsections (where they are introduced as standard syntactic sentences, e.g., *"where $k_{\mathrm{nn}} = 3$ is the neighborhood parameter..."*) and the experimental parameter setup table.
-- **Eliminate Pseudo-Code Conditions & Explanatory Clauses in Text**: Never write parenthetical code-like logic in prose (e.g., `(rank(i) <= N/2)` or `(MI_init_ratio = 0.50)`). Translate them into rigorous academic English (e.g., *"the superior half of the swarm is preserved intact..."*). Furthermore, never enclose entire English explanatory sub-clauses in parentheses (e.g., do not write `(where candidate dimensions outnumber observational samples...)`; integrate them directly into the sentence cadence using commas or em-dashes).
+- **Eliminate Pseudo-Code Conditions & Explanatory Clauses in Text**: Never write parenthetical code-like logic in prose (e.g., `(rank(i) <= N/2)` or `(MI_init_ratio = 0.50)`). Translate them into rigorous academic English (e.g., *"the superior half of the swarm is preserved intact..."*). Furthermore, never enclose entire English explanatory sub-clauses in parentheses; integrate them directly into the sentence cadence using commas or em-dashes.
 - **Two-Tier Parenthesis Taxonomy (Banned Clutter vs. Mandatory Math)**:
   - *Prohibited Parenthetical Clutter (Strictly Banned)*: Inline hyperparameter values `($k_{\mathrm{nn}} = 3$)`, dimension attractor notes `($d \approx D/2$)`, embedded Big-$\mathcal{O}$ complexity insertions `($\mathcal{O}(N_{\mathrm{samp}}^2 d)$)`, parenthetical subpopulation lists `($\mathcal{P}_1$ and $\mathcal{P}_2$)`, parenthetical inequality bounds `($D \gg N_{\mathrm{samp}}$)`, and English explanatory clauses.
-  - *Mandatory Mathematical Notations (Strictly Preserved)*: Standard continuous intervals ($\theta \in (0.5, 1)$, $\rho \in (0, 1)$, $\gamma \in (0, 1)$), probability distribution arguments ($\boldsymbol{\varepsilon}_i \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_D)$, $\mathbf{u}_i \sim \mathcal{U}(0, 1)^D$), standard function/operator placeholders ($\mathbb{I}(\cdot)$, $\psi(\cdot)$, $\mathrm{clip}(z, 0, 1)$), algebraic grouping factors ($(1 - \rho)N$, $(2 x_{i,j}^{(t)} - 1)$), and LaTeX cross-references (`Eq.~\eqref{eq:mi_ksg}`, `Section~\ref{sec:framework}`).
+  - *Mandatory Mathematical Notations (Strictly Preserved)*: Standard continuous intervals ($\theta \in (0.5, 1)$, $\rho \in (0, 1)$, $\gamma \in (0, 1)$), probability distribution arguments ($\boldsymbol{\varepsilon}_i \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_D)$, $\mathbf{u}_i \sim \mathcal{U}(0, 1)^D$), standard function/operator placeholders ($\mathbb{I}(\cdot)$, $\psi(\cdot)$, $\mathrm{clip}(z, 0, 1)$), algebraic grouping factors ($(1 - \rho)N$, $(2 x_{i,j}^{(t)} - 1)$), and LaTeX cross-references (`Eq.~\eqref{eq:importance_update}`, `Section~\ref{sec:framework}`).
 
 ---
 
@@ -43,9 +45,9 @@ Every generation and modification must strictly comply with all criteria outline
 - **Explicit Domain Definition**: Every vector, matrix, scalar, and set must have its mathematical space explicitly defined upon first appearance ($\mathbf{X} \in \{0, 1\}^{N \times D}$, $\mathbf{W} \in \mathbb{R}^D$, $\mathbf{m} \in [0, 1]^D$, $\gamma \in (0, 1)$).
 - **Standard LaTeX Typography**:
   - **Matrices**: Bold uppercase roman ($\mathbf{X}, \mathbf{W}$).
-  - **Vectors**: Bold lowercase roman ($\mathbf{x}_i, \mathbf{p}_i, \mathbf{m}, \boldsymbol{\varepsilon}_i$).
-  - **Scalars / Parameters**: Italic lowercase ($x_{i,j}, p_{i,j}, N, D, T, \theta, \gamma, \tau, \rho, \phi, \kappa$).
-  - **Sets / Populations**: Calligraphic uppercase ($\mathcal{P}_1, \mathcal{P}_2, \mathcal{D}, \mathcal{S}_{\mathrm{know}}, \mathcal{S}_{\mathrm{rand}}$).
+  - **Vectors**: Bold lowercase roman ($\mathbf{x}_i, \mathbf{p}_i, \mathbf{m}, \boldsymbol{\varepsilon}_i, \mathbf{w}(t)$).
+  - **Scalars / Parameters**: Italic lowercase ($x_{i,j}, p_{i,j}, N, D, T, \theta, \gamma, \tau, \rho, \phi, \kappa, k_e$).
+  - **Sets / Populations**: Calligraphic uppercase ($\mathcal{P}_1, \mathcal{P}_2, \mathcal{D}, \mathcal{S}_{\mathrm{know}}, \mathcal{S}_{\mathrm{rand}}, \mathcal{C}_i^{(t)}$).
   - **Standard Functions / Operators**: Upright roman ($\min, \max, \arg\max, \mathrm{clip}(\cdot), \mathbb{I}(\cdot), \mathrm{Acc}(\cdot)$).
 - **Consistency in Vector Orientation**: If candidate solutions $\mathbf{x}_i = [x_{i,1}, \dots, x_{i,D}]$ are row vectors of $\mathbf{X}$, do not randomly add transpose signs $\mathbf{x}_i^T$ unless performing dot products or matrix transpositions.
 
@@ -53,8 +55,8 @@ Every generation and modification must strictly comply with all criteria outline
 
 ### Pillar 5: Deep Figure-Table Linkage & Self-Containment
 - **Figure/Table Self-Containment**: Captions must be descriptive enough that a reader can grasp the core mechanism purely from the visual artifact (complying strictly with Section V, Protocol CAP-2: self-contained 20–50 words structured into global subject, sub-panel guide, and visual cue decoding).
-- **Exact Symbol Matching**: Symbols within PDF figures (`F1`, `F2`, `F3`, `F8`, `F14`) must match the in-text LaTeX math notation 100%.
-- **Directional Referencing**: Direct the reader to specific visual pathways within figures (e.g., *"As illustrated in the adaptive recovery branch of Fig.~2..."*, *"As depicted in Branch 2 of the KER flowchart in Fig.~3..."*).
+- **Exact Symbol Matching**: Symbols within PDF figures (`F1`, `F2`, `F3`, `F4`, `F8`, `F14`) must match the in-text LaTeX math notation 100%.
+- **Directional Referencing**: Direct the reader to specific visual pathways within figures (e.g., *"As illustrated in the adaptive recovery branch of Fig.~2..."*, *"As depicted in Branch 2 of the KER flowchart in Fig.~4..."*).
 
 ---
 
@@ -74,92 +76,126 @@ Every generation and modification must strictly comply with all criteria outline
 
 ### Pillar 8: Measured Academic Tone, Strict Colloquialism Prohibition & Tight Causality
 - **Zero Promotional Fluff**: Strictly avoid unscientific subjective terms (`revolutionary`, `miraculous`, `flawless`, `unprecedented`).
-- **Strict Prohibition of Colloquialisms, Pseudo-Jargon & Literal Translations (禁绝口语化表达与中式字面直译)**:
-  - *Prohibition of "One-to-One" for Algorithmic Heuristics*: Strictly prohibit using `one-to-one` (or `1-to-1`) to describe candidate selection, replacement, competition, or operational steps (e.g., strictly ban `one-to-one replacement`, `one-to-one in-place replacement`, `one-to-one competition`). The term `one-to-one` is strictly reserved for formal mathematical bijections/injections ($f: A \to B$). In evolutionary algorithms and optimization heuristics, candidate-versus-parent competition must strictly be formalized as **greedy pairwise in-place replacement** (`greedy pairwise replacement`, `pairwise competition`, `elitist direct replacement`).
-  - *Comprehensive Colloquialism Blacklist & Scholarly Substitutions*:
-    - `one-to-one replacement` $\longrightarrow$ `greedy pairwise in-place replacement`, `elitist direct replacement`
-    - `step by step` / `step-by-step` $\longrightarrow$ `progressively`, `sequentially`, `in an iterative pipeline`
-    - `hand in hand` / `hand-in-hand` $\longrightarrow$ `synergistically`, `in concerted synergy`
-    - `deal with` $\longrightarrow$ `address`, `mitigate`, `tackle`, `resolve`
-    - `a lot of` / `lots of` $\longrightarrow$ `numerous`, `extensive`, `a substantial volume of`
-    - `more and more` $\longrightarrow$ `increasingly`, `progressively`
-    - `make sure` $\longrightarrow$ `ensure`, `guarantee`, `verify`
-    - `get` / `got` $\longrightarrow$ `obtain`, `derive`, `harvest`, `extract`
-    - `side effect` $\longrightarrow$ `unintended degeneration`, `suboptimal penalty`
-    - `good result` / `good performance` $\longrightarrow$ `superior empirical performance`, `favorable convergence profile`
-    - `try to` $\longrightarrow$ `is designed to`, `aims to`, `seeks to`
-    - `huge` / `big` $\longrightarrow$ `substantial`, `pronounced`, `prominent`
+- **Strict Prohibition of Colloquialisms, Pseudo-Jargon & Literal Translations**:
+  - `one-to-one replacement` $\longrightarrow$ `greedy pairwise in-place replacement`, `elitist direct replacement`
+  - `step by step` / `step-by-step` $\longrightarrow$ `progressively`, `sequentially`, `in an iterative pipeline`
+  - `hand in hand` / `hand-in-hand` $\longrightarrow$ `synergistically`, `in concerted synergy`
+  - `deal with` $\longrightarrow$ `address`, `mitigate`, `tackle`, `resolve`
+  - `a lot of` / `lots of` $\longrightarrow$ `numerous`, `extensive`, `a substantial volume of`
+  - `more and more` $\longrightarrow$ `increasingly`, `progressively`
+  - `make sure` $\longrightarrow$ `ensure`, `guarantee`, `verify`
+  - `get` / `got` $\longrightarrow$ `obtain`, `derive`, `harvest`, `extract`
+  - `side effect` $\longrightarrow$ `unintended degeneration`, `suboptimal penalty`
+  - `good result` / `good performance` $\longrightarrow$ `superior empirical performance`, `favorable convergence profile`
+  - `try to` $\longrightarrow$ `is designed to`, `aims to`, `seeks to`
+  - `huge` / `big` $\longrightarrow$ `substantial`, `pronounced`, `prominent`
 - **Precision Causality**: Use precise inferential connectors:
   - *Mitigation*: `effectively mitigates`, `substantially alleviates`, `suppresses`.
   - *Improvement*: `significantly improves`, `consistently outperforms`.
   - *Causality*: `thereby facilitating...`, `consequently avoiding...`, `which in turn accelerates...`.
 - **Strict Prohibition of the Term "Baseline"**: Strictly prohibit the words `baseline` / `baselines` across all LaTeX manuscript text, table captions, table footnotes, and agent dialogue responses. Peer algorithms must never be casually or dismissively labeled as "baselines" or "baseline MEL". Adhere strictly to formal scholarly terminology:
   - *For peer algorithms*: `competitor algorithms`, `competing methods`, `comparison approaches`, `peer algorithms`, `counterparts`, `benchmark methods`.
-  - *For the backbone algorithm MEL*: `the original MEL algorithm` or directly `MEL` (never `baseline MEL`, `MEL baseline`, `precursor MEL`, or `the foundational MEL framework`, perfectly aligning with EMSWOA's treatment of its base algorithm WOA as `the original WOA` or `the basic WOA`).
+  - *For the backbone algorithm MEL*: `the original MEL algorithm` or directly `MEL` (never `baseline MEL`, `MEL baseline`, `precursor MEL`, or `the foundational MEL framework`).
   - *For unreduced data / raw feature sets*: `unreduced full-dimensional feature sets`, `raw feature spaces` (never `full-dimensional baselines`).
   - *For reference fitness / starting levels*: `initial fitness value`, `initial reference fitness` (never `fitness baseline`).
   - *For algorithmic comparison collections*: `comparison suite`, `benchmark suite`, `competitor suite` (never `baseline suite`).
-- **Strict Prohibition of Machine Learning Jargon "Ablation" (禁绝 "Ablation" 等机器学习术语，全面采用群体智能/进化计算经典范式 "Before and After Algorithm Improvement")**:
+- **Strict Prohibition of Machine Learning Jargon "Ablation"**:
   - In evolutionary computation and swarm intelligence literature (especially top Elsevier journals like *Applied Soft Computing*, strictly mirroring EMSWOA), strictly prohibit machine learning terminology such as `ablation study`, `ablation experiments`, `ablation configurations`, or `ablative variants`.
   - Component contribution analysis must strictly be formalized as **performance comparison before and after algorithm improvement** (`before and after algorithm improvement`, `intermediate algorithmic configurations before and after improvement`, `pre- and post-improvement algorithms`, `constituent mechanism analysis`).
-- **Strict Prohibition of Academic Over-claiming, Absolute Superlatives & Empirical Boundary Mismatch (禁绝学术过度断言、绝对化夸大措辞与实证边界失配)**:
-  - *Philosophical Foundation & No Free Lunch (NFL) Alignment*: In top-tier swarm and evolutionary computation literature (e.g., ASOC, SWEVO, TEVC), algorithms are fundamentally governed by the No Free Lunch theorem. Sweeping assertions of universal dominance, "decisive leadership", or "unprecedented" superiority trigger immediate reviewer skepticism and severe scrutiny. KDS-EL's genuine scientific contribution resides in its principled multi-criteria trade-off (achieving competitive accuracy while reducing feature counts by orders of magnitude) and substantial advancement over its architectural precursor (the original MEL algorithm), NOT in claiming universal supremacy across every benchmark metric.
-  - *Strict Blacklist of Banned Over-Claiming Words & Phrases (绝对化夸大与溢出词汇黑名单)*:
-    - `decisive leadership`, `global leadership`, `unquestionable superiority`, `absolute dominance`
-    - `unprecedented`, `unprecedented feature parsimony`, `miraculous`
-    - `strictly bounded` (when describing heuristic budgets or empirical limits without formal mathematical proofs)
-    - `eliminate` / `eliminates` / `eliminating` (evolutionary mechanisms mitigate, suppress, or substantially alleviate failure modes; they cannot deterministically "eliminate" stochastic search degeneration)
-    - `seamlessly` (subjective filler; replace with structural coordination descriptors)
-    - `intrinsically salient` (over-claiming unsupervised ground truth; replace with robust discriminative dimensions or informative candidate features)
-    - `optimal trade-off` (heuristic wrapper trade-off; replace with favorable trade-off or balanced trade-off)
-    - `all null hypotheses are formally rejected` / `statistically confirms its absolute superiority` (over-stating statistical testing as deterministic proof of perfection)
-  - *Mandatory Scholarly Substitutions & Controlled Vocabulary (审慎学术替换范式)*:
-    - `decisive leadership` / `global leadership` $\longrightarrow$ `competitive overall performance`, `favorable multi-criteria performance`, `superior convergence profile`
-    - `unprecedented feature parsimony` $\longrightarrow$ `consistent advantage in feature compactness`, `marked dimensionality reduction`, `pronounced feature sparsity`
-    - `optimal accuracy-sparsity trade-off` $\longrightarrow$ `favorable accuracy-sparsity trade-off`, `balanced trade-off between classification accuracy and subset parsimony`
-    - `eliminate search blindness / amnesia` $\longrightarrow$ `substantially alleviate search blindness`, `effectively mitigate evolutionary amnesia`, `suppress destructive perturbations`
-    - `seamlessly integrates` $\longrightarrow$ `cohesively couples`, `synergistically coordinates`, `progressively interfaces`
-    - `extracts intrinsically salient features` $\longrightarrow$ `isolates robust discriminative dimensions`, `identifies candidate biomarker signatures`
-    - `comprehensive victory / complete dominance` $\longrightarrow$ `significant improvement over the original MEL algorithm`, `leading multi-problem rank`
-  - *Empirical Boundary Nuance & Anti-Contradiction Rule (严守实证细微边界，严禁正文与表格数据自相矛盾)*:
-    - Whenever empirical metrics exhibit mixed outcomes across competitor algorithms (e.g., in Table 4 where classification accuracy against bIRIME is 7 wins, 5 ties, and 8 losses), the running text **must never claim universal accuracy supremacy**.
-    - Explicitly acknowledge where peer algorithms maintain localized competitive parity or advantages in raw accuracy, while rigorously framing KDS-EL's genuine multi-objective contribution: delivering comparable classification accuracy alongside an order-of-magnitude reduction in feature cardinality (87.8 vs hundreds or thousands of features), yielding superior overall scalarized fitness.
-    - Any discrepancy where prose claims "decisive victory" while tables show losses constitutes an immediate fatal flaw during peer review.
+- **Strict Prohibition of Academic Over-claiming & NFL Alignment**:
+  - Algorithms are fundamentally governed by the No Free Lunch theorem. Sweeping assertions of universal dominance, "decisive leadership", or "unprecedented" superiority are strictly banned. KDS-EL's genuine scientific contribution resides in its principled multi-criteria trade-off (achieving competitive accuracy while reducing feature counts by orders of magnitude) and substantial advancement over its architectural precursor (the original MEL algorithm).
+  - *Strict Blacklist of Banned Over-Claiming Words*:
+    - `decisive leadership`, `global leadership`, `unquestionable superiority`, `absolute dominance`, `unprecedented`, `miraculous`
+    - `strictly bounded` (when describing heuristic budgets without proofs)
+    - `eliminate` / `eliminates` (evolutionary mechanisms mitigate, suppress, or substantially alleviate; they do not deterministically "eliminate")
+    - `seamlessly` (subjective filler)
+    - `intrinsically salient` (over-claiming unsupervised ground truth)
+    - `optimal trade-off` (replace with `favorable trade-off` or `balanced trade-off`)
+    - `all null hypotheses are formally rejected` / `statistically confirms its absolute superiority`
+  - *Empirical Boundary Nuance & Anti-Contradiction Rule*:
+    - When empirical metrics exhibit mixed outcomes (e.g., Table 4 accuracy against bIRIME is 7 wins, 5 ties, 8 losses), the running text **must never claim universal accuracy supremacy**.
+    - Explicitly acknowledge where peer algorithms maintain localized competitive parity, while rigorously framing KDS-EL's multi-objective contribution: delivering comparable classification accuracy alongside an order-of-magnitude reduction in feature cardinality (87.8 vs hundreds or thousands of features), yielding superior overall scalarized fitness.
 
 ---
 
-### Pillar 8b: Rigorous Conceptual Consistency & Terminology Boundary Protocols (全篇概念一致性、术语界定与范畴对齐规范)
+## 📌 Section Ib: Code-Grounded Truth & Mathematical Reality Protocols (实验数据与代码真值死锁规范)
 
-To guarantee unwavering scholarly precision, mathematical integrity, and peer-review robustness, all manuscript text, mathematical formulations, and agent dialogues must strictly adhere to the following five conceptual consistency and domain-boundary protocols:
+*This subsection defines the non-negotiable ground-truth anchors derived directly from `code/` and `output/`. Every number, equation, and protocol in the paper must strictly align with these facts.*
 
-1. **Matrix vs. Vector Disambiguation Protocol (矩阵与向量数学空间绝对一致性规范)**:
-   - *Mathematical Space Integrity*: The verbal term used to describe any mathematical symbol must 100% match its declared vector space.
-   - *Strict Vector Designation ($\mathbb{R}^D$)*: Quantities spanning a single dimension of size $D$, including the cumulative feature-importance memory $\mathbf{W} \in \mathbb{R}^D$, MEL's historical feedback $\mathbf{W}_{\mathrm{MEL}} \in \mathbb{R}^D$, continuous prior relevance $\mathbf{m} \in [0, 1]^D$, dynamic stage weights $\mathbf{w}(t) \in [0, 1]^2$, and individual candidate solutions $\mathbf{x}_i \in \{0, 1\}^D$, $\mathbf{p}_i \in [0, 1]^D$, must strictly be termed **vector** (e.g., `cumulative feature-importance vector`, `memory vector`, `prior relevance vector`, `weight vector`, `decision vector`). Strictly prohibit referring to $\mathbf{W} \in \mathbb{R}^D$ or $\mathbf{W}_{\mathrm{MEL}} \in \mathbb{R}^D$ as a "matrix" across all sections.
-   - *Strict Matrix Designation ($\mathbb{R}^{N \times D}$)*: The term **matrix** is reserved exclusively for true 2D structures, namely the binary population decision matrix $\mathbf{X} \in \{0, 1\}^{N \times D}$, continuous coordinate matrix $\mathbf{P} \in [0, 1]^{N \times D}$, training data matrix $\mathcal{D} \in \mathbb{R}^{N_{\mathrm{samp}} \times D}$, and tabular statistical summary arrays (e.g., `pairwise comparison matrix in Table 6`).
+### Protocol TRUTH-1: Ground-Truth Performance Data Deadlock (真实实验数据死锁表)
+All text, tables, abstracts, and discussion must strictly draw from the verified pure classification performance on the 20 benchmark datasets. Mixing composite fitness ($1 - fitG$) with pure classification accuracy is strictly prohibited.
 
-2. **Greedy Pairwise In-Place Replacement & Perturbation Granularity Protocol (成对替换机制与特征扰动粒度规范)**:
-   - *Standardized Terminology for Algorithmic Competition*: The candidate mutant vs. parent elite competition in the KER strategy must be strictly and consistently named **`greedy pairwise in-place replacement rule`** (or `greedy pairwise in-place replacement mechanism`). Strictly prohibit dropping `pairwise` (e.g., do not write `greedy in-place replacement rule`) or using informal substitutions (`acceptance criterion`) when referring to this architectural replacement design.
-   - *Perturbation Scale Disambiguation (Prohibition of "Biomarker Pairs")*: In KER, the perturbation budget $k_{\mathrm{flip}} = \max(1, \lfloor \phi D \rfloor)$ dynamically scales with ambient dimension $D$, flipping dozens to hundreds of coordinates simultaneously in high dimensions ($D > 10^4$). Strictly prohibit referring to targeted perturbations as selecting or flipping `biomarker pairs` or `feature pairs`. Describe them as `high-utility candidate features`, `informative feature combinations`, or `promising candidate subsets`.
+#### Master Empirical Reference Table (20 Benchmark Datasets Aggregate)
+| Algorithm / Configuration | True Pure Accuracy ($\mathrm{Acc}$) | Mean Feature Count ($d$) | Wall-Clock Time (s) | Historical $1-fitG$ Artifact (BANNED as Accuracy) |
+| :--- | :---: | :---: | :---: | :---: |
+| **KDS-EL (TwoPhase)** [Ours] | **0.9545** (0.954530) | **87.8** | **51.3** | *0.9574* (strictly $1-fitG$, not pure acc) |
+| **KDS-EL (TwoPhase, 20260905 rerun)** | 0.9460 (0.946021) | 90.9 | 49.8 | — |
+| **KDS_EL_NoPool** (w/o TPS) | **0.9462** (0.946186) | **121.7** | 48.5 | *0.9488* |
+| **MEL_MI** (w/o TPS & KER) | **0.9348** (0.934837) | **290.5** | 62.4 | *0.9325* |
+| **bIRIME** (*iScience* 2024) | **0.9454** (0.945449) | **407.7** | **326.2** | — (already pure accuracy) |
+| **FWPSO** (Wang & Jia 2022) | **0.9242** (0.924183) | **1068.9** | 175.0 | *0.9177* |
+| **SaWDE** (*KBS* 2022) | **0.9180** (0.918003) | **3521.1** | 210.4 | *0.8944* |
+| **MEL** (*IEEE TKDE* 2024 Precursor) | **0.9093** (0.909287) | **2722.2** | 175.0 | *0.8868* |
+| **PSO_CSM** (*SWEVO* 2025) | **0.9085** (0.908503) | **1559.4** | 188.6 | *0.9021* |
+| **BPSO** (Kennedy & Eberhart 1997) | **0.9075** (0.907519) | **5296.5** | 134.2 | *0.8698* |
+| **BinCOA** (*IEEE Access* 2024) | **0.8973** (0.897340) | **5420.7** | 245.8 | — (already pure accuracy) |
+| **IGPSO** (*SWEVO* 2024) | **0.8985** (0.898459) | **2538.2** | 136.4 | *0.8839* |
+| **DENCA_SO** (*KBS* 2023) | **0.8712** (0.871206) | **5323.4** | 185.7 | — (already pure accuracy) |
 
-3. **Feature Selection vs. Biomarker Discovery Categorical Boundary Protocol (通用特征选择与生物标志物发现的范畴对齐规范)**:
-   - *Clear Domain Demarcation*: The 20 benchmark datasets investigated in this paper span heterogeneous domains, encompassing biomedical gene-expression microarrays alongside text categorization (`BASEHOCK`, `PCMAC`), image recognition (`COIL20`), speech processing (`ISOLET`), and synthetic classification (`madelon`).
-   - *Universal 20-Dataset Aggregate Metrics*: When stating global omnibus performance across the complete 20-benchmark suite (e.g., mean accuracy of 0.9574, mean cardinality of 87.8 active features, 98% compression ratio) and when discussing general optimization bottlenecks in the Abstract and Section 1, the terminology must strictly be **`feature selection`** and **`compact feature subsets`** (or `feature signatures`). Never label non-biological features (e.g., image pixels or text words) as "biomarkers".
-   - *Biomarker Overclaim Prevention (禁绝生物标志物过度断言与因果夸大)*:
-     - In computational wrapper feature selection, stochastic heuristic algorithms do NOT discover clinically proven biomarkers or prove causal pathophysiological drivers of disease.
-     - Strictly ban assertions such as `isolating biomarker subsets`, `contracting signatures to 40 biomarkers`, `mapping directly to verified drivers`, or `captures authentic drivers of malignancy`.
-     - In biomedical gene-expression microarray contexts, selected dimensions must strictly be termed **`candidate genes`**, **`candidate gene subsets`**, **`informative genomic features`**, or **`candidate biomarker genes`**.
-     - Biological relevance must be defensibly and rigorously framed: the selected subsets **align with known molecular alterations**, **are enriched with established oncological markers**, or **capture established diagnostic indicators documented in clinical oncology literature** (such as *COL11A1*, *GUCA2A*, *HPN*, *AMACR*).
-     - Full clinical translation and definitive biomarker qualification strictly require external prospective cohorts and independent wet-lab validation.
+- **Strict bIRIME Ground-Truth Anchoring**: In running text (such as Section 4.2), bIRIME's feature cardinality is **407.7** (NOT 424.8), and runtime is **326.2 s** (NOT 375.2 s). Never contradict the values generated in Table 5 and Table 8.
+- **Strict 4-Stage Monotonic Improvement Progression**: The constituent mechanism progression (before and after algorithm improvement) must report the verified pure accuracy and feature counts:
+  $$\text{MEL: } (0.9093, 2722.2) \xrightarrow{+\text{MII+AIR}} \text{MEL+MI: } (0.9348, 290.5) \xrightarrow{+\text{KER}} \text{NoPool: } (0.9462, 121.7) \xrightarrow{+\text{TPS}} \text{KDS-EL: } (0.9545, 87.8)$$
+  Notice that pure accuracy monotonically increases ($+2.55\text{ pp} \to +1.14\text{ pp} \to +0.83\text{ pp}$) while active features monotonically shrink ($-89.3\% \to -58.1\% \to -27.9\%$).
 
-4. **Classification Performance vs. Generalization Academic Firewall Protocol (交叉验证分类性能与外层泛化能力的学术防火墙规范)**:
-   - *Anti-Selection-Bias Defense*: In wrapper feature selection evaluated on standard benchmark datasets without external unseen test cohorts or nested double cross-validation, evolutionary search is guided by internal 5-fold cross-validation accuracy. To prevent fatal rejection from reviewers specializing in statistical learning:
-     - The evaluated metrics must strictly be formalized as **`classification performance`**, **`cross-validated classification accuracy`**, **`predictive discrimination`**, or **`combinatorial optimization efficacy`**.
-     - Strictly prohibit uncalibrated claims of "generalization ability", "generalizability", or "generalization across folds" in the absence of external validation cohorts.
-     - For Demšar multi-problem statistical comparisons across the 20 benchmark datasets, strictly use **`cross-problem evaluation`**, **`cross-benchmark assessment`**, or **`cross-dataset comparison`** (strictly prohibit `cross-problem generalization`).
+---
 
-5. **Asymptotic Complexity vs. Empirical Runtime Disambiguation Protocol (渐近时间复杂度与实测物理耗时的严格二元区分规范)**:
-   - *Asymptotic Computational Complexity*: Quantified strictly using Big-$\mathcal{O}$ notation ($\mathcal{O}(T N N_{\mathrm{samp}}^2 \bar{d}_{\mathrm{selected}} + T D \log D)$), measuring the theoretical scaling of arithmetic operations and algorithm steps. Units are abstract operations. Strictly prohibit appending physical time words like "runtime" to Big-$\mathcal{O}$ formulas (e.g., never write `incurs $\mathcal{O}(N_{\mathrm{samp}}^2 d_i)$ runtime`; write `incurs $\mathcal{O}(N_{\mathrm{samp}}^2 d_i)$ operations` or `exhibits an asymptotic time complexity of $\mathcal{O}(N_{\mathrm{samp}}^2 d_i)$`).
-   - *Empirical Runtime & Wall-Clock Execution Time*: Measured strictly in physical seconds (s) on hardware, reported as mean wall-clock execution time (e.g., 51.3 seconds for KDS-EL vs. 175.0 seconds for the original MEL algorithm, achieving a 3.4-fold empirical acceleration). Theoretical Big-$\mathcal{O}$ steps and empirical seconds must remain strictly decoupled.
+### Protocol TRUTH-2: Code-Faithful Formula Synchronization (公式与代码实现绝对一致规范)
+Equations in Section 3 and Section 4 must 100% match the actual lines of code in `code/algorithms/kds_el_twophase.py` and `code/utils.py`.
+
+1. **Importance Vector $\mathbf{W}$ Updating (Both Success & Failure Branches)**:
+   - In `code/algorithms/kds_el_twophase.py:122-142`, the update rule handles both fitness improvements and non-improvements:
+     - When candidate solution $\mathbf{x}_i^{(t)}$ achieves a strict fitness improvement over personal best $\mathbf{p}_{\mathrm{best},i}$ ($\delta_i^{(t)} = f(\mathbf{p}_{\mathrm{best},i}) - f(\mathbf{x}_i^{(t)}) > 0$):
+       $$W_j \leftarrow W_j + \delta_i^{(t)} \cdot (2 x_{i,j}^{(t)} - 1), \quad \forall j \in \mathcal{C}_i^{(t)}$$
+     - When candidate solution $\mathbf{x}_i^{(t)}$ fails to improve ($\Delta_i^{(t)} = f(\mathbf{x}_i^{(t)}) - f(\mathbf{p}_{\mathrm{best},i}) \ge 0$):
+       $$W_j \leftarrow W_j - \Delta_i^{(t)} \cdot (2 x_{i,j}^{(t)} - 1), \quad \forall j \in \mathcal{C}_i^{(t)}$$
+   - *Strict Prohibition*: Strictly prohibit claiming that non-improving candidates "leave $\mathbf{W}$ unaltered" when the implementation executes bidirectional credit/penalty updating. Mathematical descriptions must precisely state this symmetric reward-penalty dynamic.
+
+2. **KER Perturbation Noise in Score Ranking**:
+   - In `code/utils.py:369-371`, the directional flip score ranking is perturbed by Gaussian noise scaled to the empirical standard deviation of the weight vector:
+     $$\sigma_j = (1 - 2 x_{e,j}) W_j + \xi_j, \quad \xi_j \sim \mathcal{N}\left(0, \left(\mathrm{std}(\mathbf{W}) + 10^{-5}\right)^2\right)$$
+   - *Strict Prohibition*: Strictly prohibit claiming that KER adds an "infinitesimal tie-breaking jitter with variance $10^{-12}$". The text must honestly describe $\xi_j$ as an adaptive stochastic perturbation proportional to the dispersion of learned feature importance ($\mathrm{std}(\mathbf{W}) + 10^{-5}$), balancing directional guidance with exploratory diversity.
+
+3. **Competitor Implementation Fidelity (IGPSO)**:
+   - In `code/algorithms/igpso.py:8-11, 24-32`, feature importance is estimated via the contrast of ANOVA F-statistics:
+     $$\mathrm{Imp}_j = \max\left(0, F_{\mathrm{true}, j} - F_{\mathrm{perm}, j}\right)$$
+   - *Strict Prohibition*: Strictly prohibit claiming that IGPSO uses a "multi-layer perceptron (MLP)" or "neural network". Formally describe IGPSO as **two-stage importance-guided PSO using ANOVA F-statistic permutation contrast**.
+
+---
+
+### Protocol TRUTH-3: Benchmark Instance & Experimental Protocol (基准优化实例与实验设置学术界定规范)
+
+1. **Banning "50 Distinct Folds" (坚决剔除 50 个互不相同折的虚假陈述)**:
+   - In `code/config.py:76` and `code/utils.py:170`, `StratifiedKFold` fixes `random_state=42`. All 10 independent runs of an algorithm evaluate candidate subsets against the **exact same 5 stratified folds**.
+   - *Mandatory Academic Phrasing*: Formally define the experimental protocol:
+     > *"To evaluate stochastic optimization stability and algorithmic convergence, each algorithm undergoes 10 independent runs initialized with distinct random seeds on each benchmark dataset. Following the established benchmarking protocol of the foundational MEL algorithm~\cite{mel2024} and peer evolutionary feature selection literature, each benchmark dataset is evaluated as a self-contained combinatorial optimization instance where an internal 5-fold stratified cross-validation wrapper serves as the fitness evaluation surrogate."*
+   - Strictly prohibit claiming "50 distinct folds".
+
+2. **Offline Mutual Information Prior Injection (互信息离线先验学术定界)**:
+   - In `code/algorithms/kds_el_twophase.py:54`, mutual information vector $\mathbf{m}$ is computed once offline on the dataset before the evolutionary loop begins.
+   - *Mandatory Framing*: Formally frame this strictly as **problem-level heuristic domain knowledge injection**, fully aligned with the benchmark instance paradigm of IEEE TKDE 2024 MEL. It is not an unseen clinical cohort test, but an offline filter-wrapper hybridization for combinatorial optimization benchmarking.
+
+3. **Fair Evaluation Budget vs. Generation Cutoff Definition**:
+   - Algorithms were evaluated under an **identical population size ($N=20$) and generation cutoff ($T=100$)**.
+   - *Mandatory Disambiguation*: Strictly prohibit asserting "identical evaluation budgets" without qualification. In runtime and efficiency analysis (Section 4.2.6), explicitly acknowledge structural differences in per-generation fitness function calls: BPSO evaluates 20 particles/gen; KDS-EL evaluates 20 particles plus $k_e=3$ KER elites and periodic stagnation restarts; bIRIME evaluates up to 80 candidates/gen due to composite mutation strategies (CMS). Explain that KDS-EL's runtime advantage over bIRIME (51.3 s vs 326.2 s) stems both from feature compression and from avoiding wasteful unguided multi-operator evaluations.
+
+---
+
+### Protocol TRUTH-4: Cross-Classifier Inductive Transferability Protocol (表 S9 实事求是分析规范)
+In Section 4.2 and Supplementary Section S9, cross-classifier evaluation (Table S9) must be analyzed with absolute factual honesty:
+- **Adenoma**: Compact subsets ($d=66$) achieve 100% accuracy across all three architectures (3-NN, SVM, Random Forest).
+- **ALL4**: Compact subsets ($d=124$) achieve substantial performance gains across all three classifiers (3-NN improves by +17.31 pp, SVM improves by +3.33 pp, Random Forest improves by +11.99 pp).
+- **Colon**: Compact subsets ($d=14$, compressing 2,000 features by >99.3%) elevate 3-NN accuracy from 79.23% to 88.59% (+9.36 pp). However, this extreme compression incurs a slight trade-off on inductive learners with divergent inductive biases (SVM drops from 85.51% to 80.51%; Random Forest drops from 85.38% to 82.18%).
+- *Strict Prohibition*: Never claim that "compact subsets deliver substantial classification gains across all architectures on all datasets". Frankly and scholarly analyze the trade-off: extreme feature compression specifically optimized for non-parametric local metric geometry (3-NN) may exhibit minor boundary sensitivity when transferred to hyper-plane margins (SVM) or orthogonal partition ensembles (RF) on small cohorts. This measured honesty earns profound reviewer respect.
 
 ---
 
@@ -170,27 +206,23 @@ To guarantee unwavering scholarly precision, mathematical integrity, and peer-re
 - **Author & Affiliation Block**: Declare affiliations using `\address[label]{...}` and specify the corresponding author using `\cortext[cor1]{Corresponding author. Email: ...}`.
 - **Highlights Protocol**: Provide exactly 3 to 5 highlights in bullet points. Each bullet must be strictly **under 85 characters** (including spaces) and convey a quantifiable core innovation.
 - **Abstract Word Limit**: Keep the abstract strictly within 150–250 words, structured into *Background $\to$ Problem & Limitations $\to$ Proposed Framework $\to$ Key Quantified Results $\to$ Broad Impact*.
-- **Keywords**: Provide 4 to 6 indexed keywords separated by `\sep` (e.g., `Feature selection \sep Swarm intelligence \sep Particle swarm optimization \sep High-dimensional data \sep Transfer learning`).
+- **Keywords**: Provide 4 to 6 indexed keywords separated by `\sep` (e.g., `Feature selection \sep Swarm intelligence \sep Particle swarm optimization \sep High-dimensional data \sep Knowledge-guided search`).
 
 ---
 
 ### Pillar 10: Elsevier Table Design Protocols (Strict Three-Line Tables)
-- **Table Caption & Footnote Decoupling**: Captions placed strictly above tables must be ultra-concise noun phrases of 6–15 words defining only the entity and comparison scope, strictly adhering to Section V (Protocol CAP-1). All definitions of boldface, underline, statistical testing notation, and parameter symbols must reside strictly in the table footnote (`\par\raggedright\footnotesize`) below the table.
+- **Table Caption & Footnote Decoupling**: Captions placed strictly above tables must be ultra-concise noun phrases of 6–15 words defining only the entity and comparison scope (Protocol CAP-1). All definitions of boldface, underline, statistical testing notation, and parameter symbols must reside strictly in the table footnote (`\par\raggedright\footnotesize`) below the table.
 - **Zero Vertical Lines**: In accordance with Elsevier style guides, **never include vertical rules (`|`)** in tables.
 - **Booktabs Macros**: Construct all tables using `\toprule`, `\midrule`, and `\bottomrule` from the `booktabs` package.
 - **Statistical Significance Highlighting**: Highlight the best-performing metric in **boldface** and underline the second-best across all comparison tables.
-- **Multi-Row & Column Sizing**: Use `\cmidrule(lr){...}` to separate grouped benchmark categories (e.g., Single-Objective vs. Multi-Objective FS).
+- **Multi-Row & Column Sizing**: Use `\cmidrule(lr){...}` to separate grouped benchmark categories.
 
 ---
 
 ### Pillar 11: Statistical Testing and Evaluation Protocols for Evolutionary Feature Selection
-- **Independent Runs & High-Dimensional Benchmark Alignment**: In ultra-high-dimensional wrapper feature selection ($D \gg 10^3$) where fitness evaluation requires repeated $k$-fold cross-validation across thousands of dimensions, report quantitative metrics across 10 independent runs (corresponding to 50 distinct cross-validation folds per dataset) in the standard format: $\mathrm{Mean} \pm \mathrm{Std}$. This protocol strictly mirrors the benchmark standard established in top-tier high-dimensional feature selection literature (e.g., MEL, *IEEE Transactions on Knowledge and Data Engineering* 2024), ensuring fair and computationally feasible comparisons across extensive comparison suites. For lightweight continuous benchmark suites with low-cost analytical evaluation, 30 runs remains the classical standard.
-- **Multi-Dataset Non-Parametric Testing (Demšar Protocol)**: To evaluate statistical significance across benchmarks, strictly follow the multi-problem statistical framework of Demšar (2006). Pairwise Wilcoxon signed-rank tests at $\alpha = 0.05$ assess directional superiority across the $N=20$ benchmark datasets, reporting pairwise counts as $+ / - / \approx$ (win / tie / loss).
+- **Multi-Dataset Non-Parametric Testing (Demšar Protocol)**: To evaluate statistical significance across benchmarks, strictly follow the multi-problem statistical framework of Demšar (2006). Pairwise Wilcoxon signed-rank tests at $\alpha = 0.05$ assess directional superiority across the $N=20$ independent benchmark problem instances, reporting pairwise counts as $+ / - / \approx$ (win / tie / loss).
 - **Friedman Global Ranking & Family-Wise Error Correction**: Apply the Friedman test across the multi-dataset benchmark suite to establish omnibus algorithmic rankings, accompanied by post-hoc **Holm-Bonferroni** step-down correction to rigorously guard against family-wise type I error inflation across all competitor comparisons.
-- **Demšar Protocol Rigor & Pseudoreplication Defense (统计检验严谨定界与防御“伪重复”质疑规范)**:
-  - *Precise Definition of Statistical Power & Sample Units*: Strictly define that statistical power and sample size $N=20$ derive strictly from the independent benchmark dataset instances, where each problem is represented by the aggregate mean performance over 10 independent runs.
-  - *Zero Pseudoreplication*: The running text must explicitly and transparently distinguish between the 10 independent runs (which capture stochastic optimization variance on a single dataset instance) and the $N=20$ independent benchmark datasets (which provide the true statistical degrees of freedom for hypothesis testing). Strictly prevent reviewers from suspecting that $20 \times 10 = 200$ runs were pooled as independent samples (pseudoreplication).
-  - *Measured Probabilistic Reporting (Prohibition of Over-stated Hypothesis Rejection)*: Never write "all null hypotheses are formally rejected, confirming empirical superiority". Report statistical tests with measured probabilistic precision: *"The non-parametric Wilcoxon signed-rank test with Holm-Bonferroni step-down correction indicates a statistically significant difference at $\alpha = 0.05$ across the 20 benchmark problem instances, corroborating that KDS-EL achieves a statistically favorable omnibus ranking while maintaining competitive pairwise parity on challenging subsets."*
+- **Per-Dataset Run Comparisons**: For per-dataset stochastic stability comparisons across 10 independent runs, because runs across different algorithms are evaluated with independent random seeds without pairwise random-number synchronization, statistical assessments must be designated as independent sample comparisons (e.g., Mann-Whitney U test) or reported as run-wise distributions ($\mathrm{Mean} \pm \mathrm{Std}$).
 
 ---
 
@@ -201,294 +233,81 @@ To guarantee unwavering scholarly precision, mathematical integrity, and peer-re
 
 ---
 
-### Pillar 13: Literature Benchmark Coverage & Citation Freshness
-- **Balanced Competitor Hierarchy**: Benchmark against three distinct categories:
-  1. *Classical filter & wrapper methods* (e.g., BPSO, IG-PSO);
-  2. *State-of-the-art Single-Objective Swarm Feature Selectors* (e.g., SaWDE, MEL);
-  3. *State-of-the-art Multi-Objective Evolutionary Algorithms* (e.g., NSGA-II-FS, MOEA/D-FS, W-MOPSO-FS, fMOPSO-FS).
-- **Recent Literature Density**: Ensure at least $30\%$ of cited references are from top-tier venues published within the last 3–4 years (2022–2026).
-- **BibTeX Completeness**: Every reference must include complete author lists, journal title, volume, issue, page range, year, and DOI where applicable.
-
----
-
 ## 📌 Section III: Specialized Protocols for Section 2 (Related Work & Background)
 
-*These protocols must be strictly enforced whenever drafting, modifying, or reviewing Section 2.*
-
-### 🎯 Core Mission & Philosophical Positioning
-- **Not a Bibliographic Catalog**: Related Work must never read like a passive list of disconnected summaries ("Author A did X; Author B did Y").
-- **Target-Setting & Runway-Building**: The primary function of Section 2 is to construct the motivation landscape, pinpoint the exact structural bottlenecks of existing paradigms under ultra-high-dimensional and sample-scarce regimes ($D \gg 10^3, N_{\mathrm{samp}} \ll 100$), and establish the theoretical necessity of KDS-EL.
-
-### 🔑 Critical Operational Protocols
-
-#### Protocol RW-1: Critical 4-Step Narrative Chain (Narrative over Listing)
-Every thematic subsection must execute a coherent 4-step progressive narrative:
-1. **Mainstream Paradigm & Merits**: What is the core mechanism and theoretical advantage of this class of methods?
-2. **Physical/Mathematical Bottleneck in Ultra-High Dimensions ($D \gg 10^3$)**: Why does it degrade or fail under $D \gg 10^3$ and small sample sizes? (e.g., filter hard truncation permanently discards feature synergy; standard BPSO with Sigmoid mapping generates overly dense subsets $d \approx D/2$; MOFS non-dominated sorting suffers Pareto archive bloat and retains thousands of redundant features).
-3. **Limitations of Existing Remedies**: Why do previous incremental fixes (e.g., one-shot offline MI injection, static filter pre-selection, black-box surrogate models) remain insufficient? (e.g., lacking online feedback adaptation, high surrogate training overhead, severe model misspecification risk).
-4. **Theoretical Rationale for the Proposed Design**: How does KDS-EL's design philosophy fundamentally resolve this specific dilemma?
-
-#### Protocol RW-2: Exact 1-to-1 Problem-Solution Closed Loop
-Section 2 must establish three explicit, non-overlapping motivation gaps that directly map to the three core components in Sections 3 and 4:
-- **Gap 1 (Initial Search Blindness & Diversity Loss)** $\longleftrightarrow$ **MII + AIR**: Mutual-information continuous soft prior initialization coupled with adaptive diversity re-initialization upon stagnation.
-- **Gap 2 (Discarded Iteration Feedback & Memoryless Perturbation)** $\longleftrightarrow$ **Dynamic Feature Importance Memory + KER**: Closed-loop accumulation of historical fitness feedback with exponential forgetting, driving targeted directional elite refinement within bounded computation ($k_e \ll N$).
-- **Gap 3 (Rigid Static Weighting & Evolutionary Phase Misalignment)** $\longleftrightarrow$ **Two-Phase Weight Scheduling (TPS)**: Temporally decoupling coarse dimensional pruning in Phase 1 from fine accuracy refinement in Phase 2.
-
-#### Protocol RW-3: 100% Benchmark Competitor Anchoring
-- **Zero Orphan Competitor Algorithms**: All comparison algorithms evaluated in the experimental sections (BPSO, FWPSO, PSO-CSM, SaWDE, IGPSO, W-MOPSO-FS, fMOPSO-FS, NSGA-II-FS, MOEA/D-FS, MOPSO-FS, MEL) must be explicitly classified, contextualized, and cited in Section 2.
-- No competitor algorithm may appear in Section 5 or Section 6 without prior taxonomic grounding in Section 2.
-
-#### Protocol RW-4: Measured Academic Critique & Structural Trade-Offs
-- **No Subjective Dismissals**: Avoid non-academic assertions such as "fails completely" or "is useless".
-- **Mathematical & Structural Grounding**: Frame all critiques through precise algorithmic trade-offs (e.g., *"incurs Pareto archive bloat"*, *"discards subtle feature synergy"*, *"lacks online dynamic adaptability"*, *"exhibits severe variance in stochastic binarization"*).
-
-#### Protocol RW-5: Orthogonal Taxonomy Table Design (Table 1)
-- **Multi-Dimensional Orthogonality**: The taxonomy table (`tab:comparison_literature`) must systematically contrast algorithms across mutually independent technical dimensions: *Paradigm, Prior Seeding, Online Memory, Memory Decay, Elite Refinement, Dynamic Weighting, and Computational Complexity*.
-- **Elsevier Compliance**: Strict three-line table format (`\toprule`, `\midrule`, `\bottomrule`), zero vertical lines, with standardized indicators ($\checkmark$: Fully supported, $\circ$: Partially supported, $\times$: Absent / not supported).
-
-#### Protocol RW-6: Zero Premature Parameter Dumping & Math Purposefulness
-- **No Hardcoded Hyperparameters**: Do not leak specific internal tuning values (e.g., $\theta=0.60, w_f=0.30, k_e=3, \gamma=0.99$) into Section 2 prose. Use conceptual and mathematical terms; save numerical specifications for Sections 3, 4, and 5.
-- **Formulas Must Serve the Critique**: Mathematical equations (e.g., standard PSO velocity/position, mutual information) must immediately connect to the structural failure mode analysis rather than functioning as isolated textbook filler.
+- **Not a Bibliographic Catalog**: Related Work must construct the motivation landscape, pinpointing the exact structural bottlenecks of existing paradigms under ultra-high-dimensional and sample-scarce regimes ($D \gg 10^3, N_{\mathrm{samp}} \ll 100$).
+- **Critical 4-Step Narrative Chain**:
+  1. *Mainstream Paradigm & Merits*: Core mechanism and theoretical advantage.
+  2. *Physical/Mathematical Bottleneck in Ultra-High Dimensions ($D \gg 10^3$)*: Why it degrades under extreme dimensions and small samples.
+  3. *Limitations of Existing Remedies*: Why previous incremental fixes remain insufficient.
+  4. *Theoretical Rationale for the Proposed Design*: How KDS-EL's design philosophy fundamentally resolves the dilemma.
+- **Exact 1-to-1 Problem-Solution Closed Loop**:
+  - *Gap 1 (Initial Search Blindness & Diversity Loss)* $\longleftrightarrow$ **MII + AIR**: Mutual-information continuous soft prior initialization coupled with adaptive diversity re-initialization upon stagnation.
+  - *Gap 2 (Discarded Iteration Feedback & Memoryless Perturbation)* $\longleftrightarrow$ **Dynamic Feature Importance Memory + KER**: Closed-loop accumulation of historical fitness feedback with exponential forgetting, driving targeted directional elite refinement within bounded computation ($k_e \ll N$).
+  - *Gap 3 (Rigid Static Weighting & Evolutionary Phase Misalignment)* $\longleftrightarrow$ **Two-Phase Weight Scheduling (TPS)**: Temporally decoupling coarse dimensional pruning in Phase 1 from fine accuracy refinement in Phase 2.
+- **100% Benchmark Competitor Anchoring**: All 12 comparison algorithms evaluated in experimental sections must be explicitly classified and cited in Section 2.
 
 ---
 
-## 📌 Section IV: Hierarchical Section-Wise Data-Boundary & Anti-Dumping Protocols (各章节数据与数值边界分级规范)
+## 📌 Section IV: Hierarchical Section-Wise Data-Boundary & Anti-Dumping Protocols
 
-*These protocols must be strictly enforced whenever drafting, modifying, or reviewing any section of the manuscript. Before modifying any text, the agent must explicitly identify the chapter/section, inspect whether data is already dumped, and enforce the corresponding tier.*
-
-### 🎯 Core Mission: "Tables & Figures Host the Data; Text Explains the Mechanisms"
-The primary defect of amateur evolutionary computation manuscripts is "Table Regurgitation" (报账式写作) — reciting table cells, float numbers, seconds, and percentages inside text paragraphs. In top-tier Elsevier journals (mirroring EMSWOA in *Applied Soft Computing*), tables and figures are the sole designated hosts for granular empirical data. The running text exists strictly to synthesize high-level behavioral trends, guide the reader through the visual artifacts, and articulate underlying causal and physical mechanisms.
-
-### 🔑 Four-Tier Data-Boundary Hierarchy
-
-#### Tier 1: Absolutely Zero Experimental Data (Strictly Zero Data / 绝对禁水区)
-- **Applicable Sections**: Section 2 (Related Work & Preliminaries) and Section 3 (The Proposed KDS-EL Framework).
-- **Strict Prohibition**: Zero experimental results, zero empirical test metrics, zero forward-looking performance spoilers (strictly no mentions of 0.9574 accuracy, 87.8 features, 51.3\,s runtime, 3.4$\times$ speedup, or win/tie/loss counts).
-- **Allowed Numerical Content**: Pure mathematical formulations, algorithmic state conditions, standard mathematical constants (e.g., $S(0) = 0.5$), Big-$\mathcal{O}$ asymptotic bounds, and high-level dimension orders of magnitude ($D \gg 10^3$, $N_{\mathrm{samp}} \ll 100$).
-
-#### Tier 2: Landmark Global Milestone Metrics Only (宏观标志性核心指标区)
-- **Applicable Sections**: Abstract, Highlights, Section 1 (Introduction), and Section 5 (Conclusion).
-- **Strict Limitation**: Limited strictly to 2–3 macro omnibus landmark metrics representing the highest aggregate achievement of the entire paper:
-  - Omnibus mean classification accuracy ($0.9574$ or $95.74\%$).
-  - Omnibus mean selected feature cardinality ($87.8$ features, $>98\%$ compression).
-  - Empirical speedup over the foundational MEL framework ($3.4\times$ acceleration).
-- **Strict Prohibition**: Never recite per-dataset results, never list individual competitor accuracy values or runtime numbers, and never enumerate granular benchmark subsets.
-
-#### Tier 3: Static Benchmarking & Configuration Constants Only (实验环境与参数配置区)
-- **Applicable Section**: Section 4.1 (Experimental Setup).
-- **Strict Limitation**: Only declare static benchmarking configuration constants: 20 benchmark datasets, 10 independent runs, 5-fold stratified cross-validation, 3-NN classifier, and default hyperparameter values defined in Table 3.
-- **Strict Prohibition**: Absolutely zero post-hoc experimental test outcomes or performance values.
-
-#### Tier 4: Mechanism-Driven & Insight-Focused Empirical Sections (机理驱动的实验分析区)
-- **Applicable Section**: Section 4.2 (Experimental Analysis subsections 4.2.1 through 4.2.8).
-- **Operational Rule for Each Subsection**:
-  - **4.2.1 (Classification Accuracy)**: Report only the omnibus mean ($0.9574$) and overall directional superiority; explain the discriminative geometry in high dimensions; **strictly prohibit reciting per-dataset accuracy numbers for individual datasets**.
-  - **4.2.2 (Feature Subset Size)**: Report only the omnibus average ($87.8$) and compression ratio ($>98\%$); explain the physical reason why unguided binarization collapses into the $D/2$ attractor and how two-phase scheduling resolves it; **do not enumerate feature numbers across individual datasets**.
-  - **4.2.3 (Convergence Dynamics)**: Zero floating-point data recitation; strictly describe trajectory slopes, early rapid descent, avoidance of exploratory plateaus, and sustained escape from local minima based on Fig.~5.
-  - **4.2.4 (Statistical Significance)**: State nominal $\alpha=0.05$ and overall ranking leadership; leave the full pairwise matrix to Table 6 and adjusted $p$-values to Table 7; **do not narrate the entire table cell by cell**.
-  - **4.2.5 (Before/After Improvement)**: Strictly mirror EMSWOA Section 4.2.5 (exactly 3 paragraphs, zero parenthetical numerical clutter, zero laundry lists); guide the reader to Table 8 and Fig.~7/8, focusing entirely on the orthogonal theoretical synergy of MII+AIR, KER, and TPS.
-  - **4.2.6 (Runtime & Efficiency)**: Report only the omnibus runtime ($51.3$\,s) and the $3.4\times$ speedup; dedicate prose to the asymptotic physical cause (the $k$-NN distance evaluation cost scaling linearly with selected feature cardinality $d_{\mathrm{selected}}$); **strictly prohibit reciting runtime seconds across individual datasets or listing numbers for each competitor**.
-  - **4.2.7 (Parameter Sensitivity)**: Report only recommended optimal values and stable operating intervals (e.g., $\kappa \in [0.60, 0.80]$, maximum variation $\le 1.5\%$); leave all detailed grid values to Table 8 and Fig.~11.
-  - **4.2.8 (Discussion & Ceiling Effects)**: State the ceiling saturation threshold ($>0.998$) and the representative sparse subset range ($39$ to $83$ features); focus on translational biology, RT-qPCR viability, and pathway enrichment, rather than listing feature counts for all peer algorithms.
-
-### 🛠️ Mandatory Pre-Edit Protocol: "Section Identification & Data-Dumping Audit"
-Before generating or applying any text edit to the manuscript:
-1. **Identify Section Location**: Explicitly determine the exact chapter and subsection number (e.g., `Section 4.2.6`).
-2. **Determine Data Tier**: Check whether the section is Tier 1, Tier 2, Tier 3, or Tier 4.
-3. **Data-Dumping Scan (查重与查堆)**: Scan the existing text for table regurgitation (parenthetical numbers, lists of seconds, accuracy diffs, feature numbers).
-4. **Purge & Sublimate**: If data is already dumped, aggressively remove the granular numbers, delegate them to the corresponding Table/Figure, and sublimate the text into deep mechanism analysis, physical rationale, and high-level trends.
+- **Tier 1 (Strictly Zero Data / 绝对禁水区)**: Section 2 (Related Work) and Section 3 (Proposed KDS-EL Method). Zero experimental test outcomes, zero performance numbers.
+- **Tier 2 (Macro Milestone Metrics Only)**: Abstract, Highlights, Section 1 (Introduction), and Conclusion. Limited to verified aggregate landmarks: mean pure accuracy **0.9545**, mean active features **87.8** (>98% compression), empirical speedup **3.4x**.
+- **Tier 3 (Static Setup Constants Only)**: Section 4.1 (Experimental Setup). Only declare static benchmarking constants: 20 benchmark datasets, 10 independent runs, 5-fold stratified cross-validation wrapper, 3-NN classifier, and default hyperparameters.
+- **Tier 4 (Mechanism-Driven Empirical Analysis)**: Section 4.2. Tables and figures host the numbers; prose synthesizes behavioral trends and explains causal mechanics. Strictly prohibit reciting numbers cell-by-cell.
 
 ---
 
-## 📌 Section V: Scientific Figure and Table Caption Protocols (图表标题与图注设计规范)
+## 📌 Section V: Scientific Figure and Table Caption Protocols
 
-*These protocols must be strictly enforced whenever creating, drafting, or revising any Figure or Table captions in the manuscript, matching the highest standards of Elsevier journals (e.g., ASOC, ESWA, SWEVO) and published exemplars such as EMSWOA.*
-
-### 🎯 Core Philosophy: "Table Captions Define the Entities; Table Footnotes Explain the Rules; Figure Captions Provide Self-Contained Visual Narratives"
-In top-tier Elsevier journals, the functional boundaries of table titles, table footnotes, and figure captions are strictly decoupled to maximize visual legibility and self-containment:
-1. **Table Titles (`\caption{...}` above tables)**: Act purely as high-level entity labels defining *what* is compared. They must remain extremely clean, concise, and completely unburdened by typographic or statistical rules.
-2. **Table Footnotes (`\par\raggedright\footnotesize` below tables)**: Formally host all typographic definitions (e.g., boldface/underline criteria), mathematical notations, statistical indicators ($+/ \approx / -$), and evaluation metrics.
-3. **Figure Captions (`\caption{...}` below figures)**: Serve as self-contained explanatory narratives that decode the complete visual story, guiding the reader through global trends, sub-panel mappings, and visual markers without requiring back-and-forth consultation with the main text.
-
----
-
-### 🔑 Detailed Operational Caption Protocols
-
-#### Protocol CAP-1: Table Caption & Footnote Decoupling Standards (表格标题与表注解耦规范)
-- **Position**: Placed strictly **above** the tabular content (`\caption{...}` immediately follows `\begin{table}` or `\begin{table*}`).
-- **Length & Style**: Ultra-concise noun phrase, strictly within **6 to 15 words** (ideally 1 line across the column width; never exceeding 2 lines).
-- **Content Scope**: Solely describe the subject matter and benchmark scope (e.g., *"Table 4. Comparison of classification accuracy between KDS-EL and competitor algorithms."*).
-- **Strict Anti-Clutter Rule**: Strictly prohibit dumping formatting rules (such as *"The best results are shown in bold and the second-best are underlined..."*), significance thresholds ($p < 0.05$), or win/tie/loss explanations into the `\caption{...}` title string.
-- **Delegation to Table Footnotes**: All formatting definitions, abbreviations, and statistical testing notes must be placed exclusively at the base of the table using `\par\raggedright\footnotesize` or standard table note environments.
-- **EMSWOA Published Table Exemplars**:
-  - *Prohibited Negative Pattern (Cluttered Table Title)*:
-    `\caption{Comparison of classification accuracy between KDS-EL and baseline algorithms across 20 datasets (bold indicates the best, underline indicates the second-best, +/-/approx denotes Wilcoxon test at p < 0.05)}`
-  - *Recommended Positive Pattern (Decoupled Standard Table Title)*:
-    `\caption{Comparison of classification accuracy between KDS-EL and competitor algorithms.}`
-    Followed at the table footer by:
-    `\par\raggedright\footnotesize\textbf{Note:} Entries in bold denote the best performance, while underlined entries indicate the second-best. $+ / \approx / -$ indicates that KDS-EL is statistically significantly superior, statistically equivalent, or inferior to the corresponding competitor according to the pairwise Wilcoxon signed-rank test at $\alpha = 0.05$.`
-
-#### Protocol CAP-2: Ultra-Concise Figure Caption Standards (插图标题超精炼规范，100% 对齐 EMSWOA)
-- **Position**: Placed strictly **below** the visual graphic (`\caption{...}` placed after all subfigures or `\includegraphics`).
-- **Length & Style**: Ultra-concise, elegant noun phrase of strictly **8 to 15 words** (ideally 1 clean printed line across column width; never exceeding 2 lines).
-- **Strict Anti-Regurgitation & Zero Text Clutter Rule**:
-  - Figure captions must never read like mini-abstracts, empirical result summaries, or multi-sentence narrative paragraphs.
-  - Never recount details already visible in diagram boxes or discussed in the accompanying main text (e.g., do not dump Holm tests, red curve definitions, $\alpha = 0.05$, or sub-panel lists into the caption).
-  - All detailed interpretations, visual landmarks (colors, markers, phase division boundaries), and statistical significance analyses belong strictly in the **main text paragraphs** adjacent to the figure callout.
-- **Strict Prohibition of Mechanical Filler Suffixes (禁绝生硬机械后缀)**:
-  - Strictly prohibit artificially appending repetitive lifecycle suffixes to figure titles (e.g., strictly ban `across evolutionary generations`, `across evolutionary stages`, `across consecutive generations`, `across the benchmark suite`, `across the 20 benchmark datasets`). A flowchart is simply an *Algorithmic execution flowchart*, and an operational schematic is simply an *Operational schematic*.
-- **EMSWOA Published Figure Exemplars**:
-  - `Fig. 1. Example of an EMSWOA-based feature selection process.` (8 words)
-  - `Fig. 2. Flowchart of the EMSWOA algorithm.` (6 words)
-  - `Fig. 5. Convergence curves of average fitness values on representative datasets.` (10 words)
-  - `Fig. 6. Average Friedman rank of comparison algorithms.` (7 words)
-- **KDS-EL Figure Title Reference Suite**:
-  - `Fig. 1`: `Overall dataflow architecture of the proposed KDS-EL framework for high-dimensional feature selection.` (13 words)
-  - `Fig. 2`: `Algorithmic execution flowchart of the proposed KDS-EL framework.` (8 words)
-  - `Fig. 3`: `Schematic of prior-guided sparse population initialization and adaptive diversity recovery.` (10 words)
-  - `Fig. 4`: `Operational mechanism of the knowledge-guided elite refinement strategy.` (8 words)
-  - `Fig. 5`: `Convergence trajectories of mean objective fitness.` (6 words)
-  - `Fig. 6`: `Average Friedman ranking distribution across the 20 benchmark datasets.` (9 words)
-  - `Fig. 7`: `Multi-dataset radar visualization of classification accuracy.` (6 words)
-  - `Fig. 8`: `Convergence trajectories of classification accuracy before and after algorithm improvement.` (10 words)
-  - `Fig. 9`: `Trade-off distribution between classification accuracy and selected feature cardinality.` (9 words)
-  - `Fig. 10`: `Parameter sensitivity and stability profiles of KDS-EL across five key hyperparameters.` (11 words)
-
-#### Protocol CAP-3: Typographic & Symbol Synchronization (符号完全同构规范)
-- **100% Symbol Consistency**: Every mathematical symbol appearing in figure captions or table notes must match the in-text LaTeX math notation and the embedded vector PDF labels with 100% fidelity (e.g., $d_{\mathrm{selected}}$, $k_e$, $\kappa$, $\mathbf{W}$, $f_{\mathrm{gbest}}$).
-- **Capitalization Standard**: Follow standard Elsevier sentence-style capitalization for caption titles (capitalizing only the first word and proper nouns/acronyms).
-- **Terminology Strictness**: Prohibit the word `baseline` in any caption or footnote, replacing it with `competitor algorithms`, `competing methods`, `peer algorithms`, or `the original MEL algorithm`.
-
-#### Protocol CAP-4: Comprehensive Manuscript Asset Inventory Mapping (手稿图表资产全景映射)
-- **Table Inventory & Standardized Targets**:
-  - `Table 1` (`tab:comparison_literature`): Orthogonal taxonomy contrasting representative evolutionary feature selection paradigms.
-  - `Table 2` (`tab:datasets`): Summary of the 20 benchmark datasets across diverse high-dimensional biomedical regimes.
-  - `Table 3` (`tab:parameters`): Parameter settings of KDS-EL and competitor algorithms across the benchmark suite.
-  - `Table 4` (`tab:accuracy`): Comparison of classification accuracy between KDS-EL and competitor algorithms.
-  - `Table 5` (`tab:features`): Comparison of selected feature subset size between KDS-EL and competitor algorithms.
-  - `Table 6` (`tab:wilcoxon`): Pairwise Wilcoxon signed-rank test results comparing KDS-EL against competitor algorithms at $\alpha = 0.05$.
-  - `Table 7` (`tab:holm`): Post-hoc Holm-Bonferroni step-down procedure for family-wise error rate control.
-  - `Table 8` (`tab:improvement`): Performance comparison of intermediate configurations before and after algorithm improvement.
-  - `Table 9` (`tab:parametersensitivity`): Sensitivity analysis of key hyperparameters across representative benchmark datasets.
-- **Figure Inventory & Standardized Targets**:
-  - `Fig. 1` (`fig:kds_el_dataflow`): High-level data-flow architecture of the proposed KDS-EL framework.
-  - `Fig. 2` (`fig:kds_el_flowchart`): Detailed operational flowchart of the collaborative dual-swarm co-evolutionary pipeline.
-  - `Fig. 3` (`fig:mi_initialization`): Conceptual schematic of mutual-information continuous soft prior seeding and adaptive stagnation recovery.
-  - `Fig. 4` (`fig:ker_strategy`): Algorithmic workflow of the Knowledge-Guided Elite Refinement (KER) mechanism.
-  - `Fig. 5` (`fig:convergence`): Convergence trajectories of average objective fitness across 100 generations.
-  - `Fig. 6` (`fig:radar`): Multi-faceted radar comparison of classification accuracy and feature compression ratio.
-  - `Fig. 7` / `Fig. 8`: Classification accuracy radar chart and convergence trajectories before and after algorithm improvement.
-  - `Fig. 11` (`fig:sensitivity_surface`): Parameter sensitivity response landscapes across varying hyperparameter configurations.
-  - `Fig. 13` (`fig:bubble_tradeoff`): Multi-objective trade-off landscape between classification error, feature cardinality, and execution time.
-  - `Fig. 14` (`fig:biological_pathway`): Biological pathway enrichment and feature co-expression correlation heatmap for identified biomarker subsets.
+- **Protocol CAP-1: Table Caption & Footnote Decoupling**:
+  - Captions placed strictly above tables (`\caption{...}`) must be ultra-concise noun phrases of **6 to 15 words** defining only the entity and comparison scope.
+  - All definitions of boldface, underline, statistical testing notation, and parameter symbols must reside strictly in the table footnote (`\par\raggedright\footnotesize`) below the table.
+- **Protocol CAP-2: Ultra-Concise Figure Caption Standards**:
+  - Figure captions placed strictly below figures must be concise noun phrases of **8 to 15 words**.
+  - Captions must never read like mini-abstracts or recite data numbers. All interpretations belong in main text paragraphs.
 
 ---
 
 ## 📌 Section VI: Specialized Protocols for Section 3 (The Proposed Method)
 
-*These protocols must be strictly enforced whenever drafting, modifying, reviewing, or verifying Section 3 (The Proposed Method) of the manuscript.*
-
-### 🎯 Core Mission & Methodological Rigor
-The proposed methodology section must construct an airtight, self-contained mathematical and algorithmic framework. It is neither a superficial narrative nor a raw transliteration of python scripts, but a formal theoretical exposition where every equation directly addresses a specific physical search degeneration in ultra-high dimensions ($D \gg 10^3, N_{\mathrm{samp}} \ll 100$) and maintains 100% mathematical fidelity with the underlying experimental codebase.
-
----
-
-### 🔑 Critical Operational Protocols for Section 3
-
-#### Protocol PM-1: Tier 1 Zero-Data Boundary Enforcement (绝对禁水区规范)
-- **Strict Prohibition of Test Outcomes**: Section 3 is strictly classified under Data Tier 1. Zero post-hoc experimental metrics, test scores, or forward-looking spoilers are permitted (strictly no mentions of 0.9574 classification accuracy, 87.8 selected features, 51.3\,s execution time, 3.4$\times$ speedup, or pairwise $+/\approx/-$ counts).
-- **Authorized Numerical Content**: Confined strictly to mathematical formulations, algorithmic state variables ($c_{\mathrm{stall}} \ge \tau$), theoretical initializations ($S(0) = 0.5$), Big-$\mathcal{O}$ asymptotic bounds, and high-level dimension orders of magnitude ($D \gg 10^3, N_{\mathrm{samp}} \ll 100$).
-
-#### Protocol PM-2: "Why Before How" 4-Step Causal Formulation Chain (物理动机先行原则)
-Every mathematical equation must be introduced through a complete 4-step progressive narrative chain:
-1. **Physical Bottleneck & Search Degeneration**: Articulate the exact failure mode of standard evolutionary techniques in ultra-high dimensions (e.g., standard continuous-discrete binarization collapsing into the uninformative $D/2$ attractor; undirected mutation in $2^D$ destroying synergistic gene combinations with probability $>99.9\%$; static objective weighting forcing severe phase misalignment).
-2. **Design Rationale**: Present the structural intuition and engineering principle of the proposed remedy.
-3. **Formal Mathematical Formulation**: Provide definition-complete, self-contained equations with declared mathematical spaces.
-4. **Physical Interpretation & Boundary Behavior**: Analyze variable roles and extreme parameter limits (e.g., as $\gamma \to 1.0$, historical noise accumulates unchecked; as $\rho \to 0$, prior guidance vanishes; as $\rho \to 1.0$, initial diversity collapses).
-
-#### Protocol PM-3: Mathematical Typography & Domain Completeness (数学排版与空间完备性)
-- **Explicit Mathematical Domain**: Every variable, matrix, vector, and set must declare its mathematical space upon first appearance ($\mathbf{X} \in \{0, 1\}^{N \times D}$, $\mathbf{W} \in \mathbb{R}^D$, $\mathbf{m} \in [0, 1]^D$, $\mathbf{w}(t) \in [0, 1]^2$, $\gamma \in (0, 1)$).
-- **Rigorous Font Categorization**:
-  - *Matrices*: Bold uppercase roman ($\mathbf{X}, \mathbf{W}$).
-  - *Vectors*: Bold lowercase roman ($\mathbf{x}_i, \mathbf{p}_i, \mathbf{m}, \boldsymbol{\varepsilon}_i, \mathbf{u}_i, \mathbf{w}(t)$).
-  - *Scalars / Hyperparameters*: Italic lowercase ($x_{i,j}, p_{i,j}, N, D, T, \theta, \gamma, \tau, \rho, \phi, \kappa, k_e$).
-  - *Sets / Populations / Partitions*: Calligraphic uppercase ($\mathcal{P}_1, \mathcal{P}_2, \mathcal{D}, \mathcal{S}_{\mathrm{know}}, \mathcal{S}_{\mathrm{rand}}, \mathcal{C}_i^{(t)}, \mathcal{E}$).
-  - *Standard Functions & Operators*: Upright roman ($\min, \max, \arg\max, \mathrm{clip}(\cdot), \mathbb{I}(\cdot), \mathrm{Acc}(\cdot)$).
-- **Vector Orientation Consistency**: Solutions $\mathbf{x}_i$ are treated consistently as row or column vectors throughout; random or arbitrary transposition marks ($\mathbf{x}_i^T$) are strictly prohibited.
-
-#### Protocol PM-4: Component Terminology, Parenthetical Decoupling & Strict "Operator" Prohibition (组件称谓、去括号化与算子禁令)
-- **Strict Prohibition of "Operator"**: KDS-EL's own constituent innovations must strictly be termed **strategy** or **mechanism** (e.g., `the KER strategy`, `the elite refinement mechanism`, `the dynamic TPS strategy`, `the adaptive recovery mechanism`). The word `operator` is reserved exclusively for low-level genetic/evolutionary heuristics of peer algorithms (e.g., `crossover operator`, `stochastic bit-flip operator`).
-- **Zero Duplicate Acronym Tags**: Acronyms already introduced must not be expanded again with parenthetical tags like `(KER)` or `(TPS)`.
-- **Zero Parenthetical Symbol Dumps**: Never dump subpopulation designations or variable tags into parentheses following a noun (e.g., write *"between subpopulations $\mathcal{P}_1$ and $\mathcal{P}_2$"* instead of *"($\mathcal{P}_1$ and $\mathcal{P}_2$)"*; write *"guided by the global best solution $\mathbf{g}_{\mathrm{best},2}$ of $\mathcal{P}_2$"* instead of *"guided by the global best solution of $\mathcal{P}_2$ ($\mathbf{g}_{\mathrm{best},2}$)"*).
-- **Strict Prohibition of "One-to-One" Replacement Phrasing**: Strictly prohibit calling selection or replacement heuristics `one-to-one replacement` or `one-to-one in-place replacement`. In evolutionary computing and optimization, candidate-parent competition must strictly be designated as **greedy pairwise in-place replacement** (`greedy pairwise replacement`, `pairwise competition`, `elitist direct replacement`).
-- **Prose Translation of Code Conditions**: Never write raw code syntax like `if rank <= N/2` or `while stall >= 20` in running text. Translate into formal academic English (e.g., *"the lower-performing half of the swarm is refreshed..."*).
-
-#### Protocol PM-5: Deep Figure-Text Linkage & 100% Symbol Homomorphism (图文同构与深层指引)
-- **Explicit Directional Referencing**: Text must actively guide the reader through specific visual branches (e.g., *"As illustrated in the dual-subpopulation co-evolutionary cycle of Fig.~2..."*, *"Following Step~4 of the adaptive recovery pathway in Fig.~3..."*, *"As depicted in Branch~2 of the KER flowchart in Fig.~4..."*).
-- **100% Visual-Symbol Synchrony**: Every box label, axis variable, and subscript appearing in vector diagrams (F1, F2, F3, F4) must match in-text LaTeX math notation with zero discrepancy.
-
-#### Protocol PM-6: Hierarchical & Standardized Modular Pseudocode (层次化算法伪代码)
-- **Two-Tier Hierarchical Decomposition**:
-  - *Sub-routine Algorithm 1 (`Algorithm 1`)*: Formalizes the self-contained operational logic of Knowledge-Guided Elite Refinement (`KER`), isolating detailed bit-flip score calculations and greedy pairwise acceptance.
-  - *Master Coordination Algorithm 2 (`Algorithm 2`)*: Maintains a high-level executive perspective of the end-to-end KDS-EL lifecycle across generational iterations.
-- **Exhaustive Require / Ensure Blocks**:
-  - `\Require`: Formally declares all inputs, datasets, dimensions ($N, D, T$), and all 9 hyperparameters ($\theta, \rho, \sigma, \gamma, k_e, \phi, p_{\mathrm{rand}}, \kappa, \tau$) with their respective mathematical domains.
-  - `\Ensure`: Explicitly defines the final outputs: optimal compact binary mask $\mathbf{x}^{\star} \in \{0, 1\}^D$ and optimal fitness $f_{\mathrm{gbest}} \in \mathbb{R}$.
-- **Stage-Wise Functional Segmentation**: Structured cleanly using `\Statex \textbf{Stage 1: ...}`, `\Statex \textbf{Stage 2: ...}`, and `\Statex \textbf{Stage 3: ...}`.
-
-#### Protocol PM-7: Comprehensive Asymptotic Complexity Closed-Loop (时空渐近复杂度闭环)
-- **Decoupled Two-Phase Complexity Formulation**:
-  - *Offline Preprocessing*: One-time continuous KSG mutual information estimation and sorting: $\mathcal{T}_{\mathrm{pre}} = \mathcal{O}(D \cdot N_{\mathrm{samp}} \log N_{\mathrm{samp}} + D \log D)$.
-  - *Online Generational Evolution*: Generation-wise evaluation cost incorporating dynamic active feature sparsity: $\mathcal{T}_{\mathrm{eval}} = \mathcal{O}(T \cdot N \cdot N_{\mathrm{samp}}^2 \cdot \bar{d}_{\mathrm{selected}} + T \cdot N \cdot D)$.
-- **Empirical Wall-Clock Speedup Rationale**: Explicitly explain why identical Big-$\mathcal{O}$ order yields a substantial real-world speedup ($3.4\times$ acceleration over the foundational MEL framework): $k$-NN distance computation scales linearly with active feature count $d$; by shrinking candidate subsets from $D/2 \approx 5{,}000+$ down to $\bar{d}_{\mathrm{selected}} \approx 88$, per-evaluation arithmetic operations are reduced by over $95\%$.
-- **Linear Space Complexity**: Fully account for working arrays $\mathbf{X}, \mathbf{P}_{\mathrm{best}}, \mathbf{W}, \mathcal{D}$ yielding linear bound $\mathcal{S}_{\mathrm{total}} = \mathcal{O}((N + N_{\mathrm{samp}})D)$, proving hardware feasibility even for $D > 10^5$.
-
-#### Protocol PM-8: 100% Strict Code-to-Math Mirroring (公式与底层代码绝对镜像映射，严禁凭空捏造)
-Every equation in Section 3 must strictly correspond 1-to-1 with the actual Python implementation in `code/algorithms/kds_el_twophase.py` and `code/utils.py`:
-1. *Mutual Information Prior Seeding*: `compute_mi_scores` $\longleftrightarrow$ Eq.~\eqref{eq:mi_ksg} (KSG non-parametric estimator) & Eq.~\eqref{eq:mi_norm} (Min-Max normalization into $\mathbf{m} \in [0, 1]^D$).
-2. *Hybrid Seeding & Step Binarization*: `P[:half] = np.clip(mi + N(0, 0.1), 0, 1)`, `P[half:] = U(0, 1)`, `(P > thres)` $\longleftrightarrow$ Eq.~\eqref{eq:mi_seeding} (Gaussian soft prior) & Eq.~\eqref{eq:binarize} (Heaviside step mapping with cut-off threshold $\theta$).
-3. *Adaptive Stagnation Recovery*: `stall_counter >= patience` resetting lower $N/2$ particles: both current positions $\mathbf{p}_i$ and personal-best positions $\mathbf{p}_{\mathrm{best},i}$ are refreshed around prior vector $\mathbf{m}$ under Gaussian perturbation ($\mathbf{p}_i \leftarrow \mathrm{clip}(\mathbf{m} + \boldsymbol{\varepsilon}_i, 0, 1), \mathbf{p}_{\mathrm{best},i} \leftarrow \mathbf{p}_i$), followed by immediate wrapper re-evaluation under current phase weights $\mathbf{w}(t)$ to update personal-best fitness values, and resetting the stagnation counter to zero $\longleftrightarrow$ Eq.~\eqref{eq:reinit_formula}.
-4. *Cumulative Importance Harvesting & Decay*: `weight[change & (fv_n > fv_o)] += inc`, `weight *= decay` $\longleftrightarrow$ Eq.~\eqref{eq:importance_update} (directional fitness differential accumulation) & Eq.~\eqref{eq:decay} (exponential memory forgetting via $\gamma$).
-5. *Knowledge-Guided Elite Refinement*: `ker_flip` with directional flip scores $\sigma_j = (1 - 2x_{e,j})W_j$ $\longleftrightarrow$ Eq.~\eqref{eq:flip_score} (state-dependent scoring), Eq.~\eqref{eq:top_scores} (top-$k_{\mathrm{flip}}$ selection), & Eq.~\eqref{eq:inplace} (greedy pairwise in-place replacement).
-6. *Dynamic Two-Phase Weight Scheduling*: `ws_phase1 = [0.70, 0.30]`, `ws_phase2 = [0.95, 0.05]`, `switch_t = 0.7*T`, and instantaneous Pbest re-evaluation at switch $\longleftrightarrow$ Eq.~\eqref{eq:twophase} (step-wise weight formulation) & Eq.~\eqref{eq:fitness} (unified scalar fitness).
+- **Tier 1 Zero-Data Boundary**: Section 3 is strictly classified under Data Tier 1. Zero post-hoc experimental test scores permitted.
+- **"Why Before How" Causal Chain**: Every formula must be introduced through bottleneck analysis $\to$ structural intuition $\to$ mathematical formulation $\to$ boundary behavior.
+- **Mathematical Space Completeness**: Every variable must declare its space ($\mathbf{X} \in \{0, 1\}^{N \times D}$, $\mathbf{W} \in \mathbb{R}^D$, $\mathbf{m} \in [0, 1]^D$, $\mathbf{w}(t) \in [0, 1]^2$, $\gamma \in (0, 1)$).
+- **Two-Tier Pseudocode**: Algorithm 1 formalizes KER sub-routine; Algorithm 2 coordinates the master KDS-EL lifecycle with complete `\Require` and `\Ensure` blocks.
+- **Asymptotic Complexity Closed-Loop**: Decouple offline preprocessing $\mathcal{T}_{\mathrm{pre}} = \mathcal{O}(D N_{\mathrm{samp}} + D \log D)$ from generational wrapper evaluation $\mathcal{T}_{\mathrm{eval}} = \mathcal{O}(T N N_{\mathrm{samp}}^2 \bar{d}_{\mathrm{selected}} + T N D)$.
 
 ---
 
 ## 🔍 Automated Pre-Response & Pre-Compilation Verification Checklist
 
-For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 26-point internal audit before outputting:
+For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 28-point internal audit before outputting:
 
-1. [ ] **Zero Baseline Terminology Check**: Is the word "baseline" / "baselines" completely eliminated from manuscript text, tables, captions, footnotes, and dialogue responses in favor of "competitor", "comparison method", "peer algorithm", or "benchmark"?
-2. [ ] **Colloquialism & Literal Translation Scan**: Have all colloquial phrasing and literal translations (e.g., 'one-to-one replacement' $\to$ 'greedy pairwise replacement', 'step by step', 'deal with', 'hand in hand', 'a lot of', 'make sure') been thoroughly purged and replaced with rigorous academic terminology?
-3. [ ] **Acronym Check**: Are there duplicate acronym expansions (e.g., `(KER)`, `(TPS)`)?
-4. [ ] **Parameter Leakage Check**: Are specific numbers/parameters prematurely leaked into high-level descriptive sections?
-5. [ ] **Parenthetical Scan & Clutter Audit**: Have all parenthetical inequalities (`($D \gg N_{\mathrm{samp}}$)`), parenthetical symbol dumps (`($\mathcal{P}_1$ and $\mathcal{P}_2$)`, `($N/2$)`, `($\mathbf{g}_{\mathrm{best},2}$)`), premature parameter values (`($k_{\mathrm{nn}} = 3$)`), dimension attractors (`($d \approx D/2$)`), and English explanatory clauses in parentheses been completely purged in favor of fluent narrative prose, while preserving strictly mandatory mathematical notations (intervals, distributions, operators)?
-6. [ ] **Narrative Rhythm Check**: Does the text use natural pipeline verbs instead of mechanical bulleted ordinals?
-7. [ ] **Mathematical Rigor Check**: Are all variables given explicit mathematical domains? Are vector orientations consistent?
-8. [ ] **Figure/Equation Cross-Ref Check**: Are all figure, table, and equation references resolved with 0 compilation errors?
-9. [ ] **Causal Logic Check**: Does every proposed design component have a clearly articulated physical motivation?
-10. [ ] **Elsevier Booktabs Check**: Do all tables strictly avoid vertical lines (`|`) and use standard `\toprule`, `\midrule`, `\bottomrule`?
-11. [ ] **Statistical Verification Check**: Are standard deviation ($\pm \mathrm{Std}$) and Wilcoxon $+/-/\approx$ counts properly presented?
-12. [ ] **Vector Graphic Check**: Are all embedded figures in pure vector `.pdf` format?
-13. [ ] **Highlight Length Check**: Are Research Highlights strictly between 3–5 bullets and under 85 characters each?
-14. [ ] **BibTeX Integrity Check**: Are all `\cite{...}` keys resolved without undefined reference warnings?
-
-### 🔬 Additional Section 2 (Related Work) Specific Audit Items:
-14. [ ] **Section 2 Narrative Chain**: Does each subsection follow the 4-step chain (*Merits $\to$ High-D Bottleneck $\to$ Remedy Limits $\to$ Proposed Rationale*) rather than mechanical literature listing?
-15. [ ] **Section 2 Closed-Loop Check**: Are the three core gaps in Related Work in 1-to-1 correspondence with MII+AIR, KER, and TPS?
-16. [ ] **Section 2 Competitor Coverage**: Are all 13 experimental competitor algorithms explicitly introduced and taxonomically categorized?
-17. [ ] **Section 2 No Parameter Dump**: Are specific tuning constants ($\theta=0.60, w_f=0.30, k_e=3, \gamma=0.99$) completely absent from Section 2 high-level narrative?
-18. [ ] **Zero "Operator" for Proposed Components**: Are KDS-EL's own components (KER, TPS, MII, AIR) strictly designated as "strategy" or "mechanism", with the word "operator" strictly prohibited for proposed components and reserved exclusively for standard genetic/evolutionary heuristics of peer algorithms?
-
-### 📊 Section-Wise Data-Boundary & Anti-Dumping Audit:
-19. [ ] **Section-Wise Data Tier Audit**: Is the modified text strictly compliant with its designated Data Tier (Tier 1: zero data; Tier 2: macro landmarks only; Tier 3: setup constants only; Tier 4: table-free causal mechanisms)? Has all "table regurgitation" (cell-by-cell numerical dumping) been completely purged in favor of causal and mechanical analysis?
-
-### 🏷️ Figure and Table Caption & Layout Audit:
-20. [ ] **Caption & Footnote Audit**: Are table captions ultra-concise noun phrases (6–15 words) free of formatting definitions? Are boldface/underline definitions and statistical symbols delegated exclusively to table footnotes? Do figure captions adhere to the 3-part self-contained anatomy (20–50 words) with explicit sub-panel guides and visual landmark decodings?
-
-### 📐 Additional Section 3 (The Proposed Method) Specific Audit Items:
-21. [ ] **Section 3 Tier 1 Zero-Data Audit**: Is Section 3 completely devoid of empirical test results, performance numbers, and future spoilers?
-22. [ ] **Section 3 Code-Formula Mirror Audit**: Does every equation and algorithmic step strictly mirror the Python implementation in `code/algorithms/kds_el_twophase.py` and `code/utils.py` (e.g., verifying that Equation~\eqref{eq:reinit_formula} simultaneously resets continuous positions $\mathbf{p}_i$ and personal-best memory vectors $\mathbf{p}_{\mathrm{best},i}$, followed by immediate wrapper re-evaluation and zeroing of the stall counter)?
-23. [ ] **Section 3 "Why Before How" Audit**: Does each formula follow the 4-step causal chain with physical bottleneck analysis and boundary condition interpretation?
-24. [ ] **Section 3 Complexity Closed-Loop Audit**: Are offline preprocessing and online evaluation decoupled, with $\bar{d}_{\mathrm{selected}}$ and linear spatial bounds explicitly formulated?
-25. [ ] **Section 3 Modular Pseudocode Audit**: Are Algorithm 1 (KER) and Algorithm 2 (KDS-EL) fully declared with mathematical domains in `\Require`/`\Ensure` and stage-wise segmentation?
+1. [ ] **Zero Fabricated Numbers Audit**: Is every empirical number strictly identical to Master Table in Protocol TRUTH-1? (e.g., KDS-EL pure accuracy = 0.9545, bIRIME features = 407.7, bIRIME runtime = 326.2 s). Is 0.9574 strictly banned as pure accuracy?
+2. [ ] **Zero "50 Distinct Folds" Audit**: Has the unverified phrase "50 distinct folds" been completely eliminated and replaced by the standardized fixed 5-fold CV optimization instance protocol?
+3. [ ] **W Update Formula Audit**: Does Equation~\eqref{eq:importance_update} include both improving reward and non-improving penalty matching `kds_el_twophase.py:122-142`?
+4. [ ] **KER Perturbation Noise Audit**: Is the Gaussian perturbation in KER formulated as $\mathcal{N}(0, (\mathrm{std}(\mathbf{W}) + 10^{-5})^2)$ matching `utils.py:370`, rather than $10^{-12}$?
+5. [ ] **IGPSO Description Audit**: Is IGPSO accurately described as ANOVA F-statistic contrast rather than a multi-layer perceptron (MLP)?
+6. [ ] **Cross-Classifier S9 Honesty Audit**: Does discussion of Table S9 honestly disclose the slight accuracy drop on Colon for SVM and Random Forest, rather than claiming universal gains across all classifiers?
+7. [ ] **Zero Baseline Terminology Check**: Is the word "baseline" / "baselines" completely eliminated from manuscript text, tables, captions, footnotes, and dialogue responses in favor of "competitor", "comparison method", "peer algorithm", or "benchmark"?
+8. [ ] **Colloquialism & Literal Translation Scan**: Have all colloquial phrasing and literal translations ('one-to-one replacement' $\to$ 'greedy pairwise replacement', 'step by step', 'deal with', 'hand in hand', 'a lot of', 'make sure') been purged?
+9. [ ] **Zero "Operator" for Proposed Components**: Are KDS-EL's own components strictly designated as "strategy" or "mechanism", never "operator"?
+10. [ ] **Acronym Check**: Are there duplicate acronym expansions (e.g., `(KER)`, `(TPS)`)?
+11. [ ] **Parameter Leakage Check**: Are specific numbers/parameters prematurely leaked into high-level descriptive sections?
+12. [ ] **Parenthetical Clutter Audit**: Have all parenthetical inequalities (`($D \gg N_{\mathrm{samp}}$)`), parenthetical symbol dumps (`($\mathcal{P}_1$ and $\mathcal{P}_2$)`, `($N/2$)`, `($\mathbf{g}_{\mathrm{best},2}$)`), premature parameter values (`($k_{\mathrm{nn}} = 3$)`), dimension attractors (`($d \approx D/2$)`), and English explanatory clauses been purged?
+13. [ ] **Narrative Rhythm Check**: Does the text use natural pipeline verbs instead of mechanical bulleted ordinals?
+14. [ ] **Mathematical Rigor Check**: Are all variables given explicit mathematical domains? Are vector orientations consistent?
+15. [ ] **Figure/Equation Cross-Ref Check**: Are all figure, table, and equation references resolved with 0 compilation errors?
+16. [ ] **Causal Logic Check**: Does every proposed design component have a clearly articulated physical motivation?
+17. [ ] **Elsevier Booktabs Check**: Do all tables strictly avoid vertical lines (`|`) and use standard `\toprule`, `\midrule`, `\bottomrule`?
+18. [ ] **Statistical Verification Check**: Are standard deviation ($\pm \mathrm{Std}$) and Wilcoxon $+/-/\approx$ counts properly presented?
+19. [ ] **Vector Graphic Check**: Are all embedded figures in pure vector `.pdf` format?
+20. [ ] **Highlight Length Check**: Are Research Highlights strictly between 3–5 bullets and under 85 characters each?
+21. [ ] **BibTeX Integrity Check**: Are all `\cite{...}` keys resolved without undefined reference warnings?
+22. [ ] **Section 2 Narrative Chain**: Does each subsection follow the 4-step chain rather than mechanical literature listing?
+23. [ ] **Section 2 Closed-Loop Check**: Are the three core gaps in Related Work in 1-to-1 correspondence with MII+AIR, KER, and TPS?
+24. [ ] **Section-Wise Data Tier Audit**: Is the modified text strictly compliant with its designated Data Tier (Tier 1: zero data; Tier 2: macro landmarks only; Tier 3: setup constants only; Tier 4: table-free causal mechanisms)?
+25. [ ] **Caption & Footnote Audit**: Are table captions ultra-concise noun phrases (6–15 words) free of formatting definitions? Are figure captions concise noun phrases (8–15 words)?
+26. [ ] **Section 3 Code-Formula Mirror Audit**: Does every equation and algorithmic step strictly mirror the Python implementation in `code/algorithms/kds_el_twophase.py` and `code/utils.py`?
+27. [ ] **Section 3 Modular Pseudocode Audit**: Are Algorithm 1 (KER) and Algorithm 2 (KDS-EL) fully declared with mathematical domains in `\Require`/`\Ensure`?
+28. [ ] **Fair Budget Wording Audit**: Is "identical evaluation budgets" replaced by "identical population size ($N=20$) and iteration cutoff ($T=100$)"?

@@ -116,12 +116,17 @@ At generation $t$, whenever an updated candidate solution $\mathbf{x}_i^{(t)} \i
 \mathcal{C}_i^{(t)} = \left\{j \in \{1, \dots, D\} \;\middle|\; x_{i,j}^{(t)} \neq p_{\mathrm{best},i,j}\right\}.
 \label{eq:changed_features}
 \end{equation}
-Let $\delta_i^{(t)} = f(\mathbf{p}_{\mathrm{best},i}, \mathbf{w}(t)) - f(\mathbf{x}_i^{(t)}, \mathbf{w}(t)) > 0$ denote the scalar fitness improvement evaluated under dynamic weight vector $\mathbf{w}(t)$. To distinguish beneficial feature inclusions from advantageous feature exclusions, each altered coordinate $j \in \mathcal{C}_i^{(t)}$ receives a directional credit assignment scaled by $\delta_i^{(t)}$:
+Let $\delta_i^{(t)} = f(\mathbf{p}_{\mathrm{best},i}, \mathbf{w}(t)) - f(\mathbf{x}_i^{(t)}, \mathbf{w}(t))$ denote the generational fitness differential evaluated under dynamic weight vector $\mathbf{w}(t)$. To distinguish beneficial feature alterations from detrimental ones, the algorithm executes bidirectional credit updating. When candidate solution $\mathbf{x}_i^{(t)}$ achieves a strict fitness improvement over its historical personal best with $\delta_i^{(t)} > 0$, each altered coordinate $j \in \mathcal{C}_i^{(t)}$ receives a directional reinforcement scaled by $\delta_i^{(t)}$:
 \begin{equation}
 W_j \leftarrow W_j + \delta_i^{(t)} \cdot (2 x_{i,j}^{(t)} - 1), \quad \forall j \in \mathcal{C}_i^{(t)},
 \label{eq:importance_update}
 \end{equation}
-where the polarity factor $(2 x_{i,j}^{(t)} - 1) \in \{-1, +1\}$ yields $+1$ when feature $j$ was newly activated ($x_{i,j}^{(t)} = 1$) to achieve the superior solution, reinforcing its importance score, and yields $-1$ when feature $j$ was successfully pruned ($x_{i,j}^{(t)} = 0$), penalizing its inclusion. Conversely, candidate solutions that fail to improve fitness leave the cumulative importance vector $\mathbf{W}$ unaltered, shielding the learned landscape from noisy perturbations.
+where the polarity factor $(2 x_{i,j}^{(t)} - 1) \in \{-1, +1\}$ yields $+1$ when feature $j$ was newly activated with $x_{i,j}^{(t)} = 1$ to achieve the superior solution, reinforcing its importance score, and yields $-1$ when feature $j$ was successfully pruned with $x_{i,j}^{(t)} = 0$, penalizing its inclusion. Conversely, when candidate solution $\mathbf{x}_i^{(t)}$ fails to improve upon the personal best, characterized by $\Delta_i^{(t)} = f(\mathbf{x}_i^{(t)}, \mathbf{w}(t)) - f(\mathbf{p}_{\mathrm{best},i}, \mathbf{w}(t)) \ge 0$, the coordinates altered during the unrewarded transition incur a symmetric penalty:
+\begin{equation}
+W_j \leftarrow W_j - \Delta_i^{(t)} \cdot (2 x_{i,j}^{(t)} - 1), \quad \forall j \in \mathcal{C}_i^{(t)}.
+\label{eq:importance_penalty}
+\end{equation}
+This bidirectional credit-penalty dynamic ensures that beneficial transitions reinforce feature utility while deteriorating moves dynamically suppress counterproductive coordinate changes.
 
 Because candidate subsets become progressively sparser across evolution, unconstrained accumulation would allow early-discovered, coarsely predictive dimensions to dominate $\mathbf{W}$ indefinitely. Such historical inertia suppresses emergent synergistic feature interactions that only become apparent once redundant dimensions are pruned. To reconcile long-term knowledge retention with responsiveness to emergent feature synergies, an exponential memory decay is applied at the conclusion of each generation:
 \begin{equation}
@@ -143,31 +148,21 @@ In ultra-high-dimensional regimes where candidate dimensions $D \gg 10^3$ vastly
 
 \begin{algorithm}[!htb]
 \small
-\caption{Knowledge-guided elite refinement}
+\caption{Knowledge-guided elite refinement (KER) strategy}
 \label{alg:ker}
 \begin{algorithmic}[1]
-\Require Elite candidate solution $\mathbf{x}_e \in \{0, 1\}^D$, cumulative importance vector $\mathbf{W} \in \mathbb{R}^D$, perturbation fraction $\phi \in (0, 1)$, exploration probability $p_{\mathrm{rand}} \in [0, 1]$, dynamic weight vector $\mathbf{w}(t) \in [0, 1]^2$
-\Ensure Refined elite candidate solution $\mathbf{x}_e^{\star} \in \{0, 1\}^D$
-\State $k_{\mathrm{flip}} \leftarrow \max\bigl(1, \lfloor \phi \cdot D \rfloor\bigr)$
-\State $\mathbf{x}'_e \leftarrow \mathbf{x}_e$ \Comment{Initialize mutant candidate}
-\State Sample random variable $r \sim \mathcal{U}(0, 1)$
-\If{$r < p_{\mathrm{rand}}$} \Comment{Branch 1: Ergodic random exploration}
-    \State Sample random feature index subset $\mathcal{S}_{\mathrm{rand}} \subset \{1, \dots, D\}$ with $|\mathcal{S}_{\mathrm{rand}}| = k_{\mathrm{flip}}$
-    \State $x'_{e,j} \leftarrow 1 - x_{e,j}, \quad \forall j \in \mathcal{S}_{\mathrm{rand}}$
-\Else \Comment{Branch 2: Knowledge-guided directional refinement}
-    \For{$j = 1$ \textbf{to} $D$}
-        \State $\sigma_j \leftarrow (1 - 2 x_{e,j}) \cdot W_j$ \Comment{Compute directional flip score via \eqref{eq:flip_score}}
-    \EndFor
-    \State Identify index subset $\mathcal{S}_{\mathrm{know}}$ of size $k_{\mathrm{flip}}$ with top $\sigma_j$ scores via \eqref{eq:top_scores}
-    \State $x'_{e,j} \leftarrow 1 - x_{e,j}, \quad \forall j \in \mathcal{S}_{\mathrm{know}}$
-\EndIf
-\State Evaluate candidate fitness $f(\mathbf{x}'_e, \mathbf{w}(t))$ via \eqref{eq:fitness}
-\If{$f(\mathbf{x}'_e, \mathbf{w}(t)) < f(\mathbf{x}_e, \mathbf{w}(t))$} \Comment{Greedy pairwise in-place replacement}
-    \State $\mathbf{x}_e^{\star} \leftarrow \mathbf{x}'_e$
-\Else
-    \State $\mathbf{x}_e^{\star} \leftarrow \mathbf{x}_e$
-\EndIf
-\State \Return $\mathbf{x}_e^{\star}$
+\Require Elite candidate solution $\mathbf{x}_e$, importance vector $\mathbf{W}$, budget $k_{\mathrm{flip}}$, exploration probability $p_{\mathrm{rand}}$, objective weights $\mathbf{w}(t)$
+\Ensure Refined candidate solution $\mathbf{x}_e^{\star}$
+\State \textbf{Branch 1: Ergodic random exploration (with probability $p_{\mathrm{rand}}$)}
+\State \quad Uniformly sample a coordinate subset $\mathcal{S}_{\mathrm{rand}}$ of size $k_{\mathrm{flip}}$;
+\State \quad Invert binary coordinates in $\mathbf{x}_e$ over $\mathcal{S}_{\mathrm{rand}}$ via Eq.~\eqref{eq:ker_rand};
+\State \textbf{Branch 2: Knowledge-guided directional refinement (with probability $1 - p_{\mathrm{rand}}$)}
+\State \quad Calculate directional perturbation scores $\boldsymbol{\sigma}$ using Eq.~\eqref{eq:perturbed_score};
+\State \quad Select top-$k_{\mathrm{flip}}$ candidate feature subset $\mathcal{S}_{\mathrm{know}}$ by Eq.~\eqref{eq:top_scores};
+\State \quad Invert binary coordinates in $\mathbf{x}_e$ over $\mathcal{S}_{\mathrm{know}}$;
+\State Evaluate mutant candidate fitness using wrapper classifier by Eq.~\eqref{eq:fitness};
+\State Perform greedy pairwise in-place replacement according to Eq.~\eqref{eq:inplace};
+\State \Return Refined elite candidate solution $\mathbf{x}_e^{\star}$;
 \end{algorithmic}
 \end{algorithm}
 
@@ -188,12 +183,18 @@ x'_{e,j} \leftarrow 1 - x_{e,j}, \quad \forall j \in \mathcal{S}_{\mathrm{rand}}
 \label{eq:flip_score}
 \end{equation}
 A positive flip score $\sigma_j > 0$ reflects two favorable search transitions: an unselected feature with inactive coordinate $x_{e,j} = 0$ that exhibits a positive historical contribution $W_j > 0$, or an active feature with $x_{e,j} = 1$ whose exclusion has historically improved classification fitness with $W_j < 0$. In either scenario, flipping the binary state of feature $j$ is expected to enhance candidate solution quality.
-The feature subset $\mathcal{S}_{\mathrm{know}}$ containing the $k_{\mathrm{flip}}$ features with the largest directional flip scores is identified:
+
+To balance directional guidance with exploratory diversity and resolve potential ties among identical scores, an adaptive stochastic perturbation $\xi_j \sim \mathcal{N}\left(0, (\mathrm{std}(\mathbf{W}) + 10^{-5})^2\right)$ proportional to the empirical dispersion of the learned importance vector is injected into each directional score:
+\begin{equation}
+\sigma_j = (1 - 2 x_{e,j}) \cdot W_j + \xi_j, \quad \xi_j \sim \mathcal{N}\left(0, \left(\mathrm{std}(\mathbf{W}) + 10^{-5}\right)^2\right).
+\label{eq:perturbed_score}
+\end{equation}
+The feature subset $\mathcal{S}_{\mathrm{know}}$ containing the $k_{\mathrm{flip}}$ coordinates with the largest perturbed directional scores is identified:
 \begin{equation}
 \mathcal{S}_{\mathrm{know}} = \arg\max_{\substack{\mathcal{S} \subseteq \{1, \dots, D\} \\ |\mathcal{S}| = k_{\mathrm{flip}}}} \sum_{j \in \mathcal{S}} \sigma_j,
 \label{eq:top_scores}
 \end{equation}
-and the corresponding binary states are inverted via $x'_{e,j} \leftarrow 1 - x_{e,j}$ for all $j \in \mathcal{S}_{\mathrm{know}}$. To resolve potential ties among identical flip scores, an infinitesimal stochastic jitter $\zeta_j \sim \mathcal{N}(0, 10^{-12})$ is added to $\sigma_j$, ensuring consistent subset identification.
+and the corresponding binary states are inverted via $x'_{e,j} \leftarrow 1 - x_{e,j}$ for all $j \in \mathcal{S}_{\mathrm{know}}$.
 
 \textit{Greedy pairwise in-place replacement}: The perturbed candidate $\mathbf{x}'_e$ is evaluated using the objective fitness function $f(\mathbf{x}'_e, \mathbf{w}(t))$. A greedy pairwise in-place replacement rule determines solution admission:
 \begin{equation}
@@ -237,37 +238,25 @@ Algorithm~\ref{alg:kds_el} synthesizes the overall execution pipeline of KDS-EL 
 \caption{Overall algorithmic framework of KDS-EL}
 \label{alg:kds_el}
 \begin{algorithmic}[1]
-\Require Training dataset $\mathcal{D} = \{(\mathbf{f}_i, y_i)\}_{i=1}^{N_{\mathrm{samp}}}$, population size $N \in \mathbb{Z}_+$, maximum generations $T \in \mathbb{Z}_+$, binarization threshold $\theta \in (0.5, 1)$, prior seeding ratio $\rho \in (0, 1)$, perturbation scale $\sigma \in \mathbb{R}_+$, forgetting factor $\gamma \in (0, 1)$, elite pool size $k_e \in \mathbb{Z}_+$, perturbation fraction $\phi \in (0, 1)$, random branch probability $p_{\mathrm{rand}} \in [0, 1]$, phase transition split ratio $\kappa \in (0, 1)$, stagnation threshold $\tau \in \mathbb{Z}_+$
-\Ensure Optimal compact feature subset $\mathbf{x}^{\star} \in \{0, 1\}^D$ and optimal fitness $f_{\mathrm{gbest}} \in \mathbb{R}$
+\Require Training dataset $\mathcal{D}$, population size $N$, maximum generations $T$, parameters $(\theta, \rho, \sigma, \gamma, k_e, \phi, p_{\mathrm{rand}}, \kappa, \tau)$
+\Ensure Optimal compact feature subset $\mathbf{x}^{\star}$ and optimal fitness $f_{\mathrm{gbest}}$
 \Statex \textbf{Stage 1: Filter-level relevance extraction}
-\State Compute normalized mutual information vector $\mathbf{m} \in [0, 1]^D$ via \eqref{eq:mi_ksg} and \eqref{eq:mi_norm}
-\Statex \textbf{Stage 2: Knowledge-informed hybrid population seeding}
-\State Initialize population $\mathcal{P} = \{\mathbf{x}_i\}_{i=1}^N$ with $\lfloor \rho N \rfloor$ Gaussian MI seeds and $(N - \lfloor \rho N \rfloor)$ uniform particles via \eqref{eq:mi_seeding}--\eqref{eq:binarize}
-\State Initialize importance vector $\mathbf{W} \leftarrow \mathbf{0} \in \mathbb{R}^D$, stagnation counter $t_{\mathrm{stag}} \leftarrow 0$, and initial weights $\mathbf{w}(1) = [w_{a,1}, w_{f,1}]$ via \eqref{eq:twophase}
-\State Evaluate initial candidate fitness values $\{f(\mathbf{x}_i, \mathbf{w}(1))\}_{i=1}^N$ via \eqref{eq:fitness}; initialize personal bests $\{\mathbf{p}_{\mathrm{best},i}\}_{i=1}^N$ and global best $\mathbf{g}_{\mathrm{best}}$
+\State Extract and normalize mutual information prior vector $\mathbf{m}$ using Eqs.~\eqref{eq:mi_ksg} and~\eqref{eq:mi_norm};
+\Statex \textbf{Stage 2: Hybrid population seeding}
+\State Generate initial swarm $\mathcal{P}$ by combining MI-guided Gaussian seeds with uniform particles via Eqs.~\eqref{eq:mi_seeding}--\eqref{eq:binarize};
+\State Initialize importance vector $\mathbf{W} \leftarrow \mathbf{0}$, initial weights $\mathbf{w}(1)$, and evaluate candidate fitness by Eq.~\eqref{eq:fitness};
 \Statex \textbf{Stage 3: Dynamic two-phase co-evolutionary loop}
 \For{$t = 1$ \textbf{to} $T$}
-    \State Update dynamic objective weight vector $\mathbf{w}(t)$ according to \eqref{eq:twophase}
-    \State \textbf{if} $t = \lfloor \kappa T \rfloor + 1$ \textbf{then} re-evaluate $\{\mathbf{p}_{\mathrm{best},i}\}_{i=1}^N$ under $\mathbf{w}_2$, update $\mathbf{g}_{\mathrm{best}}$, reset $t_{\mathrm{stag}} \leftarrow 0$ \Comment{Boundary calibration}
-    \State Update continuous Subpopulation $\mathcal{P}_1$ via continuous PSO with inter-task knowledge transfer~\cite{mel2024}
-    \State Update discrete Subpopulation $\mathcal{P}_2$ via discrete probability sampling guided by $\mathbf{W}$
-    \State Evaluate candidate solution fitness $\{f(\mathbf{x}_i, \mathbf{w}(t))\}_{i=1}^N$ using 5-fold cross-validation $k\text{-NN}$ classifier via \eqref{eq:fitness}
-    \State Update cumulative importance vector $\mathbf{W}$ with improving differentials and apply memory decay $\gamma$ via \eqref{eq:importance_update}--\eqref{eq:decay}
-    \State Update personal bests $\{\mathbf{p}_{\mathrm{best},i}\}_{i=1}^N$ and identify top $k_e$ elite candidate indices $\mathcal{E}$
-    \For{\textbf{each} $e \in \mathcal{E}$} \Comment{Knowledge-guided elite refinement}
-        \State $\mathbf{p}_{\mathrm{best},e} \leftarrow \textsc{KER}\bigl(\mathbf{p}_{\mathrm{best},e}, \mathbf{W}, \phi, p_{\mathrm{rand}}, \mathbf{w}(t)\bigr)$ \Comment{Invoke Algorithm~\ref{alg:ker}}
-    \EndFor
-    \If{$\min_i f(\mathbf{p}_{\mathrm{best},i}, \mathbf{w}(t)) < f(\mathbf{g}_{\mathrm{best}}, \mathbf{w}(t))$}
-        \State Update global best $\mathbf{g}_{\mathrm{best}} \leftarrow \arg\min_i f(\mathbf{p}_{\mathrm{best},i}, \mathbf{w}(t))$ and reset $t_{\mathrm{stag}} \leftarrow 0$
-    \Else
-        \State Increment stagnation counter $t_{\mathrm{stag}} \leftarrow t_{\mathrm{stag}} + 1$
-    \EndIf
-    \If{$t_{\mathrm{stag}} \ge \tau$} \Comment{Adaptive stagnation recovery}
-        \State Refresh lower-performing half of population using Gaussian-perturbed MI seeds via \eqref{eq:reinit_formula}
-        \State Re-evaluate refreshed particles and reset $t_{\mathrm{stag}} \leftarrow 0$
-    \EndIf
+    \State Schedule dynamic objective weights $\mathbf{w}(t)$ according to Eq.~\eqref{eq:twophase};
+    \State \textbf{if} $t = \lfloor \kappa T \rfloor + 1$ \textbf{then} calibrate personal and global bests under Phase~2 weights;
+    \State Evolve Subpopulations $\mathcal{P}_1$ and $\mathcal{P}_2$ via collaborative multi-task search;
+    \State Evaluate candidate solution fitness via 5-fold cross-validation by Eq.~\eqref{eq:fitness};
+    \State Update cumulative importance vector $\mathbf{W}$ and apply memory decay $\gamma$ using Eqs.~\eqref{eq:importance_update}--\eqref{eq:decay};
+    \State Refine top $k_e$ elite candidates using the KER strategy according to Algorithm~\ref{alg:ker};
+    \State Update global best $\mathbf{g}_{\mathrm{best}}$ and monitor swarm stagnation counter;
+    \State \textbf{if} stagnation persists for $\tau$ generations \textbf{then} execute adaptive recovery by Eq.~\eqref{eq:reinit_formula};
 \EndFor
-\State \Return $\mathbf{x}^{\star} \leftarrow \mathbf{g}_{\mathrm{best}}$, $f_{\mathrm{gbest}} \leftarrow f(\mathbf{g}_{\mathrm{best}}, \mathbf{w}(T))$
+\State \Return Optimal feature subset $\mathbf{x}^{\star} \leftarrow \mathbf{g}_{\mathrm{best}}$ and optimal fitness $f_{\mathrm{gbest}}$;
 \end{algorithmic}
 \end{algorithm}
 

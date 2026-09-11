@@ -68,6 +68,10 @@ N.~H. Shikoun, A.~E. Hassanien, M.~H. Haggag, {BinCOA}: An efficient binary
 \newblock \href {https://doi.org/10.1109/ACCESS.2024.3368297}
   {\path{doi:10.1109/ACCESS.2024.3368297}}.
 
+\bibitem{demsar2006}
+J.~Dem{\v{s}}ar, Statistical comparisons of classifiers over multiple data
+  sets, Journal of Machine Learning Research 7 (2006) 1--30.
+
 \bibitem{fischer2001}
 H.~Fischer, R.~Stenling, C.~Rubio, A.~Lindblom, Colorectal carcinogenesis is
   associated with expression of collagen type {XI} alpha 1, Clinical Cancer

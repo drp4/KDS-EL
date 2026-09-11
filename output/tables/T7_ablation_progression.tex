@@ -4,34 +4,34 @@
 \label{T7_prog}\label{tab:ablation_progression}
 \begin{tabular}{lcccccccc}
 \toprule
-& \multicolumn{2}{c}{Foundational MEL} & \multicolumn{2}{c}{KDS-EL w/o TPS\&KER} & \multicolumn{2}{c}{KDS-EL w/o TPS} & \multicolumn{2}{c}{Proposed KDS-EL} \\
+& \multicolumn{2}{c}{Original MEL} & \multicolumn{2}{c}{KDS-EL w/o TPS\&KER} & \multicolumn{2}{c}{KDS-EL w/o TPS} & \multicolumn{2}{c}{Proposed KDS-EL} \\
 & \multicolumn{2}{c}{(Base Swarm)} & \multicolumn{2}{c}{(+ MII)} & \multicolumn{2}{c}{(+ MII \& KER)} & \multicolumn{2}{c}{(Complete)} \\
 \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
 Dataset & Acc & Feat & Acc & Feat & Acc & Feat & Acc & Feat \\
 \midrule
-ALL1             & 0.9664 & 4{,}248 & \underline{0.9996} & 55 & \underline{0.9996} & \underline{55} & \textbf{0.9998} & \textbf{39} \\
-ALL4             & 0.8704 & 1{,}082 & 0.9415 & \textbf{64} & \underline{0.9418} & 152 & \textbf{0.9522} & \underline{124} \\
-ALL\_AML         & 0.9539 & 2{,}369 & 0.9886 & 473 & \underline{0.9990} & \underline{70} & \textbf{0.9995} & \textbf{67} \\
-Adenoma          & 0.9410 & 2{,}483 & 0.9958 & 120 & \textbf{0.9996} & \textbf{33} & \textbf{0.9996} & \underline{66} \\
-BASEHOCK         & 0.8518 & 1{,}965 & 0.8597 & 812 & \underline{0.8997} & \underline{208} & \textbf{0.9113} & \textbf{134} \\
-COIL20           & 0.9634 & 323 & 0.9619 & 348 & \underline{0.9919} & \textbf{60} & \textbf{0.9939} & \underline{84} \\
-Colon            & 0.8548 & 702 & 0.9211 & 105 & \underline{0.9347} & \underline{35} & \textbf{0.9500} & \textbf{14} \\
-DLBCL            & 0.9483 & 2{,}784 & 0.9902 & 615 & \underline{0.9993} & \textbf{52} & \textbf{0.9995} & \underline{64} \\
-Gastric          & 0.8955 & 3{,}604 & \underline{0.9748} & \textbf{62} & 0.9677 & \underline{97} & \textbf{0.9782} & 100 \\
-Gastric1         & 0.9310 & 7{,}393 & 0.9642 & 678 & \underline{0.9738} & \underline{217} & \textbf{0.9800} & \textbf{31} \\
-Gastric2         & 0.9522 & 7{,}084 & 0.9872 & 444 & \underline{0.9936} & \underline{140} & \textbf{0.9981} & \textbf{83} \\
-ISOLET           & 0.8501 & 250 & 0.8557 & 225 & \textbf{0.8898} & \underline{100} & \underline{0.8894} & \textbf{60} \\
-Leukaemia        & 0.9534 & 2{,}409 & 0.9895 & 488 & \underline{0.9993} & \textbf{47} & \textbf{0.9995} & \underline{66} \\
-Lymphoma         & 0.8731 & 1{,}404 & 0.9868 & 50 & \textbf{0.9994} & \textbf{23} & \textbf{0.9994} & \underline{45} \\
-Myeloma          & 0.8450 & 2{,}137 & 0.8825 & \textbf{175} & \underline{0.8971} & 365 & \textbf{0.9155} & \underline{250} \\
-PCMAC            & 0.7870 & 1{,}339 & 0.8007 & 637 & \underline{0.8424} & \underline{329} & \textbf{0.8705} & \textbf{91} \\
-Prostate         & 0.8458 & 5{,}058 & \underline{0.9638} & 27 & 0.9595 & \textbf{23} & \textbf{0.9701} & \underline{26} \\
-SRBCT            & 0.9321 & 906 & 0.9944 & 129 & \underline{0.9984} & \textbf{36} & \textbf{0.9986} & \underline{64} \\
-T1D              & 0.7679 & 6{,}715 & \underline{0.8246} & \textbf{174} & 0.8232 & 366 & \textbf{0.8598} & \underline{330} \\
-madelon          & 0.7521 & 190 & 0.7679 & 130 & \underline{0.8659} & \underline{26} & \textbf{0.8822} & \textbf{18} \\
+ALL1             & \textbf{1.0000} & 4{,}248 & \textbf{1.0000} & 55 & \textbf{1.0000} & \underline{55} & \textbf{1.0000} & \textbf{39} \\
+ALL4             & 0.8656 & 1{,}082 & 0.9356 & \textbf{64} & \underline{0.9367} & 152 & \textbf{0.9480} & \underline{124} \\
+ALL\_AML         & 0.9857 & 2{,}369 & \underline{0.9947} & 473 & \textbf{1.0000} & \underline{70} & \textbf{1.0000} & \textbf{67} \\
+Adenoma          & 0.9714 & 2{,}483 & \underline{0.9971} & 120 & \textbf{1.0000} & \textbf{33} & \textbf{1.0000} & \underline{66} \\
+BASEHOCK         & 0.8802 & 1{,}965 & 0.8627 & 812 & \underline{0.8933} & \underline{208} & \textbf{0.9045} & \textbf{134} \\
+COIL20           & 0.9944 & 323 & 0.9955 & 348 & \underline{0.9976} & \textbf{60} & \textbf{1.0000} & \underline{84} \\
+Colon            & 0.8777 & 702 & 0.9182 & 105 & \underline{0.9294} & \underline{35} & \textbf{0.9452} & \textbf{14} \\
+DLBCL            & 0.9859 & 2{,}784 & 0.9987 & 615 & \textbf{1.0000} & \textbf{52} & \underline{0.9999} & \underline{64} \\
+Gastric          & 0.9015 & 3{,}604 & \underline{0.9723} & \textbf{62} & 0.9646 & \underline{97} & \textbf{0.9763} & 100 \\
+Gastric1         & 0.9602 & 7{,}393 & 0.9636 & 678 & \underline{0.9719} & \underline{217} & \textbf{0.9779} & \textbf{31} \\
+Gastric2         & 0.9822 & 7{,}084 & 0.9880 & 444 & \underline{0.9936} & \underline{140} & \textbf{0.9982} & \textbf{83} \\
+ISOLET           & 0.8783 & 250 & 0.8801 & 225 & \textbf{0.8955} & \underline{100} & \underline{0.8880} & \textbf{60} \\
+Leukaemia        & 0.9857 & 2{,}409 & \underline{0.9960} & 488 & \textbf{1.0000} & \textbf{47} & \textbf{1.0000} & \underline{66} \\
+Lymphoma         & 0.8978 & 1{,}404 & \underline{0.9867} & 50 & \textbf{1.0000} & \textbf{23} & \textbf{1.0000} & \underline{45} \\
+Myeloma          & 0.8466 & 2{,}137 & 0.8710 & \textbf{175} & \underline{0.8889} & 365 & \textbf{0.9083} & \underline{250} \\
+PCMAC            & 0.8085 & 1{,}339 & 0.8000 & 637 & \underline{0.8360} & \underline{329} & \textbf{0.8592} & \textbf{91} \\
+Prostate         & 0.8732 & 5{,}058 & \underline{0.9600} & 27 & 0.9552 & \textbf{23} & \textbf{0.9670} & \underline{26} \\
+SRBCT            & \underline{0.9682} & 906 & \textbf{1.0000} & 129 & \textbf{1.0000} & \textbf{36} & \textbf{1.0000} & \underline{64} \\
+T1D              & 0.7558 & 6{,}715 & \underline{0.8054} & \textbf{174} & 0.8043 & 366 & \textbf{0.8449} & \underline{330} \\
+madelon          & 0.7667 & 190 & 0.7710 & 130 & \underline{0.8567} & \underline{26} & \textbf{0.8731} & \textbf{18} \\
 \midrule
-Average          & 0.8868 & 2{,}722.2 & 0.9325 & 290.5 & \underline{0.9488} & \underline{121.7} & \textbf{0.9574} & \textbf{87.8} \\
-$\Delta$ vs. Preceding & \multicolumn{2}{c}{—} & +4.58\% & -89.3\% & +1.63\% & -58.1\% & +0.86\% & -27.9\% \\
+Average          & 0.9093 & 2{,}722.2 & 0.9348 & 290.5 & \underline{0.9462} & \underline{121.7} & \textbf{0.9545} & \textbf{87.8} \\
+$\Delta$ vs. Preceding & \multicolumn{2}{c}{—} & +2.55 pp & -89.3\% & +1.13 pp & -58.1\% & +0.83 pp & -27.9\% \\
 \bottomrule
 \end{tabular}
 \end{table*}

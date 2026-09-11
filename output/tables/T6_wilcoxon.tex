@@ -1,6 +1,6 @@
 \begin{table*}[!t]
 \centering
-\caption{Pairwise Wilcoxon signed-rank test results on classification accuracy across 20 benchmark datasets.}
+\caption{Pairwise statistical comparison on classification accuracy.}
 \label{T6}
 \resizebox{\textwidth}{!}{%
 \renewcommand{\arraystretch}{0.96}
@@ -8,22 +8,22 @@
 \toprule
 Method & KDS-EL & \makecell{KDS-EL \\ w/o TPS} & \makecell{KDS-EL \\ w/o TPS\&KER} & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
 \midrule
-KDS-EL & — & 12/8/0 & 19/1/0 & 20/0/0 & 7/5/8 & 19/1/0 & 20/0/0 & 18/0/2 & 19/1/0 & 20/0/0 & 18/1/1 & 20/0/0 \\
-KDS-EL w/o TPS & 0/8/12 & — & 15/4/1 & 20/0/0 & 4/6/10 & 19/1/0 & 20/0/0 & 18/0/2 & 19/1/0 & 20/0/0 & 18/0/2 & 20/0/0 \\
-KDS-EL w/o TPS\&KER & 0/1/19 & 1/4/15 & — & 18/1/1 & 4/1/15 & 11/4/5 & 15/4/1 & 12/3/5 & 15/0/5 & 19/0/1 & 15/2/3 & 16/3/1 \\
-MEL & 0/0/20 & 0/0/20 & 1/1/18 & — & 0/2/18 & 0/3/17 & 1/6/13 & 2/5/13 & 2/5/13 & 2/11/7 & 8/1/11 & 11/4/5 \\
-bIRIME & 8/5/7 & 10/6/4 & 15/1/4 & 18/2/0 & — & 20/0/0 & 20/0/0 & 19/1/0 & 20/0/0 & 20/0/0 & 19/1/0 & 20/0/0 \\
-FWPSO & 0/1/19 & 0/1/19 & 5/4/11 & 17/3/0 & 0/0/20 & — & 16/4/0 & 8/8/4 & 15/2/3 & 20/0/0 & 16/2/2 & 20/0/0 \\
-PSO-CSM & 0/0/20 & 0/0/20 & 1/4/15 & 13/6/1 & 0/0/20 & 0/4/16 & — & 6/4/10 & 12/4/4 & 20/0/0 & 10/6/4 & 16/4/0 \\
-BinCOA & 2/0/18 & 2/0/18 & 5/3/12 & 13/5/2 & 0/1/19 & 4/8/8 & 10/4/6 & — & 8/5/7 & 15/3/2 & 16/4/0 & 18/2/0 \\
-SaWDE & 0/1/19 & 0/1/19 & 5/0/15 & 13/5/2 & 0/0/20 & 3/2/15 & 4/4/12 & 7/5/8 & — & 10/3/7 & 12/1/7 & 20/0/0 \\
-IGPSO & 0/0/20 & 0/0/20 & 1/0/19 & 7/11/2 & 0/0/20 & 0/0/20 & 0/0/20 & 2/3/15 & 7/3/10 & — & 8/3/9 & 13/3/4 \\
-DENCA-SO & 1/1/18 & 2/0/18 & 3/2/15 & 11/1/8 & 0/1/19 & 2/2/16 & 4/6/10 & 0/4/16 & 7/1/12 & 9/3/8 & — & 9/3/8 \\
-BPSO & 0/0/20 & 0/0/20 & 1/3/16 & 5/4/11 & 0/0/20 & 0/0/20 & 0/4/16 & 0/2/18 & 0/0/20 & 4/3/13 & 8/3/9 & — \\
+KDS-EL & — & \textbf{11/8/1} & \textbf{13/7/0} & \textbf{19/1/0} & \textbf{8/11/1} & \textbf{15/4/1} & \textbf{19/1/0} & \textbf{19/1/0} & \textbf{15/3/2} & \textbf{19/1/0} & \textbf{19/1/0} & \textbf{17/2/1} \\
+KDS-EL w/o TPS & 1/8/11 & — & \textbf{11/9/0} & \textbf{19/1/0} & 3/11/6 & \textbf{12/7/1} & \textbf{20/0/0} & \textbf{18/2/0} & \textbf{14/2/4} & \textbf{19/1/0} & \textbf{19/1/0} & \textbf{15/5/0} \\
+KDS-EL w/o TPS\&KER & 0/7/13 & 0/9/11 & — & \textbf{15/4/1} & 3/7/10 & \textbf{7/8/5} & \textbf{16/3/1} & \textbf{15/3/2} & \textbf{10/5/5} & \textbf{16/4/0} & \textbf{16/4/0} & \textbf{14/1/5} \\
+MEL & 0/1/19 & 0/1/19 & 1/4/15 & — & 0/2/18 & 0/8/12 & 4/12/4 & 4/10/6 & 1/10/9 & \textbf{4/16/0} & \textbf{12/8/0} & 1/12/7 \\
+bIRIME & 1/11/8 & \textbf{6/11/3} & \textbf{10/7/3} & \textbf{18/2/0} & — & \textbf{15/5/0} & \textbf{20/0/0} & \textbf{19/1/0} & \textbf{14/5/1} & \textbf{19/1/0} & \textbf{19/1/0} & \textbf{19/1/0} \\
+FWPSO & 1/4/15 & 1/7/12 & 5/8/7 & \textbf{12/8/0} & 0/5/15 & — & \textbf{18/2/0} & \textbf{14/6/0} & \textbf{8/6/6} & \textbf{16/4/0} & \textbf{18/2/0} & \textbf{12/8/0} \\
+PSO-CSM & 0/1/19 & 0/0/20 & 1/3/16 & 4/12/4 & 0/0/20 & 0/2/18 & — & \textbf{10/6/4} & 4/4/12 & \textbf{9/8/3} & \textbf{11/8/1} & 5/5/10 \\
+BinCOA & 0/1/19 & 0/2/18 & 2/3/15 & \textbf{6/10/4} & 0/1/19 & 0/6/14 & 4/6/10 & — & 3/4/13 & 6/8/6 & \textbf{17/3/0} & 3/3/14 \\
+SaWDE & 2/3/15 & 4/2/14 & 5/5/10 & \textbf{9/10/1} & 1/5/14 & 6/6/8 & \textbf{12/4/4} & \textbf{13/4/3} & — & \textbf{12/7/1} & \textbf{15/5/0} & \textbf{10/10/0} \\
+IGPSO & 0/1/19 & 0/1/19 & 0/4/16 & 0/16/4 & 0/1/19 & 0/4/16 & 3/8/9 & 6/8/6 & 1/7/12 & — & \textbf{12/7/1} & 1/9/10 \\
+DENCA-SO & 0/1/19 & 0/1/19 & 0/4/16 & 0/8/12 & 0/1/19 & 0/2/18 & 1/8/11 & 0/3/17 & 0/5/15 & 1/7/12 & — & 0/6/14 \\
+BPSO & 1/2/17 & 0/5/15 & 5/1/14 & \textbf{7/12/1} & 0/1/19 & 0/8/12 & \textbf{10/5/5} & \textbf{14/3/3} & 0/10/10 & \textbf{10/9/1} & \textbf{14/6/0} & — \\
 \bottomrule
 \end{tabular}%
 }
 \vspace{2pt}
 \par\raggedright\footnotesize
-Entries denote pairwise win/tie/loss ($+/ \approx / -$) counts between the row method and column method evaluated across 20 benchmark datasets according to the paired Wilcoxon signed-rank test at $\alpha = 0.05$.
+\textit{Note}: $W/T/L$: pairwise win/tie/loss counts against column methods (two-sided Mann--Whitney $U$ test, $\alpha = 0.05$). Bold indicates pairwise advantage ($W > L$).
 \end{table*}

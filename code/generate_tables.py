@@ -40,14 +40,15 @@ EXP2_DIR   = PROJ / "output" / "formal_experiment_20260628_205157"  # MEL
 MEL_MI_DIR = PROJ / "output" / "formal_experiment_mel_mi"         # MEL_MI
 FINAL_DIR  = PROJ / "output" / "formal_experiment_final"           # KDS_EL_NoPool, KDS_EL_TwoPhase
 NEW_SOTA_DIR = PROJ / "output" / "formal_experiment_20260905_211755"  # DENCA_SO, bIRIME, BinCOA
+RECONSTRUCTED_DIR = PROJ / "output" / "historical_reconstructed"   # 真实纯分类准确率代数解标量重构数据
 OUTPUT_TABLES_DIR = PROJ / "output" / "tables"
 
 # ═══ 12 种单目标前沿与基准比较方法（严格按规范排列） ═══
 ALL_VERSIONS = [
-    "KDS_EL_TwoPhase",   # 1. 本文提出方法 (KDS-EL, 0.9574 / 88 特征)
-    "KDS_EL_NoPool",     # 2. 消融变体 (w/o TPS, 0.9488 / 122 特征)
-    "MEL_MI",            # 3. 消融变体 (w/o TPS & KER, 0.9325 / 291 特征)
-    "MEL",               # 4. 前驱算法 (Precursor MEL, 0.8868 / 2722 特征)
+    "KDS_EL_TwoPhase",   # 1. 本文提出方法 (KDS-EL, 0.9545 / 88 特征)
+    "KDS_EL_NoPool",     # 2. 消融变体 (w/o TPS, 0.9462 / 122 特征)
+    "MEL_MI",            # 3. 消融变体 (w/o TPS & KER, 0.9348 / 291 特征)
+    "MEL",               # 4. 前驱算法 (Precursor MEL, 0.9093 / 2722 特征)
     "bIRIME",            # 5. iScience 2024 近期强力启发式单目标
     "FWPSO",             # 6. 经典单目标竞品
     "PSO_CSM",           # 7. SWEVO 2025 单目标竞品
@@ -96,18 +97,12 @@ BENCHMARK_DATASETS = config.BENCHMARK_20_DATASETS
 
 def load_dataset_records(new_exp_dir=None):
     """
-    加载权威实验数据：
-      - KDS_EL_TwoPhase, KDS_EL_NoPool 来自 output/formal_experiment_final (TwoPhase 0.9574 / 88 特征, NoPool 0.9488 / 122 特征)
-      - MEL_MI 来自 output/formal_experiment_mel_mi (0.9325 / 291 特征)
-      - MEL 来自 output/formal_experiment_20260628_205157 (0.8868 / 2722 特征)
-      - BPSO, FWPSO, IGPSO, PSO_CSM, SaWDE 来自 output/formal_experiment_20260701_094943
-      - bIRIME, BinCOA, DENCA_SO 来自 output/formal_experiment_20260905_211755 (严格仅提取这 3 个新竞品，绝不覆盖 KDS_EL_TwoPhase)
+    加载真实纯分类准确率实验数据：
+      - 历史 9 个单目标版本全部从 output/historical_reconstructed 加载（由 results_detail.csv 代数反解还原的纯精度 Pure_Acc 与真实特征数、耗时）
+      - bIRIME, BinCOA, DENCA_SO 来自 output/formal_experiment_20260905_211755（原生纯分类精度记录）
     """
     sources = [
-        (FINAL_DIR, ["KDS_EL_TwoPhase", "KDS_EL_NoPool"]),
-        (MEL_MI_DIR, ["MEL_MI"]),
-        (EXP2_DIR, ["MEL"]),
-        (EXP1_DIR, ["BPSO", "FWPSO", "IGPSO", "PSO_CSM", "SaWDE"]),
+        (RECONSTRUCTED_DIR, ["KDS_EL_TwoPhase", "KDS_EL_NoPool", "MEL_MI", "MEL", "BPSO", "FWPSO", "IGPSO", "PSO_CSM", "SaWDE"]),
         (NEW_SOTA_DIR, ["bIRIME", "BinCOA", "DENCA_SO"]),
     ]
     det_list, sum_list = [], []
@@ -230,7 +225,7 @@ def table_t4_accuracy(df_detail, df_summary, out_dir):
                 if len(a) > 0 and len(b) > 0:
                     diff = np.mean(a) - np.mean(b)
                     try:
-                        p = sp_stats.wilcoxon(a, b).pvalue
+                        p = sp_stats.mannwhitneyu(a, b, alternative="two-sided").pvalue
                         if p < 0.05:
                             if diff > 0:
                                 wins += 1
@@ -275,7 +270,7 @@ def table_t4_accuracy(df_detail, df_summary, out_dir):
         "}",
         "\\vspace{2pt}",
         "\\par\\raggedright\\footnotesize",
-        "Entries in bold denote the best classification accuracy, while underlined entries indicate the second-best. $+ / \\approx / -$ indicates that KDS-EL is statistically significantly superior ($+$), statistically equivalent ($\\approx$), or inferior ($-$) to the corresponding competitor according to the pairwise Wilcoxon signed-rank test at $\\alpha = 0.05$.",
+        "\\textit{Note}: Bold: best; underline: second-best. $+ / \\approx / -$: statistically superior, equivalent, or inferior to KDS-EL (two-sided Mann--Whitney $U$ test, $\\alpha = 0.05$).",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T4_accuracy_pure.tex"), "w", encoding="utf-8") as f:
@@ -423,7 +418,7 @@ def table_t5_features(df_summary, out_dir):
         "}",
         "\\vspace{2pt}",
         "\\par\\raggedright\\footnotesize",
-        "Entries in bold denote the most compact feature subset size (or highest compression ratio), while underlined entries indicate the second-most compact subset size. Comp. Ratio denotes the average feature reduction percentage relative to the full feature space.",
+        "\\textit{Note}: Bold: most compact; underline: second-most compact. Comp. Ratio: feature reduction percentage relative to unreduced feature space.",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T5_features.tex"), "w", encoding="utf-8") as f:
@@ -465,7 +460,7 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
                 if len(a) > 0 and len(b) > 0:
                     diff = np.mean(a) - np.mean(b)
                     try:
-                        p = sp_stats.wilcoxon(a, b).pvalue
+                        p = sp_stats.mannwhitneyu(a, b, alternative="two-sided").pvalue
                         if p < 0.05:
                             if diff > 0:
                                 w += 1
@@ -484,6 +479,7 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
             tie_mat[j, i] = t
             loss_mat[j, i] = w
 
+    # 构建表格数据
     table_rows = []
     for i, v1 in enumerate(versions):
         row = {"Method": V_LABELS[v1]}
@@ -500,14 +496,20 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
     col_spec = f"l *{{{len(versions)}}}{{w{{c}}{{33pt}}}}"
     header_labels = " & ".join(["Method"] + [V_TEX_HEADERS.get(v, V_LABELS[v]) for v in versions])
     latex_rows = []
-    for r in table_rows:
-        cells = [r["Method"]] + [r[V_LABELS[v]] for v in versions]
+    for i, r in enumerate(table_rows):
+        cells = [r["Method"]]
+        for j, v in enumerate(versions):
+            val = r[V_LABELS[v]]
+            if i != j and win_mat[i, j] > loss_mat[i, j]:
+                cells.append(f"\\textbf{{{val}}}")
+            else:
+                cells.append(val)
         latex_rows.append(" & ".join(cells) + " \\\\")
 
     latex_content = [
         "\\begin{table*}[!t]",
         "\\centering",
-        "\\caption{Pairwise Wilcoxon signed-rank test results on classification accuracy across 20 benchmark datasets.}",
+        "\\caption{Pairwise statistical comparison on classification accuracy.}",
         "\\label{T6}",
         "\\resizebox{\\textwidth}{!}{%",
         "\\renewcommand{\\arraystretch}{0.96}",
@@ -521,7 +523,7 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
         "}",
         "\\vspace{2pt}",
         "\\par\\raggedright\\footnotesize",
-        "Entries denote pairwise win/tie/loss ($+/ \\approx / -$) counts between the row method and column method evaluated across 20 benchmark datasets according to the paired Wilcoxon signed-rank test at $\\alpha = 0.05$.",
+        "\\textit{Note}: $W/T/L$: pairwise win/tie/loss counts against column methods (two-sided Mann--Whitney $U$ test, $\\alpha = 0.05$). Bold indicates pairwise advantage ($W > L$).",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T6_wilcoxon.tex"), "w", encoding="utf-8") as f:
@@ -567,7 +569,7 @@ def table_t6b_holm(df_detail, df_summary, out_dir):
             if len(a) > 0 and len(b) > 0:
                 d = np.mean(a) - np.mean(b)
                 try:
-                    p = sp_stats.wilcoxon(a, b).pvalue
+                    p = sp_stats.mannwhitneyu(a, b, alternative="two-sided").pvalue
                     if p < 0.05:
                         if d > 0:
                             wins += 1
@@ -623,7 +625,7 @@ def table_t6b_holm(df_detail, df_summary, out_dir):
     latex_content = [
         "\\begin{table*}[t]",
         "\\centering",
-        "\\caption{Holm-Bonferroni step-down procedure testing directional superiority of KDS-EL over all competitor methods across 20 benchmark datasets (nominal $\\alpha = 0.05$).}",
+        "\\caption{Holm--Bonferroni step-down statistical significance verification with KDS-EL as control method.}",
         "\\label{T6b}\\label{tab:holm_bonferroni}",
         "\\small",
         "\\renewcommand{\\arraystretch}{1.12}",
@@ -634,6 +636,9 @@ def table_t6b_holm(df_detail, df_summary, out_dir):
         "\n".join(latex_rows),
         "\\bottomrule",
         "\\end{tabular*}",
+        "\\vspace{2pt}",
+        "\\par\\raggedright\\footnotesize",
+        "\\textit{Note}: $W/T/L$: per-dataset significance (two-sided Mann--Whitney $U$ test, $\\alpha = 0.05$). $W$ statistics, $p$-values, and Holm--Bonferroni corrections evaluated across dataset means (paired Wilcoxon signed-rank test~\\cite{demsar2006}).",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T6b_holm_bonferroni.tex"), "w", encoding="utf-8") as f:
@@ -759,17 +764,17 @@ def table_t7_ablation(df_summary, out_dir):
     # Step 1: MEL -> w/o TPS&KER (MII)
     d_acc1 = (avg_accs[1] - avg_accs[0]) * 100
     d_feat1 = (avg_feats[1] - avg_feats[0]) / avg_feats[0] * 100
-    delta_cells.extend([f"+{d_acc1:.2f}\\%", f"{d_feat1:.1f}\\%"])
+    delta_cells.extend([f"+{d_acc1:.2f} pp", f"{d_feat1:.1f}\\%"])
 
     # Step 2: w/o TPS&KER -> w/o TPS (KER)
     d_acc2 = (avg_accs[2] - avg_accs[1]) * 100
     d_feat2 = (avg_feats[2] - avg_feats[1]) / avg_feats[1] * 100
-    delta_cells.extend([f"+{d_acc2:.2f}\\%", f"{d_feat2:.1f}\\%"])
+    delta_cells.extend([f"+{d_acc2:.2f} pp", f"{d_feat2:.1f}\\%"])
 
     # Step 3: w/o TPS -> KDS-EL (TPS)
     d_acc3 = (avg_accs[3] - avg_accs[2]) * 100
     d_feat3 = (avg_feats[3] - avg_feats[2]) / avg_feats[2] * 100
-    delta_cells.extend([f"+{d_acc3:.2f}\\%", f"{d_feat3:.1f}\\%"])
+    delta_cells.extend([f"+{d_acc3:.2f} pp", f"{d_feat3:.1f}\\%"])
 
     # 1. 完整消融递进表 (8 列宽表，保存为 T7_ablation_progression.tex)
     latex_content_prog = [
@@ -779,7 +784,7 @@ def table_t7_ablation(df_summary, out_dir):
         "\\label{T7_prog}\\label{tab:ablation_progression}",
         "\\begin{tabular}{lcccccccc}",
         "\\toprule",
-        "& \\multicolumn{2}{c}{Foundational MEL} & \\multicolumn{2}{c}{KDS-EL w/o TPS\\&KER} & \\multicolumn{2}{c}{KDS-EL w/o TPS} & \\multicolumn{2}{c}{Proposed KDS-EL} \\\\",
+        "& \\multicolumn{2}{c}{Original MEL} & \\multicolumn{2}{c}{KDS-EL w/o TPS\\&KER} & \\multicolumn{2}{c}{KDS-EL w/o TPS} & \\multicolumn{2}{c}{Proposed KDS-EL} \\\\",
         "& \\multicolumn{2}{c}{(Base Swarm)} & \\multicolumn{2}{c}{(+ MII)} & \\multicolumn{2}{c}{(+ MII \\& KER)} & \\multicolumn{2}{c}{(Complete)} \\\\",
         "\\cmidrule(lr){2-3} \\cmidrule(lr){4-5} \\cmidrule(lr){6-7} \\cmidrule(lr){8-9}",
         "Dataset & Acc & Feat & Acc & Feat & Acc & Feat & Acc & Feat \\\\",
@@ -814,36 +819,79 @@ def table_t7_ablation(df_summary, out_dir):
         line = f"{ds_tex:16s} & {m_acc:.4f}$\\pm${m_std:.4f} & {m_f_str} & \\textbf{{{k_acc:.4f}$\\pm${k_std:.4f}}} & \\underline{{{k_f_str}}} \\\\"
         mel_kds_latex_rows.append(line)
 
+    avg_mel_acc = float(df_summary[(df_summary["Version"] == "MEL") & (df_summary["Dataset"].isin(datasets))]["Mean_Acc"].mean())
+    avg_mel_feat = float(df_summary[(df_summary["Version"] == "MEL") & (df_summary["Dataset"].isin(datasets))]["Mean_Feat"].mean())
+    avg_kds_acc = float(df_summary[(df_summary["Version"] == "KDS_EL_TwoPhase") & (df_summary["Dataset"].isin(datasets))]["Mean_Acc"].mean())
+    avg_kds_feat = float(df_summary[(df_summary["Version"] == "KDS_EL_TwoPhase") & (df_summary["Dataset"].isin(datasets))]["Mean_Feat"].mean())
+
+    # 标准差采用 pooled 或平均样本标准差，或计算各数据集均值的标准差
+    mel_std_mean = float(df_summary[(df_summary["Version"] == "MEL") & (df_summary["Dataset"].isin(datasets))]["Std_Acc"].mean())
+    kds_std_mean = float(df_summary[(df_summary["Version"] == "KDS_EL_TwoPhase") & (df_summary["Dataset"].isin(datasets))]["Std_Acc"].mean())
+
+    d_pp = (avg_kds_acc - avg_mel_acc) * 100
+    d_feat_pct = (avg_kds_feat - avg_mel_feat) / avg_mel_feat * 100
+
+    mel_feat_str = f"{int(round(avg_mel_feat)):,}".replace(",", "{,}") if avg_mel_feat >= 1000 else f"{avg_mel_feat:.1f}"
+    kds_feat_str = f"{int(round(avg_kds_feat)):,}".replace(",", "{,}") if avg_kds_feat >= 1000 else f"{avg_kds_feat:.1f}"
+
     latex_content_single = [
         "\\begin{table}[!htb]",
         "\\centering",
-        "\\caption{Comparison of KDS-EL and MEL performance.}",
-        "\\label{T7}\\label{tab:ablation_study}",
+        "\\caption{Comparison of KDS-EL and the original MEL performance before and after improvement.}",
+        "\\label{T7}\\label{tab:mechanism_comparison}",
         "\\footnotesize",
         "\\setlength{\\tabcolsep}{2.5pt}",
         "\\renewcommand{\\arraystretch}{1.08}",
         "\\begin{tabular*}{\\columnwidth}{@{\\extracolsep{\\fill}}lcccc@{}}",
         "\\toprule",
-        "Dataset & \\multicolumn{2}{c}{MEL} & \\multicolumn{2}{c}{KDS-EL} \\\\",
+        "Dataset & \\multicolumn{2}{c}{Original MEL} & \\multicolumn{2}{c}{Proposed KDS-EL} \\\\",
         "\\cmidrule(lr){2-3} \\cmidrule(lr){4-5}",
         "& $\\mathrm{Acc} \\pm \\mathrm{Std}$ & Number & $\\mathrm{Acc} \\pm \\mathrm{Std}$ & Number \\\\",
         "\\midrule",
         "\n".join(mel_kds_latex_rows),
         "\\midrule",
-        "Average          & 0.8868$\\pm$0.0658 & 2{,}722.2 & \\textbf{0.9574$\\pm$0.0482} & \\underline{87.8} \\\\",
-        "$\\Delta$ vs. MEL & \\multicolumn{2}{c}{—} & \\textbf{+7.06 pp} & \\underline{-96.8\\%} \\\\",
+        f"Average          & {avg_mel_acc:.4f}$\\pm${mel_std_mean:.4f} & {mel_feat_str} & \\textbf{{{avg_kds_acc:.4f}$\\pm${kds_std_mean:.4f}}} & \\underline{{{kds_feat_str}}} \\\\",
+        f"$\\Delta$ vs. Original MEL & \\multicolumn{{2}}{{c}}{{—}} & \\textbf{{+{d_pp:.2f} pp}} & \\underline{{{d_feat_pct:.1f}\\%}} \\\\",
         "\\bottomrule",
         "\\end{tabular*}",
         "\\vspace{2pt}",
         "\\par\\raggedright\\footnotesize",
-        "Entries in bold denote superior classification performance, while underlines indicate more compact feature subsets. Results are reported as $\\mathrm{Mean} \\pm \\mathrm{Std}$ across 10 independent runs.",
+        "\\textit{Note}: Bold: superior accuracy; underline: more compact subset. Results reported as $\\mathrm{Mean} \\pm \\mathrm{Std}$ over 10 independent runs.",
         "\\end{table}",
     ]
     with open(os.path.join(out_dir, "T7_ablation.tex"), "w", encoding="utf-8") as f:
         f.write("\n".join(latex_content_single))
 
+    # 同时输出补充材料需要的 T-A4_per_dataset_ablation.tex
+    ta4_content = [
+        "\\begin{table*}[!t]",
+        "\\centering",
+        "\\caption{Granular per-dataset performance comparison before and after algorithm improvement across 20 benchmark datasets.}",
+        "\\label{T-A4}",
+        "\\scriptsize",
+        "\\setlength{\\tabcolsep}{3.5pt}",
+        "\\renewcommand{\\arraystretch}{1.06}",
+        "\\resizebox{\\textwidth}{!}{%",
+        "\\begin{tabular}{@{}lcccccccc@{}}",
+        "\\toprule",
+        "Dataset & \\multicolumn{2}{c}{MEL} & \\multicolumn{2}{c}{MEL+MI} & \\multicolumn{2}{c}{KDS-EL w/o TPS} & \\multicolumn{2}{c}{KDS-EL} \\\\",
+        "\\cmidrule(lr){2-3} \\cmidrule(lr){4-5} \\cmidrule(lr){6-7} \\cmidrule(lr){8-9}",
+        " & Acc & Feat & Acc & Feat & Acc & Feat & Acc & Feat \\\\",
+        "\\midrule",
+        "\n".join(latex_rows),
+        "\\midrule",
+        " & ".join(avg_cells) + " \\\\",
+        " & ".join(delta_cells) + " \\\\",
+        "\\bottomrule",
+        "\\end{tabular}%",
+        "}",
+        "\\end{table*}",
+    ]
+    with open(os.path.join(out_dir, "T-A4_per_dataset_ablation.tex"), "w", encoding="utf-8") as f:
+        f.write("\n".join(ta4_content))
+
     print(f"  [OK] CSV: {out_dir}/T7_ablation.csv")
-    print(f"  [OK] TeX: {out_dir}/T7_ablation.tex & T7_ablation_progression.tex")
+    print(f"  [OK] TeX: {out_dir}/T7_ablation.tex & T7_ablation_progression.tex & T-A4_per_dataset_ablation.tex")
 
 
 # ═══ T-A5: 运行时间附表 ═══

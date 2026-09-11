@@ -28,6 +28,13 @@ R.~Kohavi, G.~H. John, Wrappers for feature subset selection, Artificial
 \newblock \href {https://doi.org/10.1016/S0004-3702(97)00043-X}
   {\path{doi:10.1016/S0004-3702(97)00043-X}}.
 
+\bibitem{xue2016survey}
+B.~Xue, M.~Zhang, W.~N. Browne, X.~Yao, A survey on evolutionary computation
+  approaches to feature selection, IEEE Transactions on Evolutionary
+  Computation 20~(4) (2016) 606--626.
+\newblock \href {https://doi.org/10.1109/TEVC.2015.2504420}
+  {\path{doi:10.1109/TEVC.2015.2504420}}.
+
 \bibitem{kennedy1995}
 J.~Kennedy, R.~Eberhart, Particle swarm optimization, in: Proceedings of
   ICNN'95--International Conference on Neural Networks, Vol.~4, IEEE, 1995, pp.
@@ -85,18 +92,18 @@ X.~Wang, H.~Shangguan, F.~Huang, S.~Wu, W.~Jia, Mel: Efficient multi-task
 \newblock \href {https://doi.org/10.1109/TKDE.2024.3366333}
   {\path{doi:10.1109/TKDE.2024.3366333}}.
 
-\bibitem{su2024}
-H.~Su, L.~Zhang, B.~Xue, M.~Zhang, An improved binary {RIME} algorithm for
-  feature selection, iScience 27~(8) (2024) 110561.
-\newblock \href {https://doi.org/10.1016/j.isci.2024.110561}
-  {\path{doi:10.1016/j.isci.2024.110561}}.
-
 \bibitem{hancer2023}
 E.~Hancer, B.~Xue, M.~Zhang, An evolutionary filter approach to feature
   selection in classification for both single- and multi-objective scenarios,
   Knowledge-Based Systems 280 (2023) 111008.
 \newblock \href {https://doi.org/10.1016/j.knosys.2023.111008}
   {\path{doi:10.1016/j.knosys.2023.111008}}.
+
+\bibitem{su2024}
+H.~Su, L.~Zhang, B.~Xue, M.~Zhang, An improved binary {RIME} algorithm for
+  feature selection, iScience 27~(8) (2024) 110561.
+\newblock \href {https://doi.org/10.1016/j.isci.2024.110561}
+  {\path{doi:10.1016/j.isci.2024.110561}}.
 
 \bibitem{shikoun2024}
 N.~H. Shikoun, A.~E. Hassanien, M.~H. Haggag, {BinCOA}: An efficient binary
@@ -173,13 +180,6 @@ D.~Karaboga, B.~Basturk, A powerful and efficient algorithm for numerical
   Global Optimization 39~(3) (2007) 459--471.
 \newblock \href {https://doi.org/10.1007/s10898-007-9149-x}
   {\path{doi:10.1007/s10898-007-9149-x}}.
-
-\bibitem{xue2016survey}
-B.~Xue, M.~Zhang, W.~N. Browne, X.~Yao, A survey on evolutionary computation
-  approaches to feature selection, IEEE Transactions on Evolutionary
-  Computation 20~(4) (2016) 606--626.
-\newblock \href {https://doi.org/10.1109/TEVC.2015.2504420}
-  {\path{doi:10.1109/TEVC.2015.2504420}}.
 
 \bibitem{zhang2021mtl}
 Y.~Zhang, Q.~Yang, A survey on multi-task learning, IEEE Transactions on
