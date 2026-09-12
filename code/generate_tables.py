@@ -500,10 +500,7 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
         cells = [r["Method"]]
         for j, v in enumerate(versions):
             val = r[V_LABELS[v]]
-            if i != j and win_mat[i, j] > loss_mat[i, j]:
-                cells.append(f"\\textbf{{{val}}}")
-            else:
-                cells.append(val)
+            cells.append(val)
         latex_rows.append(" & ".join(cells) + " \\\\")
 
     latex_content = [
@@ -523,7 +520,7 @@ def table_t6_wilcoxon(df_detail, df_summary, out_dir):
         "}",
         "\\vspace{2pt}",
         "\\par\\raggedright\\footnotesize",
-        "\\textit{Note}: $W/T/L$: pairwise win/tie/loss counts against column methods (two-sided Mann--Whitney $U$ test, $\\alpha = 0.05$). Bold indicates pairwise advantage ($W > L$).",
+        "\\textit{Note}: $W/T/L$: pairwise win/tie/loss counts against column methods (two-sided Mann--Whitney $U$ test, $\\alpha = 0.05$).",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T6_wilcoxon.tex"), "w", encoding="utf-8") as f:
@@ -582,6 +579,10 @@ def table_t6b_holm(df_detail, df_summary, out_dir):
             else:
                 ties += 1
 
+        # 计算非零差值对、秩和与效应量 (rank-biserial correlation)
+        non_zero_diff = diff[diff != 0]
+        n_eff = len(non_zero_diff)
+
         try:
             res = sp_stats.wilcoxon(kds_means, c_means, alternative="two-sided")
             p_val = float(res.pvalue)
@@ -590,13 +591,23 @@ def table_t6b_holm(df_detail, df_summary, out_dir):
             p_val = 1.0
             stat = 0.0
 
+        if n_eff > 0:
+            ranks = sp_stats.rankdata(np.abs(non_zero_diff))
+            w_pos = float(np.sum(ranks[non_zero_diff > 0]))
+            w_neg = float(np.sum(ranks[non_zero_diff < 0]))
+            r_rb = float((w_pos - w_neg) / (w_pos + w_neg)) if (w_pos + w_neg) > 0 else 0.0
+        else:
+            r_rb = 0.0
+
         records.append({
             "Method": V_LABELS[v],
             "Mean_Delta_Acc": mean_diff,
             "Wins": wins,
             "Ties": ties,
             "Losses": losses,
+            "N_eff": n_eff,
             "Statistic": stat,
+            "r_rb": r_rb,
             "p_value": p_val,
         })
 
@@ -608,7 +619,12 @@ def table_t6b_holm(df_detail, df_summary, out_dir):
     for rank, r in enumerate(records, start=1):
         r["Rank"] = rank
         r["Holm_Alpha"] = alpha_base / (m - rank + 1)
+        r["p_adj"] = min(1.0, r["p_value"] * (m - rank + 1))
         r["Significant"] = "Yes" if r["p_value"] < r["Holm_Alpha"] else "No"
+
+    # 强制调整后 p 值的单调性
+    for i in range(1, len(records)):
+        records[i]["p_adj"] = max(records[i]["p_adj"], records[i-1]["p_adj"])
 
     df_holm = pd.DataFrame(records)
     df_holm.to_csv(os.path.join(out_dir, "T6b_holm_bonferroni.csv"), index=False, encoding="utf-8-sig")
@@ -618,8 +634,8 @@ def table_t6b_holm(df_detail, df_summary, out_dir):
     for r in records:
         latex_rows.append(
             f"  {r['Rank']:2d} & {r['Method']:22s} & {r['Mean_Delta_Acc']:+.4f} & "
-            f"{r['Wins']}/{r['Ties']}/{r['Losses']} & {r['Statistic']:6.1f} & "
-            f"{r['p_value']:10.2e} & {r['Holm_Alpha']:8.4f} & {r['Significant']} \\\\"
+            f"{r['Wins']}/{r['Ties']}/{r['Losses']} & {r['N_eff']:2d} & {r['Statistic']:6.1f} & "
+            f"{r['r_rb']:+.3f} & {r['p_value']:10.2e} & {r['p_adj']:10.2e} & {r['Holm_Alpha']:8.4f} \\\\"
         )
 
     latex_content = [
@@ -629,16 +645,16 @@ def table_t6b_holm(df_detail, df_summary, out_dir):
         "\\label{T6b}\\label{tab:holm_bonferroni}",
         "\\small",
         "\\renewcommand{\\arraystretch}{1.12}",
-        "\\begin{tabular*}{\\textwidth}{@{\\extracolsep{\\fill}}clcccccc@{}}",
+        "\\begin{tabular*}{\\textwidth}{@{\\extracolsep{\\fill}}clcccccccc@{}}",
         "\\toprule",
-        "Rank & Competitor Method & $\\Delta$Acc & W/T/L & $W$ & $p$-value & $\\alpha_{\\mathrm{Holm}}$ & Reject $H_0$? \\\\",
+        "Rank & Competitor Method & $\\Delta\\mathrm{Acc}$ & $W/T/L$ & $n_{\\mathrm{eff}}$ & $W$ & $r_{\\mathrm{rb}}$ & $p_{\\mathrm{raw}}$ & $p_{\\mathrm{adj}}$ & $\\alpha_{\\mathrm{Holm}}$ \\\\",
         "\\midrule",
         "\n".join(latex_rows),
         "\\bottomrule",
         "\\end{tabular*}",
         "\\vspace{2pt}",
         "\\par\\raggedright\\footnotesize",
-        "\\textit{Note}: $W/T/L$: per-dataset significance (two-sided Mann--Whitney $U$ test, $\\alpha = 0.05$). $W$ statistics, $p$-values, and Holm--Bonferroni corrections evaluated across dataset means (paired Wilcoxon signed-rank test~\\cite{demsar2006}).",
+        "\\textit{Note}: Evaluated across paired benchmark dataset means ($N=20$, each averaged over 10 independent runs) using two-sided Wilcoxon signed-rank tests~\\cite{demsar2006} with zero-difference exclusion ($n_{\\mathrm{eff}} = 20 - n_{\\mathrm{ties}}$). $W$: Wilcoxon test statistic (sum of negative ranks); $r_{\\mathrm{rb}} = (W^+ - W^-)/(W^+ + W^-)$: matched-pairs rank-biserial correlation effect size ($r_{\\mathrm{rb}} \\in [-1, 1]$); $p_{\\mathrm{raw}}$: unadjusted $p$-value; $p_{\\mathrm{adj}} = \\min(1, \\max_{k \\le i} (m - k + 1) p_{(k)})$: Holm step-down adjusted $p$-value ($m=11$); $\\alpha_{\\mathrm{Holm}} = 0.05 / (m - i + 1)$: step-down critical threshold. Identical $p_{\\mathrm{raw}} = 1.32 \\times 10^{-4}$ for MEL, BinCOA, IGPSO, and DENCA-SO arises because each exhibits exactly 19 wins, 1 tie (on saturated benchmark ALL1 with identical 1.0000 accuracy), and 0 losses against KDS-EL ($n_{\\mathrm{eff}}=19, W=0.0$).",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T6b_holm_bonferroni.tex"), "w", encoding="utf-8") as f:
@@ -851,7 +867,7 @@ def table_t7_ablation(df_summary, out_dir):
         "\n".join(mel_kds_latex_rows),
         "\\midrule",
         f"Average          & {avg_mel_acc:.4f}$\\pm${mel_std_mean:.4f} & {mel_feat_str} & \\textbf{{{avg_kds_acc:.4f}$\\pm${kds_std_mean:.4f}}} & \\underline{{{kds_feat_str}}} \\\\",
-        f"$\\Delta$ vs. Original MEL & \\multicolumn{{2}}{{c}}{{—}} & \\textbf{{+{d_pp:.2f} pp}} & \\underline{{{d_feat_pct:.1f}\\%}} \\\\",
+        f"$\\Delta$ vs. Original MEL & & & \\textbf{{+{d_pp:.2f} pp}} & \\underline{{{d_feat_pct:.1f}\\%}} \\\\",
         "\\bottomrule",
         "\\end{tabular*}",
         "\\vspace{2pt}",

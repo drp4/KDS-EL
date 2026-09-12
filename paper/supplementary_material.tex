@@ -25,7 +25,7 @@
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}
 
-\graphicspath{{../output/figures/}}
+\graphicspath{{figures/}{../output/figures/}}
 
 \journal{Applied Soft Computing}
 
@@ -35,7 +35,10 @@
 
 \title{Supplementary Material for:\\Multi-Task Particle Swarm Optimization with Knowledge-Guided Elite Refinement and Two-Phase Weight Scheduling for High-Dimensional Feature Selection}
 
-\author{Anonymous Author(s)}
+\author{Yimin Zheng\corref{cor1}}
+\ead{guilt1329149274@gmail.com}
+\cortext[cor1]{Corresponding author.}
+\address{Jiangxi University of Water Resources and Electric Power, Nanchang 330099, China}
 
 \begin{abstract}
 This supplementary document provides comprehensive extended experimental records, complete per-dataset metrics, detailed hyper-parameter sensitivity grids, convergence trajectories, and full statistical significance matrices supporting the main manuscript.
@@ -97,7 +100,7 @@ Fig.~\ref{fig:supp_acc_all} visualizes the complete per-dataset classification a
 
 \section*{Section S4: Granular Per-Dataset Performance Comparison Before and After Algorithm Improvement (Table~S4)}\label{sec:supp_ablation}
 
-Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential intermediate algorithmic configurations before and after improvement: (i) the original MEL algorithm~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL w/o TPS, and (iv) Complete KDS-EL. Furthermore, Fig.~\ref{fig:supp_ablation_heatmap} presents the component contribution progression heatmap illustrating the step-wise accuracy progression.
+Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential intermediate algorithmic configurations before and after improvement: (i) pre-improvement MEL~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL w/o TPS, and (iv) Complete KDS-EL. Furthermore, Fig.~\ref{fig:supp_ablation_heatmap} presents the component contribution progression heatmap illustrating the step-wise accuracy progression.
 
 \input{../output/tables/T-A4_per_dataset_ablation}
 
@@ -112,7 +115,7 @@ Table~\ref{T-A4} provides the complete per-dataset performance metrics across th
 
 \section*{Section S5: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (Table~S5)}\label{sec:supp_runtime}
 
-Table~\ref{T-A5} details the mean wall-clock computational execution time (in seconds, averaged over 10 independent runs) across all 20 benchmark datasets for the 14 compared algorithms. In addition, Fig.~\ref{fig:supp_runtime_scatter} illustrates the classification accuracy versus execution time trade-off.
+Table~\ref{T-A5} details the mean wall-clock computational execution time (in seconds, averaged over 10 independent runs) across all 20 benchmark datasets for the 14 compared algorithms. Under the shared 100-generation cutoff, standard swarm architectures evaluate exactly 20 particles per generation (2{,}000 total evaluations), KDS-EL evaluates 20 particles alongside three elite refinements (approximately 2{,}300 evaluations), and bIRIME deploys composite mutations evaluating up to 80 candidate subsets per generation. Observed execution times reflect the combined influence of active feature dimensionality, algorithmic operator complexity, and evaluation counts under this benchmark setup. In addition, Fig.~\ref{fig:supp_runtime_scatter} illustrates the classification accuracy versus execution time trade-off.
 
 \input{../output/tables/T-A5_runtime}
 
@@ -170,7 +173,7 @@ Table~\ref{T6} and Table~\ref{T6b} summarize the pairwise non-parametric Wilcoxo
 
 \section*{Section S9: Cross-Classifier Inductive Generalization and Robustness}\label{sec:supp_cross_classifier}
 
-To evaluate whether the feature subsets identified by KDS-EL under the 3-NN wrapper evaluation criterion overfit to the local metric geometry of nearest-neighbor classifiers, we perform cross-classifier generalization tests across three representative benchmark datasets (\textit{Colon}, \textit{Adenoma}, and \textit{ALL4}). Table~\ref{T-S9} reports the 5-fold cross-validation classification accuracy comparing full feature sets against KDS-EL compact feature subsets across 3-NN, Support Vector Machines with RBF kernel (SVM-RBF), and Random Forest classifiers. On \textit{Adenoma} and \textit{ALL4}, the compact subsets achieve substantial performance gains across all three classifiers while pruning over 99.0\% of candidate dimensions. On \textit{Colon}, the 14-feature signature markedly improves 3-NN accuracy from 79.23\% to 88.59\%, while exhibiting slight performance attenuation from 85.51\% to 80.51\% under Support Vector Machines and from 85.38\% to 82.18\% under Random Forest, naturally reflecting the intrinsic divergence in inductive bias between instance-based metric learning and margin-maximizing hyperplanes or orthogonal decision splits. Overall, the compact signatures isolated by KDS-EL maintain robust discriminative capacity across divergent inductive learning paradigms.
+To evaluate whether the feature subsets identified by KDS-EL under the 3-NN wrapper evaluation criterion overfit to the local metric geometry of nearest-neighbor classifiers, we perform cross-classifier generalization tests across three representative benchmark datasets (\textit{Colon}, \textit{Adenoma}, and \textit{ALL4}). Table~\ref{T-S9} reports the 5-fold cross-validation classification accuracy comparing full feature sets against KDS-EL compact feature subsets across 3-NN, Support Vector Machines with RBF kernel (SVM-RBF), and Random Forest classifiers. On \textit{Adenoma} and \textit{ALL4}, the compact subsets achieve substantial performance gains across all three classifiers while pruning over 99.0\% of candidate dimensions. On \textit{Colon}, the 14-feature signature markedly improves 3-NN accuracy from 79.23\% to 88.59\%, while exhibiting slight performance attenuation from 85.51\% to 80.51\% under Support Vector Machines and from 85.38\% to 82.18\% under Random Forest, naturally reflecting the intrinsic divergence in inductive bias between instance-based metric learning and margin-maximizing hyperplanes or orthogonal decision splits. Overall, the compact candidate subsets isolated by KDS-EL maintain favorable candidate-level cross-model consistency across divergent inductive learning paradigms.
 
 \input{../output/tables/T_supp_cross_classifier}
 
@@ -178,7 +181,7 @@ To evaluate whether the feature subsets identified by KDS-EL under the 3-NN wrap
 
 \section*{Section S10: Biological and Literature Annotation of Prominent Candidate Genes}\label{sec:supp_biomarkers}
 
-Table~\ref{T-S10} details the functional and oncological literature annotations of prominent candidate genes identified by KDS-EL in the \textit{Colon} and \textit{Prostate} cancer microarrays. Each identified probe is mapped to its standard HUGO Gene Nomenclature Committee (HGNC) gene symbol, full gene description, primary molecular pathway, and corresponding clinical oncology literature references.
+Table~\ref{T-S10} details the functional and oncological literature annotations of prominent candidate genes identified by KDS-EL in the \textit{Colon} and \textit{Prostate} cancer microarrays. These annotations provide supportive evidence of retrospective concordance with established oncological literature rather than de novo clinical biomarker discovery. Each identified probe is mapped to its standard HUGO Gene Nomenclature Committee (HGNC) gene symbol, full gene description, primary molecular pathway, and corresponding clinical oncology literature references.
 
 \input{../output/tables/T_supp_biomarkers}
 

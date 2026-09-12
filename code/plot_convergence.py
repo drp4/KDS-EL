@@ -173,7 +173,7 @@ def fig_sota_convergence(out_dir):
     }
 
     print("Generating SOTA 5-algorithm 4x5 convergence panorama across 20 datasets...")
-    fig, axes = plt.subplots(4, 5, figsize=(10.5, 7.2))
+    fig, axes = plt.subplots(4, 5, figsize=(10.2, 7.2))
     axes = axes.ravel()
 
     for i, ds in enumerate(CORE_20):
@@ -186,28 +186,29 @@ def fig_sota_convergence(out_dir):
                 mean_c = np.mean(data, axis=0)
                 x = np.arange(len(mean_c))
                 ax.plot(x, mean_c, color=color, linestyle=ls, linewidth=lw,
-                        marker=marker, markevery=20, markersize=3.2,
+                        marker=marker, markevery=20, markersize=3.6,
                         label=label, zorder=zorder)
 
-        ax.set_title(dname, fontsize=8.0, fontweight="bold", pad=2.5)
-        ax.set_xlabel("Iteration", fontsize=7.0, labelpad=1.5)
-        ax.set_ylabel("Fitness", fontsize=7.0, labelpad=1.5)
+        ax.set_title(dname, fontsize=9.0, fontweight="bold", pad=3.0)
+        ax.set_xlabel("Iteration", fontsize=8.0, labelpad=2.0)
+        ax.set_ylabel("Fitness", fontsize=8.0, labelpad=2.0)
         ax.set_xlim(0, 100)
         ax.set_xticks([0, 50, 100])
+        ax.tick_params(axis='both', which='major', labelsize=7.5, pad=2)
         ax.yaxis.set_major_locator(mticker.MaxNLocator(4, prune="lower"))
         ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
         ax.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
 
     handles = [
-        Line2D([0], [0], color=color, linestyle=ls, linewidth=lw,
-               marker=marker, markersize=4.0, label=label)
+        Line2D([0], [0], color=color, linestyle=ls, linewidth=lw * 1.2,
+               marker=marker, markersize=4.6, label=label)
         for _, label, _, color, ls, lw, marker, _ in SOTA_ALGOS
     ]
     fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.012),
                ncol=5, frameon=True, facecolor="#ffffff", edgecolor="#CBD5E0",
-               fontsize=8.0, handlelength=2.2, columnspacing=1.8, framealpha=0.95)
+               fontsize=8.8, handlelength=2.4, columnspacing=2.0, framealpha=0.95)
 
-    plt.tight_layout(rect=[0, 0.035, 1, 1])
+    plt.tight_layout(rect=[0, 0.038, 1, 1])
     save_fig(fig, "F8_sota_convergence", out_dir)
     plt.close(fig)
     print("  [OK] F8_sota_convergence")
@@ -272,7 +273,7 @@ def fig_f8_convergence(out_dir):
             if data is not None:
                 all_curves[v].append(np.mean(1.0 - data, axis=0))
 
-    fig, axes = plt.subplots(3, 3, figsize=(9.0, 6.5))
+    fig, axes = plt.subplots(3, 3, figsize=(8.8, 6.4))
     axes = axes.ravel()
 
     # ── (a) Overall Mean Convergence (Top-Left Subplot) ──
@@ -284,17 +285,18 @@ def fig_f8_convergence(out_dir):
             x = np.arange(len(mean_c))
             ax0.plot(x, mean_c, color=ABL_PLOT_COLORS[v], linestyle=ABL_PLOT_STYLES[v],
                      linewidth=ABL_PLOT_WIDTHS[v], marker=ABL_PLOT_MARKERS[v],
-                     markevery=15, markersize=4.0)
+                     markevery=15, markersize=4.2)
 
-    ax0.set_title("(a) Overall Mean", fontsize=8.0, fontweight="bold", pad=3)
-    ax0.set_xlabel("Iteration", fontsize=7.0, labelpad=2)
-    ax0.set_ylabel("Mean Accuracy", fontsize=7.0, labelpad=2)
+    ax0.set_title("(a) Overall Mean", fontsize=9.2, fontweight="bold", pad=3.5)
+    ax0.set_xlabel("Iteration", fontsize=8.5, labelpad=2.0)
+    ax0.set_ylabel("Mean Accuracy", fontsize=8.5, labelpad=2.0)
+    ax0.tick_params(axis='both', which='major', labelsize=7.8, pad=2)
     ax0.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
     ax0.set_xlim(0, 100)
     ax0.set_ylim(0.83, 0.97)
     ax0.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
     ax0.axvline(x=70, color="#718096", linestyle=":", linewidth=0.8, alpha=0.8)
-    ax0.text(71, 0.84, "t=70 (Phase 2)", fontsize=5.5, color="#4A5568", rotation=90)
+    ax0.text(71, 0.84, "t=70 (Phase 2)", fontsize=6.8, color="#4A5568", rotation=90)
 
     # ── (b)-(i) 8 个代表性数据集 ──
     for idx, (ds, title, ylim) in enumerate(REP_DS_CONFIGS, start=1):
@@ -307,11 +309,12 @@ def fig_f8_convergence(out_dir):
                 x = np.arange(len(mean_c))
                 ax.plot(x, mean_c, color=ABL_PLOT_COLORS[v], linestyle=ABL_PLOT_STYLES[v],
                         linewidth=ABL_PLOT_WIDTHS[v], marker=ABL_PLOT_MARKERS[v],
-                        markevery=15, markersize=4.0)
+                        markevery=15, markersize=4.2)
 
-        ax.set_title(title, fontsize=8.0, fontweight="bold", pad=3)
-        ax.set_xlabel("Iteration", fontsize=7.0, labelpad=2)
-        ax.set_ylabel("Accuracy", fontsize=7.0, labelpad=2)
+        ax.set_title(title, fontsize=9.2, fontweight="bold", pad=3.5)
+        ax.set_xlabel("Iteration", fontsize=8.5, labelpad=2.0)
+        ax.set_ylabel("Accuracy", fontsize=8.5, labelpad=2.0)
+        ax.tick_params(axis='both', which='major', labelsize=7.8, pad=2)
         ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
         ax.set_xlim(0, 100)
         ax.set_ylim(ylim)
@@ -321,15 +324,15 @@ def fig_f8_convergence(out_dir):
     # ── 全局统一底部图例 ──
     handles = [
         Line2D([0], [0], color=ABL_PLOT_COLORS[v], linestyle=ABL_PLOT_STYLES[v],
-               linewidth=1.6 if "TwoPhase" in v else 1.2, marker=ABL_PLOT_MARKERS[v],
-               markersize=4.5, label=ABL_PLOT_LABELS[v])
+               linewidth=1.7 if "TwoPhase" in v else 1.3, marker=ABL_PLOT_MARKERS[v],
+               markersize=4.8, label=ABL_PLOT_LABELS[v])
         for v in F8_ABL_VERSIONS
     ]
     fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.015),
                ncol=4, frameon=True, facecolor="#ffffff", edgecolor="#CBD5E0",
-               fontsize=7.5, handlelength=2.2, columnspacing=1.4, framealpha=0.95)
+               fontsize=8.8, handlelength=2.4, columnspacing=1.8, framealpha=0.95)
 
-    plt.tight_layout(rect=[0, 0.035, 1, 1])
+    plt.tight_layout(rect=[0, 0.038, 1, 1])
     save_fig(fig, "F8_convergence", out_dir)
     save_fig(fig, "F5_ablation_convergence", out_dir)
     plt.close(fig)

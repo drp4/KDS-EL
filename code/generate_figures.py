@@ -223,6 +223,15 @@ def save_fig(fig, name, out_dir):
         except Exception:
             # Fallback to direct savefig if tmp rename fails
             fig.savefig(p)
+    # Also sync to paper/figures if present
+    paper_dir = PROJ / "paper" / "figures"
+    if paper_dir.exists():
+        for ext in (".pdf", ".png"):
+            try:
+                import shutil
+                shutil.copy2(os.path.join(out_dir, name + ext), paper_dir / f"{name}{ext}")
+            except Exception:
+                pass
     plt.close(fig)
     print(f"  [OK] {name}")
 
@@ -1030,7 +1039,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
     
     params = [
         {
-            "name": r"(a) Weight Decay $\gamma$",
+            "name": r"(a) Decay Factor $\gamma$",
             "key": "WeightDecay",
             "x": [0.90, 0.95, 0.99, 0.995, 1.00],
             "acc": [0.932, 0.939, 0.944, 0.943, 0.941],
@@ -1040,7 +1049,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
             "xlabel": r"Decay factor $\gamma$",
         },
         {
-            "name": r"(b) Phase Split $\kappa$",
+            "name": r"(b) Split Ratio $\kappa$",
             "key": "PhaseSplit",
             "x": [0.3, 0.5, 0.6, 0.7, 0.8, 0.9],
             "acc": [0.940, 0.942, 0.943, 0.944, 0.943, 0.937],
@@ -1050,7 +1059,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
             "xlabel": r"Split ratio $\kappa$",
         },
         {
-            "name": r"(c) Perturbation Fraction $\phi$",
+            "name": r"(c) Flip Fraction $\phi$",
             "key": "flip_frac",
             "x": [0.005, 0.01, 0.02, 0.05, 0.10],
             "acc": [0.939, 0.944, 0.942, 0.937, 0.931],
@@ -1060,7 +1069,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
             "xlabel": r"Perturbation fraction $\phi$",
         },
         {
-            "name": r"(d) MI Initialization Ratio $\rho$",
+            "name": r"(d) MI Ratio $\rho$",
             "key": "MI_init_ratio",
             "x": [0.0, 0.25, 0.50, 0.75, 1.00],
             "acc": [0.932, 0.940, 0.944, 0.942, 0.936],
@@ -1070,7 +1079,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
             "xlabel": r"MI ratio $\rho$",
         },
         {
-            "name": r"(e) Elite Pool Size $k_e$",
+            "name": r"(e) Elite Pool $k_e$",
             "key": "elite_k",
             "x": [1, 2, 3, 5, 10],
             "acc": [0.938, 0.942, 0.944, 0.941, 0.935],
@@ -1081,7 +1090,7 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
         },
     ]
 
-    fig, axes = plt.subplots(1, 5, figsize=(11.5, 2.3))
+    fig, axes = plt.subplots(1, 5, figsize=(10.0, 2.45))
 
     color_acc = "#C82423"
     color_feat = "#1E88E5"
@@ -1099,33 +1108,34 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
         ax2 = ax.twinx()
 
         # Accuracy curve (Left axis, Nature Vermilion)
-        l1 = ax.plot(x, acc, color=color_acc, marker="o", linewidth=1.4, markersize=4.2, zorder=4, label="Accuracy")
-        ax.plot(x[p["default_idx"]], acc[p["default_idx"]], marker="*", markersize=8.5,
-                color="#8B0000", markeredgecolor="#4A0000", markeredgewidth=0.5, zorder=5)
+        l1 = ax.plot(x, acc, color=color_acc, marker="o", linewidth=1.5, markersize=4.6, zorder=4, label="Accuracy")
+        ax.plot(x[p["default_idx"]], acc[p["default_idx"]], marker="*", markersize=9.0,
+                color="#8B0000", markeredgecolor="#4A0000", markeredgewidth=0.6, zorder=5)
 
         # Features curve (Right axis, Professional Blue)
-        l2 = ax2.plot(x, feat, color=color_feat, marker="s", linestyle="--", linewidth=1.2, markersize=3.8, zorder=3, label="Features")
-        ax2.plot(x[p["default_idx"]], feat[p["default_idx"]], marker="*", markersize=8.0,
-                 color="#0D47A1", markeredgecolor="#062551", markeredgewidth=0.5, zorder=5)
+        l2 = ax2.plot(x, feat, color=color_feat, marker="s", linestyle="--", linewidth=1.3, markersize=4.2, zorder=3, label="Features")
+        ax2.plot(x[p["default_idx"]], feat[p["default_idx"]], marker="*", markersize=8.5,
+                 color="#0D47A1", markeredgecolor="#062551", markeredgewidth=0.6, zorder=5)
 
-        ax.set_title(p["name"], fontsize=8.0, pad=3, fontweight="bold")
-        ax.set_xlabel(p["xlabel"], fontsize=7.5, labelpad=2)
+        ax.set_title(p["name"], fontsize=9.2, pad=4, fontweight="bold")
+        ax.set_xlabel(p["xlabel"], fontsize=8.5, labelpad=2.5)
+        ax.tick_params(axis='x', which='both', labelsize=7.8, pad=2)
 
         # Y axis styling & spine cleanup
         ax.set_ylim(0.925, 0.950)
         ax.set_yticks([0.930, 0.935, 0.940, 0.945, 0.950])
         if idx == 0:
-            ax.set_ylabel("Classification Accuracy", color=color_acc, fontsize=7.5, fontweight="bold")
-            ax.tick_params(axis='y', which='both', left=True, labelleft=True, labelcolor=color_acc, labelsize=6.5)
+            ax.set_ylabel("Classification Accuracy", color=color_acc, fontsize=9.0, fontweight="bold")
+            ax.tick_params(axis='y', which='both', left=True, labelleft=True, labelcolor=color_acc, labelsize=7.8, pad=2)
         else:
             ax.tick_params(axis='y', which='both', left=False, labelleft=False)
 
         ax2.set_ylim(70, 220)
         ax2.set_yticks([80, 120, 160, 200])
         if idx == 4:
-            ax2.set_ylabel("Selected Feature Count", color=color_feat, fontsize=7.5, fontweight="bold")
+            ax2.set_ylabel("Selected Feature Count", color=color_feat, fontsize=9.0, fontweight="bold")
             ax2.spines['right'].set_visible(True)
-            ax2.tick_params(axis='y', which='both', right=True, labelright=True, labelcolor=color_feat, labelsize=6.5)
+            ax2.tick_params(axis='y', which='both', right=True, labelright=True, labelcolor=color_feat, labelsize=7.8, pad=2)
         else:
             ax2.spines['right'].set_visible(False)
             ax2.tick_params(axis='y', which='both', right=False, labelright=False)
@@ -1137,15 +1147,15 @@ def fig_f14_parameter_sensitivity(df_detail, out_dir):
         ax2.spines['left'].set_visible(False)
 
     handles = [
-        mpl.lines.Line2D([0], [0], color=color_acc, marker="o", lw=1.4, markersize=4.2, label="Classification accuracy"),
-        mpl.lines.Line2D([0], [0], color=color_feat, marker="s", linestyle="--", lw=1.2, markersize=3.8, label="Selected features"),
+        mpl.lines.Line2D([0], [0], color=color_acc, marker="o", lw=1.5, markersize=4.6, label="Classification accuracy"),
+        mpl.lines.Line2D([0], [0], color=color_feat, marker="s", linestyle="--", lw=1.3, markersize=4.2, label="Selected features"),
         mpl.patches.Patch(facecolor="#F8FAFC", edgecolor="#CBD5E0", linestyle=":", linewidth=0.8, label="Stable band"),
-        mpl.lines.Line2D([0], [0], color="#8B0000", marker="*", markersize=8.0, lw=0, label="Default configuration"),
+        mpl.lines.Line2D([0], [0], color="#8B0000", marker="*", markersize=8.5, lw=0, label="Default configuration"),
     ]
-    fig.legend(handles=handles, loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.15),
-               frameon=True, fontsize=7.0, framealpha=0.95, edgecolor="#CBD5E0")
+    fig.legend(handles=handles, loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.16),
+               frameon=True, fontsize=8.5, framealpha=0.95, edgecolor="#CBD5E0", columnspacing=1.6)
 
-    fig.tight_layout(rect=[0, 0.04, 1, 1])
+    fig.tight_layout(rect=[0, 0.05, 1, 1])
     save_fig(fig, "F14_parameter_sensitivity", out_dir)
     plt.close(fig)
 
