@@ -173,12 +173,13 @@ def fig_sota_convergence(out_dir):
     }
 
     print("Generating SOTA 5-algorithm 4x5 convergence panorama across 20 datasets...")
-    fig, axes = plt.subplots(4, 5, figsize=(10.2, 7.2))
+    fig, axes = plt.subplots(4, 5, figsize=(10.5, 7.5))
     axes = axes.ravel()
 
     for i, ds in enumerate(CORE_20):
         ax = axes[i]
         dname = display_names.get(ds, ds)
+        panel_label = chr(ord('a') + i)
 
         for key, label, dkey, color, ls, lw, marker, zorder in SOTA_ALGOS:
             data = load_from_all(key, ds, prefix="curve")
@@ -186,29 +187,29 @@ def fig_sota_convergence(out_dir):
                 mean_c = np.mean(data, axis=0)
                 x = np.arange(len(mean_c))
                 ax.plot(x, mean_c, color=color, linestyle=ls, linewidth=lw,
-                        marker=marker, markevery=20, markersize=3.6,
+                        marker=marker, markevery=20, markersize=3.8,
                         label=label, zorder=zorder)
 
-        ax.set_title(dname, fontsize=9.0, fontweight="bold", pad=3.0)
-        ax.set_xlabel("Iteration", fontsize=8.0, labelpad=2.0)
-        ax.set_ylabel("Fitness", fontsize=8.0, labelpad=2.0)
+        ax.set_title(f"({panel_label}) {dname}", fontsize=10.0, fontweight="bold", pad=3.5)
+        ax.set_xlabel("Iteration", fontsize=9.2, labelpad=2.0)
+        ax.set_ylabel("Fitness", fontsize=9.2, labelpad=2.0)
         ax.set_xlim(0, 100)
         ax.set_xticks([0, 50, 100])
-        ax.tick_params(axis='both', which='major', labelsize=7.5, pad=2)
+        ax.tick_params(axis='both', which='major', labelsize=8.2, pad=2)
         ax.yaxis.set_major_locator(mticker.MaxNLocator(4, prune="lower"))
         ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.2f"))
         ax.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
 
     handles = [
         Line2D([0], [0], color=color, linestyle=ls, linewidth=lw * 1.2,
-               marker=marker, markersize=4.6, label=label)
+               marker=marker, markersize=4.8, label=label)
         for _, label, _, color, ls, lw, marker, _ in SOTA_ALGOS
     ]
-    fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.012),
+    fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.010),
                ncol=5, frameon=True, facecolor="#ffffff", edgecolor="#CBD5E0",
-               fontsize=8.8, handlelength=2.4, columnspacing=2.0, framealpha=0.95)
+               fontsize=9.5, handlelength=2.4, columnspacing=2.0, framealpha=0.95)
 
-    plt.tight_layout(rect=[0, 0.038, 1, 1])
+    plt.tight_layout(rect=[0, 0.042, 1, 1])
     save_fig(fig, "F8_sota_convergence", out_dir)
     plt.close(fig)
     print("  [OK] F8_sota_convergence")
@@ -295,8 +296,6 @@ def fig_f8_convergence(out_dir):
     ax0.set_xlim(0, 100)
     ax0.set_ylim(0.83, 0.97)
     ax0.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
-    ax0.axvline(x=70, color="#718096", linestyle=":", linewidth=0.8, alpha=0.8)
-    ax0.text(71, 0.84, "t=70 (Phase 2)", fontsize=6.8, color="#4A5568", rotation=90)
 
     # ── (b)-(i) 8 个代表性数据集 ──
     for idx, (ds, title, ylim) in enumerate(REP_DS_CONFIGS, start=1):
@@ -319,7 +318,6 @@ def fig_f8_convergence(out_dir):
         ax.set_xlim(0, 100)
         ax.set_ylim(ylim)
         ax.grid(True, linestyle="--", alpha=0.6, color="#E2E8F0", linewidth=0.4)
-        ax.axvline(x=70, color="#718096", linestyle=":", linewidth=0.8, alpha=0.8)
 
     # ── 全局统一底部图例 ──
     handles = [

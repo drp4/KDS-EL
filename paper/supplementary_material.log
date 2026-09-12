@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  12 SEP 2026 10:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  12 SEP 2026 16:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -95,7 +95,7 @@ File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 \@enLab=\toks19
 \@sep=\skip52
 \@@sep=\skip53
- (supplementary_material.spl)
+
 (E:\MiKTeX\tex/latex/natbib\natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip54
@@ -742,27 +742,316 @@ LaTeX Font Info:    Trying to load font information for T1+txr on input line 32
 (E:\MiKTeX\tex/latex/txfonts\t1txr.fd
 File: t1txr.fd 2000/12/15 v3.1
 ) (supplementary_material.aux)
-! I can't write on file `supplementary_material.aux'.
-\document ...ate \openout \@mainaux \jobname .aux 
-                                                  \immediate \write \@mainau...
-l.32 \begin{document}
-                     
-(Press Enter to retry, or Control-C to exit; default file extension is `.tex')
-Please type another output file name
-! Emergency stop.
-\document ...ate \openout \@mainaux \jobname .aux 
-                                                  \immediate \write \@mainau...
-l.32 \begin{document}
-                     
-*** (job aborted, file error in nonstop mode)
+\openout1 = `supplementary_material.aux'.
 
- 
+LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 32.
+LaTeX Font Info:    Trying to load font information for OML+txmi on input line 
+32.
+
+(E:\MiKTeX\tex/latex/txfonts\omltxmi.fd
+File: omltxmi.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 32.
+LaTeX Font Info:    Trying to load font information for OMS+txsy on input line 
+32.
+
+(E:\MiKTeX\tex/latex/txfonts\omstxsy.fd
+File: omstxsy.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 32.
+LaTeX Font Info:    Trying to load font information for OMX+txex on input line 
+32.
+
+(E:\MiKTeX\tex/latex/txfonts\omxtxex.fd
+File: omxtxex.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 32.
+LaTeX Font Info:    Trying to load font information for U+txexa on input line 3
+2.
+ (E:\MiKTeX\tex/latex/txfonts\utxexa.fd
+File: utxexa.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+ (E:\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count335
+\scratchdimen=\dimen195
+\scratchbox=\box66
+\nofMPsegments=\count336
+\nofMParguments=\count337
+\everyMPshowfont=\toks34
+\MPscratchCnt=\count338
+\MPscratchDim=\dimen196
+\MPnumerator=\count339
+\makeMPintoPDFobject=\count340
+\everyMPtoPDFconversion=\toks35
+) (E:\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(E:\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* hratio: 1:1
+* vratio: 1:1
+* modes: 
+* h-part:(L,W,R)=(71.13188pt, 455.24411pt, 71.13188pt)
+* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=702.78308pt
+* \oddsidemargin=-1.1381pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-63.1381pt
+* \headheight=50.0pt
+* \headsep=12.0pt
+* \topskip=10.0pt
+* \footskip=12.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=24.0pt plus 2.0pt minus 12.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Encoding Info:    Redeclaring text command \k (encoding T1) on input line
+ 32.
+(E:\MiKTeX\tex/latex/graphics\color.sty
+Package: color 2025/01/14 v1.3e Standard LaTeX Color (DPC)
+
+(E:\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 149.
+
+(E:\MiKTeX\tex/latex/graphics\mathcolor.ltx))
+Package hyperref Info: Link coloring ON on input line 32.
+ (supplementary_material.out)
+(supplementary_material.out)
+\@outlinefile=\write4
+\openout4 = `supplementary_material.out'.
+
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <10> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 43.
+LaTeX Font Info:    Trying to load font information for OT1+txr on input line 4
+7.
+ (E:\MiKTeX\tex/latex/txfonts\ot1txr.fd
+File: ot1txr.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    Trying to load font information for U+txmia on input line 4
+7.
+
+(E:\MiKTeX\tex/latex/txfonts\utxmia.fd
+File: utxmia.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 47.
+
+ (E:\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 47.
+
+
+(E:\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+txsyc on input line 4
+7.
+ (E:\MiKTeX\tex/latex/txfonts\utxsyc.fd
+File: utxsyc.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    Trying to load font information for TS1+txr on input line 5
+1.
+
+(E:\MiKTeX\tex/latex/txfonts\ts1txr.fd
+File: ts1txr.fd 2000/12/15 v3.1
+)
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\<def>-command' on input line 64.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\cnotenum' on input line 64.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\<def>-command' on input line 64.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@corref' on input line 64.
+
+[1
+
+{C:/Users/86185/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{E:/MiKTeX/fon
+ts/enc/dvips/base/8r.enc}] (../output/tables/T2_datasets.tex)
+(../output/tables/T1_methods.tex) (../output/tables/T3_params.tex) [2] [3]
+<../output/figures/F4_accuracy_all.pdf, id=67, 985.76282pt x 575.19139pt>
+File: ../output/figures/F4_accuracy_all.pdf Graphic file (type pdf)
+<use ../output/figures/F4_accuracy_all.pdf>
+Package pdftex.def Info: ../output/figures/F4_accuracy_all.pdf  used on input l
+ine 88.
+(pdftex.def)             Requested size: 432.48051pt x 252.34775pt.
+<../output/figures/F4_accuracy_performance_profile.pdf, id=68, 524.2471pt x 310
+.06967pt>
+File: ../output/figures/F4_accuracy_performance_profile.pdf Graphic file (type 
+pdf)
+<use ../output/figures/F4_accuracy_performance_profile.pdf>
+Package pdftex.def Info: ../output/figures/F4_accuracy_performance_profile.pdf 
+ used on input line 95.
+(pdftex.def)             Requested size: 386.96027pt x 228.88019pt.
+
+[4 <../output/figures/F4_accuracy_all.pdf> <../output/figures/F4_accuracy_perfo
+rmance_profile.pdf>]
+Overfull \hbox (5.5654pt too wide) in paragraph at lines 104--105
+\T1/txr/m/n/10 rith-mic con-fig-u-ra-tions be-fore and af-ter im-prove-ment: (i
+) pre-improvement MEL [[]], (ii) MEL+MI (w/o TPS&KER),
+ []
+
+(../output/tables/T-A4_per_dataset_ablation.tex
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <7> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 40.
+)
+<../output/figures/F6_ablation_heatmap.pdf, id=162, 500.62093pt x 454.64526pt>
+File: ../output/figures/F6_ablation_heatmap.pdf Graphic file (type pdf)
+<use ../output/figures/F6_ablation_heatmap.pdf>
+Package pdftex.def Info: ../output/figures/F6_ablation_heatmap.pdf  used on inp
+ut line 110.
+(pdftex.def)             Requested size: 341.43307pt x 310.09122pt.
+ [5]
+(../output/tables/T-A5_runtime.tex)
+<figures/F11_runtime_scatter.pdf, id=172, 506.4339pt x 304.73952pt>
+File: figures/F11_runtime_scatter.pdf Graphic file (type pdf)
+<use figures/F11_runtime_scatter.pdf>
+Package pdftex.def Info: figures/F11_runtime_scatter.pdf  used on input line 13
+5.
+(pdftex.def)             Requested size: 386.96027pt x 232.85991pt.
+ [6 <../output/figures/F6_ablation_heatmap.pdf>] (../output/tables/T-A6_paramet
+er_sensitivity_full.tex
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <9> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 15.
+) [7 <./figures/F11_runtime_scatter.pdf>]
+<../output/figures/F8_convergence.pdf, id=228, 621.89964pt x 459.15114pt>
+File: ../output/figures/F8_convergence.pdf Graphic file (type pdf)
+<use ../output/figures/F8_convergence.pdf>
+Package pdftex.def Info: ../output/figures/F8_convergence.pdf  used on input li
+ne 156.
+(pdftex.def)             Requested size: 432.48051pt x 319.30878pt.
+<../output/figures/F7_boxplot_all.pdf, id=229, 808.7013pt x 575.19139pt>
+File: ../output/figures/F7_boxplot_all.pdf Graphic file (type pdf)
+<use ../output/figures/F7_boxplot_all.pdf>
+Package pdftex.def Info: ../output/figures/F7_boxplot_all.pdf  used on input li
+ne 163.
+(pdftex.def)             Requested size: 432.48051pt x 307.60587pt.
+ [8]
+
+LaTeX Warning: Text page 9 contains only floats.
+
+
+Overfull \vbox (2.59555pt too high) has occurred while \output is active []
+
+
+[9 <../output/figures/F8_convergence.pdf> <../output/figures/F7_boxplot_all.pdf
+>] (../output/tables/T6_wilcoxon.tex) (../output/tables/T6b_holm_bonferroni.tex
+)
+<../output/figures/F10_wilcoxon_heatmap.pdf, id=346, 588.5921pt x 586.24568pt>
+File: ../output/figures/F10_wilcoxon_heatmap.pdf Graphic file (type pdf)
+<use ../output/figures/F10_wilcoxon_heatmap.pdf>
+Package pdftex.def Info: ../output/figures/F10_wilcoxon_heatmap.pdf  used on in
+put line 180.
+(pdftex.def)             Requested size: 341.43307pt x 340.08534pt.
+ [10] (../output/tables/T_supp_cross_classifier.tex) [11 <../output/figures/F10
+_wilcoxon_heatmap.pdf>] (../output/tables/T_supp_biomarkers.tex
+Underfull \hbox (badness 2088) in paragraph at lines 14--15
+[]|\T1/txr/m/n/8 Smooth mus-cle in-ter-me-di-ate fil-a-ment; dis-tin-
+ []
+
+
+Underfull \hbox (badness 1019) in paragraph at lines 14--15
+\T1/txr/m/n/8 guishes mu-cosal in-tegrity from tu-mor in-fil-tra-
+ []
+
+
+Underfull \hbox (badness 1895) in paragraph at lines 17--18
+\T1/txr/m/n/8 metabolic and trans-la-tional de-mand in tu-mor
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--20
+[]|\T1/txr/m/n/8 Alpha-methylacyl-CoA
+ []
+
+
+Underfull \hbox (badness 5105) in paragraph at lines 20--21
+\T1/txr/m/n/8 i-cal gold stan-dard for pro-static ade-no-car-ci-
+ []
+
+
+Underfull \hbox (badness 1112) in paragraph at lines 21--22
+[]|\T1/txr/m/n/8 Small nu-clear pro-tein; prostate-specific dif-fer-
+ []
+
+) [12] (../output/tables/T_supp_accuracy_std.tex) (supplementary_material.bbl)
+[13] [14] (supplementary_material.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-03-20>
+ ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package rerunfilecheck Info: File `supplementary_material.out' has not changed.
+
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+ ) 
 Here is how much of TeX's memory you used:
- 12407 strings out of 467690
- 181135 string characters out of 5431801
- 593142 words of memory out of 5000000
- 41339 multiletter control sequences out of 15000+600000
- 630139 words of font info for 42 fonts, out of 8000000 for 9000
+ 13528 strings out of 467690
+ 202843 string characters out of 5431801
+ 656575 words of memory out of 5000000
+ 42244 multiletter control sequences out of 15000+600000
+ 698973 words of font info for 161 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,0n,79p,423b,98s stack positions out of 10000i,1000n,20000p,200000b,200000s
-!  ==> Fatal error occurred, no output PDF file produced!
+ 75i,18n,79p,1375b,458s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt
+1000.pk> <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi60
+0\ectt0800.pk><E:/MiKTeX/fonts/type1/public/txfonts/rtcxr.pfb><E:/MiKTeX/fonts/
+type1/public/txfonts/rtxmi.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxr.pfb><
+E:/MiKTeX/fonts/type1/public/txfonts/txsy.pfb><E:/MiKTeX/fonts/type1/urw/times/
+utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/fonts/type1/u
+rw/times/utmri8a.pfb>
+Output written on supplementary_material.pdf (14 pages, 501201 bytes).
+PDF statistics:
+ 543 PDF objects out of 1000 (max. 8388607)
+ 61 named destinations out of 1000 (max. 500000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+

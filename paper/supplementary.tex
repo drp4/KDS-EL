@@ -70,7 +70,7 @@ Table~\ref{T2} summarizes the statistical characteristics of the 20 benchmark da
 
 \section*{Section S2: Comparison Algorithms and Detailed Hyper-Parameter Configurations}\label{sec:supp_methods}
 
-Table~\ref{T1} lists the full taxonomy and categorization of the 13 comparison algorithms evaluated in the comparative study, and Table~\ref{T3} specifies the precise hyper-parameter configurations used across all algorithms to ensure strict reproducibility.
+Table~\ref{T1} lists the full taxonomy and categorization of the 12 evaluated algorithmic configurations (comprising KDS-EL, two intermediate configurations, foundational MEL, and eight peer competitor algorithms) investigated in the comparative study, and Table~\ref{T3} specifies the precise hyperparameter configurations used across all methods to ensure strict reproducibility.
 
 \input{../output/tables/T1_methods}
 
@@ -80,12 +80,12 @@ Table~\ref{T1} lists the full taxonomy and categorization of the 13 comparison a
 
 \section*{Section S3: Extended Empirical Visualizations and Performance Profiles}\label{sec:supp_visualizations}
 
-Fig.~\ref{fig:supp_acc_all} visualizes the complete per-dataset classification accuracy comparisons across all 14 evaluated algorithms on the 20 benchmark datasets. Fig.~\ref{fig:supp_perf_profile} presents the Dolan--Mor\'{e} performance profiles, confirming the uniform dominance of KDS-EL across performance ratio thresholds. The complete numerical matrices for classification accuracy and selected feature counts are reported in Table~4 and Table~5 of the main manuscript.
+Fig.~\ref{fig:supp_acc_all} visualizes the complete per-dataset classification accuracy comparisons across all 12 evaluated algorithmic configurations on the 20 benchmark datasets. Fig.~\ref{fig:supp_perf_profile} presents the Dolan--Mor\'{e} performance profiles, confirming the uniform dominance of KDS-EL across performance ratio thresholds. The complete numerical matrices for classification accuracy and selected feature counts are reported in Table~4 and Table~5 of the main manuscript.
 
 \begin{figure*}[!htb]
 \centering
 \includegraphics[width=0.95\linewidth]{F4_accuracy_all.pdf}
-\caption{Classification accuracy across all 14 evaluated algorithms on the 20 benchmark datasets.}
+\caption{Classification accuracy across all 12 evaluated algorithmic configurations on the 20 benchmark datasets.}
 \label{fig:supp_acc_all}
 \end{figure*}
 
@@ -100,7 +100,7 @@ Fig.~\ref{fig:supp_acc_all} visualizes the complete per-dataset classification a
 
 \section*{Section S4: Granular Per-Dataset Performance Comparison Before and After Algorithm Improvement (Table~S4)}\label{sec:supp_ablation}
 
-Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential intermediate algorithmic configurations before and after improvement: (i) the original MEL algorithm~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL$_{\mathrm{KER}}$ (w/o TPS), and (iv) Complete KDS-EL. Furthermore, Fig.~\ref{fig:supp_ablation_heatmap} presents the component contribution progression heatmap illustrating the step-wise accuracy progression.
+Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential intermediate algorithmic configurations before and after improvement: (i) pre-improvement MEL~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL w/o TPS, and (iv) Complete KDS-EL. Furthermore, Fig.~\ref{fig:supp_ablation_heatmap} presents the component contribution progression heatmap illustrating the step-wise accuracy progression.
 
 \input{../output/tables/T-A4_per_dataset_ablation}
 
@@ -115,14 +115,14 @@ Table~\ref{T-A4} provides the complete per-dataset performance metrics across th
 
 \section*{Section S5: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (Table~S5)}\label{sec:supp_runtime}
 
-Table~\ref{T-A5} details the mean wall-clock computational execution time (in seconds, averaged over 10 independent runs) across all 20 benchmark datasets for the 14 compared algorithms. In addition, Fig.~\ref{fig:supp_runtime_scatter} illustrates the classification accuracy versus execution time trade-off.
+Table~\ref{T-A5} details the mean wall-clock computational execution time (in seconds, averaged over 10 independent runs) across all 20 benchmark datasets for the 12 evaluated algorithmic configurations. In addition, Fig.~\ref{fig:supp_runtime_scatter} illustrates the classification accuracy versus execution time trade-off.
 
 \input{../output/tables/T-A5_runtime}
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.85\linewidth]{F11_runtime_scatter.pdf}
-\caption{Classification accuracy versus runtime scatter plot for all 14 compared algorithms.}
+\caption{Classification accuracy versus runtime scatter plot for all 12 evaluated algorithmic configurations.}
 \label{fig:supp_runtime_scatter}
 \end{figure}
 

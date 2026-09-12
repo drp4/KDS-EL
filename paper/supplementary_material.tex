@@ -58,6 +58,7 @@ This supplementary document provides comprehensive extended experimental records
     \item \textit{Section S8}: Extended Statistical Significance Testing Matrices (Table~S7, Table~S8, and Fig.~S7)
     \item \textit{Section S9}: Cross-Classifier Inductive Generalization and Robustness (Table~S9)
     \item \textit{Section S10}: Biological and Literature Annotation of Prominent Candidate Genes (Table~S10)
+    \item \textit{Section S11}: Full Granular Classification Accuracy and Uncertainty Landscape (Table~S11)
 \end{itemize}
 
 \newpage
@@ -70,7 +71,7 @@ Table~\ref{T2} summarizes the statistical characteristics of the 20 benchmark da
 
 \section*{Section S2: Comparison Algorithms and Detailed Hyper-Parameter Configurations}\label{sec:supp_methods}
 
-Table~\ref{T1} lists the full taxonomy and categorization of the 13 comparison algorithms evaluated in the comparative study, and Table~\ref{T3} specifies the precise hyper-parameter configurations used across all algorithms to ensure strict reproducibility.
+Table~\ref{T1} lists the full taxonomy and categorization of the 12 evaluated algorithmic configurations (comprising KDS-EL, two intermediate configurations, foundational MEL, and eight peer competitor algorithms) investigated in the comparative study, and Table~\ref{T3} specifies the precise hyperparameter configurations used across all methods to ensure strict reproducibility.
 
 \input{../output/tables/T1_methods}
 
@@ -80,12 +81,12 @@ Table~\ref{T1} lists the full taxonomy and categorization of the 13 comparison a
 
 \section*{Section S3: Extended Empirical Visualizations and Performance Profiles}\label{sec:supp_visualizations}
 
-Fig.~\ref{fig:supp_acc_all} visualizes the complete per-dataset classification accuracy comparisons across all 14 evaluated algorithms on the 20 benchmark datasets. Fig.~\ref{fig:supp_perf_profile} presents the Dolan--Mor\'{e} performance profiles, confirming the uniform dominance of KDS-EL across performance ratio thresholds. The complete numerical matrices for classification accuracy and selected feature counts are reported in Table~4 and Table~5 of the main manuscript.
+Fig.~\ref{fig:supp_acc_all} visualizes the complete per-dataset classification accuracy comparisons across all 12 evaluated algorithmic configurations on the 20 benchmark datasets. Fig.~\ref{fig:supp_perf_profile} presents the Dolan--Mor\'{e} performance profiles, confirming the uniform dominance of KDS-EL across performance ratio thresholds. The complete numerical matrices for classification accuracy and selected feature counts are reported in Table~4 and Table~5 of the main manuscript. Furthermore, the complete per-dataset metrics including standard deviations ($\mathrm{Mean} \pm \mathrm{Std}$) and pairwise non-parametric Mann--Whitney $U$ test outcomes across all 10 independent runs are cataloged in Supplementary Table~\ref{T-S11} of Section~S11.
 
 \begin{figure*}[!htb]
 \centering
 \includegraphics[width=0.95\linewidth]{F4_accuracy_all.pdf}
-\caption{Classification accuracy across all 14 evaluated algorithms on the 20 benchmark datasets.}
+\caption{Classification accuracy across all 12 evaluated algorithmic configurations on the 20 benchmark datasets.}
 \label{fig:supp_acc_all}
 \end{figure*}
 
@@ -100,7 +101,7 @@ Fig.~\ref{fig:supp_acc_all} visualizes the complete per-dataset classification a
 
 \section*{Section S4: Granular Per-Dataset Performance Comparison Before and After Algorithm Improvement (Table~S4)}\label{sec:supp_ablation}
 
-Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential intermediate algorithmic configurations before and after improvement: (i) pre-improvement MEL~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL w/o TPS, and (iv) Complete KDS-EL. Furthermore, Fig.~\ref{fig:supp_ablation_heatmap} presents the component contribution progression heatmap illustrating the step-wise accuracy progression.
+Table~\ref{T-A4} provides the complete per-dataset performance metrics across the four sequential intermediate algorithmic configurations before and after improvement: (i) pre-improvement MEL~\cite{mel2024}, (ii) MEL+MI (w/o TPS\&KER), (iii) KDS-EL w/o TPS, and (iv) Complete KDS-EL. Complete per-dataset standard deviations ($\mathrm{Mean} \pm \mathrm{Std}$) across all intermediate configurations are cataloged in Supplementary Table~\ref{T-S11}. Furthermore, Fig.~\ref{fig:supp_ablation_heatmap} presents the component contribution progression heatmap illustrating the step-wise accuracy progression.
 
 \input{../output/tables/T-A4_per_dataset_ablation}
 
@@ -115,14 +116,24 @@ Table~\ref{T-A4} provides the complete per-dataset performance metrics across th
 
 \section*{Section S5: Granular Per-Dataset Computational Wall-Clock Runtime Measurements (Table~S5)}\label{sec:supp_runtime}
 
-Table~\ref{T-A5} details the mean wall-clock computational execution time (in seconds, averaged over 10 independent runs) across all 20 benchmark datasets for the 14 compared algorithms. Under the shared 100-generation cutoff, standard swarm architectures evaluate exactly 20 particles per generation (2{,}000 total evaluations), KDS-EL evaluates 20 particles alongside three elite refinements (approximately 2{,}300 evaluations), and bIRIME deploys composite mutations evaluating up to 80 candidate subsets per generation. Observed execution times reflect the combined influence of active feature dimensionality, algorithmic operator complexity, and evaluation counts under this benchmark setup. In addition, Fig.~\ref{fig:supp_runtime_scatter} illustrates the classification accuracy versus execution time trade-off.
+Table~\ref{T-A5} details the mean wall-clock computational execution time (in seconds, averaged over 10 independent runs) across all 20 benchmark datasets for the 12 evaluated algorithmic configurations. Under the shared 100-generation cutoff, standard swarm architectures evaluate exactly 20 particles per generation (2{,}000 total evaluations), KDS-EL evaluates 20 particles alongside three elite refinements (approximately 2{,}300 evaluations), and bIRIME deploys composite mutations evaluating up to 80 candidate subsets per generation. Observed execution times reflect the combined influence of active feature dimensionality, algorithmic operator complexity, and evaluation counts under this benchmark setup. In addition, Fig.~\ref{fig:supp_runtime_scatter} illustrates the classification accuracy versus execution time trade-off.
+
+\paragraph{Computational environment and execution specifications}
+To ensure complete experimental transparency and rigorous reproducibility across all evaluated algorithms, all experiments were executed on an identical computing node with the following standardized hardware and software specifications:
+\begin{itemize}
+    \item \textbf{Central Processing Unit (CPU)}: Intel(R) Core(TM) i5-9500 CPU @ 3.00\,GHz (6 physical cores, 6 logical threads, 9\,MB Smart Cache, operating at 3.00\,GHz base frequency).
+    \item \textbf{Random Access Memory (RAM)}: 16\,GB DDR4 physical memory operating at 2133\,MHz in dual-channel configuration ($2 \times 8$\,GB DIMMs).
+    \item \textbf{Operating System}: Microsoft Windows 10 Pro 64-bit (Version 22H2, OS Build 19045, x86-64 architecture).
+    \item \textbf{Software Stack}: Python 3.12, NumPy, SciPy, and scikit-learn.
+    \item \textbf{Execution and Concurrency Protocol}: All comparative algorithms and internal 3-NN cross-validation wrappers were executed in a strict single-threaded sequential execution mode ($n_{\mathrm{jobs}} = 1$) without GPU acceleration. Across all 10 independent stochastic runs, candidate evaluation timings strictly measure single-thread CPU execution time, guaranteeing unbiased wall-clock runtime comparability across all 12 evaluated algorithmic configurations.
+\end{itemize}
 
 \input{../output/tables/T-A5_runtime}
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.85\linewidth]{F11_runtime_scatter.pdf}
-\caption{Classification accuracy versus runtime scatter plot for all 14 compared algorithms.}
+\caption{Classification accuracy versus runtime scatter plot for all 12 evaluated algorithmic configurations.}
 \label{fig:supp_runtime_scatter}
 \end{figure}
 
@@ -137,6 +148,8 @@ Table~\ref{T-A6} reports the full multi-dataset one-factor-at-a-time (OFAT) para
 \newpage
 
 \section*{Section S7: Full Convergence Trajectories and Boxplot Distributions}\label{sec:supp_dynamics}
+
+To evaluate evolutionary dynamics across the benchmark suite without graphical clutter, Fig.~\ref{fig:supp_convergence} plots the mean fitness convergence trajectories across 100 generations. In line-plot convergence visualizations (including main manuscript Figs.~5 and 8), trajectories depict mean objective fitness and accuracy across 10 independent runs to avoid severe visual occlusion and clutter arising from overlapping shaded error bands across the 12 evaluated algorithmic configurations. Full distributional uncertainty, interquartile ranges (IQR), and run-to-run variances are rigorously conveyed through the per-dataset boxplots in Fig.~\ref{fig:supp_boxplots} and the granular $\mathrm{Mean} \pm \mathrm{Std}$ landscape in Table~\ref{T-S11}.
 
 \begin{figure*}[!htb]
 \centering
@@ -184,6 +197,14 @@ To evaluate whether the feature subsets identified by KDS-EL under the 3-NN wrap
 Table~\ref{T-S10} details the functional and oncological literature annotations of prominent candidate genes identified by KDS-EL in the \textit{Colon} and \textit{Prostate} cancer microarrays. These annotations provide supportive evidence of retrospective concordance with established oncological literature rather than de novo clinical biomarker discovery. Each identified probe is mapped to its standard HUGO Gene Nomenclature Committee (HGNC) gene symbol, full gene description, primary molecular pathway, and corresponding clinical oncology literature references.
 
 \input{../output/tables/T_supp_biomarkers}
+
+\newpage
+
+\section*{Section S11: Full Granular Classification Accuracy and Uncertainty Landscape (Table~S11)}\label{sec:supp_full_acc}
+
+Table~\ref{T-S11} reports the complete classification accuracy performance ($\mathrm{Mean} \pm \mathrm{Std}$) across 10 independent stochastic runs for all 12 evaluated algorithms across the 20 benchmark datasets. Statistical significance markers ($+ / \approx / -$) are derived from pairwise two-sided Mann--Whitney $U$ tests ($\alpha = 0.05$) evaluated directly on the raw 10 independent stochastic runs ($n_1 = n_2 = 10$) on each benchmark dataset, providing full transparency on run-level stability and distributional variance.
+
+\input{../output/tables/T_supp_accuracy_std}
 
 \bibliographystyle{elsarticle-num}
 \bibliography{references}
