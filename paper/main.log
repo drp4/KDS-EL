@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  15 SEP 2026 16:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  15 SEP 2026 17:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1100,7 +1100,7 @@ Underfull \hbox (badness 1062) in paragraph at lines 374--376
 
 pdfTeX warning: pdflatex.exe (file ./figures/F2_flowchart_journal.pdf): PDF inc
 lusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/F2_flowchart_journal.pdf, id=350, 690.66026pt x 653.56169pt>
+<figures/F2_flowchart_journal.pdf, id=352, 690.66026pt x 653.56169pt>
 File: figures/F2_flowchart_journal.pdf Graphic file (type pdf)
 <use figures/F2_flowchart_journal.pdf>
 Package pdftex.def Info: figures/F2_flowchart_journal.pdf  used on input line 3
@@ -1110,7 +1110,7 @@ Package pdftex.def Info: figures/F2_flowchart_journal.pdf  used on input line 3
 
 pdfTeX warning: pdflatex.exe (file ./figures/F3_mi_initialization_journal.pdf):
  PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/F3_mi_initialization_journal.pdf, id=352, 826.04607pt x 204.765pt>
+<figures/F3_mi_initialization_journal.pdf, id=354, 826.04607pt x 204.765pt>
 File: figures/F3_mi_initialization_journal.pdf Graphic file (type pdf)
 <use figures/F3_mi_initialization_journal.pdf>
 Package pdftex.def Info: figures/F3_mi_initialization_journal.pdf  used on inpu
@@ -1209,11 +1209,11 @@ Underfull \hbox (badness 2726) in paragraph at lines 497--498
 on-tin-u-ous
  []
 
-
+[7]
 
 pdfTeX warning: pdflatex.exe (file ./figures/F4_ker_strategy_journal.pdf): PDF 
 inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/F4_ker_strategy_journal.pdf, id=456, 1010.81638pt x 277.9986pt>
+<figures/F4_ker_strategy_journal.pdf, id=468, 1010.81638pt x 277.9986pt>
 File: figures/F4_ker_strategy_journal.pdf Graphic file (type pdf)
 <use figures/F4_ker_strategy_journal.pdf>
 Package pdftex.def Info: figures/F4_ker_strategy_journal.pdf  used on input lin
@@ -1221,7 +1221,7 @@ e 501.
 (pdftex.def)             Requested size: 511.55777pt x 140.68723pt.
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 508.
-[7]
+
 Underfull \hbox (badness 5388) in paragraph at lines 566--567
 []\T1/txr/m/it/8 Dual-scale search dy-nam-ics and dimension-scaling anal-y-sis\
 T1/txr/m/n/8 : The
@@ -1353,7 +1353,7 @@ Underfull \hbox (badness 1205) in paragraph at lines 866--867
 -per meth-ods:
  []
 
-<figures/F8_sota_convergence.pdf, id=625, 744.6106pt x 536.56833pt>
+<figures/F8_sota_convergence.pdf, id=627, 744.6106pt x 536.56833pt>
 File: figures/F8_sota_convergence.pdf Graphic file (type pdf)
 <use figures/F8_sota_convergence.pdf>
 Package pdftex.def Info: figures/F8_sota_convergence.pdf  used on input line 87
@@ -1378,7 +1378,7 @@ while KDS-EL
  []
 
 [12]
-<figures/F13_friedman_rank.pdf, id=654, 250.6458pt x 212.77994pt>
+<figures/F13_friedman_rank.pdf, id=656, 250.6458pt x 212.77994pt>
 File: figures/F13_friedman_rank.pdf Graphic file (type pdf)
 <use figures/F13_friedman_rank.pdf>
 Package pdftex.def Info: figures/F13_friedman_rank.pdf  used on input line 947.
@@ -1391,13 +1391,13 @@ o-gres-sion from
  []
 
 [13 <./figures/F8_sota_convergence.pdf>]
-<figures/F6_ablation_radar.pdf, id=777, 404.97716pt x 416.08835pt>
+<figures/F6_ablation_radar.pdf, id=779, 404.97716pt x 416.08835pt>
 File: figures/F6_ablation_radar.pdf Graphic file (type pdf)
 <use figures/F6_ablation_radar.pdf>
 Package pdftex.def Info: figures/F6_ablation_radar.pdf  used on input line 1001
 .
 (pdftex.def)             Requested size: 221.76123pt x 227.84615pt.
-<figures/F5_ablation_convergence.pdf, id=778, 621.89964pt x 459.15114pt>
+<figures/F5_ablation_convergence.pdf, id=780, 621.89964pt x 459.15114pt>
 File: figures/F5_ablation_convergence.pdf Graphic file (type pdf)
 <use figures/F5_ablation_convergence.pdf>
 Package pdftex.def Info: figures/F5_ablation_convergence.pdf  used on input lin
@@ -1416,13 +1416,13 @@ Underfull \hbox (badness 1320) in paragraph at lines 1013--1014
  []
 
 [14 <./figures/F13_friedman_rank.pdf>]
-<figures/F11_runtime_scatter.pdf, id=805, 506.4339pt x 304.73952pt>
+<figures/F11_runtime_scatter.pdf, id=807, 506.4339pt x 304.73952pt>
 File: figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: figures/F11_runtime_scatter.pdf  used on input line 10
 23.
 (pdftex.def)             Requested size: 221.76123pt x 133.44409pt.
-<figures/F14_parameter_sensitivity.pdf, id=818, 707.6375pt x 194.90215pt>
+<figures/F14_parameter_sensitivity.pdf, id=820, 707.6375pt x 194.90215pt>
 File: figures/F14_parameter_sensitivity.pdf Graphic file (type pdf)
 <use figures/F14_parameter_sensitivity.pdf>
 Package pdftex.def Info: figures/F14_parameter_sensitivity.pdf  used on input l
@@ -1500,9 +1500,9 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (19 pages, 2768507 bytes).
+Output written on main.pdf (19 pages, 2769934 bytes).
 PDF statistics:
- 1185 PDF objects out of 1200 (max. 8388607)
+ 1187 PDF objects out of 1200 (max. 8388607)
  153 named destinations out of 1000 (max. 500000)
  307 words of extra memory for PDF output out of 10000 (max. 10000000)
 
