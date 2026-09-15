@@ -793,11 +793,11 @@ def fig_f11_runtime(df_detail, out_dir):
 
     fig, ax = plt.subplots(figsize=(7.2, 4.4))
 
-    # Plot Pareto envelope (non-dominated frontier across key configurations)
+    # Plot empirical trade-off envelope (non-dominated frontier across key configurations)
     frontier_x = [87.8, 121.7, 407.7, 1068.9]
     frontier_y = [0.9545, 0.9462, 0.9454, 0.9242]
     ax.plot(frontier_x, frontier_y, linestyle="--", linewidth=1.1, color="#CBD5E0",
-            alpha=0.9, zorder=1, label="Pareto Frontier")
+            alpha=0.9, zorder=1)
 
     for p in points:
         v = p["v"]

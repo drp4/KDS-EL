@@ -1,0 +1,12 @@
+
+\documentclass[final,5p,times,twocolumn]{elsarticle}
+\usepackage{amsmath,amssymb}
+\begin{document}
+\showthe\columnwidth
+\setbox0=\hbox{$\displaystyle v_{i,j}^{(t)} = \mathrm{clip}\bigl(w v_{i,j}^{(t-1)} + c_1 r_{1,j} (p_{\mathrm{best},i,j} - p_{i,j}^{(t-1)}) + c_2 r_{2,j} (g_{\mathrm{best},j} - p_{i,j}^{(t-1)})\bigr)$}
+\showthe\wd0
+\setbox1=\hbox{$\displaystyle \qquad + c_3 r_{3,j} (g_{\mathrm{best},2,j} - p_{i,j}^{(t-1)}), \; -v_{\max}, \; v_{\max}\bigr),$}
+\showthe\wd1
+\setbox2=\hbox{$\displaystyle p_{i,j}^{(t)} = \mathrm{clip}(p_{i,j}^{(t-1)} + v_{i,j}^{(t)}, 0, 1), \quad x_{i,j}^{(t)} = \mathbb{I}(p_{i,j}^{(t)} \ge \theta)$}
+\showthe\wd2
+\end{document}
