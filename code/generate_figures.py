@@ -952,47 +952,24 @@ def fig_f13_friedman_rank(df_detail, out_dir):
     avg_ranks = {v: np.mean(ranks[v]) for v in versions if ranks[v]}
     sorted_methods = sorted(avg_ranks, key=avg_ranks.get)
 
-    # Native single-column dimensions (3.48 x 3.10 in) matching Elsevier 5p layout perfectly
-    fig, ax = plt.subplots(figsize=(3.48, 3.10))
+    # Native single-column dimensions (3.48 x 2.95 in) matching Elsevier 5p layout perfectly
+    fig, ax = plt.subplots(figsize=(3.48, 2.95))
     y_pos = np.arange(len(sorted_methods))
     values = [avg_ranks[v] for v in sorted_methods]
-    labels = [V_LABELS.get(v, v) for v in sorted_methods]
+    FRIEDMAN_LABELS = {
+        "KDS_EL_TwoPhase": "KDS-EL",
+        "KDS_EL_NoPool": "w/o TPS",
+        "MEL_MI": "w/o TPS & KER",
+    }
+    labels = [FRIEDMAN_LABELS.get(v, V_LABELS.get(v, v)) for v in sorted_methods]
 
-    # Critical Difference cutoff at CD = 5.00 (Demšar Bonferroni-Dunn at alpha = 0.05, CD = 3.25)
-    cd_val = 5.00
-    top_y = -0.45
-    tick_h = 0.15
-
-    # Three-tier semantic palette:
-    # 1. Hero KDS-EL: Nature Vermilion (#C82423)
-    # 2. Within CD (p >= 0.05): Deep Steel Slate (#3B536B)
-    # 3. Beyond CD (p < 0.05): Cohesive Muted Slate (#64748B)
-    colors = []
-    edges = []
-    for r in values:
-        if r == values[0]:
-            colors.append("#C82423")
-            edges.append("#991B1B")
-        elif r < cd_val:
-            colors.append("#3B536B")
-            edges.append("#223140")
-        else:
-            colors.append("#64748B")
-            edges.append("#475569")
+    # Clean two-tier publication palette:
+    # 1. Proposed KDS-EL: Nature Vermilion (#C82423)
+    # 2. Competitor methods and intermediate configurations: Scholarly Slate (#475569)
+    colors = ["#C82423" if r == values[0] else "#475569" for r in values]
+    edges = ["#991B1B" if r == values[0] else "#334155" for r in values]
 
     bars = ax.barh(y_pos, values, height=0.48, color=colors, edgecolor=edges, linewidth=0.6, zorder=3)
-
-    # Vertical dotted threshold line dropping down from CD cutoff
-    ax.plot([cd_val, cd_val], [-0.3, len(sorted_methods) - 0.5],
-            color="#DC2626", linestyle=":", linewidth=0.85, zorder=2)
-
-    # Top Demšar Critical Difference bracket spanning [1.75, 5.00]
-    ax.plot([values[0], cd_val], [top_y, top_y], color="#C82423", linewidth=1.1, zorder=4)
-    ax.plot([values[0], values[0]], [top_y - tick_h, top_y + tick_h], color="#C82423", linewidth=1.1, zorder=4)
-    ax.plot([cd_val, cd_val], [top_y - tick_h, top_y + tick_h], color="#DC2626", linewidth=1.1, zorder=4)
-
-    ax.text((values[0] + cd_val) / 2, top_y - 0.20, r"CD = 3.25 ($\alpha = 0.05$)",
-            ha="center", va="bottom", fontsize=6.8, color="#C82423", fontweight="bold", zorder=4)
 
     for i, (v, bar) in enumerate(zip(sorted_methods, bars)):
         label = str(Decimal(str(values[i])).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
@@ -1011,7 +988,7 @@ def fig_f13_friedman_rank(df_detail, out_dir):
         l.set_color("#334155")
 
     ax.invert_yaxis()
-    ax.set_ylim(len(sorted_methods) - 0.45, -1.20)
+    ax.set_ylim(len(sorted_methods) - 0.45, -0.65)
     ax.set_xlim(0, 12.2)
     ax.set_xticks([0, 2, 4, 6, 8, 10, 12])
     ax.set_xlabel("Average Friedman rank", fontsize=7.8, labelpad=2.5)

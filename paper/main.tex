@@ -208,7 +208,7 @@ Despite its widespread adoption, canonical PSO encounters three critical structu
 
 Recent evolutionary feature selection studies have investigated specialized strategies to mitigate high-dimensional search degradation, including feature-weight velocity steering in FWPSO~\cite{wangjia2022}, adaptive differential evolution weighting in SaWDE~\cite{wang2022}, surrogate-guided perturbation in IGPSO~\cite{xuezhang2024}, and multi-criterion evaluation in PSO-CSM~\cite{wei2025}. Although these single-objective approaches yield valuable localized improvements, they address initialization, perturbation, and weighting in isolation, lacking a unified closed-loop architecture. Concurrently, multi-task evolutionary optimization has emerged as a promising paradigm for scaling feature selection to massive dimensions by exploring complementary continuous and discrete representations across collaborative subpopulations~\cite{mel2024}. Nevertheless, existing multi-task swarm frameworks leave critical structural vulnerabilities unresolved: continuous particles remain uniformly scattered without domain prior guidance, empirical feature-importance accumulation lacks exponential forgetting and elitist verification, and static objective scalarization persists throughout evolution.
 
-To resolve these collective limitations, this paper proposes Knowledge-Guided Dual-Swarm Evolutionary Learning (KDS-EL). Methodologically, KDS-EL is structurally formulated not as an isolated particle swarm heuristic variant, but as a domain-knowledge-guided feature selection framework established upon a cooperative multi-task dual-swarm PSO backbone, cohesively coordinating prior knowledge injection, cross-iteration memory accumulation, targeted elite refinement, and dynamic objective scheduling into an end-to-end closed-loop learning system.
+To resolve these collective limitations, this paper proposes Knowledge-Guided Dual-Swarm Evolutionary Learning (KDS-EL). Methodologically, KDS-EL establishes an integrated cooperative co-evolutionary system that synergistically couples domain-knowledge seeding, generational memory harvesting, and stage-aware search control across complementary continuous and discrete representations, orchestrating prior injection, differential elite refinement, and dynamic objective scheduling into a closed-loop optimization architecture.
 
 The main contributions of this paper are summarized as follows:
 \begin{enumerate}
@@ -224,8 +224,6 @@ The remainder of this paper is organized as follows. Section~\ref{sec:related} f
 
 % --------------------------- 2. Related Work and Background -----------
 \section{Related Work and Background}\label{sec:related}
-
-This section establishes the formal mathematical foundation of feature selection and systematically reviews relevant evolutionary computation paradigms. Section~\ref{sec:problem_formulation} first formalizes the combinatorial optimization problem and search taxonomy. Section~\ref{sec:pso} analyzes evolutionary swarm dynamics alongside the structural failure modes of discrete binarization in high-dimensional spaces. Section~\ref{sec:mel} scrutinizes the cooperative multi-task evolutionary learning framework and pinpoints its operational bottlenecks. Finally, Section~\ref{sec:knowledge_guided} reviews knowledge-guided evolutionary search and establishes the taxonomic positioning of KDS-EL across contemporary literature.
 
 \begin{table*}[!t]
 \centering
@@ -345,8 +343,6 @@ To resolve the limitations of rigid static priors and heavyweight surrogates, KD
 % --------------------------- 3. The Proposed Method -------------------
 \section{The Proposed Method}\label{sec:proposed}
 
-This section details the theoretical foundations and algorithmic architecture of the proposed KDS-EL framework. Section~\ref{sec:framework} first outlines the overarching data-flow architecture and continuous-discrete dual decision space. Section~\ref{sec:mi} formulates the prior-guided sparse population initialization and adaptive stagnation recovery mechanisms. Section~\ref{sec:ker} establishes the closed-loop differential importance memory model and knowledge-guided elite refinement strategy. Section~\ref{sec:twophase} develops the dynamic Two-Phase Weight Scheduling strategy. Finally, Section~\ref{sec:main_algo} synthesizes the overall algorithmic coordination alongside asymptotic computational complexity analysis.
-
 \subsection{The framework of KDS-EL}\label{sec:framework}
 
 The macro data-flow architecture and problem mapping of KDS-EL for high-dimensional feature selection are systematically illustrated in Fig.~\ref{fig:kds_el_dataflow}. Given a high-dimensional dataset $\mathcal{D}$ characterized by severe sample scarcity, the search pipeline begins by extracting filter-level mutual information to construct a continuous prior relevance landscape $\mathbf{m} \in [0, 1]^D$. An initial population of continuous positions $\mathbf{p}_i \in [0, 1]^D$ is generated via hybrid prior seeding and deterministically mapped into sparse binary candidate masks $\mathbf{x}_i \in \{0, 1\}^D$ via Heaviside thresholding. Throughout optimization, these candidate subsets are transferred to the KDS-EL optimization engine, which coordinates collaborative dual-swarm co-evolution between subpopulations $\mathcal{P}_1$ and $\mathcal{P}_2$, dynamic Two-Phase Weight Scheduling, wrapper classification evaluations, cumulative feature-importance harvesting into memory vector $\mathbf{W} \in \mathbb{R}^D$, and targeted elite refinement in closed-loop synergy. Upon satisfying the termination criterion, the framework isolates the optimal compact feature subset $\mathbf{x}^{\star}$ with cardinality $d^{\star} = \|\mathbf{x}^{\star}\|_0 \ll D$ alongside its cross-validated predictive performance.
@@ -414,7 +410,7 @@ To prevent population homogenization while guiding search trajectories toward in
 \end{cases}
 \label{eq:mi_seeding}
 \end{equation}
-where $\boldsymbol{\varepsilon}_i \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_D)$ represents zero-mean Gaussian perturbation with standard deviation $\sigma$, $\mathbf{u}_i \sim \mathcal{U}(0, 1)^D$ provides uniform stochastic coverage across unguided dimensions, and $\mathrm{clip}(z, 0, 1) = \max(0, \min(1, z))$ restricts continuous coordinates to the unit hypercube.
+where $\boldsymbol{\varepsilon}_i \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_D)$ represents zero-mean Gaussian perturbation with standard deviation $\sigma = 0.10$, $\mathbf{u}_i \sim \mathcal{U}(0, 1)^D$ provides uniform stochastic coverage across unguided dimensions, and $\mathrm{clip}(z, 0, 1) = \max(0, \min(1, z))$ restricts continuous coordinates to the unit hypercube.
 
 Continuous position vectors $\mathbf{p}_i$ are subsequently transformed into binary decision vectors $\mathbf{x}_i = [x_{i,1}, \dots, x_{i,D}] \in \{0, 1\}^D$ via a deterministic Heaviside step mapping with threshold $\theta \in (0.5, 1)$:
 \begin{equation}
@@ -442,7 +438,7 @@ x_{i,j} &\leftarrow \mathbb{I}(p_{i,j} \ge \theta), \quad \forall j = 1, \dots, 
 \end{aligned}
 \label{eq:reinit_formula}
 \end{equation}
-where $\boldsymbol{\varepsilon}_i \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_D)$ represents zero-mean Gaussian perturbation with standard deviation $\sigma \in \mathbb{R}^+$, $\mathbb{I}(\cdot)$ is the indicator function, $\theta \in (0.5, 1)$ denotes the cut-off binarization threshold, and $\mathrm{clip}(z, 0, 1) = \max(0, \min(1, z))$ restricts continuous coordinates to the unit hypercube.
+where $\boldsymbol{\varepsilon}_i \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I}_D)$ represents zero-mean Gaussian perturbation with standard deviation $\sigma = 0.10$, $\mathbb{I}(\cdot)$ is the indicator function, $\theta \in (0.5, 1)$ denotes the cut-off binarization threshold, and $\mathrm{clip}(z, 0, 1) = \max(0, \min(1, z))$ restricts continuous coordinates to the unit hypercube.
 
 Immediately following position refreshing, the binarized candidate masks $\mathbf{x}_i$ of the refreshed subpopulation are evaluated via the internal cross-validation wrapper under the current phase objective weight vector $\mathbf{w}(t)$, as depicted in Step~4 of Fig.~\ref{fig:mi_seeding}. The refreshed personal-best fitness records are updated to $f(\mathbf{p}_{\mathrm{best},i}, \mathbf{w}(t)) \leftarrow f(\mathbf{x}_i, \mathbf{w}(t))$, allowing newly sampled candidates to enter subsequent global-best competition alongside the preserved elite half, while the stagnation counter is reset to zero ($t_{\mathrm{stag}} \leftarrow 0$). Crucially, this bipartite design bounds the additional computational overhead to at most $\lfloor N/2 \rfloor$ wrapper evaluations, which are invoked strictly on demand rather than continuously incurred across every generation. Furthermore, because re-sampling is anchored to the continuous prior relevance vector $\mathbf{m}$ rather than uniform noise, newly generated candidate masks remain structurally sparse, entirely circumventing unguided dimensional expansion. When coupled with the exponential memory forgetting of non-contributing dimensions in the cumulative feature-importance vector $\mathbf{W} \in \mathbb{R}^D$, this adaptive recovery mechanism breaks exploratory deadlocks, injects fresh variance into dormant subspaces, and propels the swarm toward globally competitive, sparse feature subsets.
 
@@ -638,7 +634,7 @@ This subsection outlines the experimental framework designed to evaluate the cla
 
 To validate the optimization performance and feature reduction capability of KDS-EL across diverse problem domains, a total of 20 benchmark datasets widely adopted in the evolutionary feature selection literature~\cite{mel2024,wangjia2022,wei2025} are selected. As cataloged in Table~\ref{T2}, the suite spans two distinct operational regimes: 15 biomedical microarrays characterized by severe sample scarcity where available observations $N_{\mathrm{samp}} \le 173$ are vastly outnumbered by candidate features, alongside five text, vision, and speech benchmarks providing over $1{,}400$ training observations. Such diverse data distributions and dimensional complexities effectively evaluate the combinatorial search capability and feature reduction efficacy of feature selection algorithms across contrasting sample-to-dimension regimes. The detailed characteristics of the investigated datasets are summarized in Table~\ref{T2}.
 
-To guarantee experimental reproducibility and methodological hygiene, data preparation adheres to a standardized preprocessing protocol across all evaluated domains. The 20 benchmark datasets are acquired from established benchmark archives, including the Kent Ridge Biomedical Data Set repository and the Arizona State University Feature Selection repository, as complete numerical feature matrices without missing values, obviating the need for statistical imputation. Natural class distributions and original feature dynamic ranges are preserved intact: no synthetic oversampling such as SMOTE, random undersampling, or artificial balancing heuristics are introduced, preventing synthetic distribution artifacts. To address intrinsic class imbalance across cross-validation splits, five-fold stratified partitioning is strictly enforced, preserving identical category proportions across training and validation partitions under a synchronized seed. Furthermore, mutual information prior estimation is executed once offline across the benchmark instance to construct the heuristic relevance vector $\mathbf{m}$, while downstream wrapper evaluations apply Euclidean nearest-neighbor classification directly to candidate feature masks without fold-dependent feature re-standardization.
+To guarantee experimental reproducibility and methodological hygiene, data preparation adheres to a standardized protocol across all evaluated domains. The 20 benchmark datasets are acquired from established archives, including the Kent Ridge Biomedical Data Set repository and the Arizona State University Feature Selection repository, as complete numerical feature matrices without missing values, obviating the need for statistical imputation. All comparison methods used the same source-provided numerical representation of each dataset. No additional dataset-level standardization, resampling, or imputation was performed. Where preprocessing had already been performed by the original data provider, the corresponding processed representation was retained without further transformation. Natural class distributions are preserved intact: no synthetic oversampling, random undersampling, or artificial balancing heuristics are introduced, preventing synthetic distribution artifacts. To address intrinsic class imbalance across cross-validation splits, five-fold stratified partitioning is strictly enforced, preserving identical category proportions across training and validation partitions under a synchronized seed.
 
 \subsubsection{Comparison algorithms}
 
@@ -648,7 +644,7 @@ We benchmark KDS-EL against nine representative single-objective competitor algo
 
 Algorithm performance is evaluated across three primary quantitative criteria: internal benchmark cross-validation accuracy with standard deviation, the number of selected features alongside the feature selection ratio, and computational runtime in seconds. A 3-nearest neighbor (3-NN) classifier with 5-fold stratified cross-validation serves as the wrapper evaluation model across all benchmark datasets, ensuring parameter-free reproducibility and high sensitivity to candidate feature subset discriminability. Classification accuracy serves as the primary predictive criterion to maintain direct structural alignment with the wrapper error objective in Eq.~\eqref{eq:fs_formulation} and ensure rigorous comparability with peer evolutionary literature. Furthermore, across the 17 binary and three multi-class benchmarks in Table~\ref{T2}, class distributions remain balanced, rendering accuracy an objective-aligned and computationally efficient surrogate for combinatorial search. Following the standardized benchmarking protocol established in top-tier high-dimensional evolutionary feature selection literature~\cite{mel2024,wangjia2022,wei2025}, each benchmark problem is evaluated as a self-contained combinatorial optimization instance where internal cross-validation accuracy guides evolutionary search trajectories under a synchronized population size of $N=20$ and generation cutoff of $T=100$ across all competing methods.
 
-To ensure reproducibility, all algorithms are implemented in Python 3.12 utilizing NumPy, scikit-learn, and SciPy, and evaluated under a standardized single-threaded setting on an Intel Core i5-9500 CPU @ 3.00\,GHz with 16\,GB DDR4 RAM running 64-bit Windows 10 (detailed specifications in Supplementary Section~S5). Following the established benchmarking protocol of peer evolutionary wrapper studies~\cite{mel2024,wangjia2022,wei2025}, each dataset is evaluated as a self-contained combinatorial optimization instance where an internal 5-fold stratified cross-validation wrapper (seed 42) serves as the fitness evaluation surrogate across 10 independent stochastic runs under the parameters in Table~\ref{T3}. Within this benchmark optimization instance paradigm, offline mutual information prior computation and candidate evaluations operate on the full benchmark instance to guide metaheuristic search trajectories under a synchronized operational platform. Crucially, this shared wrapper surrogate evaluates combinatorial optimization efficacy rather than unbiased out-of-fold generalization across unseen clinical cohorts, where prospective clinical deployment strictly mandates decoupling prior calculation and evolutionary search within an outer nested cross-validation loop or testing against independent multi-center cohorts.
+To ensure reproducibility, all algorithms are implemented in Python 3.12 utilizing NumPy, scikit-learn, and SciPy, and evaluated under a standardized single-threaded setting on an Intel Core i5-9500 CPU @ 3.00\,GHz with 16\,GB DDR4 RAM running 64-bit Windows 10 (detailed specifications in Supplementary Section~S5). All 10 independent stochastic runs operate under synchronized population size $N=20$ and generation cutoff $T=100$ using the parameters in Table~\ref{T3}. Following the benchmark protocol adopted by MEL~\cite{mel2024}, each dataset was treated as a self-contained combinatorial optimization instance. The mutual-information vector was computed once from the complete instance and served as fixed problem-level heuristic knowledge throughout the evolutionary search. The internal five-fold stratified cross-validation procedure was used consistently as the fitness evaluation surrogate for all candidate subsets. Consequently, the reported results characterize comparative optimization performance under this benchmark protocol rather than unbiased predictive performance on an unseen external cohort.
 
 Furthermore, to determine whether the empirical advantages of KDS-EL over competing paradigms are statistically significant rather than stochastic artifacts, we adopt a two-tier non-parametric statistical evaluation framework. At the individual benchmark dataset level, the two-sided Mann--Whitney $U$ test at the $\alpha = 0.05$ significance level evaluates performance differences across the 10 independent stochastic runs. Across the multi-problem benchmark suite, we strictly adhere to the non-parametric statistical testing framework recommended by Dem{\v{s}}ar~\cite{demsar2006}, where each problem is represented by its mean classification performance across the 10 independent runs. Specifically, the non-parametric Friedman test~\cite{friedman1940} establishes omnibus algorithm rankings across the benchmark suite, pairwise Wilcoxon signed-rank tests assess directional superiority between KDS-EL and each competitor method, and the Holm--Bonferroni step-down procedure~\cite{holm1979} rigorously controls the family-wise error rate across multiple comparisons. Statistical hypothesis testing is conducted primarily on classification accuracy due to its fundamental stochastic distribution across candidate evaluations, whereas feature subset compactness and computational efficiency are concurrently appraised through quantitative cardinality compression ratios and empirical speedup factors under multi-criteria analysis.
 
@@ -718,6 +714,7 @@ Perturbation fraction $\phi$ & 0.01 \\
 Elite pool size $k_e$ & 3 \\
 Random exploration rate $p_{\mathrm{rand}}$ & 0.10 \\
 MI initialization ratio $\rho$ & 0.50 \\
+Gaussian perturbation scale $\sigma$ & 0.10 \\
 Stagnation threshold $\tau$ & 20 generations \\
 Phase split ratio $\kappa$ & 0.70 \\
 Phase-1 weights $\mathbf{w}_1$ & $[0.70, \; 0.30]$ \\
@@ -757,7 +754,7 @@ The KDS-EL framework was systematically evaluated alongside nine competitor algo
 \renewcommand{\arraystretch}{0.96}
 \begin{tabular}{l *{12}{w{c}{33pt}}}
 \toprule
-Dataset & KDS-EL & \makecell{KDS-EL \\ w/o TPS} & \makecell{KDS-EL \\ w/o TPS\&KER} & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
+Dataset & KDS-EL & w/o TPS & w/o TPS\&KER & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
 \midrule
 ALL1             & \textbf{1.0000} & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & 0.9995 $^{+}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ \\
 ALL4             & \textbf{0.9480} & \underline{0.9367} $^{\approx}$ & 0.9356 $^{+}$ & 0.8656 $^{+}$ & 0.9140 $^{+}$ & 0.8580 $^{+}$ & 0.8308 $^{+}$ & 0.7634 $^{+}$ & 0.8250 $^{+}$ & 0.7918 $^{+}$ & 0.7043 $^{+}$ & 0.7846 $^{+}$ \\
@@ -792,7 +789,7 @@ $+ / \approx / -$ & — & 11/8/1 & 13/7/0 & 19/1/0 & 8/11/1 & 15/4/1 & 19/1/0 & 
 
 Across the benchmark suite, KDS-EL achieves the highest overall mean internal benchmark cross-validation accuracy of 0.9545, securing competitive overall performance in multi-dataset aggregate evaluations. On ultra-high-dimensional microarrays characterized by severe sample sparsity, such as \textit{ALL4}, \textit{Colon}, and \textit{T1D}, KDS-EL establishes pronounced discriminative advantages over peer methods. Compared with established single-objective evolutionary algorithms, including FWPSO~\cite{wangjia2022}, PSO-CSM~\cite{wei2025}, SaWDE~\cite{wang2022}, IGPSO~\cite{xuezhang2024}, and BPSO~\cite{kennedy1997}, KDS-EL substantially elevates classification performance, confirming that closed-loop knowledge transfer and dynamic weight scheduling effectively mitigate random exploratory drift. Furthermore, against contemporary competitor methods published between 2023 and 2024, including BinCOA~\cite{shikoun2024} and DENCA-SO~\cite{hancer2023}, KDS-EL demonstrates consistent predictive advantages. Compared with the original MEL algorithm~\cite{mel2024}, KDS-EL achieves an accuracy improvement of 4.52 percentage points, reaching 0.9545 compared with 0.9093, demonstrating that prior-guided initialization and knowledge-guided elite refinement fundamentally enhance localized exploitation in complex combinatorial feature landscapes.
 
-A granular examination of per-dataset performance in Table~\ref{T4} reveals nuanced trade-off dynamics between KDS-EL and the strongest contemporary competitor, bIRIME~\cite{su2024}. Head-to-head on raw mean classification accuracy, KDS-EL records 7 wins, 5 ties, and 8 losses against bIRIME across the 20 benchmark datasets, which translates into 8 statistically significant wins, 11 ties, and only 1 loss under the two-sided Mann--Whitney $U$ test in Table~\ref{T6}. Crucially, six of these eight losses in raw mean occur strictly on saturated ceiling-effect microarrays where classification accuracy exceeds 0.998 for both optimizers and variations remain below 0.0015, reflecting negligible stochastic fluctuations rather than genuine predictive divergence. Conversely, on challenging non-saturated domains, KDS-EL achieves pronounced accuracy gains over bIRIME. Furthermore, as documented in Table~\ref{T5}, bIRIME achieves its marginal ceiling advantages at the expense of severe feature bloat, retaining an average of 407.7 features across the benchmark suite---nearly five times the 87.8 features isolated by KDS-EL. Additionally, as analyzed in Section~\ref{sec:efficiency}, bIRIME incurs a steep wall-clock runtime penalty averaging 326.2 seconds due to unguided multi-operator evaluations, running over six times slower than KDS-EL. Consequently, while bIRIME maintains competitive accuracy parity on specific benchmark instances, KDS-EL establishes a decisive multi-criteria advantage: matching classification accuracy while delivering an order-of-magnitude reduction in feature cardinality and over a six-fold reduction in computational runtime.
+A granular examination of per-dataset performance in Table~\ref{T4} reveals nuanced trade-off dynamics between KDS-EL and the strongest contemporary competitor, bIRIME~\cite{su2024}. Head-to-head on raw mean classification accuracy, KDS-EL records 7 wins, 5 ties, and 8 losses against bIRIME across the 20 benchmark datasets, which translates into 8 statistically significant wins, 11 ties, and only 1 loss under the two-sided Mann--Whitney $U$ test in Table~\ref{T6}. Crucially, six of these eight losses in raw mean occur strictly on saturated ceiling-effect microarrays where classification accuracy exceeds 0.998 for both optimizers and variations remain below 0.0015, reflecting negligible stochastic fluctuations rather than genuine predictive divergence. Conversely, on challenging non-saturated domains, KDS-EL achieves pronounced accuracy gains over bIRIME. Furthermore, as documented in Table~\ref{T5}, bIRIME achieves its marginal ceiling advantages at the expense of severe feature bloat, retaining an average of 407.7 features across the benchmark suite---nearly five times the 87.8 features isolated by KDS-EL. Additionally, as analyzed in Section~\ref{sec:efficiency}, bIRIME incurs a steep wall-clock runtime penalty averaging 326.2 seconds due to unguided multi-operator evaluations, running over six times slower than KDS-EL. Consequently, while bIRIME maintains competitive accuracy parity on specific benchmark instances, KDS-EL establishes a favorable multi-criteria profile: matching classification accuracy while delivering an order-of-magnitude reduction in feature cardinality and over a six-fold reduction in computational runtime.
 
 \subsubsection{Comparison of the number of selected features}\label{sec:features}
 
@@ -806,7 +803,7 @@ Table~\ref{T5} summarizes the selected feature subset size for each problem inst
 \renewcommand{\arraystretch}{0.86}
 \begin{tabular}{l *{12}{w{c}{33pt}}}
 \toprule
-Dataset & KDS-EL & \makecell{KDS-EL \\ w/o TPS} & \makecell{KDS-EL \\ w/o TPS\&KER} & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
+Dataset & KDS-EL & w/o TPS & w/o TPS\&KER & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
 \midrule
 ALL1             & \textbf{39} & \underline{55} & 55 & 4248 & 65 & 612 & 1206 & 6120 & 3667 & 2501 & 5877 & 5886 \\
 ALL4             & \underline{124} & 152 & \textbf{64} & 1082 & 393 & 1326 & 1447 & 6301 & 4581 & 2677 & 6111 & 6217 \\
@@ -872,11 +869,11 @@ To evaluate whether the empirical performance advantages of KDS-EL are statistic
 \renewcommand{\arraystretch}{0.96}
 \begin{tabular}{l *{12}{w{c}{33pt}}}
 \toprule
-Method & KDS-EL & \makecell{KDS-EL \\ w/o TPS} & \makecell{KDS-EL \\ w/o TPS\&KER} & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
+Method & KDS-EL & w/o TPS & w/o TPS\&KER & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
 \midrule
 KDS-EL & — & 11/8/1 & 13/7/0 & 19/1/0 & 8/11/1 & 15/4/1 & 19/1/0 & 19/1/0 & 15/3/2 & 19/1/0 & 19/1/0 & 17/2/1 \\
-KDS-EL w/o TPS & 1/8/11 & — & 11/9/0 & 19/1/0 & 3/11/6 & 12/7/1 & 20/0/0 & 18/2/0 & 14/2/4 & 19/1/0 & 19/1/0 & 15/5/0 \\
-KDS-EL w/o TPS\&KER & 0/7/13 & 0/9/11 & — & 15/4/1 & 3/7/10 & 7/8/5 & 16/3/1 & 15/3/2 & 10/5/5 & 16/4/0 & 16/4/0 & 14/1/5 \\
+w/o TPS & 1/8/11 & — & 11/9/0 & 19/1/0 & 3/11/6 & 12/7/1 & 20/0/0 & 18/2/0 & 14/2/4 & 19/1/0 & 19/1/0 & 15/5/0 \\
+w/o TPS\&KER & 0/7/13 & 0/9/11 & — & 15/4/1 & 3/7/10 & 7/8/5 & 16/3/1 & 15/3/2 & 10/5/5 & 16/4/0 & 16/4/0 & 14/1/5 \\
 MEL & 0/1/19 & 0/1/19 & 1/4/15 & — & 0/2/18 & 0/8/12 & 4/12/4 & 4/10/6 & 1/10/9 & 4/16/0 & 12/8/0 & 1/12/7 \\
 bIRIME & 1/11/8 & 6/11/3 & 10/7/3 & 18/2/0 & — & 15/5/0 & 20/0/0 & 19/1/0 & 14/5/1 & 19/1/0 & 19/1/0 & 19/1/0 \\
 FWPSO & 1/4/15 & 1/7/12 & 5/8/7 & 12/8/0 & 0/5/15 & — & 18/2/0 & 14/6/0 & 8/6/6 & 16/4/0 & 18/2/0 & 12/8/0 \\
@@ -911,11 +908,11 @@ Rank & Competitor Method & $\Delta\mathrm{Acc}$ & $W/T/L$ & $n_{\mathrm{eff}}$ &
    3 & BinCOA                 & +0.0572 & 19/1/0 & 19 &    0.0 & +1.000 &   1.32e-04 &   1.32e-03 &   0.0056 \\
    4 & IGPSO                  & +0.0561 & 19/1/0 & 19 &    0.0 & +1.000 &   1.32e-04 &   1.32e-03 &   0.0063 \\
    5 & DENCA-SO               & +0.0833 & 19/1/0 & 19 &    0.0 & +1.000 &   1.32e-04 &   1.32e-03 &   0.0071 \\
-   6 & KDS-EL w/o TPS\&KER    & +0.0197 & 13/7/0 & 18 &    0.0 & +1.000 &   1.96e-04 &   1.32e-03 &   0.0083 \\
+   6 & w/o TPS\&KER           & +0.0197 & 13/7/0 & 18 &    0.0 & +1.000 &   1.96e-04 &   1.32e-03 &   0.0083 \\
    7 & BPSO                   & +0.0470 & 17/2/1 & 19 &    4.0 & +0.958 &   2.50e-04 &   1.32e-03 &   0.0100 \\
    8 & FWPSO                  & +0.0303 & 15/4/1 & 19 &    7.0 & +0.926 &   3.98e-04 &   1.59e-03 &   0.0125 \\
    9 & SaWDE                  & +0.0365 & 15/3/2 & 19 &   15.0 & +0.842 &   1.28e-03 &   3.85e-03 &   0.0167 \\
-  10 & KDS-EL w/o TPS         & +0.0083 & 11/8/1 & 14 &    6.0 & +0.886 &   3.51e-03 &   7.02e-03 &   0.0250 \\
+  10 & w/o TPS                & +0.0083 & 11/8/1 & 14 &    6.0 & +0.886 &   3.51e-03 &   7.02e-03 &   0.0250 \\
   11 & bIRIME                 & +0.0091 & 8/11/1 & 15 &   22.0 & +0.633 &   3.09e-02 &   3.09e-02 &   0.0500 \\
 \bottomrule
 \end{tabular*}
@@ -935,7 +932,7 @@ To establish an omnibus global algorithmic ranking across the benchmark suite, t
 
 \subsubsection{Performance comparison before and after algorithm improvement}\label{sec:improvement}
 
-To evaluate constituent mechanism contributions without confounding variables, comparative experiments assess a four-stage progression from pre-improvement MEL to KDS-EL. Table~\ref{T7} summarizes end-to-end performance reporting $\mathrm{Mean} \pm \mathrm{Std}$, with best accuracies in boldface and most compact subsets underlined. Granular metrics and standard deviations for all intermediate configurations are documented in Supplementary Tables~S4 and S11.
+To evaluate constituent mechanism contributions without confounding variables, comparative experiments assess a four-stage progression from pre-improvement MEL to KDS-EL. Table~\ref{T7} summarizes the comparative performance profiles reporting $\mathrm{Mean} \pm \mathrm{Std}$, with best accuracies in boldface and most compact subsets underlined. Granular metrics and standard deviations for all intermediate configurations are documented in Supplementary Tables~S4 and S11.
 
 \begin{table}[!htb]
 \centering
@@ -1087,8 +1084,9 @@ Several promising trajectories emerge for future exploration. First, integrating
 \vspace{10pt}
 
 % --------------------------- References --------------------------------
-\balance
+\newpage
 \begin{thebibliography}{10}
+\interlinepenalty=10000
 \expandafter\ifx\csname url\endcsname\relax
   \def\url#1{\texttt{#1}}\fi
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
@@ -1270,6 +1268,8 @@ Y.~Xue, H.~Zhu, F.~Neri, A feature selection approach based on {NSGA-II} with
 \newblock \href {https://doi.org/10.1016/j.asoc.2023.109987}
   {\path{doi:10.1016/j.asoc.2023.109987}}.
 
+\newpage
+\balance
 \bibitem{song2024}
 X.~Song, Y.~Zhang, W.~Zhang, C.~He, Y.~Hu, J.~Wang, D.~Gong, Evolutionary
   computation for feature selection in classification: A comprehensive survey
