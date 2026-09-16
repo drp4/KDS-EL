@@ -6,7 +6,7 @@
 \renewcommand{\arraystretch}{0.96}
 \begin{tabular}{l *{12}{w{c}{33pt}}}
 \toprule
-Dataset & KDS-EL & \makecell{KDS-EL \\ w/o TPS} & \makecell{KDS-EL \\ w/o TPS\&KER} & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
+Dataset & KDS-EL & \makecell{KDS-EL \\ w/o TPS} & \makecell{KDS-EL \\ w/o TPS\&KER} & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO$^{\dagger}$ & DENCA-SO & BPSO \\
 \midrule
 ALL1             & \textbf{1.0000} & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & 0.9995 $^{+}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ & \textbf{1.0000} $^{\approx}$ \\
 ALL4             & \textbf{0.9480} & \underline{0.9367} $^{\approx}$ & 0.9356 $^{+}$ & 0.8656 $^{+}$ & 0.9140 $^{+}$ & 0.8580 $^{+}$ & 0.8308 $^{+}$ & 0.7634 $^{+}$ & 0.8250 $^{+}$ & 0.7918 $^{+}$ & 0.7043 $^{+}$ & 0.7846 $^{+}$ \\
@@ -36,5 +36,5 @@ $+ / \approx / -$ & — & 11/8/1 & 13/7/0 & 19/1/0 & 8/11/1 & 15/4/1 & 19/1/0 & 
 }
 \vspace{2pt}
 \par\raggedright\footnotesize
-\textit{Note}: Bold: best; underline: second-best. $+ / \approx / -$: statistically superior, equivalent, or inferior to KDS-EL (two-sided Mann--Whitney $U$ test, $\alpha = 0.05$).
+\textit{Note}: Bold: best; underline: second-best. $+ / \approx / -$: statistically superior, equivalent, or inferior to KDS-EL (two-sided Mann--Whitney $U$ test, $\alpha = 0.05$). $^{\dagger}$Denotes the sample-adapted ANOVA implementation variant detailed in Section~\ref{sec:setup}.
 \end{table*}

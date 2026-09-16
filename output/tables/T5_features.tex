@@ -6,7 +6,7 @@
 \renewcommand{\arraystretch}{0.86}
 \begin{tabular}{l *{12}{w{c}{33pt}}}
 \toprule
-Dataset & KDS-EL & \makecell{KDS-EL \\ w/o TPS} & \makecell{KDS-EL \\ w/o TPS\&KER} & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO & DENCA-SO & BPSO \\
+Dataset & KDS-EL & \makecell{KDS-EL \\ w/o TPS} & \makecell{KDS-EL \\ w/o TPS\&KER} & MEL & bIRIME & FWPSO & PSO-CSM & BinCOA & SaWDE & IGPSO$^{\dagger}$ & DENCA-SO & BPSO \\
 \midrule
 ALL1             & \textbf{39} & \underline{55} & 55 & 4248 & 65 & 612 & 1206 & 6120 & 3667 & 2501 & 5877 & 5886 \\
 ALL4             & \underline{124} & 152 & \textbf{64} & 1082 & 393 & 1326 & 1447 & 6301 & 4581 & 2677 & 6111 & 6217 \\
@@ -36,5 +36,5 @@ Comp. Ratio      & \textbf{98.0\%} & \underline{97.2\%} & 91.2\% & 68.4\% & 92.7
 }
 \vspace{2pt}
 \par\raggedright\footnotesize
-\textit{Note}: Bold: most compact; underline: second-most compact. Comp. Ratio: feature reduction percentage relative to unreduced feature space.
+\textit{Note}: Bold: most compact; underline: second-most compact. Comp. Ratio: feature reduction percentage relative to unreduced feature space. $^{\dagger}$Denotes the sample-adapted ANOVA implementation variant detailed in Section~\ref{sec:setup}.
 \end{table*}

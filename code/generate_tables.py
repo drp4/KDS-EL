@@ -86,7 +86,7 @@ V_TEX_HEADERS = {
     "PSO_CSM":         "PSO-CSM",
     "BinCOA":          "BinCOA",
     "SaWDE":           "SaWDE",
-    "IGPSO":           "IGPSO",
+    "IGPSO":           "IGPSO$^{\\dagger}$",
     "DENCA_SO":        "DENCA-SO",
     "BPSO":            "BPSO",
 }
@@ -270,7 +270,7 @@ def table_t4_accuracy(df_detail, df_summary, out_dir):
         "}",
         "\\vspace{2pt}",
         "\\par\\raggedright\\footnotesize",
-        "\\textit{Note}: Bold: best; underline: second-best. $+ / \\approx / -$: statistically superior, equivalent, or inferior to KDS-EL (two-sided Mann--Whitney $U$ test, $\\alpha = 0.05$).",
+        "\\textit{Note}: Bold: best; underline: second-best. $+ / \\approx / -$: statistically superior, equivalent, or inferior to KDS-EL (two-sided Mann--Whitney $U$ test, $\\alpha = 0.05$). $^{\\dagger}$Denotes the sample-adapted ANOVA implementation variant detailed in Section~\\ref{sec:setup}.",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T4_accuracy_pure.tex"), "w", encoding="utf-8") as f:
@@ -418,7 +418,7 @@ def table_t5_features(df_summary, out_dir):
         "}",
         "\\vspace{2pt}",
         "\\par\\raggedright\\footnotesize",
-        "\\textit{Note}: Bold: most compact; underline: second-most compact. Comp. Ratio: feature reduction percentage relative to unreduced feature space.",
+        "\\textit{Note}: Bold: most compact; underline: second-most compact. Comp. Ratio: feature reduction percentage relative to unreduced feature space. $^{\\dagger}$Denotes the sample-adapted ANOVA implementation variant detailed in Section~\\ref{sec:setup}.",
         "\\end{table*}",
     ]
     with open(os.path.join(out_dir, "T5_features.tex"), "w", encoding="utf-8") as f:
