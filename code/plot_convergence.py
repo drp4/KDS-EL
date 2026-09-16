@@ -259,8 +259,8 @@ def fig_f8_convergence(out_dir):
     }
     ABL_PLOT_LABELS = {
         "KDS_EL_TwoPhase": "KDS-EL",
-        "KDS_EL_NoPool":   "KDS-EL w/o TPS",
-        "MEL_MI":          "KDS-EL w/o TPS & KER",
+        "KDS_EL_NoPool":   "w/o TPS",
+        "MEL_MI":          "w/o TPS & KER",
         "MEL":             "MEL",
     }
 

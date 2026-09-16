@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  15 SEP 2026 17:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  16 SEP 2026 10:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -984,494 +984,483 @@ l.218 \item \textit
 
 
 ]
-Underfull \hbox (badness 3240) in paragraph at lines 221--222
-[]\T1/txr/m/n/8 Extensive em-pir-i-cal eval-u-a-tions demon-strate that KDS-EL 
-de-liv-ers
- []
-
-
-Underfull \hbox (badness 1406) in paragraph at lines 221--222
-\T1/txr/m/n/8 av-er-ag-ing merely 87.8 ac-tive fea-tures, rep-re-sent-ing an ac
--tive di-men-sion
- []
-
-
-Underfull \hbox (badness 5331) in paragraph at lines 221--222
-\T1/txr/m/n/8 com-pres-sion ex-ceed-ing 98%. Fur-ther-more, de-spite eval-u-at-
-ing it-er-a-tive
- []
-
-
-Underfull \hbox (badness 2393) in paragraph at lines 221--222
-\T1/txr/m/n/8 wrap-per clas-si-fi-ca-tion bound-aries, KDS-EL achieves a marked
- 3.4-fold
- []
-
-LaTeX Font Info:    Calculating math sizes for size <7.2> on input line 234.
+LaTeX Font Info:    Calculating math sizes for size <7.2> on input line 232.
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <7.2> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 251.
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 249.
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <6.8> not available
-(Font)              Font shape `T1/txr/bx/n' tried instead on input line 256.
-LaTeX Font Info:    Calculating math sizes for size <6.8> on input line 256.
-[2]
-Underfull \hbox (badness 2181) in paragraph at lines 300--302
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 254.
+LaTeX Font Info:    Calculating math sizes for size <6.8> on input line 254.
+
+Underfull \hbox (badness 1087) in paragraph at lines 275--276
+\T1/txr/m/n/8 evo-lu-tion-ary op-ti-miza-tion [[]], and swarm in-tel-li-gence [
+[], [], []], serve
+ []
+
+
+Underfull \hbox (badness 1360) in paragraph at lines 275--276
+\T1/txr/m/n/8 as dom-i-nant search heuris-tics. Ad-vanced single-objective stra
+te-gies have
+ []
+
+
+Underfull \hbox (badness 2181) in paragraph at lines 298--300
 \T1/txr/m/n/8 it en-coun-ters se-vere exploration-exploitation dilem-mas when a
 p-plied to
  []
 
 
-Underfull \hbox (badness 2213) in paragraph at lines 300--302
+Underfull \hbox (badness 2213) in paragraph at lines 298--300
 \T1/txr/m/n/8 heav-ily over-load-ing wrap-per clas-si-fier eval-u-a-tions with 
 $\OMS/txsy/m/n/8 O\OT1/txr/m/n/8 (\OML/txmi/m/it/8 N[]d[]\OT1/txr/m/n/8 )$
  []
 
-
-Underfull \hbox (badness 5064) in paragraph at lines 317--318
-\T1/txr/m/n/8 knowl-edge trans-fer, dual-swarm dy-nam-ics en-counter crit-i-cal
- struc-tural
+[2]
+Underfull \hbox (badness 1762) in paragraph at lines 301--302
+\T1/txr/m/n/8 Con-cur-rently, ad-vanced dis-crete op-ti-miz-ers, in-clud-ing bI
+R-IME [[]] and
  []
 
 
-Underfull \hbox (badness 3000) in paragraph at lines 317--318
-\T1/txr/m/n/8 bot-tle-necks in ultra-high-dimensional and sample-scarce regimes
- where
+Underfull \hbox (badness 1721) in paragraph at lines 301--302
+\T1/txr/m/n/8 proac-tive sparse guid-ance, stochas-tic bi-na-riza-tion traps th
+ese al-go-rithms
  []
 
 
 
-pdfTeX warning: pdflatex.exe (file ./figures/F1_dataflow_journal.pdf): PDF incl
-usion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/F1_dataflow_journal.pdf, id=260, 892.29356pt x 449.76028pt>
+pdfTeX warning: pdflatex (file ./figures/F1_dataflow_journal.pdf): PDF inclusio
+n: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/F1_dataflow_journal.pdf, id=251, 892.29356pt x 449.76028pt>
 File: figures/F1_dataflow_journal.pdf Graphic file (type pdf)
 <use figures/F1_dataflow_journal.pdf>
-Package pdftex.def Info: figures/F1_dataflow_journal.pdf  used on input line 32
-1.
+Package pdftex.def Info: figures/F1_dataflow_journal.pdf  used on input line 31
+9.
 (pdftex.def)             Requested size: 511.55777pt x 257.84837pt.
 
-Underfull \hbox (badness 1496) in paragraph at lines 328--329
+Underfull \hbox (badness 1496) in paragraph at lines 326--327
 \T1/txr/m/n/8 the blind-ness of black-box com-bi-na-to-rial search [[], [], []]
 . In high-
  []
 
 
-Underfull \hbox (badness 2042) in paragraph at lines 335--337
+Underfull \hbox (badness 2042) in paragraph at lines 333--335
 \T1/txr/m/n/8 dis-tri-bu-tions, non-parametric nearest-neighbor es-ti-ma-tors, 
 specif-i-cally the
  []
 
-[3]
-Underfull \hbox (badness 10000) in paragraph at lines 338--339
+
+Underfull \hbox (badness 10000) in paragraph at lines 336--337
 []\T1/txr/m/n/8 Existing knowledge-guided evo-lu-tion-ary meth-ods pri-mar-ily 
 adopt
  []
 
 
-Underfull \hbox (badness 2521) in paragraph at lines 338--339
+Underfull \hbox (badness 2521) in paragraph at lines 336--337
 \T1/txr/m/n/8 as-sim-i-late it-er-a-tive trial-and-error feed-back from in-duc-
 tive clas-si-fi-ca-tion
  []
 
 
-Underfull \hbox (badness 2409) in paragraph at lines 340--341
-\T1/txr/m/n/8 stage-aware ob-jec-tive schedul-ing. Specif-i-cally, nor-mal-ized
- mu-tual in-for-
- []
-
-
-Underfull \hbox (badness 5787) in paragraph at lines 366--367
+Underfull \hbox (badness 5787) in paragraph at lines 364--365
 \T1/txr/m/n/8 dimensional spaces, the swarm is par-ti-tioned into two col-lab-o
 -ra-tive
  []
 
-[4 <./figures/F1_dataflow_journal.pdf>]
-Underfull \hbox (badness 2951) in paragraph at lines 374--376
+[3]
+Underfull \hbox (badness 2951) in paragraph at lines 372--374
 \T1/txr/m/n/8 where $\OML/txmi/m/it/8 w$ \T1/txr/m/n/8 is in-er-tia weight, $\O
 ML/txmi/m/it/8 c[]; c[]; c[]$ \T1/txr/m/n/8 are ac-cel-er-a-tion co-ef-fi-cient
 s, and
  []
 
 
-Underfull \hbox (badness 1062) in paragraph at lines 374--376
+Underfull \hbox (badness 1062) in paragraph at lines 372--374
 \T1/txr/m/n/8 Bernoulli sam-pling $\OML/txmi/m/it/8 x[] \OMS/txsy/m/n/8 ^^X [] 
 []$\T1/txr/m/n/8 , where the dy-namic se-lec-tion
  []
 
 
+Underfull \hbox (badness 1237) in paragraph at lines 383--384
+[]\T1/txr/m/n/8 As sys-tem-at-i-cally il-lus-trated in the op-er-a-tional flowc
+hart of Fig. [][]2[][],
+ []
 
-pdfTeX warning: pdflatex.exe (file ./figures/F2_flowchart_journal.pdf): PDF inc
-lusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/F2_flowchart_journal.pdf, id=352, 690.66026pt x 653.56169pt>
+
+Underfull \hbox (badness 2460) in paragraph at lines 383--384
+\T1/txr/m/n/8 In closed-loop syn-ergy, prior-guided sparse seed-ing, dif-fer-en
+-tial im-por-
+ []
+
+
+
+pdfTeX warning: pdflatex (file ./figures/F2_flowchart_journal.pdf): PDF inclusi
+on: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/F2_flowchart_journal.pdf, id=294, 690.66026pt x 653.56169pt>
 File: figures/F2_flowchart_journal.pdf Graphic file (type pdf)
 <use figures/F2_flowchart_journal.pdf>
 Package pdftex.def Info: figures/F2_flowchart_journal.pdf  used on input line 3
-89.
+87.
 (pdftex.def)             Requested size: 375.84064pt x 355.65053pt.
 
 
-pdfTeX warning: pdflatex.exe (file ./figures/F3_mi_initialization_journal.pdf):
- PDF inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/F3_mi_initialization_journal.pdf, id=354, 826.04607pt x 204.765pt>
+pdfTeX warning: pdflatex (file ./figures/F3_mi_initialization_journal.pdf): PDF
+ inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/F3_mi_initialization_journal.pdf, id=296, 826.04607pt x 204.765pt>
 File: figures/F3_mi_initialization_journal.pdf Graphic file (type pdf)
 <use figures/F3_mi_initialization_journal.pdf>
 Package pdftex.def Info: figures/F3_mi_initialization_journal.pdf  used on inpu
-t line 400.
+t line 398.
 (pdftex.def)             Requested size: 469.79681pt x 116.45479pt.
-[5]
-Underfull \hbox (badness 2932) in paragraph at lines 447--448
+[4 <./figures/F1_dataflow_journal.pdf>] [5 <./figures/F2_flowchart_journal.pdf>
+ <./figures/F3_mi_initialization_journal.pdf>]
+Underfull \hbox (badness 2932) in paragraph at lines 445--446
 \T1/txr/m/n/8 lo-cal basins. In high-dimensional regimes where can-di-date di-m
 en-sions
  []
 
 
-Underfull \hbox (badness 2393) in paragraph at lines 447--448
+Underfull \hbox (badness 2393) in paragraph at lines 445--446
 \T1/txr/m/n/8 re-initialization or heavy-tailed mu-ta-tion per-tur-ba-tions, su
 ch as Cauchy
  []
 
 
-Underfull \hbox (badness 1852) in paragraph at lines 447--448
+Underfull \hbox (badness 1852) in paragraph at lines 445--446
 \T1/txr/m/n/8 heavy-tailed mu-ta-tions in $\OT1/txr/m/n/8 2[]$ \T1/txr/m/n/8 co
 m-bi-na-to-rial space per-turb can-di-date bit
  []
 
 
-Underfull \hbox (badness 1845) in paragraph at lines 447--448
+Underfull \hbox (badness 1845) in paragraph at lines 445--446
 \OT1/txr/m/n/8 99\OML/txmi/m/it/8 :\OT1/txr/m/n/8 9%$\T1/txr/m/n/8 . Fur-ther-m
 ore, clas-si-cal opposition-based learn-ing strate-gies in-vert
  []
 
 
-Underfull \hbox (badness 1762) in paragraph at lines 447--448
+Underfull \hbox (badness 1762) in paragraph at lines 445--446
 \T1/txr/m/n/8 clas-si-fier over-fit-ting and com-pu-ta-tional la-tency. Con-se-
 quently, sus-tain-ing
  []
 
 
-Underfull \hbox (badness 3977) in paragraph at lines 447--448
+Underfull \hbox (badness 3977) in paragraph at lines 445--446
 \T1/txr/m/n/8 ex-ploratory di-ver-sity in ultra-high di-men-sions re-quires an 
 asym-met-ric
  []
 
-[6 <./figures/F2_flowchart_journal.pdf> <./figures/F3_mi_initialization_journal
-.pdf>]
-Underfull \hbox (badness 4353) in paragraph at lines 449--450
+
+Underfull \hbox (badness 4353) in paragraph at lines 447--448
 []\T1/txr/m/n/8 To re-solve this struc-tural dilemma with-out in-cur-ring catas
 -trophic
  []
 
 
-Underfull \hbox (badness 1917) in paragraph at lines 449--450
+Underfull \hbox (badness 1917) in paragraph at lines 447--448
 \T1/txr/m/n/8 feedback-driven, on-demand ac-ti-va-tion: un-like clas-si-cal heu
 ris-tic restarts
  []
 
 
-Underfull \hbox (badness 1394) in paragraph at lines 449--450
+Underfull \hbox (badness 1394) in paragraph at lines 447--448
 \T1/txr/m/n/8 of con-ver-gence sta-tus, KDS-EL cou-ples re-cov-ery ex-e-cu-tion
  dy-nam-i-cally
  []
 
 
-Underfull \hbox (badness 3769) in paragraph at lines 456--458
+Underfull \hbox (badness 3769) in paragraph at lines 454--456
 \T1/txr/m/n/8 where $[][] \OMS/txsy/m/n/8 ^^X N\OT1/txr/m/n/8 (\OT1/txr/bx/n/8 
 0\OML/txmi/m/it/8 ; ^^[[]\OT1/txr/bx/n/8 I[]\OT1/txr/m/n/8 )$ \T1/txr/m/n/8 rep
 -re-sents zero-mean Gaus-sian per-tur-ba-tion
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 459--460
+Underfull \hbox (badness 10000) in paragraph at lines 457--458
 []\T1/txr/m/n/8 Immediately fol-low-ing po-si-tion re-fresh-ing, the can-di-dat
 e bi-nary
  []
 
 
-Underfull \hbox (badness 3701) in paragraph at lines 459--460
+Underfull \hbox (badness 3701) in paragraph at lines 457--458
 \T1/txr/m/n/8 mask $\OT1/txr/bx/n/8 x[]$ \T1/txr/m/n/8 is eval-u-ated via the i
 n-ter-nal cross-validation wrap-per un-der
  []
 
 
-Underfull \hbox (badness 1694) in paragraph at lines 459--460
+Underfull \hbox (badness 1694) in paragraph at lines 457--458
 \T1/txr/m/n/8 cur-rent ob-jec-tive weights $\OT1/txr/bx/n/8 w\OT1/txr/m/n/8 (\O
 ML/txmi/m/it/8 t\OT1/txr/m/n/8 )$ \T1/txr/m/n/8 be-fore up-dat-ing the personal
 -best record
  []
 
-
-Underfull \hbox (badness 1394) in paragraph at lines 497--498
+[6]
+Underfull \hbox (badness 1394) in paragraph at lines 495--496
 \T1/txr/m/n/8 vastly ex-ceed sam-ple ob-ser-va-tions, uni-form bit-flipping de-
 gen-er-ates into
  []
 
 
-Underfull \hbox (badness 2726) in paragraph at lines 497--498
+Underfull \hbox (badness 2726) in paragraph at lines 495--496
 \T1/txr/m/n/8 this com-bi-na-to-rial dilemma, the KER strat-egy ex-ploits the c
 on-tin-u-ous
  []
 
-[7]
 
-pdfTeX warning: pdflatex.exe (file ./figures/F4_ker_strategy_journal.pdf): PDF 
-inclusion: found PDF version <1.7>, but at most version <1.5> allowed
-<figures/F4_ker_strategy_journal.pdf, id=468, 1010.81638pt x 277.9986pt>
+
+pdfTeX warning: pdflatex (file ./figures/F4_ker_strategy_journal.pdf): PDF incl
+usion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/F4_ker_strategy_journal.pdf, id=444, 1010.81638pt x 277.9986pt>
 File: figures/F4_ker_strategy_journal.pdf Graphic file (type pdf)
 <use figures/F4_ker_strategy_journal.pdf>
 Package pdftex.def Info: figures/F4_ker_strategy_journal.pdf  used on input lin
-e 501.
+e 499.
 (pdftex.def)             Requested size: 511.55777pt x 140.68723pt.
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 508.
+put line 506.
 
-Underfull \hbox (badness 5388) in paragraph at lines 566--567
+Underfull \hbox (badness 5388) in paragraph at lines 564--565
 []\T1/txr/m/it/8 Dual-scale search dy-nam-ics and dimension-scaling anal-y-sis\
 T1/txr/m/n/8 : The
  []
 
 
-Underfull \hbox (badness 1571) in paragraph at lines 566--567
+Underfull \hbox (badness 1571) in paragraph at lines 564--565
 \OT1/txr/bx/n/8 W$\T1/txr/m/n/8 , fa-cil-i-tat-ing tran-si-tions across dis-tan
 t com-bi-na-to-rial basins. Cru-cially,
  []
 
-[8 <./figures/F4_ker_strategy_journal.pdf>] [9]
-Underfull \hbox (badness 1783) in paragraph at lines 660--661
+[7] [8 <./figures/F4_ker_strategy_journal.pdf>]
+Underfull \hbox (badness 1783) in paragraph at lines 658--659
 []\T1/txr/m/n/8 We bench-mark KDS-EL against nine rep-re-sen-ta-tive single-obj
 ective
  []
 
 
-Underfull \hbox (badness 1189) in paragraph at lines 660--661
+Underfull \hbox (badness 1189) in paragraph at lines 658--659
 \T1/txr/m/n/8 in-clud-ing FW-PSO [[]], PSO-CSM [[]], SaWDE [[]], IG-PSO [[]], a
 nd
  []
 
 
-Underfull \hbox (badness 2772) in paragraph at lines 660--661
+Underfull \hbox (badness 2772) in paragraph at lines 658--659
 \T1/txr/m/n/8 orig-i-nal frame-work es-ti-mates im-por-tance via a Multi-Layer 
 Per-cep-tron
  []
 
 
-Underfull \hbox (badness 2837) in paragraph at lines 660--661
+Underfull \hbox (badness 2837) in paragraph at lines 658--659
 \T1/txr/m/n/8 rep-re-sen-ta-tive single-objective com-peti-tors span-ning foun-
 da-tional swarm
  []
 
-
-Underfull \hbox (badness 1502) in paragraph at lines 668--669
+[9]
+Underfull \hbox (badness 1502) in paragraph at lines 666--667
 \T1/txr/m/n/8 across the bench-mark suite, pair-wise Wilcoxon signed-rank tests
  as-sess
  []
 
 
-Underfull \hbox (badness 2334) in paragraph at lines 668--669
+Underfull \hbox (badness 2334) in paragraph at lines 666--667
 \T1/txr/m/n/8 the Holm--Bonferroni step-down pro-ce-dure [[]] rig-or-ously con-
 trols the
  []
 
-[10]
-Underfull \hbox (badness 2142) in paragraph at lines 766--767
+
+Underfull \hbox (badness 2142) in paragraph at lines 764--765
 \T1/txr/m/n/8 do-mains. Ta-ble [][]4[][] sum-ma-rizes mean clas-si-fi-ca-tion a
 c-cu-ra-cies across 10
  []
 
 
-Underfull \hbox (badness 1946) in paragraph at lines 809--810
+Underfull \hbox (badness 1946) in paragraph at lines 807--808
 []\T1/txr/m/n/8 Across the bench-mark suite, KDS-EL achieves the high-est over-
 all
  []
 
 
-Underfull \hbox (badness 2245) in paragraph at lines 809--810
+Underfull \hbox (badness 2245) in paragraph at lines 807--808
 \T1/txr/m/n/8 mean in-ter-nal bench-mark cross-validation ac-cu-racy of 0.9545,
  se-cur-ing
  []
 
 
-Underfull \hbox (badness 1803) in paragraph at lines 809--810
+Underfull \hbox (badness 1803) in paragraph at lines 807--808
 \T1/txr/m/n/8 KDS-EL achieves an ac-cu-racy im-prove-ment of 4.52 per-cent-age 
 points,
  []
 
 
-Underfull \hbox (badness 1577) in paragraph at lines 809--810
+Underfull \hbox (badness 1577) in paragraph at lines 807--808
 \T1/txr/m/n/8 reach-ing 0.9545 com-pared with 0.9093, demon-strat-ing that prio
 r-guided
  []
 
 
-Underfull \hbox (badness 1603) in paragraph at lines 858--859
+Underfull \hbox (badness 1043) in paragraph at lines 809--810
+\T1/txr/m/n/8 mean, three in-stances, namely \T1/txr/m/it/8 BASE-HOCK\T1/txr/m/
+n/8 , \T1/txr/m/it/8 Colon\T1/txr/m/n/8 , and \T1/txr/m/it/8 DL-BCL\T1/txr/m/n/
+8 , ex-hibit
+ []
+
+
+Underfull \hbox (badness 1859) in paragraph at lines 809--810
+\T1/txr/m/n/8 near-saturation on \T1/txr/m/it/8 DL-BCL \T1/txr/m/n/8 at 0.9999 
+and 1.0000, re-spec-tively. bIR-IME
+ []
+
+
+Underfull \hbox (badness 2088) in paragraph at lines 809--810
+\T1/txr/m/n/8 main-tains com-pet-i-tive ac-cu-racy par-ity on spe-cific bench-m
+ark in-stances,
+ []
+
+[10]
+Underfull \hbox (badness 1603) in paragraph at lines 856--857
 \T1/txr/m/n/8 re-dun-dant fea-tures across high-dimensional land-scapes. This d
 egra-da-tion
  []
 
 
-Underfull \hbox (badness 1337) in paragraph at lines 858--859
+Underfull \hbox (badness 1337) in paragraph at lines 856--857
 \T1/txr/m/n/8 di-men-sion prob-a-bil-i-ties around 0.50 when proac-tive prun-in
 g pres-sure is
  []
 
 
-Underfull \hbox (badness 2529) in paragraph at lines 858--859
+Underfull \hbox (badness 2529) in paragraph at lines 856--857
 \T1/txr/m/n/8 ab-sent. By con-trast, KDS-EL com-bines con-tin-u-ous mu-tual in-
 for-ma-tion
  []
 
 
-Underfull \hbox (badness 2334) in paragraph at lines 858--859
+Underfull \hbox (badness 2334) in paragraph at lines 856--857
 \T1/txr/m/n/8 across moderate-sample bench-marks such as \T1/txr/m/it/8 BASE-HO
 CK \T1/txr/m/n/8 and \T1/txr/m/it/8 ISO-LET
  []
 
 
-Underfull \hbox (badness 1472) in paragraph at lines 858--859
+Underfull \hbox (badness 1472) in paragraph at lines 856--857
 \T1/txr/m/n/8 where ob-ser-va-tional counts reach thou-sands: while com-peti-to
 rs pre-serve
  []
 
 
-Underfull \hbox (badness 4072) in paragraph at lines 862--863
+Underfull \hbox (badness 4072) in paragraph at lines 860--861
 \T1/txr/m/n/8 re-flects a de-lib-er-ate, domain-specific trade-off gov-erned by
  two-phase
  []
 
 
-Underfull \hbox (badness 1072) in paragraph at lines 862--863
+Underfull \hbox (badness 1072) in paragraph at lines 860--861
 \T1/txr/m/n/8 am-bigu-ous clas-si-fi-ca-tion bound-aries. Con-se-quently, this 
 tar-geted trade-off
  []
 
 [11]
-Underfull \hbox (badness 3058) in paragraph at lines 866--867
+Underfull \hbox (badness 3058) in paragraph at lines 864--865
 \T1/txr/m/n/8 ex-ploratory ef-fi-ciency and ex-ploita-tion depth. To eval-u-ate
  evo-lu-tion-ary
  []
 
 
-Underfull \hbox (badness 1205) in paragraph at lines 866--867
+Underfull \hbox (badness 1205) in paragraph at lines 864--865
 \T1/txr/m/n/8 gen-er-a-tions for KDS-EL along-side four rep-re-sen-ta-tive wrap
 -per meth-ods:
  []
 
-<figures/F8_sota_convergence.pdf, id=627, 744.6106pt x 536.56833pt>
+<figures/F8_sota_convergence.pdf, id=611, 744.6106pt x 536.56833pt>
 File: figures/F8_sota_convergence.pdf Graphic file (type pdf)
 <use figures/F8_sota_convergence.pdf>
-Package pdftex.def Info: figures/F8_sota_convergence.pdf  used on input line 87
-0.
+Package pdftex.def Info: figures/F8_sota_convergence.pdf  used on input line 86
+8.
 (pdftex.def)             Requested size: 522.0pt x 376.17657pt.
-
-Underfull \hbox (badness 1242) in paragraph at lines 881--882
-\T1/txr/m/n/8 pro-nounced pre-dic-tive ad-van-tages over es-tab-lished single-o
-bjective meta-
- []
-
-
-Underfull \hbox (badness 1158) in paragraph at lines 881--882
-\T1/txr/m/n/8 and stan-dard BPSO [[]], as well as con-tem-po-rary com-peti-tors
- in-clud-ing
- []
-
-
-Underfull \hbox (badness 1320) in paragraph at lines 881--882
-\T1/txr/m/n/8 where both op-ti-miz-ers achieve near-perfect clas-si-fi-ca-tion 
-while KDS-EL
- []
-
-[12]
-<figures/F13_friedman_rank.pdf, id=656, 250.6458pt x 212.77994pt>
+[12 <./figures/F8_sota_convergence.pdf>]
+<figures/F13_friedman_rank.pdf, id=755, 250.6458pt x 212.77994pt>
 File: figures/F13_friedman_rank.pdf Graphic file (type pdf)
 <use figures/F13_friedman_rank.pdf>
-Package pdftex.def Info: figures/F13_friedman_rank.pdf  used on input line 947.
+Package pdftex.def Info: figures/F13_friedman_rank.pdf  used on input line 945.
 
 (pdftex.def)             Requested size: 252.0pt x 213.93199pt.
 
-Underfull \hbox (badness 1527) in paragraph at lines 954--955
+Underfull \hbox (badness 1527) in paragraph at lines 952--953
 \T1/txr/m/n/8 vari-ables, com-par-a-tive ex-per-i-ments as-sess a four-stage pr
 o-gres-sion from
  []
 
-[13 <./figures/F8_sota_convergence.pdf>]
-<figures/F6_ablation_radar.pdf, id=779, 404.97716pt x 416.08835pt>
+[13 <./figures/F13_friedman_rank.pdf>]
+<figures/F6_ablation_radar.pdf, id=778, 278.43259pt x 202.52539pt>
 File: figures/F6_ablation_radar.pdf Graphic file (type pdf)
 <use figures/F6_ablation_radar.pdf>
-Package pdftex.def Info: figures/F6_ablation_radar.pdf  used on input line 1001
-.
-(pdftex.def)             Requested size: 221.76123pt x 227.84615pt.
-<figures/F5_ablation_convergence.pdf, id=780, 621.89964pt x 459.15114pt>
+Package pdftex.def Info: figures/F6_ablation_radar.pdf  used on input line 999.
+
+(pdftex.def)             Requested size: 246.95892pt x 179.63823pt.
+<figures/F5_ablation_convergence.pdf, id=779, 621.89964pt x 459.15114pt>
 File: figures/F5_ablation_convergence.pdf Graphic file (type pdf)
 <use figures/F5_ablation_convergence.pdf>
 Package pdftex.def Info: figures/F5_ablation_convergence.pdf  used on input lin
-e 1008.
+e 1006.
 (pdftex.def)             Requested size: 480.23904pt x 354.57034pt.
 
-Underfull \hbox (badness 4699) in paragraph at lines 1013--1014
-\T1/txr/m/n/8 di-ver-sity re-cov-ery. In ultra-high-dimensional spaces, un-guid
-ed ran-dom
+Underfull \hbox (badness 4752) in paragraph at lines 1011--1012
+\T1/txr/m/n/8 mech-a-nisms. Tran-si-tion-ing from the pre-improvement con-fig-u
+-ra-tion to
  []
 
 
-Underfull \hbox (badness 1320) in paragraph at lines 1013--1014
+Underfull \hbox (badness 1168) in paragraph at lines 1011--1012
+\T1/txr/m/n/8 con-trac-tion from 2,722.2 to 290.5 fea-tures. Method-olog-i-call
+y, this surge
+ []
+
+
+Underfull \hbox (badness 1320) in paragraph at lines 1011--1012
 \T1/txr/m/n/8 and re-stores mo-men-tum, re-duc-ing more than 2,400 se-lected di
 -men-sions
  []
 
-[14 <./figures/F13_friedman_rank.pdf>]
-<figures/F11_runtime_scatter.pdf, id=807, 506.4339pt x 304.73952pt>
+<figures/F11_runtime_scatter.pdf, id=783, 297.09131pt x 200.49643pt>
 File: figures/F11_runtime_scatter.pdf Graphic file (type pdf)
 <use figures/F11_runtime_scatter.pdf>
 Package pdftex.def Info: figures/F11_runtime_scatter.pdf  used on input line 10
-23.
-(pdftex.def)             Requested size: 221.76123pt x 133.44409pt.
-<figures/F14_parameter_sensitivity.pdf, id=820, 707.6375pt x 194.90215pt>
+21.
+(pdftex.def)             Requested size: 221.76123pt x 149.66217pt.
+[14 <./figures/F6_ablation_radar.pdf>]
+<figures/F14_parameter_sensitivity.pdf, id=823, 673.20319pt x 185.5388pt>
 File: figures/F14_parameter_sensitivity.pdf Graphic file (type pdf)
 <use figures/F14_parameter_sensitivity.pdf>
 Package pdftex.def Info: figures/F14_parameter_sensitivity.pdf  used on input l
-ine 1058.
-(pdftex.def)             Requested size: 480.23904pt x 132.26999pt.
- [15 <./figures/F6_ablation_radar.pdf>]
-[16 <./figures/F5_ablation_convergence.pdf> <./figures/F11_runtime_scatter.pdf>
-]
-Underfull \hbox (badness 3503) in paragraph at lines 1084--1085
-[]\T1/txr/m/n/8 In this pa-per, KDS-EL is pro-posed to ad-dress search blind-ne
-ss,
+ine 1056.
+(pdftex.def)             Requested size: 480.23904pt x 132.35913pt.
+ [15 <./figures/F5_ablation_convergence.pdf> <./figures/F11_runtime_scatter.pdf
+>]
+Underfull \hbox (badness 1132) in paragraph at lines 1080--1081
+\T1/txr/m/n/8 fea-ture se-lec-tion. By or-ches-trat-ing mu-tual in-for-ma-tion 
+soft seed-ing with
  []
 
 
-Underfull \hbox (badness 3375) in paragraph at lines 1084--1085
-\T1/txr/m/n/8 evo-lu-tion-ary am-ne-sia, de-struc-tive per-tur-ba-tion, and sta
-tic weight-ing in
+Underfull \hbox (badness 1762) in paragraph at lines 1080--1081
+\T1/txr/m/n/8 es-tab-lishes an ef-fec-tive closed-loop op-ti-miza-tion sys-tem.
+ Com-pre-hen-sive
  []
 
 
-Underfull \hbox (badness 2735) in paragraph at lines 1084--1085
-\T1/txr/m/n/8 ultra-high-dimensional wrap-per fea-ture se-lec-tion. By in-te-gr
-at-ing mu-tual
+Underfull \hbox (badness 1817) in paragraph at lines 1080--1081
+\T1/txr/m/n/8 in-ter-nal cross-validation ac-cu-racy, com-press-ing ac-tive fea
+-ture sub-sets to
  []
 
 
-Underfull \hbox (badness 1521) in paragraph at lines 1084--1085
-\T1/txr/m/n/8 ex-po-nen-tial mem-ory de-cay, steer-ing tar-geted re-fine-ment w
-ithin bounded
+Underfull \hbox (badness 2042) in paragraph at lines 1082--1083
+\T1/txr/m/n/8 cross-cohort im-por-tance trans-fer mech-a-nisms, ex-tend-ing the
+ knowledge-
  []
 
-
-Underfull \hbox (badness 1102) in paragraph at lines 1084--1085
-\T1/txr/m/n/8 de-cou-ples coarse prun-ing from fine ac-cu-racy re-fine-ment. Co
-m-pre-hen-sive
- []
-
-
-Underfull \hbox (badness 2828) in paragraph at lines 1084--1085
-\T1/txr/m/n/8 ex-ploratory cross-model trans-fer-abil-ity across Sup-port Vec-t
-or Ma-chines
- []
-
-[17 <./figures/F14_parameter_sensitivity.pdf>]
 
 Package balance Warning: You have called \balance in second column
 (balance)                Columns might not be balanced.
 
-[18] 
+[16 <./figures/F14_parameter_sensitivity.pdf>] [17]
+
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (main.aux)
  ***********
@@ -1482,13 +1471,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: ABBFBBBEBB44D0990BEFA5BB86800211;8246.
  ) 
 Here is how much of TeX's memory you used:
- 14360 strings out of 467690
- 214916 string characters out of 5431801
- 737696 words of memory out of 5000000
+ 14359 strings out of 467690
+ 214909 string characters out of 5431801
+ 736777 words of memory out of 5000000
  42974 multiletter control sequences out of 15000+600000
  763395 words of font info for 294 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,15n,79p,3145b,585s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,15n,79p,3145b,608s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi450\ectt
 0800.pk><E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam7.pfb><E:/MiKTeX/fon
 ts/type1/public/amsfonts/symbols/msbm10.pfb><E:/MiKTeX/fonts/type1/public/amsfo
@@ -1500,9 +1489,9 @@ eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
 sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
 rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (19 pages, 2769934 bytes).
+Output written on main.pdf (18 pages, 2784582 bytes).
 PDF statistics:
- 1187 PDF objects out of 1200 (max. 8388607)
- 153 named destinations out of 1000 (max. 500000)
+ 1179 PDF objects out of 1200 (max. 8388607)
+ 152 named destinations out of 1000 (max. 500000)
  307 words of extra memory for PDF output out of 10000 (max. 10000000)
 

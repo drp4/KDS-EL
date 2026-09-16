@@ -114,8 +114,8 @@ LINESTYLES = {
 
 V_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
-    "KDS_EL_NoPool":   "KDS-EL w/o TPS",
-    "MEL_MI":          "KDS-EL w/o TPS & KER",
+    "KDS_EL_NoPool":   "w/o TPS",
+    "MEL_MI":          "w/o TPS & KER",
     "MEL":             "MEL",
     "bIRIME":          "bIRIME",
     "FWPSO":           "FWPSO",

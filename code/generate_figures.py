@@ -65,8 +65,8 @@ COLORS = COLOR_PALETTE
 V_LABELS = STYLE_V_LABELS
 ABL_LABELS = {
     "KDS_EL_TwoPhase": "KDS-EL",
-    "KDS_EL_NoPool": "KDS-EL w/o TPS",
-    "MEL_MI": "KDS-EL w/o TPS & KER",
+    "KDS_EL_NoPool": "w/o TPS",
+    "MEL_MI": "w/o TPS & KER",
     "MEL": "MEL",
 }
 
@@ -820,7 +820,7 @@ def fig_f11_runtime(df_detail, out_dir):
     ax.set_xscale("log")
     ax.set_xlim(40, 9500)
     ax.set_ylim(0.855, 0.975)
-    ax.set_xlabel("Mean Number of Selected Features (log scale)", fontsize=8.5)
+    ax.set_xlabel("Mean Selected Feature Cardinality", fontsize=8.5)
     ax.set_ylabel("Mean Classification Accuracy", fontsize=8.5)
     ax.grid(True, linestyle="--", linewidth=0.4, alpha=0.6, color="#E2E8F0")
     ax.spines["top"].set_visible(False)
