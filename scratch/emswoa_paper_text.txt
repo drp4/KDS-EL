@@ -1,0 +1,2326 @@
+=== Page 1 ===
+Dynamic multi-swarm whale optimization algorithm based on elite tuning
+for high-dimensional feature selection classification problems
+Fahui Miao
+a
+, Yong Wu
+b
+, Guanjie Yan
+c , *
+, Xiaomeng Si
+d
+a
+College of Information Engineering, Shanghai Maritime University, Shanghai 201306, China
+b
+University of Macau Zhuhai UM Science and Technology Research Institute, Zhuhai 519000, China
+c
+The Department of Basic Education, Shanghai Urban Construction Vocational College, Shanghai 201415, China
+d
+School of Computer and Information Engineering, Institute for Artificial Intelligence, Shanghai Polytechnic University, Shanghai 201209, China
+HIGHLIGHTS
+• Proposed a dynamic multi-swarm construction mechanism based on centroid distance.
+• An elite tuning strategy to address invalid probability flips is proposed.
+• Dynamic multi-swarm whale optimization algorithm based on elite tuning is proposed.
+• The proposed algorithm is used for high-dimensional feature selection problems.
+• A superior performance of the proposed algorithm in feature selection is proved.
+ARTICLE INFO
+Keywords:
+Whale optimization algorithm
+Feature selection
+Swarm intelligence
+Centroid distance metric
+Elite tuning strategy
+ABSTRACT
+Feature selection algorithms are crucial technologies for reducing the dimensionality of high-dimensional data.
+However, the exponential expansion of the decision space due to high-dimensional data makes most feature
+selection algorithms highly susceptible to local optima. To increase the quality of feature selection, we propose a
+dynamic multi-swarm whale optimization algorithm based on elite tuning (EMSWOA). First, we propose a dy-
+namic multiple swarm construction mechanism based on the centroid distance metric, which enhances the
+exploitation and exploration abilities of the algorithm by improving the connectivity between sub-population
+topologies and preventing the algorithm from falling into precocious convergence. Secondly, to address the
+issue of invalid probability flips caused by random thresholds during feature space transformation, we design a
+novel elite tuning mechanism. This mechanism uses the high-quality information in the elite solution to assess
+and correct the probability of feature flipping; it effectively improves the algorithm ’ s recognition of important
+features and reduces the interference of invalid probability flips in the optimization search. Finally, we validated
+the EMSWOA against six comparison algorithms on 19 datasets. The experimental results demonstrate that,
+compared with the most effective benchmark algorithms, the EMSWOA yields an average accuracy increase of
+2.91 % and an average reduction in the number of features by a factor of 3.58.
+1. Introduction
+With the advent of the Big Data era, an increasing amount of high-
+dimensional data are appearing in everyday life. However, the high-
+dimensional data collected contain considerable redundant or irrele-
+vant information, which not only increases the computational overhead
+of the model, but also causes degradation in model performance due to
+problems such as over-fitting [1] . Feature Selection (FS) is an effective
+dimensionality reduction method that reduces the complexity of fea-
+tures, decreases computational overhead, and enhances accuracy by
+selecting the optimal subset from high-dimensional feature data,
+thereby eliminating redundant and irrelevant features [2] . As a key
+technique for data preprocessing, feature selection algorithms are
+widely used in numerous practical problems such as neural data analysis
+* Correspondence to: The Department of Basic Education, Shanghai Urban Construction Vocational College, No. 2080, Nanting Highway, Fengxian District,
+Shanghai 200438, China.
+E-mail addresses: miaofahui@126.com (F. Miao), zumri.ywu@um.edu.mo (Y. Wu), yanguanjiesucc@163.com (G. Yan), sixm@sspu.edu.cn (X. Si).
+Contents lists available at ScienceDirect
+Applied Soft Computing
+journal homepag e: www.else vier.com/loc ate/asoc
+https://doi.org/10.1016/j.asoc.2024.112634
+Received 6 January 2024; Received in revised form 8 August 2024; Accepted 9 December 2024
+Applied Soft Computing Journal 169 (2025) 112634 
+Available online 18 December 2024 
+1568-4946/© 2024 Elsevier B.V. All rights are reserved, including those for text and data mining, AI training, and similar technologies. 
+--- PAGE ---
+=== Page 2 ===
+[3] .
+Feature selection algorithms include filter-based approaches,
+wrapper-based approaches and embedded approaches [4] . Filter-based
+algorithms usually filter a subset by the relevance criterion of the fea-
+tures, and therefore have a low computational overhead [5] . As the
+evaluation criteria of filter-based algorithms are not related to the
+learning process of the algorithm, the accuracy of the selected subset
+performs poorly. Wrapper-based feature selection algorithms, however,
+generally treat the feature selection process as a search problem. They
+identify candidate feature subsets using methods such as heuristic
+searches and directly employ classifier performance metrics to evaluate
+the merits of these subsets. The optimal feature subset is obtained by
+integrating search algorithms with classifiers trained during the process.
+This type of method, taking into account the correlations among fea-
+tures, imposes higher demands on the global optimization capabilities of
+search algorithms [6] . Additionally, embedded feature selection
+methods integrate the feature selection process into the model training,
+leveraging the model ’ s inherent mechanisms to automatically perform
+feature selection through model parameters or structures. However, the
+effectiveness of feature selection is directly dependent on the choice of
+model, potentially constrained by the model ’ s own performance [7] .
+Although feature selection algorithms are continuously evolving,
+most methods still face numerous challenges when performing classifi-
+cation tasks on high-dimensional datasets [8] . Consequently, the task of
+high-dimensional feature selection remains a focal point of research. The
+FS problem is essentially a combinatorial optimization issue [9] . The
+goal of the FS is to effectively remove redundant and irrelevant features
+to obtain a higher classification accuracy with a minimum number of
+features. Metaheuristic algorithms have shown outstanding capabilities
+for addressing combinatorial optimization issues and have been suc-
+cessful in recent years for combinatorial optimization problems such as
+data clustering [10,11] . Benefiting from the global optimization capa-
+bilities of the meta-heuristic algorithm, it has also gained significant
+attention. In contrast to approaches such as exhaustive searching [12] ,
+metaheuristics do not rely on a priori knowledge of the domain or
+specific assumptions about the search space, making them more suitable
+for feature selection tasks [13] .
+The whale optimization algorithm (WOA) [14] has received much
+attention as a representative algorithm in the field of metaheuristic al-
+gorithms in recent years. The WOA is suitable for solving complex
+feature selection problems in the search space because of its strong
+global optimization capability [15] and flexible search direction control
+mechanism. Specifically, the vector representation of individual whales
+in the population is consistent with the size of the feature subset of the
+selected features. In the WOA, the feeding process of whales is the
+random search process of constructing a subset of features in feature
+selection. Individual whales with better fitness values during WOA
+predation were considered more important for the selected traits. A
+subset of the more optimal features was obtained through the flexible
+foraging process of the whales. In addition, more importantly, due to the
+shrinking encircling mechanism and spiral updating position of the
+WOA algorithm, the WOA algorithm can more flexibly control search
+direction in complex space; thus, it can be better realized in complex
+space spatial exploitation and exploration. Therefore, the WOA algo-
+rithm may be more suitable for solving the feature selection problem.
+WOA algorithms have been tested on high-dimensional and large-scale
+optimization problems. For example, Zhang et al. [16] proposed a
+hybrid WOA based on aggregation strategies for high-dimensional
+problems.
+However, the above WOA-based feature algorithms, which are
+dominated by single populations [17] , are still unable to overcome the
+problem of insufficient exploration capability of high-dimensional
+complex solution spaces [18] . Due to the computational time con-
+straints inherent in the single-swarm Whale Optimization Algorithm
+(WOA) for feature selection, it is challenging to conduct unlimited
+searches and iterations over feature subsets. Consequently, the
+single-population WOA typically explores only a small part of the de-
+cision space, which significantly restricts the acquisition of the optimal
+subset and adversely impacts the quality of the final feature selection.
+Therefore, it is crucial to improve the search capability of WOA algo-
+rithms in high-dimensional feature spaces. Multi-swarm optimization
+algorithms can divide the entire population into multiple sub-swarms,
+which learn and update in their own search spaces. This helps to
+improve the diversity of the population, increase the exploration ability,
+and can effectively avoid premature convergence. For example, Yang
+et al. [19] proposed an evolutionary state-driven multi-population
+cooperative particle swarm optimization algorithm for complex opti-
+mization problems.
+In addition, none of the above feature selection algorithms have been
+improved for the invalid probability flipping problem. This is because
+existing metaheuristic feature selection algorithms employ trans-
+formation functions that are usually of two types, S-type or V-type [3] .
+By applying the transformation function to the update step size in each
+iteration cycle, the corresponding probability value for each dimension
+is obtained. This probability is also used as a measure of feature
+importance, and the feature is flipped or selected based on a comparison
+of the probability value with a threshold. Therefore, setting the
+threshold is crucial for determining which features are selected. There
+are two existing methods for setting the threshold: a fixed threshold
+based on a constant value and a dynamic threshold based on random
+values. Using a constant value as the threshold is not only make it
+difficult to determine the optimal setting but also results in a lack
+generalizability for different datasets. For example, Yousri et al. [20]
+used a fixed threshold in their marine predator feature selection algo-
+rithm. Using a dynamic threshold for feature importance measurement
+can increase the algorithm ’ s perturbation, but there is also a problem of
+invalid probability flipping due to the randomness of the dynamic
+threshold; for example, in Abualigah et al. ’ s [21] used a random
+threshold for feature measurement. Invalid probability flipping can
+reduce the selection probability of high-quality features, thereby
+affecting the search speed and quality of the best subset.
+To overcome the insufficient detection ability of the WOA algorithm
+in high-dimensional complex solution space and the problem of invalid
+probability flipping when features are mapped discretely, we propose a
+dynamic multi-swarm WOA based on elite tuning (EMSWOA). Building
+on the foundation of the WOA algorithm, we introduce an elite correc-
+tion strategy to alleviate the problem of invalid probability flipping and
+devise a dynamic multi-swarm construction mechanism based on
+centroid distance to enhance the global optimization ability of the
+EMSWOA and improve the quality of feature subsets. Our innovations
+are as follows:
+• A dynamic multi-swarm strategy based on centroid distance was
+proposed, which uses centroid measurements to directionally guide
+the dynamic formation of subpopulations, enhancing their exploi-
+tation capabilities.
+• A dynamic population recombination mechanism with a linearly
+decreasing number of subpopulations was developed to increase the
+algorithm ’ s independence in early search stages within the feature
+space and enhance information exchange and global exploration
+capabilities in later iterations.
+• A local sparsity metric mechanism was introduced, utilizing a
+comprehensive assessment of individual congestion and dispersion
+in the feature space to maintain the diversity of candidate solutions,
+thereby increasing the probability of identifying the optimal feature
+subset.
+• An elite tuning strategy is proposed to use two generations of elite
+individuals to correct the probabilistic invalid flip problem caused by
+random thresholds and to avoid the performance drain and distur-
+bance caused by invalid probabilistic flips.
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+2 
+--- PAGE ---
+=== Page 3 ===
+• The EMSWOA is proposed and compared with other prominent
+feature selection algorithms on high-dimensional datasets, demon-
+strating the superiority of the EMSWOA algorithm.
+The organization is as follows. Section 2 reviews the relevant liter-
+ature, including the principles of feature selection and the WOA. The
+EMSWOA algorithm is described in detail in Section 3 . Section 4 pre-
+sents the experimental results and discussion, which verify and analyse
+the performance of the proposed algorithm. Section 5 summarizes the
+paper and provides a vision of future research trends.
+2. Related work
+2.1. Feature selection
+The essence of the FS problem lies in a problem of compositional
+optimization [3] . The general form of the definition of a single-objective
+optimization problem is as follows:
+min f ( x )
+s . t . X = ( x
+1
+, x
+2
+, ⋯ , x
+N
+)
+(1)
+where f ( x ) denotes the objective function to be optimized and x
+N
+de-
+notes the N th dimension of the candidate solution.
+The purpose of feature selection is to select the best subset of features
+from a dataset containing N features to improve the accuracy of the
+algorithm. Therefore, the objective function of the model for the feature
+selection problem is defined such that it is desirable to minimize both
+the classification error and minimize the number of features in the
+feature subset. We can represent the feature selection problem via the
+following formula [8] :
+min f ( x ) = α ∗ ErrorRate + β ∗
+# Selected
+# All
+s . t . X = ( x
+1
+, x
+2
+, ⋯ , x
+N
+)
+x
+i
+∈ { 0 , 1 } , ∀ i ∈ { 1 , 2 , 3 , ⋯ , N }
+(2)
+where ErrorRate denotes the classification error, # Selected denotes the
+number of features in the feature subset, and #All denotes the number of
+all features contained in the original feature. The sum of α and β is 1,
+which is the coupling factor for achieving both objectives simulta-
+neously. X represents the set containing all the features, N represents
+feature dimensions, and 0 and 1 are used to indicate whether the i-th
+feature is selected. f ( x ) represents the feature evaluation function, which
+is typically represented by the classification error and is used to measure
+the quality of the selected subset. By using f ( x ) to guide the feature
+selection, we obtain the best subset with the minimum error.
+2.2. Whale optimization algorithm (WOA)
+The WOA is a novel swarm intelligence algorithm proposed by
+Mirjalili et al. and inspired by the unique hunting process of whales
+[14] . During the hunting process, whales surround their prey by forming
+a cylindrical or tubular bubble net with spiralling bubbles, continuously
+forcing the prey towards the centre and making final capture easier. This
+process is also referred to as bubble-net hunting. The WOA is based on
+this hunting process and is abstracted into three predation stages,
+namely, encircling prey, bubble-net attacking and random searching.
+The formula for the WOA is as follows:
+2.2.1. Encircling prey
+During the encircling prey phase of whale feeding, the whales ’ main
+objective is to observe the location of their prey and encircle it for
+predation. Information is passed between whales through the popula-
+tion, the position of the nearest whale to the prey is set as the global best
+solution X
+∗
+of the current whale, and the search area is narrowed by
+approximating the current best solution and encircling the prey. The
+encircling and feeding phase is represented as follows [14] :
+D = | C ⋅ X
+∗
+( t )   X ( t )| (3)
+C = 2 ⋅ r (4)
+where D denotes the swim step in approximation to the optimal solution
+and t indicates the current number of iterations. C indicates the oscil-
+lation factor, r denotes a stochastic number in [0,1], and X ( t ) denotes the
+location of the current individual whale in the t-th generation.
+A whale in a swarm is location-modified by trying to approximate the
+optimal individual, which is computed via the following model [14] :
+X ( t + 1 ) = X
+∗
+( t )   A ⋅ D (5)
+A = 2 a ⋅ r   a (6)
+where A denotes the convergence factor, a decreases linearly from 2 to 0,
+and r denotes a stochastic number in [0,1].
+2.2.2. Bubble-net attack method (exploitation phase)
+During this feeding phase, whales attack their prey in spiral bubbles
+through both a shrinking encircling mechanism (SEM) and a spiral
+updating position (SUP) [14] . SEM simulates the gradual reduction in
+the encircling circle as the whale feeds. The formula for calculating the
+SEM is the same as Eq. (6) , where the range of whale encircling
+contraction is influenced by the convergence factor A . The size of A is
+proportional to the search range of the individual whale and is pro-
+portional to a . The value of a decreases linearly from 2 to 0, so the range
+of values of A is [-a,a].
+The SUP simulates the spiral swimming of a whale as it feeds, and the
+formula for the SUP is shown below [14] :
+X
+ 
+t + 1
+)
+= D
+ʹ
+⋅ e
+bl
+⋅ cos
+ 
+2 π l
+)
++ X
+∗
+( t ) (7)
+D
+ʹ
+= | X
+∗
+( t )   X ( t )| (8)
+where D denotes the swim step of the current individual X ( t ) as it ap-
+proaches the optimal solution X
+∗
+( t ) , b is a constant used to control the
+shape of the spiral, and l denotes a stochastic value between [-1,1].
+During the bubble attack phase, both the SEM and the SUP will be
+present, and assuming a 50 % probability of performing one of these
+mechanisms, the position updating equation for this phase is shown
+below [14] :
+X
+(
+t + 1
+)
+=
+{
+X
+∗
+( t )   A ⋅ D if p < 0 . 5
+D
+ʹ
+⋅ e
+bl
+⋅ cos
+ 
+2 π l
+)
++ X
+∗
+( t ) if p ≥ 0 . 5
+(9)
+where p is a stochastic number between [0,1], indicating the probability
+of choosing a particular behaviour.
+2.2.3. Search for prey (exploration phase)
+The whale feeding process also includes a random search phase,
+which simulates the whale ’ s search for prey in a larger space. The in-
+dividual is not learning from the current best individual, but rather from
+a stochastic one. The extent of the whale ’ s search is influenced by the
+convergence factor A . The search range of the solution space is
+controlled by A . When | A | > 1, the WOA performs a larger global search,
+thus enhancing the global search power. The computational model for
+the random search phase is shown below [14] :
+X ( t + 1 ) = X
+rand
+( t )   A ⋅ D (10)
+D = | C ⋅ X
+rand
+( t )   X ( t )| (11)
+where X
+rand
+denotes a randomly chosen agent, C is the oscillation factor,
+and D denotes the distance between the selected random whale X
+rand
+( t )
+and the current whale X ( t ) .
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+3 
+--- PAGE ---
+=== Page 4 ===
+2.3. Literature review of feature selection methods
+Based on the feature selection process, feature selection algorithms
+can be categorized into evolutionary computation (EC) class methods
+and non-evolutionary computation (NON-EC) class methods. This sec-
+tion provides a literature review of these two categories of feature se-
+lection algorithms.
+2.3.1. EC-based feature selection
+Due to the strong global optimization capabilities of EC algorithms,
+EC-based feature selection methods have long been among the
+commonly used approaches for feature dimensionality reduction [22].
+However, given the exponential growth in feature space complexity due
+to high-dimensional data, exploring diversity in EC feature selection
+methods is highly important. One line of research enhances the global
+optimization capability of EC algorithms to improve their accuracy in
+feature selection [23–26]. For instance, Hu et al. [23] introduced an
+enhanced black widow optimization algorithm for feature selection by
+designing new spider mate and mutation strategies. Mohamed et al. [24]
+enhanced the capabilities of feature selection by integrating a chaos
+optimization strategy with multiple optimization mechanisms, propos-
+ing a binary-enhanced Spider Wasp Optimizer. Nonetheless, due to the
+complexity of high-dimensional feature spaces, methods that merely
+improve the optimization capabilities of EC algorithms still risk
+converging to local optima. Some scholars perform feature selection on
+high-dimensional data by combining filter and EC algorithms. For
+example, Chen et al. [5] et al. used ReliefF algorithm for initial filtering
+of high dimensional features followed by particle swarm optimization
+algorithm for dimensionality reduction of high dimensional features
+through multi-task information sharing. Askr et al. [27] improved the
+golden jackal optimization algorithm by combining Copula entropy and
+four enhancement strategies, achieving dimensionality reduction of
+features. Pan et al. [28] utilized the ReliefF algorithm and Copula en-
+tropy simultaneously to enhance the quality of the initial population,
+and combined this with an improved Gray Wolf Optimization algorithm
+to select features from high-dimensional data. However, this hybrid
+approach to multi-type feature selection increases the complexity of the
+algorithm and the initial use of a filter-based feature selection method
+may result in the loss of diversity within the feature subsets. Some
+scholars have also recognized the potential of multi-swarm structures in
+high-dimensional feature selection tasks. For instance, Braik et al. [29]
+proposed an adaptive dynamic elite opposition-based Ali Baba and the
+forty thieves algorithm, which divides the entire population into two
+sub-populations to maintain diversity within the population. However, a
+smaller number of sub-populations might not effectively cover the
+extensive high-dimensional feature space. To further enhance the
+extensive exploration of high-dimensional feature spaces, Li et al. [30]
+introduced a decomposition-based multi-population evolutionary algo-
+rithm. This method involves a multi-population generation strategy
+based on feature weights, which improves the global exploration capa-
+bility of the algorithm. Nevertheless, the fixed number of
+sub-populations, being a hyperparameter that does not adapt dynami-
+cally during the optimization process, limits the further enhancement of
+feature selection capabilities.
+The WOA as one of the representative algorithm in the EC domain,
+has been increasingly utilized in the feature selection arena. Recent
+literature on WOA-based feature selection algorithms is catalogued in
+Table 1. These algorithms are bifurcated based on the scale of the feature
+selection datasets into categories targeting conventional and high-
+dimensional datasets. For conventional-sized feature selection tasks,
+one line of research focuses on enhancing the feature search capabilities
+of the WOA [17,31–34], such as the multi-strategy multi-objective WOA
+proposed by Yang et al., which boosts the feature selection performance
+of the algorithm [32]. Another line of research combines WOA-based
+wrappers and filters to accomplish feature selection, such as Yab
+et al., who enhanced feature selection capabilities by integrating
+modified WOA with filters [35]. In the context of high-dimensional
+feature selection challenges, one approach involves augmenting
+feature recognition capabilities in vast spaces by modifying or amal-
+gamating other algorithms to forge new search strategies. For example,
+Too et al. restructured the WOA with a spatial boundary strategy,
+facilitating the identification of latent features in expansive feature
+spaces [36]. As research progresses, the potency of multi-population
+structures in complex solution spaces has been recognized, leading to
+the proposal of multi-population WOA algorithms for intricate feature
+selection tasks [35–38]. Sun et al., for example, introduced a two-stage
+adaptive fuzzy neighborhood feature selection algorithm based on
+WOA, utilizing an adaptive neighborhood search radius to segregate
+elite and ordinary populations, thereby effectively executing the feature
+selection process [38]. However, the method has a small number of
+subpopulations and a fixed number of subpopulations, all of which limit
+the ability to mine for global information. Current studies utilizing
+multi-population WOA algorithms for feature selection are scant and
+warrant further investigation.
+Moreover, in recent years, EC feature selection algorithms integrated
+with attention mechanisms have been proposed. For example, Xue et al.
+[40] developed a large-scale feature selection ranking algorithm based
+on an external attention mechanism, which uses an attention module
+trained during the process to rank features by importance and accom-
+plish feature selection through EC methods. This approach performs
+well in large-scale feature selection tasks, but it is sensitive to hyper-
+parameters [40].
+2.3.2. NON-EC-based feature selection
+In recent years, scholars have researched feature selection algo-
+rithms for NON-EC, such as ReliefF [41] and mutual information [42].
+Zhou et al. [43] proposed a hybrid feature selection method that uses the
+absolute values of correlation coefficients between features as weights
+for redundancy in mutual information representation, achieving feature
+selection. Dai et al. [44] introduced a fuzzy combined entropy feature
+selection algorithm that simultaneously considers global and local
+feature relevancies, leveraging both global and local information.
+Table 1
+Analysis of feature selection algorithms based on WOA in the past four years.
+Approaches Literature High Dimension Multi
+-swarm
+Dynamic subpopulation number
+Quantum based WOA for wrapper feature selection Agrawal et al. [31] X X X
+Spatial bound whale optimization algorithm Too et al. [36] ✓ X X
+Hybrid filter-wrapper feature selection using the WOA Got et al. [39] X X X
+An improved WOA (IWOA) and improved KNN for feature selection Liu et al. [33] X X X
+A Modified Whale Optimization Algorithm as Filter-Based Yab et al. [35] ✓ X X
+Two‑stage‑fuzzy‑neighborhood feature selection with binary
+whale optimization algorithm
+Sun et al. [38] ✓ ✓ X
+A novel feature selection method based on binary hybrid WOA Uzer et al. [17] X X X
+Improved Whale Optimization with Local-Search Alzaqebah et al. [37] ✓ X X
+Artifcial ecosystem optimization operators with the WOA Mostafa et al.[34] X X X
+Multi-strategy assisted multi-objective WOA Yang et al. [32] X X X
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+4 
+--- PAGE ---
+=== Page 5 ===
+However, these methods may still fail to remove complex redundant
+features because of their inability to communicate directly with classi-
+fication outcomes. Furthermore, researchers have explored the use of
+linear dimensionality reduction techniques for feature selection, such as
+singular value decomposition (SVD) [45] and linear discriminant anal-
+ysis (LDA) [45] . These linear techniques have shown certain effective-
+ness, yet they have limitations, such as computational difficulties with
+SVD and poor performance of LDA on non-Gaussian and small-sample
+datasets. Some scholars have also experimented with nonlinear dimen-
+sionality reduction techniques to select and filter high-dimensional
+features, such as kernel principal component analysis (KPCA) [46] and
+multidimensional scaling (MDS) [46] . However, the performance of
+KPCA can vary significantly depending on the chosen kernel, whereas
+MDS performance is highly susceptible to outliers in the data.
+With the advancement of deep learning, feature selection for deep
+features has increasingly gained attention. Some researchers have inte-
+grated classical feature selection algorithms into deep neural networks
+to filter deep features. Thakkar et al. [47] proposed a deep neural
+network feature selection method based on the fusion of statistical
+importance, which compresses and filters features based on the rank
+derived from the statistical importance of variance, mean, and median
+differences of deep features. Acikgoz et al. [47] combined the ReliefF
+method with the feature extraction layer of convolutional neural net-
+works, facilitating the identification and selection of significant features
+in the subset. Furthermore, learning-based feature selection methods
+represent another major category of deep feature selection approaches
+[48] . Channel selection in deep neural networks can be considered a
+special task of feature selection. Xue et al. [48] introduced an
+attention-based progressive channel selection in the task of differen-
+tiable neural architecture search, effectively identifying key channels.
+To further increase the accuracy of channel identification, Xue et al. [49]
+improved the attention mechanism and proposed a dual-attention
+adaptive weight architecture, which significantly enhanced the recog-
+nition of important channels. Despite the promising results of feature
+selection methods for deep neural networks, their high demand for
+computational resources may limit the applicability of these approaches
+in certain scenarios.
+In summary, EC-based feature selection algorithms hold significant
+potential in addressing high-dimensional feature selection challenges.
+WOA, as one of the recent representative algorithms in the EC domain,
+has also received considerable attention in the field of feature selection.
+However, current studies predominantly focus on single-swarm strate-
+gies, which may limit performance in the face of complex feature spaces
+presented by high-dimensional datasets [50] . Although some studies
+have recognized the advantages of multi-swarm algorithms in address-
+ing complex optimization problems, introducing multi-population
+structures to high-dimensional feature selection challenges, the fixed
+number of sub-populations in existing multi-swarm structures hinders
+synergistic interactions among individuals, necessitating deeper
+research into multi-swarm construction mechanisms. Moreover, the
+feature space transformation function in the existing high-dimensional
+feature selection algorithms mostly adopts random thresholds, which
+has the problem of invalid probability flipping, which may lead to the
+loss of effective features. To overcome these challenges, we propose the
+EMSWOA algorithm, which, by designing a dynamic multi-swarm
+mechanism and elite tuning strategy, aims to enhance the feature se-
+lection capabilities in high-dimensional feature selection problems, of-
+fering a new and effective solution in this field.
+3. The proposed method
+To improve the quality of feature selection, we propose an EMSWOA.
+Specifically, the general framework of the EMSWOA is presented in 3.1.
+The dynamic multi-swarm mechanism based on the centroid distance is
+described in detail in subsection 3.2. In 3.3, the elite tuning strategy is
+described, and the fitness function is described in 3.4.
+3.1. The framework of the EMSWOA
+On one hand, we provide an example of feature selection as illus-
+trated in Fig. 1 . First, a set of candidate solutions is initialized and
+mapped to a binary feature space via a transformation function. Second,
+this initialized feature subset matrix is entered into the EMSWOA, which
+undergoes iterative updates and quality assessments to search continu-
+ously for the optimal feature subset. Finally, upon completion of the
+iterative optimization, the optimal feature subset is output.
+On the other hand, to provide a more detailed illustration of the
+EMSWOA feature selection process, we have redrawn the flowchart of
+the EMSWOA, with Fig. 2 showing the detailed steps of the optimization
+process. Additionally, for a more intuitive understanding, this paper also
+presents detailed pseudocode for two new strategies.
+First, in the initialization phase, a set of EMSWOA candidate solu-
+tions consisting of 0,1 binary codes are initialized, with 0 being not
+selected and 1 being selected. The formula is as follows:
+X =
+⎛
+⎜
+⎜
+⎝
+X
+1 , 1
+X
+1 , 2
+… X
+1 , dim
+X
+2 , 1
+X
+2 , 2
+… X
+2 , dim
+… … … …
+X
+N , 1
+X
+N , 2
+… X
+N , dim
+⎞
+⎟
+⎟
+⎠
+=
+⎛
+⎜
+⎜
+⎝
+1 0 … 1
+0 1 … 0
+… … … …
+1 1 … 0
+⎞
+⎟
+⎟
+⎠
+(12)
+Second, the subpopulations of the EMSWOA are dynamically con-
+structed through the proposed dynamic multi-swarm mechanism, which
+is based on the centroid distance. The topology between subpopulations
+of dynamic multi-swarm is dynamic and reorganized. Compared with
+the static topology, the dynamic topological multiple population struc-
+ture can make the interaction of individual information in the search
+space more diverse and convenient, which facilitates the exchange of
+merit-seeking information among subpopulations through population
+reorganization, thus enhancing the diversity of populations in the al-
+gorithm space, slowing down convergence and avoiding premature
+convergence.
+Based on the dynamic multiple populations constructed, the in-
+dividuals in the population are iteratively updated via the encircling
+prey phase, bubble attack phase and random search phase, and the
+candidate solutions are discretely mapped in binary via the trans-
+formation function, and the following model [3] is used for discrete
+mapping in this paper:
+f ( x ) =
+1
+1 + e
+  2 x
+(13)
+X
+i , j
+=
+{
+1 , if r < f
+ 
+Δ X
+i , j
+)
+0 , if r ≥ f
+ 
+Δ X
+i , j
+)
+(14)
+where r is a normally distributed stochastic number with values in [0,1],
+f ( x ) is a discrete mapping function to complete the binary conversion,
+and Δ X
+i , j
+denotes the amount of change in the i -th dimension of the j -th
+candidate solution.
+Finally, the proposed elite tuning strategy is used to correct for
+invalid probability flips in each iteration of the EMSWOA, improving the
+quality of subset selection and the velocity of the EMSWOA approxi-
+mation towards the optimal solution. By continuously cycling the above
+global optimization process, the best subset is thus obtained.
+3.2. Dynamic multi-swarm mechanism based on centroid distance
+The global search performance of metaheuristic algorithms is influ-
+enced by their local exploitation and global exploration abilities. In
+multiple swarm evolutionary algorithms, local information exploitation
+is achieved through intra-subpopulation search, and global information
+exploration is achieved through interactive recombination between
+subpopulations. However, when performing a search within a subpop-
+ulation, the size of the subpopulation ’ s search space and the number of
+individuals within it have a significantly influence over the information
+exploited in that space; specifically, the larger the search space is, the
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+5 
+--- PAGE ---
+=== Page 6 ===
+greater the number of individuals included and the more favorable the
+algorithm ’ s search for excellence. To avoid the problem of inadequate
+use of local information due to the small number of individuals con-
+tained in populations with a larger search space when conducting intra-
+subpopulation search, and to enhance the ability to explore the local
+space, we propose a dynamic multi-swarm mechanism by centroid dis-
+tance construction, as shown in Fig. 3 .
+In the EMSWOA, the dynamic mechanism of dynamic multiple
+populations can be divided into two parts. One part refers to the dy-
+namic process of changing the number of subpopulations after each
+reorganization cycle. The other part refers to the dynamic recombina-
+tion process between subpopulations. To clearly describe the dynamic
+multi-swarm mechanism based on the centroid distance, we divide it
+into four steps: the dynamic generation of the number of sub-
+populations, the construction process of sub-populations, the search
+mechanism based on the local sparsity metric, and the modification of
+the search process of the WOA. The pseudocode of the dynamic multi-
+swarm mechanism based on the centroid distance is shown in Algo-
+rithm 1 .
+Step1: Dynamic generation of the number of subpopulations.
+The number of subpopulations to be generated at each population
+reorganisation throughout the merit search cycle is generated according
+to the following model:
+groups ( g ) = sort ( round ( group
+min
++ rand
+∗ ( group
+max
+  group
+min
+)))
+s . t . 0 < g < round ( T / R )
+(15)
+where round ( x ) denotes a rounding function, rand ( x ) denotes a normally
+distributed random number, group
+max
+and group
+min
+denote the maximum
+and minimum populations, respectively, which are defined as 20 and 1,
+and g indicates the population size of the subpopulation regroups. T
+indicates the total number of iterations, which is 100 in this paper. R is
+referred to as the reorganization cycle, where the population reorganizes
+after every R iteration, and is 10 in this paper. round ( T / R ) denotes the
+number of times the total population must to be reorganized within T
+iterations; in this paper, it is 10, i.e., within 100 iteration cycles, 10
+population reorganizations must to be experienced, and all the sub-
+populations are combined into one population at the last population
+reorganization. sort ( x ) is a sorting function that is sorted in descending
+order. Its purpose is to gradually reduce the number of subpopulations
+with each iteration, as having a larger number of subpopulations during
+the initial period of evolution can enhance the WOA ’ s ability to exploit
+local information. In the last reorganization cycle, all the subpopulations
+are reduced to the same population, which helps to enhance the con-
+nectivity between multiple population topologies, boosts the global
+exploration capability and facilitates enhanced learning of interaction
+information between subpopulations, thus helping to achieve the best
+subset.
+Step2: Process of constructing the subpopulations.
+When constructing the subpopulations for the current recombination
+cycle, the number of base whales contained in each subpopulation is first
+initialized and the number of base whales gnum
+init
+contained in each
+subpopulation is calculated from the following model:
+gnum
+init
+= floor
+(
+N
+groups ( g )
+)
+  1 (16)
+where N denotes the number of all whales and floor(x) denotes rounding
+down. Considering the sparsity in the subpopulations, the algorithm
+adds more search agents for subpopulations with larger search spaces in
+order to enhance the spatial searching abilities of subpopulations with
+larger search spaces. After the initial subpopulation is constructed, the
+distance between an individual and the centroid of the subpopulation is
+calculated for each individual in the subpopulation via the centroid
+distance measurement mechanism to obtain approximate moments of
+the size of the subpopulation space, and the mathematical model is
+shown below.
+dist
+k
+= max
+(
+̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅ ̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅̅ ̅
+X
+k
+( t )  
+∑
+n
+1
+X
+k
+( n )
+/
+n )
+2
+√
+√
+√
+√
+)
+(17)
+where k indicates the subpopulation number and X
+k , n
+denotes the n-th
+individual whale belonging to the k -th subpopulation. After initializing
+the subpopulations, the optimization-seeking capability of the algorithm
+in the sparse space is enhanced by adding more individuals to the sub-
+populations with larger dist
+k
+values. The remaining individuals are
+added one by one to the subpopulations that need to be added in this
+round based on the size of dist
+k
+; thus, more search agents obtain a more
+Fig. 1. Example of an EMSWOA-based feature selection process.
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+6 
+--- PAGE ---
+=== Page 7 ===
+discrete the decision space. An iterative search for superiority with
+period R is subsequently performed in the respective new search sub-
+space. By performing one cycle of learning in each subpopulation before
+reorganization and information exchange, it is possible to avoid the loss
+of local information caused by frequent reorganization of the algorithm
+when the subpopulation itself does not learn sufficiently.
+Step3: Search mechanism that is based on locally sparse metrics.
+Multi-swarm algorithms enhance the exploitation and exploration
+capabilities by dividing the population into multiple subpopulations.
+However, as each subpopulation contains far fewer candidate solutions
+than a single-swarm algorithm, multi-swarm algorithms are more
+sensitive to the diversity of candidate solutions within subpopulations.
+To maintain diversity among the candidate solutions in the sub-
+populations, we introduce a local sparsity metric mechanism (LSD) [51]
+to guide individuals towards those with greater LSD, thus preserving
+population diversity. For clarity, this paper provides a schematic of the
+distance intervals based on fitness values, as shown in Fig. 4 .
+The LSD represents the local sparsity of an individual, which is
+determined by the individual ’ s degree of congestion con ( i ) and disper-
+sion dis ( i ) . con ( i ) focuses on global information within the subpopula-
+tion, whereas dis ( i ) measures the neighbouring information of
+individual X
+i
+. The LSD considers the crowding of individual X
+i
+from both
+Fig. 2. Overall flowchart for feature selection via the EMSWOA.
+Fig. 3. Example of multiple swarm regrouping based on the centroid distance metric.
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+7 
+--- PAGE ---
+=== Page 8 ===
+global and local perspectives. Specifically, con ( i ) calculates the propor-
+tion of the neighbouring interval of X
+i
+to the total space, and represents
+the individual ’ s congestion level. dis ( i ) is used to calculate the dispersion
+between individual X
+i
+and neighbouring individuals, assessing whether
+the neighbouring individuals are more uniformly distributed; the less
+uniform the distribution is, the smaller the value of dis ( i ) . Moreover, to
+reduce the complexity of calculating the LSD, con ( i ) and dis ( i ) are
+normalized, as illustrated in the mathematical model [51] below.
+con ( i ) =
+l
+i , 1
++ l
+i , 2
+L
+(18)
+dis ( i ) =
+min
+ 
+l
+i , 1
+, l
+i , 2
+)
+max
+ 
+l
+i , 1
+, l
+i , 2
+) (19)
+LSD ( i ) =
+con ( i )
+max ( con )
+dis ( i )
+max ( dis )
+(20)
+l
+i , 1
+and l
+i , 2
+represent the fitness interval distances between X
+i
+and its
+two nearest neighbours, and L is the maximum interval among all in-
+dividuals within the subpopulation spaces. When calculating the
+dispersion of neighbouring individuals via LSD, the current best and
+worst values are excluded, setting the LSD values of these two in-
+dividuals to zero. This is because the best and worst individuals, being at
+the extremes of fitness evaluations, each have only one neighbour,
+making it impossible to calculate their LSD.
+The EMSWOA enables individuals to transition their learning from a
+crowded space to a discrete space by guiding them to approach in-
+dividuals with larger LSD values, thus maintaining population diversity.
+To prevent precocious convergence, based on the suggestion in the
+literature [51] , individuals with larger LSD are directly passed on to the
+next generation. The computational procedure is detailed as follows.
+First, the LSD corresponding to each candidate solution is computed.
+Second, the candidate solutions are sorted in ascending order based on
+the value of the LSD, and the rank of the candidate solutions in the
+population. Third, if the LSD value corresponding to a candidate solu-
+tion is less than or equal to N ∗ rand , the candidate solution is added to
+X
+sub
+, which is used for population updating of candidate solutions with
+smaller LSD values. Fourth, from subpopulation k, based on the
+ascending sequence of LSD, a candidate solution X
+i
+k , div
+with an LSD value
+greater than LSD ( i ) is randomly selected. Finally, based on the fitness
+values of the individuals in subpopulation k , the optimal solution X
+i
+k , best
+with the smallest fitness value in the current subpopulation is calculated
+and obtained.
+Step 4: Improve the WOA based on dynamically constructed sub-
+populations and a local sparse metric mechanism.
+In the EMSWOA, we use LSD to filter out the individuals in the
+subpopulation that need to be updated X
+sub
+. First, based on the dynamic
+multiple population grouping, the current optimal solution X
+i
+k , best
+in
+subpopulation k is used to replace the global optimal solution X
+∗
+( t ) of a
+single population in the original algorithm to realize the local detection
+capability within the subpopulation. Second, X
+rand
+in the original algo-
+rithm is replaced by using the random candidate solution X
+i
+k , div
+that is
+larger than LSD ( i ) in subpopulation k to realize the candidate solution
+detection update based on the LSD metric. Finally, based on the above
+analysis, the stages of the WOA algorithm are modified, and the
+improved search stages are represented as follows:
+(1) Encircling prey
+D =
+⃒
+⃒
+⃒ C ⋅ X
+i
+k , best
+( t )   X
+i
+k
+( t )
+⃒
+⃒
+⃒ (21)
+X
+i
+k
+(
+t + 1
+)
+= X
+i
+k , best
+( t )   A ⋅ D (22)
+(2) Bubble-net attack method
+X
+i
+k
+(
+t + 1
+)
+= D
+ʹ
+⋅ e
+bl
+⋅ cos
+(
+2 π l
+)
++ X
+i
+k , best
+( t ) (23)
+D
+ʹ
+=
+⃒
+⃒
+⃒ X
+i
+k , best
+( t )   X
+i
+k
+( t )
+⃒
+⃒
+⃒ (24)
+X
+i
+k
+⎛
+⎝
+t + 1
+⎞
+⎠
+=
+⎧
+⎨
+⎩
+X
+i
+k , best
+( t )   A ⋅ D if p < 0 . 5
+D
+ʹ
+⋅ e
+bl
+⋅ cos
+(
+2 π l
+)
++ X
+i
+k , best
+( t ) if p ≥ 0 . 5
+(25)
+(3) Search for prey
+X
+i
+k
+(
+t + 1
+)
+= X
+i
+k , div
+( t )   A ⋅ D (26)
+D =
+⃒
+⃒
+⃒ C ⋅ X
+i
+k , div
+( t )   X
+i
+k
+( t )
+⃒
+⃒
+⃒ (27)
+Among them, the other parameters, except X
+i
+k , div
+and X
+i
+k , best
+, are
+consistent with the meaning and parameter setting in the WOA, and the
+description is not repeated there.
+Compared to the single-swarm WOA algorithm, the multi-swarm
+based EMSWOA exhibits stronger optimization capabilities. Firstly, the
+multi-swarm structure allows parallel exploration in different search
+areas of the feature space through distinct subpopulations, enhancing
+coverage within the solution space and preventing the omission of more
+discriminative feature subsets. Secondly, the structure facilitates the
+discovery of global optima by periodically interacting and sharing in-
+formation between different populations, effectively preventing the al-
+gorithm from stagnating. Additionally, the multi-swarm structure helps
+maintain diversity among candidate solutions in the population, by
+allowing different subpopulations to evolve independently in various
+areas, thereby reducing the risk of overfitting [52] . Lastly, the
+multi-population structure aids in maintaining a balance between
+exploitation and exploration, thus enhancing the algorithm ’ s global
+search capabilities [53] .
+Algorithm 1 . The pseudocode of dynamic multi-swarm mechanism
+based on centroid distance
+Fig. 4. Example calculations for l
+i , 1
+, l
+i , 2
+and L .
+Fig. 5. Example of an invalid probability flip for discrete space.
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+8 
+--- PAGE ---
+=== Page 9 ===
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+9 
+--- PAGE ---
+=== Page 10 ===
+Overall, the dynamic multi-swarm mechanism based on the centroid
+distance can effectively jump out of the local optimum and avoid pre-
+mature convergence. Specifically, the population is divided into several
+subpopulations through the centre distance-based metric, and in the
+early iteration, the sub-populations can separately search in the high-
+dimensional feature selection space individually. As the iteration con-
+tinues, the constant population reorganization enhances the topological
+connectivity among the populations, which facilitates the search of the
+complex space and realizes the full exploitation and exploration of the
+complex solution space such that the algorithm effectively jumps out of
+the local optimal solution and effectively avoids precocious
+convergence.
+3.3. Elite tuning strategy
+Inspired by the literature [3] , this paper employs the commonly used
+S-type function in this field as the transfer function to achieve conver-
+sion to binary space, as shown in Eqs. (13)-(14) . The elite tuning strategy
+proposed in this paper optimizes the S-type transfer function. Specif-
+ically, the S-type (or V-type) transfer functions convert real-valued so-
+lutions to probability values between 0 and 1 during binary
+transformation. A random value within the range of 0 – 1 is then used as a
+threshold. By comparing the flip probability with this random threshold,
+it determines whether a feature is selected (the value is 1 when it is
+selected). However, due to the randomness of the threshold, which
+varies across dimensions, this can lead to ineffective flips, as illustrated
+in Fig. 5 . For instance, when the flip probability Fp
+1
+i
+is 0.75 and the
+random threshold r is 0.8, the feature is not selected (indicated by a
+value of 0) because Fp
+1
+i
+< r . Conversely, when the flip probability Fp
+2
+i
+is
+0.32 and the random threshold r is 0.3, the feature is selected (indicated
+by a value of 1) because Fp
+1
+i
+> r . Due to the randomness of thresholds
+across different dimensions, even though Fp
+1
+i
+> Fp
+2
+i
+, X
+1
+i
+is not selected
+(indicated by X
+1
+i
+= 0), leading to the issue of ineffective probability flips.
+The elite tuning strategy uses the elite candidate solutions in the
+algorithm space as a benchmark and guides the correction of the prob-
+ability flip matrix and the eigenvalues of the current population ob-
+tained after the mapping of the transformation function. The selection of
+elite individuals is critical to the elite tuning strategy, and it directly
+influences the subsequent correction benchmarks. To ensure the
+accuracy of the assessment of feature importance among elite in-
+dividuals, two consecutive generations of elite individuals were selected
+as the benchmark for elite correction in this study. The process of the
+elite tuning strategy is shown in Fig. 6 . By employing the correction rules
+defined in Eqs. (28) – (32) , this strategy increases the probability values
+of important features or decreases the thresholds to increase the likeli-
+hood of feature selection.
+The process of the elite tuning strategy relies on the elite individuals
+of the two generations before and after making dimension-by-dimension
+corrections to the candidate solutions. To clearly describe the correction
+process, we divide the process into three steps: data input, two gener-
+ations of elite consistency, and two generations of elite inconsistency. To
+make this easier to understand, we present pseudocode for the elite
+tuning strategy, as shown in Algorithm 2 .
+Step 1: Data inputs required for the elite tuning strategy. The optimal
+candidate solution (elite individual) X
+t
+best ( j )
+and the feature flip proba-
+bility FP
+( t )
+Xbest
+corresponding to the elite individual are obtained from the
+EMSWOA algorithm space at round t iteration, as are the optimal
+candidate solution X
+( t   1 )
+best ( j )
+and the feature flip probability FP
+( t   1 )
+Xbest
+corre-
+sponding to that elite individual at the previous round iteration ( t -1).
+The candidate solutions in the EMSWOA algorithm space are then cor-
+rected dimension by dimension based on the two generations of elite
+individuals and their characteristic flip probabilities.
+Step 2: Two generations of elite consistency. When X
+t
+best ( j )
+equals
+X
+( t   1 )
+best ( j )
+, this indicates a high degree of agreement between the two gen-
+erations of elite solutions and high accuracy in the assessment of the
+importance of the features corresponding to the optimal solution in that
+dimension. At this point, if the candidate solution does not agree with
+the elite solution, it can be corrected via the following process.
+(1) When a feature in a corresponding dimension of the elite solution
+vector X
+( t )
+best ( j )
+is selected (i.e., the feature is marked as 1), and the feature
+in the corresponding dimension of the candidate vector X
+( t )
+( i , j )
+to be cor-
+rected is marked as 0, this indicates an inaccurate assessment of feature
+importance for the candidate solution vector X
+( t )
+( i , j )
+in that dimension. At
+this point, forcibly setting the vector X
+( t )
+( i , j )
+to 1 would cause the candidate
+solution to lose its ability to explore unknown spaces. Therefore, this
+Fig. 6. Elite tuning strategy process.
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+10 
+--- PAGE ---
+=== Page 11 ===
+study employs a normal random variable r ( x ) for random perturbation,
+and sets α as a threshold to determine whether a feature should be
+selected. We set α to 0.45 in order for X
+( t )
+( i , j )
+to have more than a 50 %
+probability of being selected based on that dimensional feature. The
+process can be represented by the following model.
+X
+( t )
+( i , j )
+= r ( x ) > α , if X
+( t )
+best ( j )
+== 1 and X
+( t )
+( i , j )
+== 0 (28)
+(2) When X
+( t )
+best ( j )
+has a feature selection score of 0 in that dimension,
+but X
+( t )
+( i , j )
+is not 0. The sum of the number of features ( # Seleted ) contained
+in the currently selected subset and the proportion of all features ( # All ),
+via the threshold β (set to 0.2), is used as a dynamic threshold that
+jointly controls the correction in this dimension. When the selected
+candidate subset contains more features, the dynamic threshold is
+larger, thus achieving better feature redundancy.
+X
+( t )
+( i , j )
+= r ( x ) >
+(
+β +
+(
+# Seleted
+# All
+))
+s . t . if X
+( t )
+best ( j )
+== 0 and X
+( t )
+( i , j )
+∕= 0
+(29)
+Step 3: Two generations of elite inconsistency. When X
+( t )
+best ( j )
+is not
+equal to X
+( t   1 )
+best ( j )
+, X
+( t )
+best ( j )
+is used as the dominant party for the elite tuning
+strategy. To avoid a reduction in the diversity of candidate feature
+subsets, we use only the dimension with a value of 1 in X
+( t )
+best ( j )
+as the
+dimension to be corrected for the other candidate subsets of the feature
+space.
+(1) When the value of FP
+( t )
+Xbest
+is less than the flip probability of the
+candidate individual to be corrected, but the X
+( t )
+best ( j )
+is 1, an invalid flip in
+the feature evaluation of FP
+( t )
+X ( i , j )
+has occurred. Then the value of FP
+( t )
+X ( i , j )
+is
+increased by using the flip probability of the elite individual of two
+generations to improve the chance of being selected for the feature in
+this dimension. The specific calculation formula is as follows:
+FP
+( t )
+X ( i , j )
+= FP
+( t )
+X ( i , j )
++ r ( x ) ∗
+⃒
+⃒
+⃒
+(
+FP
+( t )
+best ( j )
+  FP
+( t   1 )
+best ( j )
+) ⃒
+⃒
+⃒ (30)
+X
+( t )
+( i , j )
+=
+⎧
+⎨
+⎩
+1 , if F P
+( t )
+X ( i , j )
+> λ
+0 , if F P
+( t )
+X ( i , j )
+≤ λ
+(31)
+where r ( x ) ∈ ( 0 , 1 ) is normally distributed and λ is the threshold for
+whether a feature is selected, which in this paper is 0.5. Using the
+amount of variation in the flip probability of elite individuals over two
+generations and random perturbations, FP
+( t )
+X ( i , j )
+is updated such that
+features in that dimension boost the possibility of being chosen.
+(2) When the value of FP
+( t )
+Xbest
+is greater than the flip probability FP
+( t )
+X ( i , j )
+of the current candidate individual to be corrected. At this point, a value
+of 1 for the corresponding dimension of X
+( t )
+best ( j )
+and 0 for X
+( t )
+( i , j )
+indicates a
+case of inaccurate feature importance assessment due to insufficient
+quality of the subset of features of the candidate individual X
+( t )
+( i , j )
+to be
+corrected, independent of the flip probability. To increase the global
+exploration ability of X
+( t )
+( i , j )
+, we guide a subset of candidate features to-
+wards a better feature space by elite values and update the mathematical
+formula as follows:
+X
+( t )
+( i , j )
+= X
+( t )
+( i , j )
++ r ( x ) ×
+((
+1  
+t
+T
+)
+×
+1
+1 + e
+FP
+( t )
+Xbest ( j )
+  FP
+( t )
+X ( i , j )
+)
+∗
+⃒
+⃒
+⃒ X
+( t )
+best ( j )
+  X
+( t )
+( i , j )
+⃒
+⃒
+⃒
+(32)
+Table 2
+Details of the high-dimensional feature selection dataset.
+No. Datasets #Features #Instances #Classes
+1 11_Tumor 12533 174 11
+2 9_Tumor 5726 60 9
+3 Brain_Tumor_1 5920 90 5
+4 Brain_Tumor_2 10367 50 4
+5 DLBCL 5469 77 2
+6 Leukemia_1 5327 72 3
+7 Leukemia_2 11225 72 3
+8 Leukemia_3 11225 72 3
+9 Lung_Cancer 12600 203 5
+10 Prostate_Tumor_1 5966 102 2
+11 GLI_85 22283 85 2
+12 SMK-CAN   187 19993 187 2
+13 ALLAML 7129 72 2
+14 Colon 2000 62 2
+15 Lymphoma 4026 96 9
+16 Nci9 9712 60 9
+17 Leukemia 7070 72 2
+18 Prostate-GE 5966 102 2
+19 Yale 1024 165 15
+Table 3
+Parameter settings of related algorithms.
+Algorithm Parameter
+GOOSE coe < 0 . 17, N = 100, T = 100
+CSOFS N = 100, T = 100
+BCCAS AP = 0 . 1, fl = 2, N = 100, T = 100
+HCLDMS-PSO a = 0 . 05, b = 0 . 45, CL ∈ [ 0 . 99 , 0 . 2 ] , C
+1
+∈ [ 2 . 5 , 0 . 5 ] , C
+2
+∈ [ 0 . 5 , 0 . 25 ] , N = 100, T = 100
+MWOA a ∈ [ 2 , 0 ] , b = 1, l ∈ [   1 , 1 ] , β ∈ [ 0 , 1 ] , N = 100, T = 100
+HWOAG a ∈ [ 2 , 0 ] , b = 1, l ∈ [   1 , 1 ] , N = 100, T = 100
+EMSWOA a ∈ [ 2 , 0 ] , b = 1, l ∈ [   1 , 1 ] , group
+max
+= 20, group
+min
+= 1,R = 10, α = 0 . 45, β = 0 . 2, λ = 0 . 5,N = 100, T = 100
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+11 
+--- PAGE ---
+=== Page 12 ===
+Algorithm 2 . The pseudocode of elite tuning strategy
+Overall, the elite tuning strategy corrects for invalid probability flips
+and accelerates algorithm convergence. This improvement is attributed
+to the elite tuning strategy, which enhances the quality of the subset of
+candidate features. The strategy uses elite individuals within the popu-
+lation as a benchmark. By assessing the importance of features in
+different dimensions, the elite solution is compared with the candidate
+solution. This comparison, combined with the flipping probability, al-
+lows for the correction of features with invalid flips. As a result, the
+quality of the subset of candidate features is improved. This approach
+prevents ineffective individual searches and accelerates the convergence
+process of the EMSWOA.
+3.4. Fitness function
+The fitness evaluation function for FS is a method used to assess the
+quality of features. In the FS task, it is desirable to use the smallest subset
+of features to maximize classification accuracy. Therefore, the fitness
+function is also coupled by two metrics, the number of feature subsets
+and the accuracy,the mathematical model for which is shown below [3] :
+fitness = α ∗ ErrorRate +
+(
+1   α
+)
+∗
+# Selected
+# All
+(33)
+where ErrorRate indicates the error rate, #Selected indicates the number
+of features selected, and #All denotes all features; it is used to control the
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+12 
+--- PAGE ---
+=== Page 13 ===
+balance between the error rate and the number of features, and is set in
+the literature [23] , with α having values in the range [0,1]. To avoid
+error bias due to sample data, the average error obtained by via 10-fold
+cross-validation is used to guide the feature selection process of the
+EMSWOA.
+3.5. Time-complexity analysis
+Time complexity analysis of swarm intelligence algorithms allows for
+a more comprehensive assessment of the performance of the algorithms.
+In this paper, the time complexity analysis of the WOA and EMSWOA,
+where the time complexity is denoted by O , is performed as follows.
+(1) Original WOA
+In the original WOA, the time complexity of population initialization
+Table 4
+Comparison of the average classification accuracy (%) and standard deviation of the EMSWOA and SOTA.
+Dataset GOOSE CSOFS BCCAS HCLDMS-
+PSO
+MWOA HWOAG EMSWOA
+11_Tumor 87.47 ± 0.26 88.51 ± 0.70 88.97 ± 1.31 88.05 ± 1.59 90.23 ± 1.15 88.39 ± 0.63 92.64 ± 1.37
+9_Tumor 51.00 ± 4.80 61.00 ± 1.49 64.33 ± 0.91 63.67 ± 3.80 69.33 ± 2.53 62.00 ± 2.17 72.33 ± 4.35
+Brain_Tumor_1 86.22 ± 1.27 89.11 ± 0.50 88.67 ± 0.50 88.67 ± 1.45 91.33 ± 2.28 89.11 ± 0.93 94.89 ± 1.27
+Brain_Tumor_2 84.00 ± 1.41 87.20 ± 1.79 84.40 ± 0.89 84.40 ± 1.67 87.20 ± 1.79 84.00 ± 0.00 92.40 ± 1.67
+DLBCL 95.84 ± 0.58 96.88 ± 0.71 95.32 ± 0.71 94.29 ± 0.71 98.44 ± 1.09 95.58 ± 0.71 100.00 ± 0.00
+Leukemia_1 95.28 ± 1.24 95.56 ± 0.62 97.22 ± 0.98 95.28 ± 0.76 98.89 ± 1.16 96.67 ± 0.76 99.44 ± 0.76
+Leukemia_2 90.83 ± 0.76 92.22 ± 1.24 91.67 ± 0.00 91.94 ± 0.62 95.28 ± 0.76 91.39 ± 0.62 97.50 ± 1.16
+Leukemia_3 98.06 ± 0.76 98.33 ± 0.62 97.78 ± 0.76 97.22 ± 0.00 98.89 ± 1.16 97.50 ± 0.62 100.00 ± 0.00
+Lung_Cancer 95.47 ± 0.54 95.86 ± 1.24 95.76 ± 0.89 95.27 ± 0.27 97.24 ± 0.56 95.37 ± 0.44 98.03 ± 0.35
+Prostate_Tumor_1 90.98 ± 1.07 91.37 ± 0.44 91.18 ± 0.00 90.59 ± 0.54 91.76 ± 1.12 90.78 ± 0.54 97.06 ± 0.69
+GLI_85 88.71 ± 1.34 91.76 ± 1.44 90.35 ± 0.53 90.35 ± 0.98 91.76 ± 1.44 90.82 ± 1.53 96.71 ± 1.74
+SMK-CAN   187 67.70 ± 2.22 72.73 ± 0.65 70.27 ± 0.61 69.30 ± 0.61 71.02 ± 3.10 71.02 ± 0.59 75.83 ± 1.75
+ALLAML 87.22 ± 4.95 88.89 ± 0.00 93.89 ± 2.52 88.33 ± 0.76 91.94 ± 1.81 90.00 ± 1.16 100.00 ± 0.00
+Colon 83.87 ± 3.23 86.77 ± 0.72 91.94 ± 1.14 85.48 ± 1.14 90.65 ± 2.10 88.71 ± 1.98 96.77 ± 1.14
+Lymphoma 95.63 ± 0.47 95.83 ± 0.00 95.63 ± 0.47 94.79 ± 0.00 95.83 ± 0.00 95.63 ± 0.87 96.04 ± 0.47
+Nci9 53.67 ± 1.83 61.67 ± 1.18 65.33 ± 2.47 58.00 ± 5.06 62.67 ± 1.90 60.33 ± 1.83 69.00 ± 2.53
+Leukemia 95.00 ± 1.58 93.89 ± 0.76 97.78 ± 0.76 93.61 ± 0.76 97.22 ± 0.98 96.39 ± 0.76 100.00 ± 0.00
+Prostate-GE 89.22 ± 2.94 91.37 ± 0.44 93.14 ± 1.55 91.18 ± 0.00 91.57 ± 0.88 91.57 ± 0.88 95.49 ± 1.32
+Yale 56.73 ± 4.19 66.42 ± 0.92 68.12 ± 0.92 62.67 ± 2.52 67.88 ± 1.05 66.91 ± 1.10 70.18 ± 2.89
+Fig. 7. The average accuracy convergence curves of the EMSWOA with SOTA methods.
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+13 
+--- PAGE ---
+=== Page 14 ===
+is O ( N × D ) . N and D denote the number of populations and the
+dimension, respectively. The time complexity required for the evalua-
+tion function used to assess the quality of the candidate solutions is
+O ( N ) . The time complexity for the candidate solutions to perform po-
+sitional updates during the optimization search process is O ( N × D ) .
+Therefore, the overall algorithmic complexity of the WOA is O ( N × D ×
+T ) , where T denotes the maximum number of iterations.
+(2) The proposed EMSWOA
+In the EMSWOA algorithm proposed in this paper, the time
+complexity of population initialization is the same as that of the original
+algorithm, which is also O ( N × D ) . The time complexity required for the
+evaluation of the fitness function is also O ( N ) . The time complexity for
+the update of candidate populations is O ( N × D ) . The time complexity
+for the execution of the dynamic multiple-population strategy is O ( N ×
+Table 5
+Comparison between the EMSWOA and SOTA methods in terms of the average number of selected features.
+Dataset GOOSE CSOFS BCCAS HCLDMS
+-PSO
+MWOA HWOAG EMSWOA
+11-Tumor 5041.6 3820.2 5328.2 8355.0 3265.6 6546.0 1097.0
+9-Tumor 532.2 1517.0 2413.4 1790.4 542.8 1244.6 233.2
+Brain-Tumor   1 284.8 1782.8 2515.0 3753.8 1141.6 2664.6 122.0
+Brain-Tumor   2 1712.4 3924.4 4459.0 7130.0 2652.0 6261.0 336.8
+DLBCL 1223.6 1656.4 2361.8 3616.0 919.4 2343.8 493.2
+Leukemia   1 2973.4 2015.2 2242.4 3435.8 1369.8 2430.8 506.8
+Leukemia   2 3597.6 2975.2 3059.4 5155.8 1359.0 3817.8 428.2
+Leukemia   3 3993.4 5083.6 4807.0 7777.2 3124.6 6602.6 1054.4
+Lung-Cancer 4331.6 4730.6 5398.4 8610.0 1983.4 6707.0 919.2
+Prostate-Tumor   1 2683.2 2695.8 2540.0 3975.8 1743.0 3330.6 55.2
+GLI   85 1551.6 7582.2 9505.2 15939.6 5280.6 15394.6 1287.2
+SMK-CAN   187 1389.0 5385.8 8553.2 13685.2 1500.0 10343.2 318.8
+ALLAML 367.2 3026.4 209.8 3841.0 1225.2 613.0 192.6
+Colon 389.8 849.6 86.0 1126.0 339.2 205.0 31.2
+Lymphoma 1449.2 1690.4 312.8 2545.0 797.8 471.8 400.0
+Nci9 904.0 4081.2 521.2 2110.0 734.2 678.6 182.8
+Leukemia 1232.8 3019.8 222.4 3390.8 1606.4 432.8 230.0
+Prostate-GE 1617.0 2522.2 116.2 3183.0 2234.6 674.4 218.2
+Yale 81.8 412.8 129.4 198.8 69.0 169.4 39.0
+Table 6
+Results of mean fitness values (AVG) and standard deviation (STD) for the EMSWOA and SOTA methods.
+Dataset Measure GOOSE CSOFS BCCAS HCLDMS
+-PSO
+MWOA HWOAG EMSWOA
+11-Tumor AVG 0.12827 0.11854 0.11661 0.11910 0.10125 0.12578 0.07039
+​ STD 0.00275 0.00769 0.00837 0.00761 0.01047 0.01242 0.00745
+9-Tumor AVG 0.29826 0.36357 0.32842 0.30658 0.21390 0.30697 0.16312
+​ STD 0.02584 0.01003 0.00928 0.01065 0.01568 0.05759 0.02807
+Brain-Tumor   1 AVG 0.10104 0.11766 0.11069 0.11457 0.08768 0.11486 0.03692
+​ STD 0.01014 0.00288 0.00539 0.00581 0.02228 0.01448 0.00687
+Brain-Tumor   2 AVG 0.14706 0.16056 0.13402 0.16587 0.12929 0.16219 0.05602
+​ STD 0.01277 0.01150 0.01401 0.00586 0.01855 0.01397 0.00902
+DLBCL AVG 0.04822 0.04982 0.03321 0.04841 0.01769 0.05881 0.00140
+​ STD 0.00555 0.00488 0.00654 0.00581 0.01257 0.00773 0.00278
+Leukemia   1 AVG 0.05735 0.03414 0.04571 0.04286 0.01780 0.05166 0.00669
+​ STD 0.00704 0.01076 0.00670 0.01007 0.01170 0.00679 0.00771
+Leukemia   2 AVG 0.09689 0.08703 0.08163 0.09036 0.05310 0.09092 0.02340
+​ STD 0.00854 0.00202 0.01010 0.00601 0.00891 0.00620 0.00779
+Leukemia   3 AVG 0.02515 0.02386 0.01877 0.02894 0.01375 0.03258 0.00021
+​ STD 0.00611 0.00879 0.00551 0.00655 0.00916 0.00343 0.00029
+Lung-Cancer AVG 0.04812 0.04899 0.04324 0.05106 0.02978 0.04846 0.02173
+​ STD 0.00693 0.00609 0.01184 0.00351 0.00646 0.00310 0.00341
+Prostate-Tumor   1 AVG 0.09457 0.09188 0.08856 0.09373 0.08506 0.09798 0.02109
+​ STD 0.00703 0.00232 0.00573 0.00585 0.01127 0.00484 0.00353
+GLI   85 AVG 0.09146 0.10111 0.08908 0.10047 0.08637 0.10167 0.03445
+​ STD 0.00859 0.00590 0.01270 0.00869 0.01595 0.00735 0.01657
+SMK-CAN   187 AVG 0.20506 0.29917 0.27179 0.29680 0.18569 0.30960 0.13297
+​ STD 0.00935 0.00571 0.00497 0.00797 0.01999 0.00657 0.00630
+ALLAML AVG 0.09406 0.11317 0.05636 0.12168 0.08727 0.09790 0.00096
+​ STD 0.02522 0.00070 0.02079 0.00519 0.02035 0.01287 0.00146
+Colon AVG 0.13047 0.13885 0.07500 0.14726 0.09874 0.11134 0.02468
+​ STD 0.00637 0.00703 0.00774 0.01111 0.02275 0.02225 0.00610
+Lymphoma AVG 0.04955 0.04534 0.04884 0.05256 0.04210 0.05477 0.03999
+​ STD 0.00243 0.00174 0.00528 0.00033 0.00043 0.00297 0.00387
+Nci9 AVG 0.28928 0.38858 0.30272 0.32873 0.23058 0.34765 0.16909
+​ STD 0.01073 0.00681 0.02066 0.01895 0.00706 0.01925 0.01289
+Leukemia AVG 0.05638 0.06695 0.02361 0.06893 0.03308 0.03988 0.00025
+​ STD 0.01393 0.00507 0.00553 0.01034 0.00995 0.01048 0.00038
+Prostate-GE AVG 0.09745 0.08944 0.06125 0.09085 0.08594 0.08862 0.03449
+​ STD 0.00788 0.00615 0.01505 0.00333 0.00817 0.00615 0.02090
+Yale AVG 0.26381 0.34063 0.28992 0.28734 0.19731 0.30609 0.17094
+​ STD 0.00959 0.00378 0.00972 0.01563 0.00758 0.00868 0.01350
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+14 
+--- PAGE ---
+=== Page 15 ===
+D ) . The time complexity for the execution of the elite tuning strategy is
+O ( N × D ) . Therefore, the overall time complexity of the EMSWOA at the
+number of iterations T is. The overall time complexity is O ( N × D × T ) .
+The algorithm possesses similar time complexity before and after
+improvement.
+4. Experimental results and discussion
+In this section, a benchmark dataset of high-dimensional FS common
+in the field was selected for validation. The experiments are tested and
+compared on two core FS metrics: accuracy and number of features.
+Moreover, to assess the superiority of the EMSWOA more comprehen-
+sively, the comparison algorithms chosen in this paper include both
+Fig. 8. Comparison of the average fitness convergence curves of the EMSWOA and SOTA methods.
+Table 7
+P value test results for the EMSWOA and state-of-the-art methods.
+Dataset GOOSE CSOFS BCCAS HCLDMS-PSO MWOA HWOAG
+11-Tumor 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+9-Tumor 0.0079 0.0079 0.0079 0.0079 0.0317 0.0079
+Brain-Tumor   1 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+Brain-Tumor   2 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+DLBCL 0.0079 0.0079 0.0079 0.0079 0.0159 0.0079
+Leukemia   1 0.0079 0.0079 0.0079 0.0079 0.1508 0.0079
+Leukemia   2 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+Leukemia   3 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+Lung-Cancer 0.0079 0.0079 0.0317 0.0079 0.0556 0.0079
+Prostate-Tumor   1 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+GLI   85 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+SMK-CAN   187 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+ALLAML 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+Colon 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+Lymphoma 0.0079 0.0079 0.0079 0.0079 0.0317 0.0079
+Nci9 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+Leukemia 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+Prostate-GE 0.0079 0.0079 0.0556 0.0079 0.0079 0.0079
+Yale 0.0079 0.0079 0.0079 0.0079 0.0079 0.0079
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+15 
+--- PAGE ---
+=== Page 16 ===
+evolutionary computational class algorithms and feature selection al-
+gorithms with a non-evolutionary (NON-EA) computational class.
+4.1. Experimental setup
+4.1.1. High-dimensional datasets
+To validate the performance and generalization ability of the EMS-
+WOA on different datasets, a total of 19 benchmark datasets [24,54]
+commonly used in high-dimensional feature selection performance
+evaluation were selected. These benchmark datasets have different
+categories and sample sizes, with unbalanced data between categories.
+Complex and diverse categories and sample distributions can more
+effectively evaluate the generalization capability of FS algorithms under
+complex distribution conditions and have the ability to identify effective
+feature subsets. This paper draws on a commonly used selection of
+datasets from extensive literature [24,54] in this field, selecting 19
+benchmark datasets composed of one-dimensional feature data of type
+1 × n , where n denotes the number of original features, as detailed in
+Table 2 .
+4.1.2. Comparison algorithms
+We select two classes of comparison algorithms for analysis with the
+EMSWOA algorithm. The first class is the evolutionary computation
+class of algorithms of the same type as the WOA, which includes: two
+classical algorithms of the evolutionary computation class and five state-
+of-the-art (SOTA) approaches in the field of high-dimensional FS. The
+latest algorithm is the GOOSE algorithm (GOOSE) [55] . Five SOTA
+methods are used in the field of high-dimensional FS, including the
+competitive swarm optimizer feature selection algorithm (CSOFS) [56] ,
+the binary chaotic crow search algorithm (BCCAS) [57] , the heteroge-
+neous composite learning and dynamic multi-swarm particle swarm
+algorithm (HCLDMS-PSO) [58] , the modified whale optimization algo-
+rithm (MWOA) [59] , and the hybrid whale optimization algorithm
+(HWOAG) [16] . The relevant parameter settings are shown in Table 3 .
+Another class of representative FS algorithms of the non-
+evolutionary computation class includes discriminative FS based on
+structured sparse subspace learning modules (S
+2
+DFS) [60] , FS based on
+adaptive graph learning and constraints (EGCFS) [61] , multi-criteria
+decision-based multi-label feature selection (MFS-MCDM) [62] , and
+support vector machines with recursive feature elimination (SVM-RFE)
+[63] and its equivalent extended algorithm (MSVM-RFE) [64] and
+RFE-CBR [65] with correlated bias reduction and the Online group
+streaming feature selection based on fuzzy neighbourhood granular ball
+rough sets (OGSFS-FNGBRS) [66] .
+4.2. Experimental analysis
+4.2.1. Comparison of average accuracy rates
+The EMSWOA was tested with seven comparison algorithms on 19
+benchmark datasets with high-dimensional feature selection. Table 4
+presents the results of the experiments for average classification accu-
+racy and standard deviation (STD), with the optimal values in bold.
+First, comparing the EMSWOA algorithm to the 6 comparison algo-
+rithms overall, the EMSWOA achieved the best average classification
+accuracy on all 19 high-dimensional datasets. Among them, the average
+classification accuracy of the EMSWOA reached 100 % on the DLBCL,
+Leukemia_3, ALLAML and Leukemia datasets, and only the EMSWOA
+algorithm reached the theoretical optimum on these four datasets.
+Moreover, the STD of the EMSWOA algorithm is 0 on the DLBCL, Leu-
+kemia_3, ALLAML and Leukemia datasets, which indicates that the
+improved the EMSWOA not only has a higher accuracy in finding the
+best, but also the robustness of the algorithm. Secondly, compared to the
+best of four excellent algorithms in high-dimensional FS, the EMSWOA
+algorithm improves accuracy by more than 3 % on average over nine
+datasets, indicating that the EMSWOA is still more competitive even
+when compared to new high-dimensional FS approaches that have been
+proposed recently. Compared with the HCLDMS-PSO algorithm, which
+is also a multi-swarm algorithm, the EMSWOA algorithm has an average
+accuracy improvement of more than 6 % on eleven datasets, which in-
+dicates that the dynamic multi-population through the central distance
+can effectively improve the algorithm ’ s mining ability, and is more
+conducive to learning for local information, which enhances the algo-
+rithm ’ s exploitation ability. The EMSWOA algorithm obtained the
+highest classification accuracy on all 19 datasets, but only obtained a
+smaller standard deviation on 5 datasets, which may be due to the fact
+that the elite tuning process is affected by the current optimal solution in
+the iteration cycle, which increases the volatility of the EMSWOA while
+speeding up the convergence. Overall, the EMSWOA algorithm searches
+for a better subset of features and obtains higher classification accuracy.
+We present a plot of the average accuracy convergence curves for the
+EMSWOA and the comparison algorithms on the 19 datasets, as shown
+in Fig. 7 . Overall, the EMSWOA outperforms all the comparative algo-
+rithms in terms of convergence curves on 19 datasets, and the algorithm
+converges faster and with less fluctuation in the convergence curves,
+indicating that the EMSWOA can perform a faster search for the best
+solution on the high-dimensional feature selection dataset. In addition,
+the EMSWOA converges slightly slower than the comparison algorithms
+do in the early iterations on the Leukemia_3, GLI_85, SMK-CAN-187,
+ALLAML, Colon, Lymphoma, Nci9, Leukemia, Prostage-GE and Yale
+datasets, but it is superior to the comparison algorithms in terms of
+convergence accuracy. The reason for the above phenomenon is that the
+multi-swarm division in the EMSWOA algorithm initially limits the
+exploration space, thus restricting global search capabilities. However,
+the dynamic multi-swarm mechanism of the EMSWOA prevents the al-
+gorithm from being trapped in local optima because it has a single
+population. Therefore, with increasing iteration numbers, the EMSWOA
+demonstrates stronger global optimization capabilities.
+4.2.2. Average number of features
+The number of features selected is also an important measure of the
+algorithm ’ s performance. We compared the average number of features
+contained in the optimal subset of features selected by the EMSWOA and
+the other six compared methods, and the experimental results are shown
+in Table 5 , with the optimal values bolded.
+First, the EMSWOA algorithm is compared with six comparison al-
+gorithms, and the selected feature subset is compressed by an average of
+a factor of 12.31. Among them, the optimal feature subset selected by
+the EMSWOA algorithm on 16 high-dimensional datasets has the
+smallest average number of features, and is only slightly lower than the
+BCCAS algorithm on Lymphoma, Leukemia and Prostate-GE. Second,
+the EMSWOA algorithm compresses features by an average of 3.58 times
+Table 8
+Comparison of EMSWOA and WOA performance.
+Dataset WOA EMSWOA
+ACC ± STD Number ACC ± STD Number
+11_Tumor 90.11 ± 0.85 3427.00 92.64 ± 1.37 1097.00
+9_Tumor 68.00 ± 3.21 242.80 72.33 ± 4.35 233.20
+Brain_Tumor_1 91.11 ± 1.36 1066.80 94.89 ± 1.27 122.00
+Brain_Tumor_2 87.20 ± 2.28 1854.00 92.40 ± 1.67 336.80
+DLBCL 99.22 ± 0.71 739.00 100.00 ± 0 493.20
+Leukemia_1 98.61 ± 0.98 989.60 99.44 ± 0.76 506.80
+Leukemia_2 94.44 ± 1.39 1473.20 97.50 ± 1.16 428.20
+Leukemia_3 99.44 ± 0.76 2093.80 100.00 ± 0 1054.40
+Lung_Cancer 96.45 ± 0.22 2221.80 98.03 ± 0.35 919.20
+Prostate_Tumor_1 92.94 ± 1.45 1007.80 97.06 ± 0.69 55.20
+GLI_85 93.88 ± 2.10 4291.00 96.71 ± 1.74 1287.20
+SMK-CAN   187 72.94 ± 1.76 2553.80 75.83 ± 1.75 318.80
+ALLAML 91.11 ± 1.86 1609.80 100.00 ± 0 192.60
+Colon 88.71 ± 1.98 698.40 96.77 ± 1.14 31.20
+Lymphoma 95.83 ± 0.74 860.80 96.04 ± 0.47 400.00
+Nci9 63.00 ± 2.74 427.60 69.00 ± 2.53 182.80
+Leukemia 95.83 ± 3.26 1924.80 100.00 ± 0 230.00
+Prostate-GE 92.16 ± 0.69 1735.60 95.49 ± 1.32 218.20
+Yale 66.67 ± 3.95 45.20 70.18 ± 2.89 39.00
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+16 
+--- PAGE ---
+=== Page 17 ===
+compared to the optimum among all compared algorithms, where the
+EMSWOA algorithm reduces the number of optimal feature subsets by
+more than 13 times on 2 datasets, including 39.35 times on the Prostate-
+Tumor-1 dataset, suggesting that compared to the novel high-
+dimensional feature selection algorithms proposed in recent years, the
+EMSWOA is still competitive. The significant reduction in the number of
+features contained in the optimal feature subset of the EMSWOA algo-
+rithm is due to the fact that our proposed the elite tuning strategy
+effectively removes the redundant features by correcting the invalid
+probabilistic flip-flops using the optimal solution to obtain an optimal
+subset with a better number of features. As a result, the EMSWOA al-
+gorithms are more capable of identifying valid features and removing
+redundant features than the SOTA methods, thus increasing the accu-
+racy of classification and reducing memory consumption.
+Fig. 9. Comparison of the EMSWOA and WOA performance. (a) is a histogram comparing the average classification accuracy of the EMSWOA and WOA, and (b) is a
+histogram comparing the number of selected features of the EMSWOA and WOA.
+Fig. 10. Comparison of the WOA and EMSWOA fitness convergence curves.
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+17 
+--- PAGE ---
+=== Page 18 ===
+4.2.3. Fitness value analysis
+The fitness value is the algorithm ’ s comprehensive trade-off between
+the classification accuracy and the number of features during feature
+selection, which reflects the algorithm ’ s global search ability. In this
+paper, we give the fitness values and standard deviations of the EMS-
+WOA with six comparison algorithms (shown in Table 6 ), and the
+convergence graph of the corresponding fitness values, shown in Fig. 8 .
+As demonstrated in Table 6 , the EMSWOA algorithm consistently
+achieved the lowest fitness values across 19 high-dimensional datasets,
+indicating its superior global optimization capabilities compared to six
+other feature selection algorithms in tasks involving complex, high-
+dimensional spaces. Additionally, the standard deviations (STDs) are
+provided, with the EMSWOA obtaining the lowest STDs on the DLBCL,
+Leukemia-3, Colon, and Leukemia datasets. While the algorithm ’ s STDs
+on other datasets were slightly higher than the optimal values, the
+incorporation of multiple populations increased the diversity and
+perturbation of the optimal solutions found, enhancing the likelihood of
+achieving better outcomes. Consequently, the fitness values of EMSWOA
+were lower than those of the six comparison algorithms across all 19
+datasets.
+The convergence curves of fitness values depicted in Fig. 8 clearly
+show the EMSWOA ’ s advantages over comparative algorithms. The
+EMSWOA not only achieved the lowest fitness values on all 19 datasets
+but also demonstrated faster convergence speeds compared to all
+Table 9
+The average accuracy (ACC%) and the average number of selected features (NUM) of EMSWOA compared to the latest EA-based feature selection algorithms.
+Dataset Measure MGWO
+-C
+PPSO
+-EDT
+OSC
+-EA
+CE
+-BEGJO
+MPEA
+-FS
+BAEOAFT EMSWOA
+11_Tumor ACC 89.75 92.02 - - 80.98 - 92.64
+​ NUM 223.60 209.00 - - 60.78 - 1097.00
+9_Tumor ACC 62.45 71.11 - - 54.94 - 72.33
+​ NUM 78.40 100.30 - - 19.61 - 233.20
+Brain_Tumor1 ACC 87.19 87.89 90.20 - 84.81 - 94.89
+​ NUM 15.70 72.50 75.50 - 6.09 - 122.00
+Brain_Tumor2 ACC 88.05 89.63 83.34 - 78.57 - 92.40
+​ NUM 39.80 165.20 43.00 - 5.63 - 336.80
+DLBCL ACC 98.74 98.13 98.68 - 92.36 - 100.00
+​ NUM 10.30 65.60 22.50 - 3.60 - 493.20
+Leukemia_1 ACC 98.68 99.87 - - 91.56 - 99.44
+​ NUM 25.40 41.80 - - 3.70 - 506.8
+Leukemia_2 ACC - 94.99 - - 89.68 - 97.50
+​ NUM - 44.90 - - 4.42 - 428.20
+Leukemia_3 ACC - 99.18 - - - - 100.00
+​ NUM - 146.10 - - - - 1054.40
+Lung_Cancer ACC 96.63 - - - - - 98.03
+​ NUM 94.50 - - - - - 919.20
+Prostate_Tumor1 ACC - 94.49 - - - - 97.06
+​ NUM - 41.40 - - - - 55.20
+GLI_85 ACC - - - 94.12 - 97.26 96.71
+​ NUM - - - 146.15 - 12454 1287.2
+SMK-CAN   187 ACC - - 71.49 - - 69.10 75.83
+​ NUM - - 48.20 - - 11613 318.80
+ALLAML ACC - - - 99.44 - 95.58 100.00
+​ NUM - - - 18.75 - 10.97 192.60
+Colon ACC - - 88.72 92.34 - 94.45 96.77
+​ NUM - - 17.30 13.40 - 1025 31.2
+Lymphoma ACC - - - - - 88.42 96.04
+​ NUM - - - - - 2223.5 400.0
+Nci9 ACC - - - 68.50 - 76.73 69.00
+​ NUM - - - 92.50 - 5534.10 182.80
+Leukemia ACC - - 98.92 99.17 - - 100.00
+​ NUM - - 30.73 16.85 - - 230.00
+Prostate-GE ACC - - - - - 85.00 95.49
+​ NUM - - - - - 2906.10 218.20
+Yale ACC - - - - - 56.67 70.18
+​ NUM - - - - - 600.10 39.00
+Table 10
+Average classification accuracy (%) of the EMSWOA compared with the NON-EA feature selection algorithms.
+Dataset S
+2
+DFS EGCFS MFS
+-MCDM
+MSVM
+-RFE
+RFE
+-CBR
+OGSFS
+-FNGBRS
+EMSWOA
+11_Tumor 78.63( + ) 85.86( + ) 84.97( + ) 78.64( + ) 81.58( + ) - 92.64
+9_Tumor 46.36( + ) 47.94( + ) 51.82( + ) 52.35( + ) 48.18( + ) - 72.33
+Brain_Tumor_1 71.43( + ) 82.14( + ) 78.57( + ) 72.73( + ) 75.00( + ) - 94.89
+Brain_Tumor_2 76.67( + ) 63.33( + ) 74.44( + ) 79.16( + ) 77.78( + ) - 92.40
+DLBCL 91.67( + ) 79.17( + ) 95.83( + ) 79.99( + ) 83.33( + ) 93.37 100.00
+Leukemia_1 91.30( + ) 73.91( + ) 82.61( + ) 88.85( + ) 87.83( + ) - 99.44
+Leukemia_2 83.33( + ) 75.00( + ) 85.23( + ) 76.52( + ) 74.17( + ) 94.74 97.50
+Leukemia_3 91.30( + ) 95.65( + ) 81.62( + ) 87.08( + ) 89.57( + ) - 100.00
+Lung_Cancer 85.71( + ) 90.48( + ) 90.48( + ) 86.17( + ) 85.71( + ) 90.21 98.03
+Prostate_Tumor_1 80.65( + ) 87.10( + ) 77.42( + ) 91.36( + ) 96.77(-) - 97.06
+GLI_85 92.31( ≈ ) 88.46( + ) 88.46( + ) 83.66( + ) 84.62( + ) - 96.71
+SMK-CAN   187 65.52( + ) 65.52( + ) 68.97( + ) 72.80( + ) 75.86( ≈ ) - 75.83
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+18 
+--- PAGE ---
+=== Page 19 ===
+comparative algorithms. The EMSWOA performed slightly worse than
+the comparative algorithms during the early iterations on the 11_Tumor,
+Leukemia-3, GLI-85, ALLAML, Colon, Leukemia, and Prostate-GE data-
+sets. However, it significantly outperformed the comparative algorithms
+as the iterations progressed, a transient effect caused by the constrained
+search space in the early stages due to the segmentation of multiple
+populations.
+4.2.4. P value tests of the Wilcoxon rank-sum test
+The Wilkerson P value test [67] is a non-parametric statistical
+method used to describe the variability between data, and we tested the
+EMSWOA against other comparison algorithms for P values; the results
+are shown in Table 7 .
+We set P = 0.05 as the threshold for the significance test used to
+compare the variability between the EMSWOA and other comparison
+algorithms. Values greater than 0.05 in Table 7 are marked in bold, and
+values between 0.01 and 0.05 are underlined. As shown in Table 7 ,
+EMSWOA has only three values greater than 0.05, with all the remaining
+values being less than 0.05. In addition, the EMSWOA has three values
+between 0.01 and 0.05 when compared to the MWOA, and the EMSWOA
+has one value between 0.01 and 0.05 when compared to the BCCAS. All
+remaining values were less than 0.01. Therefore, this indicates that the
+EMSWOA algorithm is significantly different from the comparison
+algorithms.
+4.2.5. Performance comparison before and after algorithm improvement
+To verify the effectiveness of the improvements, we conducted ex-
+periments, the results of which are shown in Table 8 . Where the optimal
+accuracy is identified in bold with underlining, the optimal value of the
+average accuracy is identified in bold, and the optimal value of the
+average number of eigenvalues is identified with underlining.
+The experimental results from Table 8 demonstrate that the EMS-
+WOA achieved the highest average classification accuracy by identifying
+the optimal feature subset, underscoring the meaningfulness of the en-
+hancements implemented in the EMSWOA overall. In terms of average
+accuracy, the EMSWOA outperformed the traditional WOA on 19
+datasets, indicating that the enhancements from the elite tuning strategy
+and dynamic multi-swarm mechanism are reliable. Additionally, the
+EMSWOA exhibited superior performance in reducing the average
+number of features across these datasets, suggesting that the improve-
+ment strategies effectively facilitate feature elimination. For a clearer
+visual comparison of the pre- and post-improvement algorithms, histo-
+grams of their average classification accuracies and feature counts are
+provided in Fig. 9 . Furthermore, Fig. 10 presents the convergence curves
+from the comparative experiments, where the EMSWOA, when
+compared to the WOA, demonstrates superior convergence speed and
+accuracy across the 19 datasets.
+In summary, the experiments show that the EMSWOA benefits from
+its integrated elite tuning strategy and dynamic multi-swarm mecha-
+nism, both of which significantly enhance its feature selection capabil-
+ities. Specifically, the elite tuning strategy exhibits a strong capacity for
+effective feature elimination. Concurrently, the dynamic multi-swarm
+mechanism improves the quality of the best individuals during the
+elite correction phase by fostering greater diversity within the popula-
+tion, which in turn enhances the quality of elite correction. These two
+components work in synergy to significantly enhance the feature se-
+lection capabilities of the EMSWOA.
+4.2.6. Comparison with the latest EA-based feature selection algorithms
+To further validate the efficacy of the EMSWOA algorithm in high-
+dimensional feature selection problems, we selected seven of the most
+recently published algorithms that have demonstrated exceptional per-
+formance in this area. Among them, the evolutionary dual-task feature
+selection method based on probability-based initialization particle
+swarm optimization (PPSO-EDT) [25] , the objective space
+constraint-based evolutionary algorithm (OSC-EA) [26] , the copula
+entropy-based binary enhanced golden jackal optimization (CE- BEGJO)
+[27] , the a decomposition-based multi-population evolutionary algo-
+rithm for high-dimensional feature selection (MPEA-FS) [30] and the
+binary variant of the Ali Baba and the Forty Thieves algorithm (BAFT)
+based on adaptive elite opposition-based AFT (BAEOAFT) [29] were
+published in 2024 and represent the most recent advances, while the
+modified gray wolf optimization with copula entropy filter methods
+(MGWO-C) [28] is a representative algorithm published in 2023. A
+comparative analysis of these seven state-of-the-art algorithms against
+EMSWOA is presented in Table 9 . Furthermore, the average classifica-
+tion accuracy (ACC) and the average number of selected features (NUM)
+cited in Table 8 are sourced from publicly available literature, where a
+’ - ’ denotes that the corresponding data were not provided in the
+publications.
+From the comparative results in Table 9 , it is evident that the feature
+subsets selected by the EMSWOA generally achieved higher classifica-
+tion accuracies. Specifically, the EMSWOA attained the highest classi-
+fication accuracy in 16 out of 19 datasets, with the most significant
+improvement observed in the Yale dataset, where the average accuracy
+increased by 13.51 %. Moreover, only the EMSWOA algorithm achieved
+a 100 % accuracy rate in the DLBCL, Leukemia_3, ALLAML, and Leu-
+kemia datasets. The EMSWOA slightly underperformed compared to the
+optimal values in the Leukemia_1, GLI_85, and Nci9 datasets. Analyzing
+from the perspective of the average number of features, the EMSWOA
+achieved the highest classification accuracies with the fewest features in
+the Lymphoma, Prostate-GE, and Yale datasets. In other datasets, the
+number of features selected by the EMSWOA was higher than the min-
+imal feature count of the comparative methods; however, excessive
+filtering of features can lead to the loss of discriminative attributes. The
+comparative methods tend to overly compress the feature set, dimin-
+ishing their focus on improving accuracy and consequently losing
+valuable features. For instance, in the Brain_Tumor2 dataset, the optimal
+feature subset selected by the MPEA-FS contained an average of only
+5.63 features, yet the classification accuracy was only 78.57 %, signifi-
+cantly lower than the 92.40 % achieved by the EMSWOA. Thanks to its
+elite tuning strategy, the EMSWOA effectively relearns and corrects for
+missing effective features, thus favoring the identification and retention
+of discriminative features while eliminating redundant and irrelevant
+ones. Therefore, compared to the latest state-of-the-art methods, the
+EMSWOA algorithm still exhibits strong competitiveness in high-
+dimensional feature selection tasks.
+4.2.7. Comparison with NON-EA feature selection algorithms
+To more comprehensively validate the performance of the EMSWOA
+on the feature selection problem, five NON-EA feature selection algo-
+rithms were also selected for comparison with the EMSWOA in this
+study, and the results are shown in Table 10 , with the optimal values in
+the table bolded. The results of the compared algorithms in the table are
+derived from publicly published data [54] .
+Compared with the other six NON-EA algorithms, the EMSWOA
+achieves the highest classification accuracy on all 11 datasets. We
+compared the EMSWOA with the best of the comparison algorithms,
+where the average classification accuracy of the EMSWOA was
+improved by almost 20 % on the 9_Tumor dataset. On the Brain_Tumor1
+and Brain_Tumor2 datasets, the average classification accuracy of the
+EMSWOA improved by at least 12.75 % or more. For the 11_Tumor,
+Leukemia_1, Lung_Cancer and GLI_85 datasets, the average classification
+accuracy of EMSWOA improved by more than 4 %. On the DLBCL and
+Leukemia_3 datasets, the EMSWOA achieved an average classification
+accuracy of 100 %, which is also an improvement of more than 4 %
+compared with the comparison algorithms. For Leukemia_2, the EMS-
+WOA improved by 2.76 % compared with the optimal value in the
+comparison algorithm. Furthermore, the EMSWOA algorithm was the
+only algorithm to achieve 100 % average classification accuracy on the
+DLBCL and Leukemia_3 datasets compared with the comparison algo-
+rithms. In general, the EMSWOA algorithm is still a more competitive
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+19 
+--- PAGE ---
+=== Page 20 ===
+algorithm than the NON-EA algorithm.
+4.2.8. Discussion
+The EMSWOA method proposed in this paper enhances the ability of
+the algorithm to jump out of local optimal solutions through the dy-
+namic multi-swarm mechanism based on centroid distance, and through
+the mining and detection of local information by subpopulations. In
+addition, the quality of the candidate solutions is improved by the
+proposed elite tuning strategy, which corrects for the invalid probability
+flips during discrete space mapping, thus accelerating convergence. The
+experimental results also show that the EMSWOA algorithm can achieve
+higher classification accuracy with fewer features than the comparison
+methods can achieve. The EMSWOA feature selection algorithm has
+broader application value and can be utilized to address high-
+dimensional data reduction issues in the field of bioinformatics pro-
+cessing [3]. It can also be applied in contexts such as IoT intrusion
+detection [68], thereby introducing new technological options for the
+field of data statistics and analysis.
+However, the EMSWOA also has some limitations. First, the EMS-
+WOA is only adapted to the case of a fixed length of basic features, and is
+not capable of coping with complex environments where the length of
+features changes, and can be researched in the later stage for the
+problem of variable-length feature selection. In addition, the EMSWOA
+only performs feature selection for single-label data, and cannot be used
+for multi-label task, and the EMSWOA algorithm can be extended to
+multi-label feature selection tasks in the future.
+5. Conclusions and future work
+In this paper, a dynamic multi-swarm WOA based on elite tuning is
+proposed to solve the high-dimensional feature selection problem. In the
+EMSWOA, dynamic multiple populations are first constructed by
+designing a centroid distance metric based approach to improve the
+exploitation ability of the EMSWOA in the decision space while main-
+taining population diversity. In addition, to correct for the invalid
+probability flip-flop problem when converting to discrete space, we
+design an elite tuning strategy to improve the interference of dynamic
+thresholding on the feature importance measure, enhance the quality of
+the subset of candidate features, and improve the performance of the
+EMSWOA algorithm. Based on a dynamic multi-swarm mechanism and
+an elite tuning strategy, the experimental results of the EMSWOA on 12
+real-world, high-dimensional datasets show that, compared with other
+superior algorithms, the EMSWOA can remove redundant and irrelevant
+features more effectively and improve the accuracy of classification.
+The dynamic multi-swarm mechanism based on the centroid dis-
+tance and elite tuning strategy in EMSWOA proposed in this paper can
+be used not only to improve the WOA algorithm but also to improve
+swarm intelligence algorithms. The newly proposed strategy enhances
+the optimization capabilities of algorithms, aiding in providing better
+search methodologies for the fields of machine learning and data sci-
+ence. For example, the improved swarm intelligence algorithms can be
+employed for optimizing neural network parameters, as well as for
+searching neural network architectures and processing and analyzing
+EEG data, among other tasks, thereby offering novel solutions for these
+domains.
+Future work could improve the global optimization process of the
+WOA by combining relevant algorithmic ideas from machine learning
+and deep learning, such as transfer learning, to accelerate the conver-
+gence of the algorithm. In addition, the scope of application of algo-
+rithms can also be expanded through domain-specific research. For
+example, the scope of application of algorithms can be explored for areas
+such as affective computing, and a priori knowledge-guided evolu-
+tionary updating strategies can be designed for specific domains to
+improve feature selection performance in the target domain.
+CRediT authorship contribution statement
+Guanjie Yan: Writing – review & editing, Supervision, Methodol-
+ogy, Investigation, Conceptualization. Yong Wu: Supervision, Re-
+sources, Formal analysis. Xiaomeng Si: Supervision, Resources, Data
+curation. Fahui Miao: Writing – original draft, Validation, Software,
+Methodology, Investigation, Formal analysis, Data curation,
+Conceptualization.
+Declaration of Competing Interest
+The authors declare that they have no known competing financial
+interests or personal relationships that could have appeared to influence
+the work reported in this paper
+Acknowledgments
+This work was supported by the National Natural Science Foundation
+of China (Grant No. 52201401,Grant No.61972241 and Grant No.
+2021YFC2801002), in part by the Natural Science Foundation of
+Shanghai (22ZR1427100) and Soft Science Project of Shanghai
+(23692106700).
+Data availability
+No data was used for the research described in the article.
+References
+[1] M. Nssibi, G. Manita, O. Korbaa, Advances in nature-inspired metaheuristic
+optimization for feature selection problem: a comprehensive survey, Comput. Sci.
+Rev. 49 (2023) 100559.
+[2] B. Ahadzadeh, M. Abdar, F. Safara, A. Khosravi, M.B. Menhaj, P.N. Suganthan, SFE:
+a simple, fast and efficient feature selection algorithm for high-dimensional data,
+IEEE Trans. Evolut. Comput. (2023).
+[3] F. Miao, L. Yao, X. Zhao, Symbiotic organisms search algorithm using random walk
+and adaptive Cauchy mutation on the feature selection of sleep staging, Expert
+Syst. Appl. 176 (2021) 114887.
+[4] N. Karlupia, P. Abrol, Wrapper-based optimized feature selection using nature-
+inspired algorithms, Neural Comput. Appl. 35 (2023) 12675–12689.
+[5] K. Chen, B. Xue, M. Zhang, F. Zhou, An evolutionary multitasking-based feature
+selection method for high-dimensional classification, IEEE Trans. Cybern. 52
+(2020) 7172–7186.
+[6] M. Rostami, K. Berahmand, E. Nasiri, S. Forouzandeh, Review of swarm
+intelligence-based feature selection methods, Eng. Appl. Artif. Intell. 100 (2021)
+104210, https://doi.org/10.1016/j.engappai.2021.104210.
+[7] P.M. Suryavanshi, P.A. Vikhar, A high-level ensemble feature selection algorithm
+for mitigating the dimensionality in stress data, Int. J. Intell. Syst. Appl. Eng. 12
+(2024) 86–99.
+[8] L. Li, M. Xuan, Q. Lin, M. Jiang, Z. Ming, K.C. Tan, An evolutionary multitasking
+algorithm with multiple filtering for high-dimensional feature selection, IEEE
+Trans. Evolut. Comput. (2023).
+[9] L. Fang, X. Liang, A novel method based on nonlinear binary grasshopper whale
+optimization algorithm for feature selection, J. Bionic Eng. 20 (2023) 237–252.
+[10] A. Bashab, A.O. Ibrahim, E.E. AbedElgabar, M.A. Ismail, A. Elsafi, A. Ahmed,
+A. Abraham, A systematic mapping study on solving university timetabling
+problems using meta-heuristic algorithms, Neural Comput. Appl. 32 (2020)
+17397–17432.
+[11] Y. Zhou, H. Wu, Q. Luo, M. Abdel-Baset, Automatic data clustering using nature-
+inspired symbiotic organism search algorithm, Knowl. -Based Syst. 163 (2019)
+546–557.
+[12] K. Mnich, W.R. Rudnicki, All-relevant feature selection using multidimensional
+filters with exhaustive search, Inf. Sci. 524 (2020) 277–297.
+[13] F. Cheng, F. Chu, Y. Xu, L. Zhang, A steering-matrix-based multiobjective
+evolutionary algorithm for high-dimensional feature selection, IEEE Trans. Cybern.
+52 (2021) 9695–9708.
+[14] S. Mirjalili, A. Lewis, The whale optimization algorithm, Adv. Eng. Softw. 95
+(2016) 51–67.
+[15] F.S. Gharehchopogh, H. Gholizadeh, A comprehensive survey: whale optimization
+algorithm and its applications, Swarm Evolut. Comput. 48 (2019) 1–24.
+[16] X. Zhang, S. Wen, Hybrid whale optimization algorithm with gathering strategies
+for high-dimensional problems, Expert Syst. Appl. 179 (2021) 115032.
+[17] M.S. Uzer, O. Inan, A novel feature selection using binary hybrid improved whale
+optimization algorithm, J. Supercomput. (2023) 1–26.
+[18] Z.A.A. Alyasseri, N.S. Ali, M.A. Al-Betar, S.N. Makhadmeh, N. Jamil, M.
+A. Awadallah, M. Braik, S. Mirjalili, Recent advances of whale optimization
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+20 
+--- PAGE ---
+=== Page 21 ===
+algorithm, its versions and applications, Handb. Whale Optim. Algorithm (2024)
+9–31.
+[19] X. Yang, H. Li, Evolutionary-state-driven multi-swarm cooperation particle swarm
+optimization for complex optimization problem, Inf. Sci. 646 (2023) 119302.
+[20] D. Yousri, M.Abd Elaziz, D. Oliva, A. Abraham, M.A. Alotaibi, M.A. Hossain,
+Fractional-order comprehensive learning marine predators algorithm for global
+optimization and feature selection, Knowl. -Based Syst. 235 (2022) 107603.
+[21] L. Abualigah, A. Diabat, Chaotic binary group search optimizer for feature
+selection, Expert Syst. Appl. 192 (2022) 116368.
+[22] R. Jiao, B.H. Nguyen, B. Xue, M. Zhang, A survey on evolutionary multiobjective
+feature selection in classification: approaches, applications, and challenges, IEEE
+Trans. Evolut. Comput. (2023).
+[23] G. Hu, B. Du, X. Wang, G. Wei, An enhanced black widow optimization algorithm
+for feature selection, Knowl. -Based Syst. 235 (2022) 107638.
+[24] E.A. Mohamed, M.S. Braik, M.A. Al-Betar, M.A. Awadallah, Boosted spider wasp
+optimizer for high-dimensional feature selection, J. Bionic Eng. (2024) 1–36.
+[25] X. Pan, M. Lei, J. Sun, H. Wang, T. Ju, L. Bai, An evolutionary feature selection
+method based on probability-based initialized particle swarm optimization, Int. J.
+Mach. Learn. Cybern. (2024) 1–20.
+[26] F. Cheng, R. Zhang, Z. Huang, J. Qiu, M. Xia, L. Zhang, An objective space
+constraint-based evolutionary method for high-dimensional feature selection
+[research frontier, IEEE Comput. Intell. Mag. 19 (2024) 113–128.
+[27] H. Askr, M. Abdel-Salam, A.E. Hassanien, Copula entropy-based golden jackal
+optimization algorithm for high-dimensional feature selection problems, Expert
+Syst. Appl. 238 (2024) 121582.
+[28] H. Pan, S. Chen, H. Xiong, A high-dimensional feature selection method based on
+modified Gray Wolf Optimization, Appl. Soft Comput. 135 (2023) 110031.
+[29] M. Braik, M.A. Awadallah, H. Alzoubi, H. Al-Hiary, A.G. Hussien, Adaptive
+dynamic elite opposition-based Ali Baba and the forty thieves algorithm for high-
+dimensional feature selection, Clust. Comput. (2024) 1–37.
+[30] W. Li, Z. Chai, MPEA-FS: a decomposition-based multi-population evolutionary
+algorithm for high-dimensional feature selection, Expert Syst. Appl. 247 (2024)
+123296.
+[31] R. Agrawal, B. Kaur, S. Sharma, Quantum based whale optimization algorithm for
+wrapper feature selection, Appl. Soft Comput. 89 (2020) 106092.
+[32] D. Yang, C. Zhou, X. Wei, Z. Chen, Z. Zhang, Multi-strategy assisted multi-objective
+whale optimization algorithm for feature selection, CMES-Comput. Model. Eng.
+Sci. 140 (2024).
+[33] W. Liu, Z. Guo, F. Jiang, G. Liu, D. Wang, Z. Ni, Improved WOA and its application
+in feature selection, Plos One 17 (2022) e0267041.
+[34] R.R. Mostafa, A.G. Hussien, M.A. Gaheen, A.A. Ewees, F.A. Hashim, AEOWOA:
+hybridizing whale optimization algorithm with artificial ecosystem-based
+optimization for optimal feature selection and global optimization, Evol. Syst.
+(2024) 1–33.
+[35] L.Y. Yab, N. Wahid, R.A. Hamid, A modified whale optimization algorithm as filter-
+based feature selection for high dimensional datasets, in: International Conference
+on Soft Computing and Data Mining, Springer, 2022: pp. 90–100.
+[36] J. Too, M. Mafarja, S. Mirjalili, Spatial bound whale optimization algorithm: an
+efficient high-dimensional feature selection approach, Neural Comput. Appl.
+(2021) 1–22.
+[37] M. Alzaqebah, M.K. Alsmadi, S. Jawarneh, J.S. Alqurni, M. Tayfour,
+I. Almarashdeh, R.M.A. Mohammad, F.A. Alghamdi, N. Aldhafferi, A. Alqahtani, et
+al., Improved whale optimization with local-search method for feature selection,
+Comput. Mater. Contin. 75 (2023) 1371–1389.
+[38] L. Sun, X. Wang, W. Ding, J. Xu, H. Meng, TSFNFS: two-stage-fuzzy-neighborhood
+feature selection with binary whale optimization algorithm, Int. J. Mach. Learn.
+Cybern. 14 (2023) 609–631.
+[39] A. Got, A. Moussaoui, D. Zouache, Hybrid filter-wrapper feature selection using
+whale optimization algorithm: a multi-objective approach, Expert Syst. Appl. 183
+(2021) 115312.
+[40] Y. Xue, C. Zhang, F. Neri, M. Gabbouj, Y. Zhang, An external attention-based
+feature ranker for large-scale feature selection, Knowl. -Based Syst. 281 (2023)
+111084.
+[41] N. Aggarwal, U. Shukla, G.J. Saxena, M. Rawat, A.S. Bafila, S. Singh, A. Pundir,
+Mean based relief: an improved feature selection method based on ReliefF, Appl.
+Intell. 53 (2023) 23004–23028.
+[42] F. Macedo, R. Valadas, E. Carrasquinha, M.R. Oliveira, A. Pacheco, Feature
+selection using decomposed mutual information maximization, Neurocomputing
+513 (2022) 215–232.
+[43] H. Zhou, X. Wang, R. Zhu, Feature selection based on mutual information with
+correlation coefficient, Appl. Intell. 52 (2022) 5457–5474.
+[44] J. Dai, Q. Liu, X. Zou, C. Zhang, Feature selection based on fuzzy combination
+entropy considering global and local feature correlation, Inf. Sci. 652 (2024)
+119753.
+[45] T. Bhadra, S. Mallik, A. Sohel, Z. Zhao, Unsupervised feature selection using an
+integrated strategy of hierarchical clustering with singular value decomposition: an
+integrative biomarker discovery method with application to acute myeloid
+leukemia, IEEE/ACM Trans. Comput. Biol. Bioinforma. 19 (2022) 1354–1364,
+https://doi.org/10.1109/TCBB.2021.3110989.
+[46] J. Shen, F. Xu, Method of fault feature selection and fusion based on poll mode and
+optimized weighted KPCA for bearings, Measurement 194 (2022) 110950.
+[47] A. Thakkar, R. Lohiya, Fusion of statistical importance for feature selection in Deep
+Neural Network-based Intrusion Detection System, Inf. Fusion 90 (2023) 353–363.
+[48] N. Gui, D. Ge, Z. Hu, AFS: An attention-based mechanism for supervised feature
+selection, in: Proceedings of the AAAI Conference on Artificial Intelligence, 2019:
+pp. 3705–3713.
+[49] Y. Xue, X. Han, Z. Wang, Self-adaptive weight based on dual-attention for
+differentiable neural architecture search, IEEE Trans. Ind. Inform. (2024).
+[50] S. Liu, H. Wang, W. Peng, W. Yao, A surrogate-assisted evolutionary feature
+selection algorithm with parallel random grouping for high-dimensional
+classification, IEEE Trans. Evolut. Comput. 26 (2022) 1087–1101.
+[51] D. Li, W. Guo, A. Lerch, Y. Li, L. Wang, Q. Wu, An adaptive particle swarm
+optimizer with decoupled exploration and exploitation for large scale optimization,
+Swarm Evolut. Comput. 60 (2021) 100789.
+[52] X. Zhou, X. Zhang, W. Gao, H. Wang, Y. Ma, Adaptive multi-population artificial
+bee colony algorithm based on fitness landscape analysis, Appl. Soft Comput.
+(2024) 111952.
+[53] S. Barshandeh, F. Piri, S.R. Sangani, HMPA: an innovative hybrid multi-population
+algorithm based on artificial ecosystem-based and Harris Hawks optimization
+algorithms for engineering problems, Eng. Comput. 38 (2022) 1581–1625.
+[54] K. Chen, B. Xue, M. Zhang, F. Zhou, An evolutionary multitasking-based feature
+selection method for high-dimensional classification, IEEE Trans. Cybern. (2020).
+[55] R.K. Hamad, T.A. Rashid, GOOSE algorithm: a powerful optimization tool for real-
+world engineering challenges and beyond, Evol. Syst. (2024) 1–26.
+[56] S. Gu, R. Cheng, Y. Jin, Feature selection for high-dimensional classification using a
+competitive swarm optimizer, Soft Comput. 22 (2018) 811–822.
+[57] G.I. Sayed, A.E. Hassanien, A.T. Azar, Feature selection via a novel chaotic crow
+search algorithm, Neural Comput. Appl. 31 (2019) 171–188.
+[58] S. Wang, G. Liu, M. Gao, S. Cao, A. Guo, J. Wang, Heterogeneous comprehensive
+learning and dynamic multi-swarm particle swarm optimizer with two mutation
+operators, Inf. Sci. 540 (2020) 175–201.
+[59] Y. Sun, X. Wang, Y. Chen, Z. Liu, A modified whale optimization algorithm for
+large-scale global optimization problems, Expert Syst. Appl. 114 (2018) 563–577,
+https://doi.org/10.1016/j.eswa.2018.08.027.
+[60] Z. Wang, F. Nie, L. Tian, R. Wang, X. Li, Discriminative feature selection via a
+structured sparse subspace learning module, IJCAI (2020) 3009–3015.
+[61] R. Zhang, Y. Zhang, X. Li, Unsupervised feature selection via adaptive graph
+learning and constraint, IEEE Trans. Neural Netw. Learn. Syst. (2020).
+[62] A. Hashemi, M.B. Dowlatshahi, H. Nezamabadi-Pour, MFS-MCDM: multi-label
+feature selection using multi-criteria decision making, Knowl. -Based Syst. 206
+(2020) 106365.
+[63] I. Guyon, J. Weston, S. Barnhill, V. Vapnik, Gene selection for cancer classification
+using support vector machines, Mach. Learn. 46 (2002) 389–422.
+[64] X. Zhou, D.P. Tuck, MSVM-RFE: extensions of SVM-RFE for multiclass gene
+selection on DNA microarray data, Bioinformatics 23 (2007) 1106–1114.
+[65] K. Yan, D. Zhang, Feature selection and analysis on correlated gas sensor data with
+recursive feature elimination, Sens. Actuators B Chem. 212 (2015) 353–363.
+[66] Y. Sun, P. Zhu, Online group streaming feature selection based on fuzzy
+neighborhood granular ball rough sets, Expert Syst. Appl. 249 (2024) 123778.
+[67] P.B. Dao, On Wilcoxon rank sum test for condition monitoring and fault detection
+of wind turbines, Appl. Energy 318 (2022) 119209.
+[68] M. Ghobaei-Arani, A. Shahidinejad, A cost-efficient IoT service placement
+approach using whale optimization algorithm in fog computing environment,
+Expert Syst. Appl. 200 (2022) 117012.
+F. Miao et al. Applied Soft Computing 169 (2025) 112634 
+21 

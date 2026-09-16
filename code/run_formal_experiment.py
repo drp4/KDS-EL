@@ -34,9 +34,9 @@ from algorithms import RUNNERS
 NUM_RUNS = 10          # 对标 MEL: numRun = 10
 
 ABLATION_METHODS = ["KDS_EL_TwoPhase", "KDS_EL_NoPool", "MEL_MI", "MEL"]
-SOTA_METHODS     = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO", "DENCA_SO", "bIRIME", "BinCOA"]
-NEW_METHODS      = ["DENCA_SO", "bIRIME", "BinCOA"]
-RERUN_METHODS    = ["KDS_EL_TwoPhase", "DENCA_SO", "bIRIME", "BinCOA"]
+SOTA_METHODS     = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO", "EMSWOA", "DENCA_SO", "bIRIME", "BinCOA"]
+NEW_METHODS      = ["DENCA_SO", "bIRIME", "BinCOA", "EMSWOA"]
+RERUN_METHODS    = ["KDS_EL_TwoPhase", "DENCA_SO", "bIRIME", "BinCOA", "EMSWOA"]
 MOFS_METHODS     = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
                     "fMOPSO-FS", "VGS-MOEA", "W-MOPSO-FS"]
 ALL_METHODS      = ABLATION_METHODS + SOTA_METHODS

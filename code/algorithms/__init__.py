@@ -24,6 +24,7 @@ from .wmopso_fs import run_W_MOPSO_FS
 from .denca_so import run_DENCA_SO
 from .birime import run_bIRIME
 from .bincoa import run_BinCOA
+from .emswoa import run_EMSWOA
 
 RUNNERS = {
     "BPSO":            run_BPSO,
@@ -38,6 +39,7 @@ RUNNERS = {
     "KDS_EL":          run_KDS_EL,
     "PSO_CSM":         run_PSO_CSM,
     "IGPSO":           run_IGPSO,
+    "EMSWOA":          run_EMSWOA,
     "DENCA_SO":        run_DENCA_SO,
     "bIRIME":          run_bIRIME,
     "BinCOA":          run_BinCOA,
