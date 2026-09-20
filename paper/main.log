@@ -1,0 +1,1499 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.5.23)  20 SEP 2026 13:37
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**./main.tex
+(main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-03-20>
+(E:\MiKTeX\tex/latex/elsarticle\elsarticle.cls
+Document Class: elsarticle 2026/01/09, 3.5: Elsevier Ltd
+(E:\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
+) (E:\MiKTeX\tex/latex/l3kernel\expl3.sty
+Package: expl3 2026-03-20 L3 programming layer (loader) 
+
+(E:\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count275
+))
+(E:\MiKTeX\tex/latex/l3packages/xparse\xparse.sty
+Package: xparse 2025-10-09 L3 Experimental document command parser
+)
+(E:\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count276
+)
+\@bls=\dimen150
+
+(E:\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(E:\MiKTeX\tex/latex/base\fleqn.clo
+File: fleqn.clo 2016/12/29 v1.2b Standard LaTeX option (flush left equations)
+\mathindent=\skip49
+Applying: [2015/01/01] Make \[ robust on input line 50.
+LaTeX Info: Redefining \[ on input line 51.
+Already applied: [0000/00/00] Make \[ robust on input line 62.
+Applying: [2015/01/01] Make \] robust on input line 74.
+LaTeX Info: Redefining \] on input line 75.
+Already applied: [0000/00/00] Make \] robust on input line 83.
+) (E:\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count277
+\c@section=\count278
+\c@subsection=\count279
+\c@subsubsection=\count280
+\c@paragraph=\count281
+\c@subparagraph=\count282
+\c@figure=\count283
+\c@table=\count284
+\abovecaptionskip=\skip50
+\belowcaptionskip=\skip51
+\bibindent=\dimen151
+)
+(E:\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+
+(E:\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+)
+(E:\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(E:\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(E:\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+
+(E:\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen152
+\Gin@req@width=\dimen153
+)
+\c@tnote=\count285
+\c@fnote=\count286
+\c@cnote=\count287
+\c@ead=\count288
+\c@elsarticle@author=\count289
+\@eadauthor=\toks18
+\c@affn=\count290
+\absbox=\box53
+\elsarticlehighlightsbox=\box54
+\elsarticlegrabsbox=\box55
+\keybox=\box56
+\Columnwidth=\dimen154
+\space@left=\dimen155
+\els@boxa=\box57
+\els@boxb=\box58
+\leftMargin=\dimen156
+\@enLab=\toks19
+\@sep=\skip52
+\@@sep=\skip53
+ (main.spl)
+(E:\MiKTeX\tex/latex/natbib\natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip54
+\bibsep=\skip55
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count291
+)
+\splwrite=\write3
+\openout3 = `main.spl'.
+
+
+(E:\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2026/03/07 v6.0 Page Geometry
+
+(E:\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (E:\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count292
+\Gm@cntv=\count293
+\c@Gm@tempcnt=\count294
+\Gm@bindingoffset=\dimen157
+\Gm@wd@mp=\dimen158
+\Gm@odd@mp=\dimen159
+\Gm@even@mp=\dimen160
+\Gm@layoutwidth=\dimen161
+\Gm@layoutheight=\dimen162
+\Gm@layouthoffset=\dimen163
+\Gm@layoutvoffset=\dimen164
+\Gm@dimlist=\toks20
+ (E:\MiKTeX\tex/latex/geometry\geometry.cfg))
+(E:\MiKTeX\tex/latex/base\fleqn.clo
+File: fleqn.clo 2016/12/29 v1.2b Standard LaTeX option (flush left equations)
+\mathindent=\skip56
+Applying: [2015/01/01] Make \[ robust on input line 50.
+LaTeX Info: Redefining \[ on input line 51.
+Already applied: [0000/00/00] Make \[ robust on input line 62.
+Applying: [2015/01/01] Make \] robust on input line 74.
+LaTeX Info: Redefining \] on input line 75.
+Already applied: [0000/00/00] Make \] robust on input line 83.
+)
+\appnamewidth=\dimen165
+) (E:\MiKTeX\tex/latex/txfonts\txfonts.sty
+Package: txfonts 2008/01/22 v3.2.1
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 21.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/txr/m/n on input line 21.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/txr/m/n on input line 21.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/txr/m/n --> OT1/txr/bx/n on input line 22.
+\symitalic=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `italic' in version `bold'
+(Font)                  OT1/txr/m/it --> OT1/txr/bx/it on input line 26.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/txr/bx/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/txr/bx/n on input line 29.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 30.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/txr/m/it on input line 30.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/txr/m/it on input line 30.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/txr/m/it --> OT1/txr/bx/it on input line 31.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 40.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/txss/m/n on input line 40.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/txss/m/n on input line 40.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/txss/m/n --> OT1/txss/b/n on input line 41.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 50.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/txtt/m/n on input line 50.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/txtt/m/n on input line 50.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/txtt/m/n --> OT1/txtt/b/n on input line 51.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 58.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/txmi/m/it on input line 58.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/txmi/m/it on input line 58.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/txmi/m/it --> OML/txmi/bx/it on input line 59.
+\symlettersA=\mathgroup5
+LaTeX Font Info:    Overwriting symbol font `lettersA' in version `bold'
+(Font)                  U/txmia/m/it --> U/txmia/bx/it on input line 67.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 77.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/txsy/m/n on input line 77.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/txsy/m/n on input line 77.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/txsy/m/n --> OMS/txsy/bx/n on input line 78.
+\symAMSa=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `bold'
+(Font)                  U/txsya/m/n --> U/txsya/bx/n on input line 94.
+\symAMSb=\mathgroup7
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `bold'
+(Font)                  U/txsyb/m/n --> U/txsyb/bx/n on input line 103.
+\symsymbolsC=\mathgroup8
+LaTeX Font Info:    Overwriting symbol font `symbolsC' in version `bold'
+(Font)                  U/txsyc/m/n --> U/txsyc/bx/n on input line 113.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 120.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/txex/m/n on input line 120.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/txex/m/n on input line 120.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/txex/m/n --> OMX/txex/bx/n on input line 121.
+\symlargesymbolsA=\mathgroup9
+LaTeX Font Info:    Overwriting symbol font `largesymbolsA' in version `bold'
+(Font)                  U/txexa/m/n --> U/txexa/bx/n on input line 129.
+LaTeX Encoding Info:    Redeclaring text symbol \L (encoding OT1) on input line
+ 160.
+LaTeX Encoding Info:    Redeclaring text symbol \l (encoding OT1) on input line
+ 161.
+LaTeX Font Info:    Redeclaring math symbol \mathsterling on input line 164.
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 591.
+LaTeX Info: Redefining \not on input line 1043.
+) (E:\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks21
+\inpenc@posthook=\toks22
+)
+(E:\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2025/07/09 v2.17z AMS math features
+\@mathmargin=\skip57
+
+For additional information on amsmath, use the `?' option.
+(E:\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2024/11/17 v2.01 AMS text
+
+(E:\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks23
+\ex@=\dimen166
+))
+(E:\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen167
+)
+(E:\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count295
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count296
+\leftroot@=\count297
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count298
+\DOTSCASE@=\count299
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box59
+\strutbox@=\box60
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen168
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count300
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count301
+\dotsspace@=\muskip17
+\c@parentequation=\count302
+\dspbrk@lvl=\count303
+\tag@help=\toks24
+\row@=\count304
+\column@=\count305
+\maxfields@=\count306
+\andhelp@=\toks25
+\eqnshift@=\dimen169
+\alignsep@=\dimen170
+\tagshift@=\dimen171
+\tagwidth@=\dimen172
+\totwidth@=\dimen173
+\lineht@=\dimen174
+\@envbody=\toks26
+\multlinegap=\skip58
+\multlinetaggap=\skip59
+\mathdisplay@stack=\toks27
+LaTeX Info: Redefining \[ on input line 2950.
+LaTeX Info: Redefining \] on input line 2951.
+)
+(E:\MiKTeX\tex/latex/amsfonts\amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(E:\MiKTeX\tex/latex/amsfonts\amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+LaTeX Font Info:    Redeclaring symbol font `AMSa' on input line 59.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `normal'
+(Font)                  U/txsya/m/n --> U/msa/m/n on input line 59.
+LaTeX Font Info:    Overwriting symbol font `AMSa' in version `bold'
+(Font)                  U/txsya/bx/n --> U/msa/m/n on input line 59.
+LaTeX Font Info:    Redeclaring symbol font `AMSb' on input line 60.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `normal'
+(Font)                  U/txsyb/m/n --> U/msb/m/n on input line 60.
+LaTeX Font Info:    Overwriting symbol font `AMSb' in version `bold'
+(Font)                  U/txsyb/bx/n --> U/msb/m/n on input line 60.
+LaTeX Font Info:    Redeclaring math delimiter \ulcorner on input line 74.
+LaTeX Font Info:    Redeclaring math delimiter \urcorner on input line 75.
+LaTeX Font Info:    Redeclaring math delimiter \llcorner on input line 76.
+LaTeX Font Info:    Redeclaring math delimiter \lrcorner on input line 77.
+LaTeX Font Info:    Redeclaring math symbol \square on input line 141.
+LaTeX Font Info:    Redeclaring math symbol \lozenge on input line 142.
+)
+LaTeX Font Info:    Redeclaring math symbol \boxdot on input line 44.
+LaTeX Font Info:    Redeclaring math symbol \boxplus on input line 45.
+LaTeX Font Info:    Redeclaring math symbol \boxtimes on input line 46.
+LaTeX Font Info:    Redeclaring math symbol \blacksquare on input line 48.
+LaTeX Font Info:    Redeclaring math symbol \centerdot on input line 49.
+LaTeX Font Info:    Redeclaring math symbol \blacklozenge on input line 51.
+LaTeX Font Info:    Redeclaring math symbol \circlearrowright on input line 52.
+
+LaTeX Font Info:    Redeclaring math symbol \circlearrowleft on input line 53.
+LaTeX Font Info:    Redeclaring math symbol \leftrightharpoons on input line 56
+.
+LaTeX Font Info:    Redeclaring math symbol \boxminus on input line 57.
+LaTeX Font Info:    Redeclaring math symbol \Vdash on input line 58.
+LaTeX Font Info:    Redeclaring math symbol \Vvdash on input line 59.
+LaTeX Font Info:    Redeclaring math symbol \vDash on input line 60.
+LaTeX Font Info:    Redeclaring math symbol \twoheadrightarrow on input line 61
+.
+LaTeX Font Info:    Redeclaring math symbol \twoheadleftarrow on input line 62.
+
+LaTeX Font Info:    Redeclaring math symbol \leftleftarrows on input line 63.
+LaTeX Font Info:    Redeclaring math symbol \rightrightarrows on input line 64.
+
+LaTeX Font Info:    Redeclaring math symbol \upuparrows on input line 65.
+LaTeX Font Info:    Redeclaring math symbol \downdownarrows on input line 66.
+LaTeX Font Info:    Redeclaring math symbol \upharpoonright on input line 67.
+LaTeX Font Info:    Redeclaring math symbol \downharpoonright on input line 69.
+
+LaTeX Font Info:    Redeclaring math symbol \upharpoonleft on input line 70.
+LaTeX Font Info:    Redeclaring math symbol \downharpoonleft on input line 71.
+LaTeX Font Info:    Redeclaring math symbol \rightarrowtail on input line 72.
+LaTeX Font Info:    Redeclaring math symbol \leftarrowtail on input line 73.
+LaTeX Font Info:    Redeclaring math symbol \leftrightarrows on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \rightleftarrows on input line 75.
+LaTeX Font Info:    Redeclaring math symbol \Lsh on input line 76.
+LaTeX Font Info:    Redeclaring math symbol \Rsh on input line 77.
+LaTeX Font Info:    Redeclaring math symbol \leftrightsquigarrow on input line 
+79.
+LaTeX Font Info:    Redeclaring math symbol \looparrowleft on input line 80.
+LaTeX Font Info:    Redeclaring math symbol \looparrowright on input line 81.
+LaTeX Font Info:    Redeclaring math symbol \circeq on input line 82.
+LaTeX Font Info:    Redeclaring math symbol \succsim on input line 83.
+LaTeX Font Info:    Redeclaring math symbol \gtrsim on input line 84.
+LaTeX Font Info:    Redeclaring math symbol \gtrapprox on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \multimap on input line 86.
+LaTeX Font Info:    Redeclaring math symbol \therefore on input line 87.
+LaTeX Font Info:    Redeclaring math symbol \because on input line 88.
+LaTeX Font Info:    Redeclaring math symbol \doteqdot on input line 89.
+LaTeX Font Info:    Redeclaring math symbol \triangleq on input line 91.
+LaTeX Font Info:    Redeclaring math symbol \precsim on input line 92.
+LaTeX Font Info:    Redeclaring math symbol \lesssim on input line 93.
+LaTeX Font Info:    Redeclaring math symbol \lessapprox on input line 94.
+LaTeX Font Info:    Redeclaring math symbol \eqslantless on input line 95.
+LaTeX Font Info:    Redeclaring math symbol \eqslantgtr on input line 96.
+LaTeX Font Info:    Redeclaring math symbol \curlyeqprec on input line 97.
+LaTeX Font Info:    Redeclaring math symbol \curlyeqsucc on input line 98.
+LaTeX Font Info:    Redeclaring math symbol \preccurlyeq on input line 99.
+LaTeX Font Info:    Redeclaring math symbol \leqq on input line 100.
+LaTeX Font Info:    Redeclaring math symbol \leqslant on input line 101.
+LaTeX Font Info:    Redeclaring math symbol \lessgtr on input line 102.
+LaTeX Font Info:    Redeclaring math symbol \backprime on input line 103.
+LaTeX Font Info:    Redeclaring math symbol \risingdotseq on input line 104.
+LaTeX Font Info:    Redeclaring math symbol \fallingdotseq on input line 105.
+LaTeX Font Info:    Redeclaring math symbol \succcurlyeq on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \geqq on input line 107.
+LaTeX Font Info:    Redeclaring math symbol \geqslant on input line 108.
+LaTeX Font Info:    Redeclaring math symbol \gtrless on input line 109.
+LaTeX Font Info:    Redeclaring math symbol \bigstar on input line 117.
+LaTeX Font Info:    Redeclaring math symbol \between on input line 118.
+LaTeX Font Info:    Redeclaring math symbol \blacktriangledown on input line 11
+9.
+LaTeX Font Info:    Redeclaring math symbol \blacktriangleright on input line 1
+20.
+LaTeX Font Info:    Redeclaring math symbol \blacktriangleleft on input line 12
+1.
+LaTeX Font Info:    Redeclaring math symbol \vartriangle on input line 122.
+LaTeX Font Info:    Redeclaring math symbol \blacktriangle on input line 123.
+LaTeX Font Info:    Redeclaring math symbol \triangledown on input line 124.
+LaTeX Font Info:    Redeclaring math symbol \eqcirc on input line 125.
+LaTeX Font Info:    Redeclaring math symbol \lesseqgtr on input line 126.
+LaTeX Font Info:    Redeclaring math symbol \gtreqless on input line 127.
+LaTeX Font Info:    Redeclaring math symbol \lesseqqgtr on input line 128.
+LaTeX Font Info:    Redeclaring math symbol \gtreqqless on input line 129.
+LaTeX Font Info:    Redeclaring math symbol \Rrightarrow on input line 130.
+LaTeX Font Info:    Redeclaring math symbol \Lleftarrow on input line 131.
+LaTeX Font Info:    Redeclaring math symbol \veebar on input line 132.
+LaTeX Font Info:    Redeclaring math symbol \barwedge on input line 133.
+LaTeX Font Info:    Redeclaring math symbol \doublebarwedge on input line 134.
+LaTeX Font Info:    Redeclaring math symbol \measuredangle on input line 137.
+LaTeX Font Info:    Redeclaring math symbol \sphericalangle on input line 138.
+LaTeX Font Info:    Redeclaring math symbol \varpropto on input line 139.
+LaTeX Font Info:    Redeclaring math symbol \smallsmile on input line 140.
+LaTeX Font Info:    Redeclaring math symbol \smallfrown on input line 141.
+LaTeX Font Info:    Redeclaring math symbol \Subset on input line 142.
+LaTeX Font Info:    Redeclaring math symbol \Supset on input line 143.
+LaTeX Font Info:    Redeclaring math symbol \Cup on input line 144.
+LaTeX Font Info:    Redeclaring math symbol \Cap on input line 146.
+LaTeX Font Info:    Redeclaring math symbol \curlywedge on input line 148.
+LaTeX Font Info:    Redeclaring math symbol \curlyvee on input line 149.
+LaTeX Font Info:    Redeclaring math symbol \leftthreetimes on input line 150.
+LaTeX Font Info:    Redeclaring math symbol \rightthreetimes on input line 151.
+
+LaTeX Font Info:    Redeclaring math symbol \subseteqq on input line 152.
+LaTeX Font Info:    Redeclaring math symbol \supseteqq on input line 153.
+LaTeX Font Info:    Redeclaring math symbol \bumpeq on input line 154.
+LaTeX Font Info:    Redeclaring math symbol \Bumpeq on input line 155.
+LaTeX Font Info:    Redeclaring math symbol \lll on input line 156.
+LaTeX Font Info:    Redeclaring math symbol \ggg on input line 158.
+LaTeX Font Info:    Redeclaring math symbol \circledS on input line 160.
+LaTeX Font Info:    Redeclaring math symbol \pitchfork on input line 161.
+LaTeX Font Info:    Redeclaring math symbol \dotplus on input line 162.
+LaTeX Font Info:    Redeclaring math symbol \backsim on input line 163.
+LaTeX Font Info:    Redeclaring math symbol \backsimeq on input line 164.
+LaTeX Font Info:    Redeclaring math symbol \complement on input line 165.
+LaTeX Font Info:    Redeclaring math symbol \intercal on input line 166.
+LaTeX Font Info:    Redeclaring math symbol \circledcirc on input line 167.
+LaTeX Font Info:    Redeclaring math symbol \circledast on input line 168.
+LaTeX Font Info:    Redeclaring math symbol \circleddash on input line 169.
+LaTeX Font Info:    Redeclaring math symbol \lvertneqq on input line 171.
+LaTeX Font Info:    Redeclaring math symbol \gvertneqq on input line 172.
+LaTeX Font Info:    Redeclaring math symbol \nleq on input line 173.
+LaTeX Font Info:    Redeclaring math symbol \ngeq on input line 174.
+LaTeX Font Info:    Redeclaring math symbol \nless on input line 175.
+LaTeX Font Info:    Redeclaring math symbol \ngtr on input line 176.
+LaTeX Font Info:    Redeclaring math symbol \nprec on input line 177.
+LaTeX Font Info:    Redeclaring math symbol \nsucc on input line 178.
+LaTeX Font Info:    Redeclaring math symbol \lneqq on input line 179.
+LaTeX Font Info:    Redeclaring math symbol \gneqq on input line 180.
+LaTeX Font Info:    Redeclaring math symbol \nleqslant on input line 181.
+LaTeX Font Info:    Redeclaring math symbol \ngeqslant on input line 182.
+LaTeX Font Info:    Redeclaring math symbol \lneq on input line 183.
+LaTeX Font Info:    Redeclaring math symbol \gneq on input line 184.
+LaTeX Font Info:    Redeclaring math symbol \npreceq on input line 185.
+LaTeX Font Info:    Redeclaring math symbol \nsucceq on input line 186.
+LaTeX Font Info:    Redeclaring math symbol \precnsim on input line 187.
+LaTeX Font Info:    Redeclaring math symbol \succnsim on input line 188.
+LaTeX Font Info:    Redeclaring math symbol \lnsim on input line 189.
+LaTeX Font Info:    Redeclaring math symbol \gnsim on input line 190.
+LaTeX Font Info:    Redeclaring math symbol \nleqq on input line 191.
+LaTeX Font Info:    Redeclaring math symbol \ngeqq on input line 192.
+LaTeX Font Info:    Redeclaring math symbol \precneqq on input line 193.
+LaTeX Font Info:    Redeclaring math symbol \succneqq on input line 194.
+LaTeX Font Info:    Redeclaring math symbol \precnapprox on input line 195.
+LaTeX Font Info:    Redeclaring math symbol \succnapprox on input line 196.
+LaTeX Font Info:    Redeclaring math symbol \lnapprox on input line 197.
+LaTeX Font Info:    Redeclaring math symbol \gnapprox on input line 198.
+LaTeX Font Info:    Redeclaring math symbol \nsim on input line 199.
+LaTeX Font Info:    Redeclaring math symbol \ncong on input line 200.
+LaTeX Font Info:    Redeclaring math symbol \diagup on input line 201.
+LaTeX Font Info:    Redeclaring math symbol \diagdown on input line 202.
+LaTeX Font Info:    Redeclaring math symbol \varsubsetneq on input line 203.
+LaTeX Font Info:    Redeclaring math symbol \varsupsetneq on input line 204.
+LaTeX Font Info:    Redeclaring math symbol \nsubseteqq on input line 205.
+LaTeX Font Info:    Redeclaring math symbol \nsupseteqq on input line 206.
+LaTeX Font Info:    Redeclaring math symbol \subsetneqq on input line 207.
+LaTeX Font Info:    Redeclaring math symbol \supsetneqq on input line 208.
+LaTeX Font Info:    Redeclaring math symbol \varsubsetneqq on input line 209.
+LaTeX Font Info:    Redeclaring math symbol \varsupsetneqq on input line 210.
+LaTeX Font Info:    Redeclaring math symbol \subsetneq on input line 211.
+LaTeX Font Info:    Redeclaring math symbol \supsetneq on input line 212.
+LaTeX Font Info:    Redeclaring math symbol \nsubseteq on input line 213.
+LaTeX Font Info:    Redeclaring math symbol \nsupseteq on input line 214.
+LaTeX Font Info:    Redeclaring math symbol \nparallel on input line 215.
+LaTeX Font Info:    Redeclaring math symbol \nmid on input line 216.
+LaTeX Font Info:    Redeclaring math symbol \nshortmid on input line 217.
+LaTeX Font Info:    Redeclaring math symbol \nshortparallel on input line 218.
+LaTeX Font Info:    Redeclaring math symbol \nvdash on input line 219.
+LaTeX Font Info:    Redeclaring math symbol \nVdash on input line 220.
+LaTeX Font Info:    Redeclaring math symbol \nvDash on input line 221.
+LaTeX Font Info:    Redeclaring math symbol \nVDash on input line 222.
+LaTeX Font Info:    Redeclaring math symbol \ntrianglerighteq on input line 223
+.
+LaTeX Font Info:    Redeclaring math symbol \ntrianglelefteq on input line 224.
+
+LaTeX Font Info:    Redeclaring math symbol \ntriangleleft on input line 225.
+LaTeX Font Info:    Redeclaring math symbol \ntriangleright on input line 226.
+LaTeX Font Info:    Redeclaring math symbol \nleftarrow on input line 227.
+LaTeX Font Info:    Redeclaring math symbol \nrightarrow on input line 228.
+LaTeX Font Info:    Redeclaring math symbol \nLeftarrow on input line 229.
+LaTeX Font Info:    Redeclaring math symbol \nRightarrow on input line 230.
+LaTeX Font Info:    Redeclaring math symbol \nLeftrightarrow on input line 231.
+
+LaTeX Font Info:    Redeclaring math symbol \nleftrightarrow on input line 232.
+
+LaTeX Font Info:    Redeclaring math symbol \divideontimes on input line 233.
+LaTeX Font Info:    Redeclaring math symbol \varnothing on input line 234.
+LaTeX Font Info:    Redeclaring math symbol \nexists on input line 235.
+LaTeX Font Info:    Redeclaring math symbol \Finv on input line 236.
+LaTeX Font Info:    Redeclaring math symbol \Game on input line 237.
+LaTeX Font Info:    Redeclaring math symbol \eth on input line 240.
+LaTeX Font Info:    Redeclaring math symbol \eqsim on input line 241.
+LaTeX Font Info:    Redeclaring math symbol \beth on input line 242.
+LaTeX Font Info:    Redeclaring math symbol \gimel on input line 243.
+LaTeX Font Info:    Redeclaring math symbol \daleth on input line 244.
+LaTeX Font Info:    Redeclaring math symbol \lessdot on input line 245.
+LaTeX Font Info:    Redeclaring math symbol \gtrdot on input line 246.
+LaTeX Font Info:    Redeclaring math symbol \ltimes on input line 247.
+LaTeX Font Info:    Redeclaring math symbol \rtimes on input line 248.
+LaTeX Font Info:    Redeclaring math symbol \shortmid on input line 249.
+LaTeX Font Info:    Redeclaring math symbol \shortparallel on input line 250.
+LaTeX Font Info:    Redeclaring math symbol \smallsetminus on input line 251.
+LaTeX Font Info:    Redeclaring math symbol \thicksim on input line 252.
+LaTeX Font Info:    Redeclaring math symbol \thickapprox on input line 253.
+LaTeX Font Info:    Redeclaring math symbol \approxeq on input line 254.
+LaTeX Font Info:    Redeclaring math symbol \succapprox on input line 255.
+LaTeX Font Info:    Redeclaring math symbol \precapprox on input line 256.
+LaTeX Font Info:    Redeclaring math symbol \curvearrowleft on input line 257.
+LaTeX Font Info:    Redeclaring math symbol \curvearrowright on input line 258.
+
+LaTeX Font Info:    Redeclaring math symbol \digamma on input line 259.
+LaTeX Font Info:    Redeclaring math symbol \varkappa on input line 260.
+LaTeX Font Info:    Redeclaring math symbol \Bbbk on input line 261.
+LaTeX Font Info:    Redeclaring math symbol \hslash on input line 262.
+LaTeX Font Info:    Redeclaring math symbol \backepsilon on input line 265.
+)
+(E:\MiKTeX\tex/latex/booktabs\booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen175
+\lightrulewidth=\dimen176
+\cmidrulewidth=\dimen177
+\belowrulesep=\dimen178
+\belowbottomsep=\dimen179
+\aboverulesep=\dimen180
+\abovetopsep=\dimen181
+\cmidrulesep=\dimen182
+\cmidrulekern=\dimen183
+\defaultaddspace=\dimen184
+\@cmidla=\count307
+\@cmidlb=\count308
+\@aboverulesep=\dimen185
+\@belowrulesep=\dimen186
+\@thisruleclass=\count309
+\@lastruleclass=\count310
+\@thisrulewidth=\dimen187
+)
+(E:\MiKTeX\tex/latex/tools\array.sty
+Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
+\col@sep=\dimen188
+\ar@mcellbox=\box61
+\extrarowheight=\dimen189
+\NC@list=\toks28
+\extratabsurround=\skip60
+\backup@length=\skip61
+\ar@cellbox=\box62
+)
+(E:\MiKTeX\tex/latex/makecell\makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen190
+\c@nlinenum=\count311
+\TeXr@lab=\toks29
+)
+(E:\MiKTeX\tex/latex/sttools\stfloats.sty
+Package: stfloats 2025/06/18 v3.4 Improve float mechanism and baselineskip sett
+ings
+\@dblbotnum=\count312
+\c@dblbotnumber=\count313
+)
+(E:\MiKTeX\tex/latex/algorithms\algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(E:\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count314
+\float@exts=\toks30
+\float@box=\box63
+\@float@everytoks=\toks31
+\@floatcapt=\box64
+) (E:\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks32
+\c@algorithm=\count315
+)
+(E:\MiKTeX\tex/latex/algorithmicx\algpseudocode.sty
+Package: algpseudocode 
+
+(E:\MiKTeX\tex/latex/algorithmicx\algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count316
+\c@ALG@rem=\count317
+\c@ALG@nested=\count318
+\ALG@tlm=\skip62
+\ALG@thistlm=\skip63
+\c@ALG@Lnr=\count319
+\c@ALG@blocknr=\count320
+\c@ALG@storecount=\count321
+\c@ALG@tmpcounter=\count322
+\ALG@tmplength=\skip64
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (E:\MiKTeX\tex/latex/graphics\rotating.sty
+Package: rotating 2025/01/14 v2.16e rotated objects in LaTeX
+\c@r@tfl@t=\count323
+\rotFPtop=\skip65
+\rotFPbot=\skip66
+\rot@float@box=\box65
+\rot@mess@toks=\toks33
+)
+(E:\MiKTeX\tex/latex/preprint\balance.sty
+Package: balance 1999/02/23 4.3 (PWD)
+\oldvsize=\dimen191
+)
+(E:\MiKTeX\tex/latex/hyperref\hyperref.sty
+Package: hyperref 2026-04-24 v7.01q Hypertext links for LaTeX
+
+(E:\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)
+(E:\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(E:\MiKTeX\tex/generic/pdfescape\pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+
+(E:\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(E:\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(E:\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+))
+(E:\MiKTeX\tex/latex/hycolor\hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(E:\MiKTeX\tex/latex/hyperref\nameref.sty
+Package: nameref 2026-01-29 v2.58 Cross-referencing by name of section
+
+(E:\MiKTeX\tex/latex/refcount\refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(E:\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+
+(E:\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count324
+)
+(E:\MiKTeX\tex/generic/stringenc\stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+)
+\@linkdim=\dimen192
+\Hy@linkcounter=\count325
+\Hy@pagecounter=\count326
+
+(E:\MiKTeX\tex/latex/hyperref\pd1enc.def
+File: pd1enc.def 2026-04-24 v7.01q Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(E:\MiKTeX\tex/generic/intcalc\intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count327
+
+(E:\MiKTeX\tex/latex/hyperref\puenc.def
+File: puenc.def 2026-04-24 v7.01q Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Option `final' set `true' on input line 4070.
+Package hyperref Info: Option `colorlinks' set `true' on input line 4070.
+Package hyperref Info: Hyper figures OFF on input line 4199.
+Package hyperref Info: Link nesting OFF on input line 4204.
+Package hyperref Info: Hyper index ON on input line 4207.
+Package hyperref Info: Plain pages OFF on input line 4214.
+Package hyperref Info: Backreferencing OFF on input line 4219.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4466.
+\c@Hy@tempcnt=\count328
+ (E:\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4805.
+\XeTeXLinkMargin=\dimen193
+
+(E:\MiKTeX\tex/generic/bitset\bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(E:\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count329
+\Field@Width=\dimen194
+\Fld@charsize=\dimen195
+Package hyperref Info: Hyper figures OFF on input line 6091.
+Package hyperref Info: Link nesting OFF on input line 6096.
+Package hyperref Info: Hyper index ON on input line 6099.
+Package hyperref Info: backreferencing OFF on input line 6106.
+Package hyperref Info: Link coloring ON on input line 6109.
+Package hyperref Info: Link coloring with OCG OFF on input line 6116.
+Package hyperref Info: PDF/A mode OFF on input line 6121.
+\Hy@abspage=\count330
+\c@Item=\count331
+\c@Hfootnote=\count332
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+
+(E:\MiKTeX\tex/latex/hyperref\hpdftex.def
+File: hpdftex.def 2026-04-24 v7.01q Hyperref driver for pdfTeX
+\Fld@listcount=\count333
+\c@bookmark@seq@number=\count334
+
+(E:\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
+Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
+
+(E:\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+84.
+)
+\Hy@SectionHShift=\skip67
+)
+
+Package geometry Warning: Over-specification in `v'-direction.
+    `height' (682.0pt) is ignored.
+
+(E:\MiKTeX\tex/latex/lastpage\lastpage.sty
+Package: lastpage 2025/08/14 v2.1h lastpage: 2.09 or 2e? (HMM)
+
+(E:\MiKTeX\tex/latex/lastpage\lastpage2e.sty
+Package: lastpage2e 2025/08/14 v2.1h Decide which 2e lastpage version to use (H
+MM)
+
+(E:\MiKTeX\tex/latex/lastpage\lastpagemodern.sty
+Package: lastpagemodern 2025-08-14 v2.1h Refers to last page's name (HMM; JPG)
+\c@lastpagecount=\count335
+) 
+)) (E:\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+
+\f@nch@headwidth=\skip68
+\f@nch@offset@elh=\skip69
+\f@nch@offset@erh=\skip70
+\f@nch@offset@olh=\skip71
+\f@nch@offset@orh=\skip72
+\f@nch@offset@elf=\skip73
+\f@nch@offset@erf=\skip74
+\f@nch@offset@olf=\skip75
+\f@nch@offset@orf=\skip76
+\f@nch@height=\skip77
+\f@nch@footalignment=\skip78
+\f@nch@widthL=\skip79
+\f@nch@widthC=\skip80
+\f@nch@widthR=\skip81
+\@temptokenb=\toks34
+)
+LaTeX Font Info:    Trying to load font information for T1+txr on input line 13
+0.
+
+(E:\MiKTeX\tex/latex/txfonts\t1txr.fd
+File: t1txr.fd 2000/12/15 v3.1
+) (main.aux)
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/txmi/m/it on input line 130.
+LaTeX Font Info:    Trying to load font information for OML+txmi on input line 
+130.
+
+(E:\MiKTeX\tex/latex/txfonts\omltxmi.fd
+File: omltxmi.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for OMS/txsy/m/n on input line 130.
+LaTeX Font Info:    Trying to load font information for OMS+txsy on input line 
+130.
+
+(E:\MiKTeX\tex/latex/txfonts\omstxsy.fd
+File: omstxsy.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for OMX/txex/m/n on input line 130.
+LaTeX Font Info:    Trying to load font information for OMX+txex on input line 
+130.
+
+(E:\MiKTeX\tex/latex/txfonts\omxtxex.fd
+File: omxtxex.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for U/txexa/m/n on input line 130.
+LaTeX Font Info:    Trying to load font information for U+txexa on input line 1
+30.
+ (E:\MiKTeX\tex/latex/txfonts\utxexa.fd
+File: utxexa.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+ (E:\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count336
+\scratchdimen=\dimen196
+\scratchbox=\box66
+\nofMPsegments=\count337
+\nofMParguments=\count338
+\everyMPshowfont=\toks35
+\MPscratchCnt=\count339
+\MPscratchDim=\dimen197
+\MPnumerator=\count340
+\makeMPintoPDFobject=\count341
+\everyMPtoPDFconversion=\toks36
+) (E:\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(E:\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: custom
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* hratio: 1:1
+* vratio: 1:1
+* modes: 
+* h-part:(L,W,R)=(37.75394pt, 522.0pt, 37.75394pt)
+* v-part:(T,H,B)=(34.0pt, 720.67715pt, 42.0pt)
+* \paperwidth=597.50787pt
+* \paperheight=796.67715pt
+* \textwidth=522.0pt
+* \textheight=720.67715pt
+* \oddsidemargin=-34.51605pt
+* \evensidemargin=-34.51605pt
+* \topmargin=-56.26999pt
+* \headheight=12.0pt
+* \headsep=6.0pt
+* \topskip=10.0pt
+* \footskip=18.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=18.0pt
+* \skip\footins=24.0pt plus 2.0pt minus 12.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumntrue
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Encoding Info:    Redeclaring text command \k (encoding T1) on input line
+ 130.
+(E:\MiKTeX\tex/latex/graphics\color.sty
+Package: color 2025/01/14 v1.3e Standard LaTeX Color (DPC)
+
+(E:\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 149.
+
+(E:\MiKTeX\tex/latex/graphics\mathcolor.ltx))
+Package hyperref Info: Link coloring ON on input line 130.
+ (main.out) (main.out)
+\@outlinefile=\write4
+\openout4 = `main.out'.
+
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <18> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 140.
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <13> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 142.
+LaTeX Font Info:    Trying to load font information for TS1+txr on input line 1
+46.
+
+(E:\MiKTeX\tex/latex/txfonts\ts1txr.fd
+File: ts1txr.fd 2000/12/15 v3.1
+) [1
+
+
+{C:/Users/86185/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{E:/MiKTeX/fon
+ts/enc/dvips/base/8r.enc}]
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <16> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 198.
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <8.5> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 198.
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <8> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 201.
+LaTeX Font Info:    Trying to load font information for OT1+txr on input line 2
+01.
+
+(E:\MiKTeX\tex/latex/txfonts\ot1txr.fd
+File: ot1txr.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    Trying to load font information for U+txmia on input line 2
+01.
+ (E:\MiKTeX\tex/latex/txfonts\utxmia.fd
+File: utxmia.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 201
+.
+(E:\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 201
+.
+ (E:\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+txsyc on input line 2
+01.
+
+(E:\MiKTeX\tex/latex/txfonts\utxsyc.fd
+File: utxsyc.fd 2000/12/15 v3.1
+)
+Underfull \hbox (badness 3019) in paragraph at lines 203--204
+\T1/txr/m/n/8 Fur-ther-more, uni-vari-ate fea-ture rank-ing cri-te-ria eval-u-a
+te di-men-sions in
+ []
+
+
+Underfull \hbox (badness 2726) in paragraph at lines 209--210
+\T1/txr/m/n/8 per-tur-ba-tion, and weight-ing in iso-la-tion, lack-ing a uni-fi
+ed closed-loop
+ []
+
+
+Underfull \hbox (badness 2707) in paragraph at lines 209--210
+\T1/txr/m/n/8 feature-importance ac-cu-mu-la-tion lacks ex-po-nen-tial for-get-
+ting and eli-tist
+ []
+
+
+Underfull \hbox (badness 1019) in paragraph at lines 211--212
+\T1/txr/m/n/8 Guided Dual-Swarm Evo-lu-tion-ary Learn-ing (KDS-EL). Method-olog
+-i-cally,
+ []
+
+
+Underfull \hbox (badness 2197) in paragraph at lines 211--212
+\T1/txr/m/n/8 syn-er-gis-ti-cally cou-ples domain-knowledge seed-ing, gen-er-a-
+tional mem-ory
+ []
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.218 \item \textit
+                   {Comprehensive Empirical Benchmark Validation}: Extensive...
+[1
+
+
+]
+LaTeX Font Info:    Calculating math sizes for size <7.2> on input line 232.
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <7.2> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 249.
+LaTeX Font Info:    Font shape `T1/txr/b/n' in size <6.8> not available
+(Font)              Font shape `T1/txr/bx/n' tried instead on input line 254.
+LaTeX Font Info:    Calculating math sizes for size <6.8> on input line 254.
+
+Underfull \hbox (badness 1087) in paragraph at lines 275--276
+\T1/txr/m/n/8 evo-lu-tion-ary op-ti-miza-tion [[]], and swarm in-tel-li-gence [
+[], [], []], serve
+ []
+
+
+Underfull \hbox (badness 1360) in paragraph at lines 275--276
+\T1/txr/m/n/8 as dom-i-nant search heuris-tics. Ad-vanced single-objective stra
+te-gies have
+ []
+
+
+Underfull \hbox (badness 2181) in paragraph at lines 298--300
+\T1/txr/m/n/8 it en-coun-ters se-vere exploration-exploitation dilem-mas when a
+p-plied to
+ []
+
+
+Underfull \hbox (badness 2213) in paragraph at lines 298--300
+\T1/txr/m/n/8 heav-ily over-load-ing wrap-per clas-si-fier eval-u-a-tions with 
+$\OMS/txsy/m/n/8 O\OT1/txr/m/n/8 (\OML/txmi/m/it/8 N[]d[]\OT1/txr/m/n/8 )$
+ []
+
+[2]
+Underfull \hbox (badness 1762) in paragraph at lines 301--302
+\T1/txr/m/n/8 Con-cur-rently, ad-vanced dis-crete op-ti-miz-ers, in-clud-ing bI
+R-IME [[]] and
+ []
+
+
+Underfull \hbox (badness 1721) in paragraph at lines 301--302
+\T1/txr/m/n/8 proac-tive sparse guid-ance, stochas-tic bi-na-riza-tion traps th
+ese al-go-rithms
+ []
+
+
+
+pdfTeX warning: pdflatex (file ./figures/F1_dataflow_journal.pdf): PDF inclusio
+n: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/F1_dataflow_journal.pdf, id=268, 892.29356pt x 449.76028pt>
+File: figures/F1_dataflow_journal.pdf Graphic file (type pdf)
+<use figures/F1_dataflow_journal.pdf>
+Package pdftex.def Info: figures/F1_dataflow_journal.pdf  used on input line 31
+9.
+(pdftex.def)             Requested size: 511.55777pt x 257.84837pt.
+
+Underfull \hbox (badness 1496) in paragraph at lines 326--327
+\T1/txr/m/n/8 the blind-ness of black-box com-bi-na-to-rial search [[], [], []]
+. In high-
+ []
+
+
+Underfull \hbox (badness 2042) in paragraph at lines 333--335
+\T1/txr/m/n/8 dis-tri-bu-tions, non-parametric nearest-neighbor es-ti-ma-tors, 
+specif-i-cally the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 336--337
+[]\T1/txr/m/n/8 Existing knowledge-guided evo-lu-tion-ary meth-ods pri-mar-ily 
+adopt
+ []
+
+
+Underfull \hbox (badness 2521) in paragraph at lines 336--337
+\T1/txr/m/n/8 as-sim-i-late it-er-a-tive trial-and-error feed-back from in-duc-
+tive clas-si-fi-ca-tion
+ []
+
+
+Underfull \hbox (badness 5787) in paragraph at lines 364--365
+\T1/txr/m/n/8 dimensional spaces, the swarm is par-ti-tioned into two col-lab-o
+-ra-tive
+ []
+
+[3]
+Underfull \hbox (badness 2951) in paragraph at lines 372--374
+\T1/txr/m/n/8 where $\OML/txmi/m/it/8 w$ \T1/txr/m/n/8 is in-er-tia weight, $\O
+ML/txmi/m/it/8 c[]; c[]; c[]$ \T1/txr/m/n/8 are ac-cel-er-a-tion co-ef-fi-cient
+s, and
+ []
+
+
+Underfull \hbox (badness 1062) in paragraph at lines 372--374
+\T1/txr/m/n/8 Bernoulli sam-pling $\OML/txmi/m/it/8 x[] \OMS/txsy/m/n/8 ^^X [] 
+[]$\T1/txr/m/n/8 , where the dy-namic se-lec-tion
+ []
+
+
+Underfull \hbox (badness 1237) in paragraph at lines 383--384
+[]\T1/txr/m/n/8 As sys-tem-at-i-cally il-lus-trated in the op-er-a-tional flowc
+hart of Fig. [][]2[][],
+ []
+
+
+Underfull \hbox (badness 2460) in paragraph at lines 383--384
+\T1/txr/m/n/8 In closed-loop syn-ergy, prior-guided sparse seed-ing, dif-fer-en
+-tial im-por-
+ []
+
+
+
+pdfTeX warning: pdflatex (file ./figures/F2_flowchart_journal.pdf): PDF inclusi
+on: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/F2_flowchart_journal.pdf, id=314, 690.66026pt x 653.56169pt>
+File: figures/F2_flowchart_journal.pdf Graphic file (type pdf)
+<use figures/F2_flowchart_journal.pdf>
+Package pdftex.def Info: figures/F2_flowchart_journal.pdf  used on input line 3
+87.
+(pdftex.def)             Requested size: 459.36255pt x 434.68288pt.
+
+
+pdfTeX warning: pdflatex (file ./figures/F3_mi_initialization_journal.pdf): PDF
+ inclusion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/F3_mi_initialization_journal.pdf, id=316, 826.04607pt x 204.765pt>
+File: figures/F3_mi_initialization_journal.pdf Graphic file (type pdf)
+<use figures/F3_mi_initialization_journal.pdf>
+Package pdftex.def Info: figures/F3_mi_initialization_journal.pdf  used on inpu
+t line 398.
+(pdftex.def)             Requested size: 469.79681pt x 116.45479pt.
+[4 <./figures/F1_dataflow_journal.pdf>] [5 <./figures/F2_flowchart_journal.pdf>
+ <./figures/F3_mi_initialization_journal.pdf>]
+Underfull \hbox (badness 2932) in paragraph at lines 445--446
+\T1/txr/m/n/8 lo-cal basins. In high-dimensional regimes where can-di-date di-m
+en-sions
+ []
+
+
+Underfull \hbox (badness 2393) in paragraph at lines 445--446
+\T1/txr/m/n/8 re-initialization or heavy-tailed mu-ta-tion per-tur-ba-tions, su
+ch as Cauchy
+ []
+
+
+Underfull \hbox (badness 1852) in paragraph at lines 445--446
+\T1/txr/m/n/8 heavy-tailed mu-ta-tions in $\OT1/txr/m/n/8 2[]$ \T1/txr/m/n/8 co
+m-bi-na-to-rial space per-turb can-di-date bit
+ []
+
+
+Underfull \hbox (badness 1845) in paragraph at lines 445--446
+\OT1/txr/m/n/8 99\OML/txmi/m/it/8 :\OT1/txr/m/n/8 9%$\T1/txr/m/n/8 . Fur-ther-m
+ore, clas-si-cal opposition-based learn-ing strate-gies in-vert
+ []
+
+
+Underfull \hbox (badness 1762) in paragraph at lines 445--446
+\T1/txr/m/n/8 clas-si-fier over-fit-ting and com-pu-ta-tional la-tency. Con-se-
+quently, sus-tain-ing
+ []
+
+
+Underfull \hbox (badness 3977) in paragraph at lines 445--446
+\T1/txr/m/n/8 ex-ploratory di-ver-sity in ultra-high di-men-sions re-quires an 
+asym-met-ric
+ []
+
+
+Underfull \hbox (badness 4353) in paragraph at lines 447--448
+[]\T1/txr/m/n/8 To re-solve this struc-tural dilemma with-out in-cur-ring catas
+-trophic
+ []
+
+
+Underfull \hbox (badness 1917) in paragraph at lines 447--448
+\T1/txr/m/n/8 feedback-driven, on-demand ac-ti-va-tion: un-like clas-si-cal heu
+ris-tic restarts
+ []
+
+
+Underfull \hbox (badness 1394) in paragraph at lines 447--448
+\T1/txr/m/n/8 of con-ver-gence sta-tus, KDS-EL cou-ples re-cov-ery ex-e-cu-tion
+ dy-nam-i-cally
+ []
+
+
+Underfull \hbox (badness 3769) in paragraph at lines 454--456
+\T1/txr/m/n/8 where $[][] \OMS/txsy/m/n/8 ^^X N\OT1/txr/m/n/8 (\OT1/txr/bx/n/8 
+0\OML/txmi/m/it/8 ; ^^[[]\OT1/txr/bx/n/8 I[]\OT1/txr/m/n/8 )$ \T1/txr/m/n/8 rep
+-re-sents zero-mean Gaus-sian per-tur-ba-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 457--458
+[]\T1/txr/m/n/8 Immediately fol-low-ing po-si-tion re-fresh-ing, the can-di-dat
+e bi-nary
+ []
+
+
+Underfull \hbox (badness 3701) in paragraph at lines 457--458
+\T1/txr/m/n/8 mask $\OT1/txr/bx/n/8 x[]$ \T1/txr/m/n/8 is eval-u-ated via the i
+n-ter-nal cross-validation wrap-per un-der
+ []
+
+
+Underfull \hbox (badness 1694) in paragraph at lines 457--458
+\T1/txr/m/n/8 cur-rent ob-jec-tive weights $\OT1/txr/bx/n/8 w\OT1/txr/m/n/8 (\O
+ML/txmi/m/it/8 t\OT1/txr/m/n/8 )$ \T1/txr/m/n/8 be-fore up-dat-ing the personal
+-best record
+ []
+
+[6]
+Underfull \hbox (badness 1394) in paragraph at lines 495--496
+\T1/txr/m/n/8 vastly ex-ceed sam-ple ob-ser-va-tions, uni-form bit-flipping de-
+gen-er-ates into
+ []
+
+
+Underfull \hbox (badness 2726) in paragraph at lines 495--496
+\T1/txr/m/n/8 this com-bi-na-to-rial dilemma, the KER strat-egy ex-ploits the c
+on-tin-u-ous
+ []
+
+
+
+pdfTeX warning: pdflatex (file ./figures/F4_ker_strategy_journal.pdf): PDF incl
+usion: found PDF version <1.7>, but at most version <1.5> allowed
+<figures/F4_ker_strategy_journal.pdf, id=464, 1010.81638pt x 277.9986pt>
+File: figures/F4_ker_strategy_journal.pdf Graphic file (type pdf)
+<use figures/F4_ker_strategy_journal.pdf>
+Package pdftex.def Info: figures/F4_ker_strategy_journal.pdf  used on input lin
+e 499.
+(pdftex.def)             Requested size: 511.55777pt x 140.68723pt.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 506.
+
+Underfull \hbox (badness 5388) in paragraph at lines 564--565
+[]\T1/txr/m/it/8 Dual-scale search dy-nam-ics and dimension-scaling anal-y-sis\
+T1/txr/m/n/8 : The
+ []
+
+
+Underfull \hbox (badness 1571) in paragraph at lines 564--565
+\OT1/txr/bx/n/8 W$\T1/txr/m/n/8 , fa-cil-i-tat-ing tran-si-tions across dis-tan
+t com-bi-na-to-rial basins. Cru-cially,
+ []
+
+[7] [8 <./figures/F4_ker_strategy_journal.pdf>]
+Underfull \hbox (badness 1783) in paragraph at lines 658--659
+[]\T1/txr/m/n/8 We bench-mark KDS-EL against nine rep-re-sen-ta-tive single-obj
+ective
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 658--659
+\T1/txr/m/n/8 in-clud-ing FW-PSO [[]], PSO-CSM [[]], SaWDE [[]], IG-PSO [[]], a
+nd
+ []
+
+
+Underfull \hbox (badness 2772) in paragraph at lines 658--659
+\T1/txr/m/n/8 orig-i-nal frame-work es-ti-mates im-por-tance via a Multi-Layer 
+Per-cep-tron
+ []
+
+
+Underfull \hbox (badness 2837) in paragraph at lines 658--659
+\T1/txr/m/n/8 rep-re-sen-ta-tive single-objective com-peti-tors span-ning foun-
+da-tional swarm
+ []
+
+[9]
+Underfull \hbox (badness 1502) in paragraph at lines 666--667
+\T1/txr/m/n/8 across the bench-mark suite, pair-wise Wilcoxon signed-rank tests
+ as-sess
+ []
+
+
+Underfull \hbox (badness 2334) in paragraph at lines 666--667
+\T1/txr/m/n/8 the Holm--Bonferroni step-down pro-ce-dure [[]] rig-or-ously con-
+trols the
+ []
+
+
+Underfull \hbox (badness 2142) in paragraph at lines 764--765
+\T1/txr/m/n/8 do-mains. Ta-ble [][]4[][] sum-ma-rizes mean clas-si-fi-ca-tion a
+c-cu-ra-cies across 10
+ []
+
+
+Underfull \hbox (badness 1946) in paragraph at lines 807--808
+[]\T1/txr/m/n/8 Across the bench-mark suite, KDS-EL achieves the high-est over-
+all
+ []
+
+
+Underfull \hbox (badness 2245) in paragraph at lines 807--808
+\T1/txr/m/n/8 mean in-ter-nal bench-mark cross-validation ac-cu-racy of 0.9545,
+ se-cur-ing
+ []
+
+
+Underfull \hbox (badness 2735) in paragraph at lines 807--808
+\T1/txr/m/n/8 ac-cu-racy, con-firm-ing that closed-loop knowl-edge trans-fer an
+d dy-namic
+ []
+
+
+Underfull \hbox (badness 1043) in paragraph at lines 809--810
+\T1/txr/m/n/8 mean, three in-stances, namely \T1/txr/m/it/8 BASE-HOCK\T1/txr/m/
+n/8 , \T1/txr/m/it/8 Colon\T1/txr/m/n/8 , and \T1/txr/m/it/8 DL-BCL\T1/txr/m/n/
+8 , ex-hibit
+ []
+
+
+Underfull \hbox (badness 1859) in paragraph at lines 809--810
+\T1/txr/m/n/8 near-saturation on \T1/txr/m/it/8 DL-BCL \T1/txr/m/n/8 at 0.9999 
+and 1.0000, re-spec-tively. bIR-IME
+ []
+
+
+Underfull \hbox (badness 2088) in paragraph at lines 809--810
+\T1/txr/m/n/8 main-tains com-pet-i-tive ac-cu-racy par-ity on spe-cific bench-m
+ark in-stances,
+ []
+
+[10]
+Underfull \hbox (badness 1603) in paragraph at lines 856--857
+\T1/txr/m/n/8 re-dun-dant fea-tures across high-dimensional land-scapes. This d
+egra-da-tion
+ []
+
+
+Underfull \hbox (badness 1337) in paragraph at lines 856--857
+\T1/txr/m/n/8 di-men-sion prob-a-bil-i-ties around 0.50 when proac-tive prun-in
+g pres-sure is
+ []
+
+
+Underfull \hbox (badness 2529) in paragraph at lines 856--857
+\T1/txr/m/n/8 ab-sent. By con-trast, KDS-EL com-bines con-tin-u-ous mu-tual in-
+for-ma-tion
+ []
+
+
+Underfull \hbox (badness 2334) in paragraph at lines 856--857
+\T1/txr/m/n/8 across moderate-sample bench-marks such as \T1/txr/m/it/8 BASE-HO
+CK \T1/txr/m/n/8 and \T1/txr/m/it/8 ISO-LET
+ []
+
+
+Underfull \hbox (badness 1472) in paragraph at lines 856--857
+\T1/txr/m/n/8 where ob-ser-va-tional counts reach thou-sands: while com-peti-to
+rs pre-serve
+ []
+
+
+Underfull \hbox (badness 4072) in paragraph at lines 860--861
+\T1/txr/m/n/8 re-flects a de-lib-er-ate, domain-specific trade-off gov-erned by
+ two-phase
+ []
+
+
+Underfull \hbox (badness 1072) in paragraph at lines 860--861
+\T1/txr/m/n/8 am-bigu-ous clas-si-fi-ca-tion bound-aries. Con-se-quently, this 
+tar-geted trade-off
+ []
+
+
+Underfull \hbox (badness 3058) in paragraph at lines 864--865
+\T1/txr/m/n/8 ex-ploratory ef-fi-ciency and ex-ploita-tion depth. To eval-u-ate
+ evo-lu-tion-ary
+ []
+
+
+Underfull \hbox (badness 1205) in paragraph at lines 864--865
+\T1/txr/m/n/8 gen-er-a-tions for KDS-EL along-side four rep-re-sen-ta-tive wrap
+-per meth-ods:
+ []
+
+<figures/F8_sota_convergence.pdf, id=627, 744.6106pt x 536.56833pt>
+File: figures/F8_sota_convergence.pdf Graphic file (type pdf)
+<use figures/F8_sota_convergence.pdf>
+Package pdftex.def Info: figures/F8_sota_convergence.pdf  used on input line 86
+8.
+(pdftex.def)             Requested size: 522.0pt x 376.17657pt.
+[11] [12 <./figures/F8_sota_convergence.pdf>]
+Underfull \hbox (badness 2005) in paragraph at lines 879--880
+\T1/txr/m/n/8 are sta-tis-ti-cally mean-ing-ful rather than stochas-tic ar-ti-f
+acts, we eval-u-ate
+ []
+
+
+Underfull \hbox (badness 1221) in paragraph at lines 879--880
+\T1/txr/m/n/8 MEL [[]], KDS-EL achieves 19 sta-tis-ti-cally sig-nif-i-cant wins
+ and 1 tie
+ []
+
+
+Underfull \hbox (badness 2142) in paragraph at lines 879--880
+\T1/txr/m/n/8 sig-nif-i-cant su-pe-ri-or-ity over the in-ter-me-di-ate con-fig-
+u-ra-tion with-out TPS,
+ []
+
+<figures/F13_friedman_rank.pdf, id=777, 250.6458pt x 212.77994pt>
+File: figures/F13_friedman_rank.pdf Graphic file (type pdf)
+<use figures/F13_friedman_rank.pdf>
+Package pdftex.def Info: figures/F13_friedman_rank.pdf  used on input line 945.
+
+(pdftex.def)             Requested size: 252.0pt x 213.93199pt.
+
+Underfull \hbox (badness 1527) in paragraph at lines 952--953
+\T1/txr/m/n/8 vari-ables, com-par-a-tive ex-per-i-ments as-sess a four-stage pr
+o-gres-sion from
+ []
+
+<figures/F6_ablation_radar.pdf, id=779, 278.43259pt x 202.52539pt>
+File: figures/F6_ablation_radar.pdf Graphic file (type pdf)
+<use figures/F6_ablation_radar.pdf>
+Package pdftex.def Info: figures/F6_ablation_radar.pdf  used on input line 999.
+
+(pdftex.def)             Requested size: 246.95892pt x 179.63823pt.
+<figures/F5_ablation_convergence.pdf, id=780, 621.89964pt x 459.15114pt>
+File: figures/F5_ablation_convergence.pdf Graphic file (type pdf)
+<use figures/F5_ablation_convergence.pdf>
+Package pdftex.def Info: figures/F5_ablation_convergence.pdf  used on input lin
+e 1006.
+(pdftex.def)             Requested size: 480.23904pt x 354.57034pt.
+
+Underfull \hbox (badness 4752) in paragraph at lines 1011--1012
+\T1/txr/m/n/8 mech-a-nisms. Tran-si-tion-ing from the pre-improvement con-fig-u
+-ra-tion to
+ []
+
+
+Underfull \hbox (badness 1168) in paragraph at lines 1011--1012
+\T1/txr/m/n/8 con-trac-tion from 2,722.2 to 290.5 fea-tures. Method-olog-i-call
+y, this surge
+ []
+
+
+Underfull \hbox (badness 1320) in paragraph at lines 1011--1012
+\T1/txr/m/n/8 and re-stores mo-men-tum, re-duc-ing more than 2,400 se-lected di
+-men-sions
+ []
+
+[13 <./figures/F13_friedman_rank.pdf>]
+<figures/F11_runtime_scatter.pdf, id=806, 297.09131pt x 200.49643pt>
+File: figures/F11_runtime_scatter.pdf Graphic file (type pdf)
+<use figures/F11_runtime_scatter.pdf>
+Package pdftex.def Info: figures/F11_runtime_scatter.pdf  used on input line 10
+21.
+(pdftex.def)             Requested size: 221.76123pt x 149.66217pt.
+ [14 <./figures/F6_ablation_radar.pdf>]
+<figures/F14_parameter_sensitivity.pdf, id=845, 673.20319pt x 185.5388pt>
+File: figures/F14_parameter_sensitivity.pdf Graphic file (type pdf)
+<use figures/F14_parameter_sensitivity.pdf>
+Package pdftex.def Info: figures/F14_parameter_sensitivity.pdf  used on input l
+ine 1056.
+(pdftex.def)             Requested size: 480.23904pt x 132.35913pt.
+
+[15 <./figures/F5_ablation_convergence.pdf> <./figures/F11_runtime_scatter.pdf>
+]
+Underfull \hbox (badness 1946) in paragraph at lines 1069--1070
+\T1/txr/m/n/8 seven biomed-i-cal mi-croar-rays along-side \T1/txr/m/it/8 COIL20
+\T1/txr/m/n/8 , clas-si-fi-ca-tion ac-cu-racy
+ []
+
+
+Underfull \hbox (badness 1132) in paragraph at lines 1080--1081
+\T1/txr/m/n/8 fea-ture se-lec-tion. By or-ches-trat-ing mu-tual in-for-ma-tion 
+soft seed-ing with
+ []
+
+
+Underfull \hbox (badness 2042) in paragraph at lines 1082--1083
+\T1/txr/m/n/8 cross-cohort im-por-tance trans-fer mech-a-nisms, ex-tend-ing the
+ knowledge-
+ []
+
+[16 <./figures/F14_parameter_sensitivity.pdf>] [17]
+
+enddocument/afterlastpage (AED): lastpage setting LastPage.
+(main.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-03-20>
+ ***********
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 535D03AD29EC373D7BF112E67F8C84BB;8861.
+ ) 
+Here is how much of TeX's memory you used:
+ 14368 strings out of 467690
+ 214862 string characters out of 5431801
+ 732528 words of memory out of 5000000
+ 42977 multiletter control sequences out of 15000+600000
+ 763395 words of font info for 294 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 75i,15n,79p,3145b,585s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\86185\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi450\ectt
+0800.pk><E:/MiKTeX/fonts/type1/public/amsfonts/symbols/msam7.pfb><E:/MiKTeX/fon
+ts/type1/public/amsfonts/symbols/msbm10.pfb><E:/MiKTeX/fonts/type1/public/amsfo
+nts/symbols/msbm7.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtcxr.pfb><E:/MiKTe
+X/fonts/type1/public/txfonts/rtxb.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtx
+bmi.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxi.pfb><E:/MiKTeX/fonts/type1/p
+ublic/txfonts/rtxmi.pfb><E:/MiKTeX/fonts/type1/public/txfonts/rtxr.pfb><E:/MiKT
+eX/fonts/type1/public/txfonts/txex.pfb><E:/MiKTeX/fonts/type1/public/txfonts/tx
+sy.pfb><E:/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><E:/MiKTeX/fonts/type1/u
+rw/times/utmb8a.pfb><E:/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><E:/MiKTeX/font
+s/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (18 pages, 2788709 bytes).
+PDF statistics:
+ 1202 PDF objects out of 1440 (max. 8388607)
+ 158 named destinations out of 1000 (max. 500000)
+ 331 words of extra memory for PDF output out of 10000 (max. 10000000)
+
