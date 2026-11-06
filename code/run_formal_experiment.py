@@ -33,6 +33,34 @@ from algorithms import RUNNERS
 # ── 实验配置 ─────────────────────────────────────────────────────────────
 NUM_RUNS = 10          # 对标 MEL: numRun = 10
 
+# ── 受控随机种子体系（保证单次运行绝对确定性与可复现性）────────────
+CONTROLLED_SEEDS = [7, 30, 1, 42, 100, 2024, 999, 1234, 555, 888]
+
+def save_or_load_splits(dataset_name, y, splits_dir, n_splits=5, seed=42):
+    """持久化保存各数据集的 5 折划分索引至 JSON 文件，确保所有算法共享完全一致的测试集划分。"""
+    import json
+    from sklearn.model_selection import StratifiedKFold
+    os.makedirs(splits_dir, exist_ok=True)
+    split_file = os.path.join(splits_dir, f"{dataset_name}_cv{n_splits}_splits.json")
+    if os.path.exists(split_file):
+        with open(split_file, "r", encoding="utf-8") as f:
+            splits_data = json.load(f)
+        import numpy as np
+        return [(np.array(s["train_idx"]), np.array(s["test_idx"])) for s in splits_data]
+
+    import numpy as np
+    min_class = int(np.min(np.bincount(y)))
+    actual_splits = min(n_splits, min_class)
+    skf = StratifiedKFold(n_splits=actual_splits, shuffle=True, random_state=seed)
+    splits = list(skf.split(np.zeros(len(y)), y))
+
+    splits_data = [{"fold": i + 1, "train_idx": tr.tolist(), "test_idx": te.tolist()}
+                   for i, (tr, te) in enumerate(splits)]
+    with open(split_file, "w", encoding="utf-8") as f:
+        json.dump(splits_data, f, indent=2)
+    return splits
+
+
 ABLATION_METHODS = ["KDS_EL_TwoPhase", "KDS_EL_NoPool", "MEL_MI", "MEL"]
 SOTA_METHODS     = ["BPSO", "SaWDE", "FWPSO", "PSO_CSM", "IGPSO", "EMSWOA", "DENCA_SO", "bIRIME", "BinCOA"]
 NEW_METHODS      = ["DENCA_SO", "bIRIME", "BinCOA", "EMSWOA"]
@@ -42,7 +70,7 @@ MOFS_METHODS     = ["NSGA-II-FS", "MOPSO-FS", "MOEA-D-FS",
 ALL_METHODS      = ABLATION_METHODS + SOTA_METHODS
 
 # CSV 字段（严格解耦纯分类准确率、纯分类错误率与搜索标量适应度）
-FIELDS_DETAIL  = ["Version", "Dataset", "Run",
+FIELDS_DETAIL  = ["Version", "Dataset", "Run", "Seed",
                   "Accuracy", "Error_Rate", "fitG", "Scalar_Fitness",
                   "Num_Features", "SR", "Avg_NHD", "Best_Iter", "Time_sec"]
 FIELDS_SUMMARY = ["Version", "Dataset",
@@ -107,6 +135,7 @@ def load_completed(csv_path):
                 r["fitG"]           = float(r.get("fitG", 1.0 - r["Accuracy"]))
                 r["Scalar_Fitness"] = float(r.get("Scalar_Fitness", r["fitG"]))
                 r["Num_Features"]   = int(r["Num_Features"])
+                r["Seed"]           = r.get("Seed", "unrecorded")
                 r["SR"]             = float(r.get("SR", 0.0))
                 r["Avg_NHD"]        = float(r.get("Avg_NHD", 0.0))
                 r["Best_Iter"]      = int(r.get("Best_Iter", 0))
@@ -163,6 +192,11 @@ def main():
                         help="强制从头开始，清空已有 CSV")
     parser.add_argument("--dry-run", action="store_true",
                         help="仅扫描数据集，不跑实验")
+    parser.add_argument("--seed-mode", type=str, default="deterministic",
+                        choices=["deterministic", "natural"],
+                        help="随机种子模式: deterministic (固定受控种子列表) 或 natural (RNG自然流动，对标历史MEL)")
+    parser.add_argument("--save-splits", action="store_true", default=True,
+                        help="持久化各数据集的 5 折划分索引文件，确保跨算法共享")
     args = parser.parse_args()
 
     # ── 方法列表 ─────────────────────────────────────────────────────
@@ -320,6 +354,8 @@ def main():
 
         for ds_name, X, y in available:
             ds_start = time()
+            if getattr(args, "save_splits", True):
+                save_or_load_splits(ds_name, y, os.path.join(out_dir, "splits"))
             ds_pending = 0
             ds_done = 0
             run_rows_this_ds = []
@@ -339,7 +375,15 @@ def main():
 
                 ds_pending += 1
 
-                # 对标 MEL: 不调用 np.random.seed()，让 RNG 自然随机
+                # 随机种子控制与溯源
+                if getattr(args, "seed_mode", "deterministic") == "deterministic":
+                    run_seed = CONTROLLED_SEEDS[(run_idx - 1) % len(CONTROLLED_SEEDS)]
+                    np.random.seed(run_seed)
+                    import random
+                    random.seed(run_seed)
+                else:
+                    run_seed = "natural_flow"
+
                 t0 = time()
                 res = runner_fn(X, y, opts)
                 elapsed = time() - t0
@@ -368,6 +412,7 @@ def main():
                     "Version":        method_name,
                     "Dataset":        ds_name,
                     "Run":            run_idx,
+                    "Seed":           run_seed,
                     "Accuracy":       round(acc, 6),
                     "Error_Rate":     round(err, 6),
                     "fitG":           round(fitG, 6),

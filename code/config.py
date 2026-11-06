@@ -65,6 +65,15 @@ BENCHMARK_20_DATASETS = [
 ]
 MOFS_DATASETS = BENCHMARK_20_DATASETS  # 兼容旧代码引用
 
+# ── 顶刊修回去重后 19 个严格独立基准数据集（剔除与 Leukaemia 同源的 ALL_AML）──
+BENCHMARK_19_DATASETS = [
+    "ALL1", "ALL4", "Adenoma", "BASEHOCK", "COIL20",
+    "Colon", "DLBCL", "Gastric", "Gastric1", "Gastric2", "ISOLET",
+    "Leukaemia", "Lymphoma", "Myeloma", "PCMAC", "Prostate",
+    "SRBCT", "T1D", "madelon",
+]
+BENCHMARK_EVAL_DATASETS = BENCHMARK_19_DATASETS  # 官方受控评估基准 (N = 19)
+
 OPTS = {
     "k": 3,
     "N": 20,
