@@ -180,34 +180,39 @@
 
 ### 2. 英文权威学术声明文本 (Official Academic Statement)
 
-> **Statement on Textual Consistency, Class Imbalance Remediation, and Balanced Performance Metrics:**
+> **Statement on Textual Consistency, Sample Distribution Disclosure, and Balanced Performance Metrics:**
 > 
-> "We sincerely thank the reviewers for highlighting the editorial inconsistency between Section 4.1.1 and Section 4.1.3, as well as the need for robust evaluation metrics under class imbalance. In the revised manuscript, we have thoroughly rectified the textual discrepancy: the erroneous assertion of uniform class balance in Section 4.1.3 has been removed, and Table 2 has been comprehensively updated to explicitly report the exact per-class sample distributions (e.g., Colon: $40/22$, DLBCL: $58/19$, SRBCT: $29/11/18/25$) alongside the empirical imbalance ratios for all benchmark cohorts.
+> "We sincerely thank the reviewer for pointing out the contradiction regarding class balance and highlighting the necessity of evaluating candidate feature subsets under class imbalance. In the revised manuscript, we have thoroughly resolved these concerns across three interconnected dimensions:
 > 
-> To eliminate potential evaluation bias favoring the majority class, we have incorporated **Balanced Accuracy (BAcc)** and **Macro-F1 Score** across our evaluation framework, with careful methodological demarcation:
-> (1) **Descriptive Post-Hoc Metrics for Benchmark Comparisons**: For the core competitor feature subsets, we conducted a rigorous post-hoc re-analysis on the historical candidate masks (Table R3), calculating the corresponding BAcc and Macro-F1 across folds to ensure a multidimensional comparative perspective.
-> (2) **Strict Unbiased Metrics under Nested Evaluation Scheme**: In Section 4.3 (Outer-Loop Partitioned Nested Evaluation), BAcc and Macro-F1 were computed directly on completely blinded outer test partitions.
+> 1. **Textual Correction and Causal Decoupling (Sections 4.1.1 & 4.1.3)**:
+>    We have completely removed the erroneous assertion of 'uniform class balance' from Section 4.1.3. We have clarified that standard accuracy is utilized as the internal wrapper fitness surrogate strictly to preserve consistency with the canonical problem formulation in peer evolutionary feature selection literature under a unified error objective. In Section 4.1.1, we have recalibrated the description of five-fold stratified partitioning, stating that it preserves empirical class ratios across folds as closely as integer sample constraints permit to mitigate partition variance, rather than eliminating intrinsic class imbalance.
 > 
-> The comprehensive results demonstrate that KDS-EL maintains an average Balanced Accuracy of **95.12%** and a Macro-F1 of **94.86%**, consistently dominating all peer algorithms (e.g., bIRIME at $94.18\%$ BAcc, MEL at $90.25\%$ BAcc) without performance degradation on minority classes. This confirms that KDS-EL's selected feature signatures capture genuine discriminative boundaries across all phenotype classes rather than exploiting majority-class prevalence."
+> 2. **Transparent Sample Distribution in Table 2**:
+>    We have updated Table 2 by adding a dedicated 'Class Breakdown' column detailing the verified sample counts across all 20 benchmark datasets in an objective [Majority / Minority] format (e.g., Colon: 40/22, DLBCL: 58/19, Myeloma: 137/36, SRBCT: 29/25/18/11, and balanced multi-class benchmarks as $n_c \times C$). In accordance with strict methodological hygiene ('verification of counts does not imply verification of clinical semantics'), these entries present verified numerical distributions without unverified clinical or biological labels.
+> 
+> 3. **Objective Evaluation via Balanced Accuracy**:
+>    In accordance with the reviewer's recommendation, we have introduced Balanced Accuracy (unweighted macro-averaged recall across categories) to examine whether comparative performance advantages observed under standard accuracy are influenced by majority-class bias. In our internal cross-validation benchmarks, the protocol pools out-of-fold predictions across the five validation folds for each run to construct a unified confusion matrix and compute Balanced Accuracy, before aggregating mean and standard deviation across the 10 independent runs. The complete comparison across the 12 algorithmic configurations (KDS-EL, nine peer algorithms, and two intermediate pre-improvement configurations) is documented in Supplementary Table S-BAcc, alongside a dedicated analysis in Section 4.2 examining algorithmic behavior across the imbalanced datasets [Detailed numerical results and comparative findings to be inserted upon full tabulation]."
 
 ---
 
 ### 3. 中文对齐参考译文
-> “我们衷心感谢审稿专家指出正文 Section 4.1.1 与 4.1.3 之间的文字自相矛盾，以及在类别失衡场景下引入抗偏指标的必要性。在修订手稿中，我们彻底纠正了这一表述冲突：删除了原 Section 4.1.3 中关于类别平衡的错误断言，并在 Table 2 中全面补齐了每一个基准数据集的各类别精确样本数（如 Colon: 40/22, DLBCL: 58/19, SRBCT: 29/11/18/25）以及失衡比。  
+> “我们衷心感谢审稿专家指出正文关于类别平衡的表述矛盾，并提出在类别失衡场景下系统评估特征子集判别能力的必要性。在修订手稿中，我们从三个相互关联的维度对该问题进行了彻底修正与回应：  
 > 
-> 为彻底消除常规准确率可能偏向多数类的评估隐患，我们在全论文评测框架中系统性引入了**平衡准确率（Balanced Accuracy, BAcc）**与**宏平均 F1 值（Macro-F1）**，并进行了严格的方法论定位隔离：  
-> (1) **历史对比表的描述性再分析指标**：针对历史核心竞品的特征掩码，我们进行了严谨的事后交叉验证重算（表 R3），补充了对应的 BAcc 和 Macro-F1，作为历史对比表的描述性多维扩展；  
-> (2) **外层隔离嵌套式评估下的无偏指标**：在新增的 Section 4.3（外层隔离嵌套式评估方案）中，BAcc 与 Macro-F1 严格在完全盲测的外层测试折上计算。  
+> 1. **正文概念纠错与因果解耦（Section 4.1.1 与 4.1.3）**：  
+>    我们彻底删除了原 Section 4.1.3 中关于‘类别平衡’的错误断言，明确阐述保留标准准确率作为内部代理适应度仅仅是为了在统一的目标函数架构下，维持与同行演化特征选择文献的基准可比性。在 Section 4.1.1 中，我们同步校准了关于分层交叉验证的表述，客观指出分层切分是在离散样本整数约束范围内尽可能保持原始类别比例以减轻划分方差，并不等同于消除了内在的类别失衡。  
 > 
-> 综合实验结果表明：KDS-EL 取得了 **95.12%** 的平均平衡准确率和 **94.86%** 的 Macro-F1，持续显著超越所有对比同行（如 bIRIME 的 94.18% BAcc，MEL 的 90.25% BAcc），在少数类样本上未发生任何分类退化。这充分证实：KDS-EL 选出的特征子集捕捉到了横跨所有表型类别的真实生物判别边界，绝非利用多数类优势产生的虚假准确率。”
+> 2. **Table 2 真实样本量透明公开**：  
+>    我们在 Table 2 中增设了‘Class Breakdown’列，完整公开了全部 20 个基准数据集经过代码实际加载核实的各类别样本数量，统一采用客观规范的 [Majority / Minority] 数值格式（如 Colon: 40/22, DLBCL: 58/19, Myeloma: 137/36, SRBCT: 29/25/18/11，多分类平衡数据集记为 $n_c \times C$）。遵循‘数量核实不等于语义核实’的科研准则，避免在缺乏原始文献明确元数据支撑时臆测临床亚型语义。  
+> 
+> 3. **基于平衡准确率（Balanced Accuracy）的客观检验**：  
+>    针对审稿人对于多数类偏向的关切，我们在评估体系中全面引入了平衡准确率（各类别召回率的等权宏平均），旨在系统检验类别等权评价是否会改变算法的主要比较结论。在内部交叉验证评价中，严格采用‘每次运行拼接 5 折折外预测构建统一混淆矩阵计算 BAcc，再跨 10 次运行汇总均值与方差’的规范协议。针对正文主表对应的 12 个算法配置（KDS-EL、9 种同行算法及 2 个改进前中间配置）的完整评测结果将系统整理于补充材料 Table S-BAcc，并在正文 Section 4.2 设立失衡数据集专题分析段落[具体数值与比较结论待完整制表后据实填入]。”
 
 ---
 
 ### 4. 学术辩护深度与边界清晰度
-1. **彻底消除文字硬伤**：正文表述前后一致，Table 2 补充样本具体分布，直接在字面上顶格满足 Reviewer 1 的要求；
-2. **严密界定“描述性再分析”与“无偏泛化”**：
-   在回复中主动声明历史掩码的 BAcc 是描述性再分析，而真正的无偏泛化在 Section 4.3 的外层盲测折上体现，层次分明，展现了严密的学术自律；
-3. **数据证实少数类无退化**：用高维 BAcc 和 F1 事实证明算法不仅总准确率高，对稀有类样本的辨识力同样顶尖。
+1. **彻底消除文字与逻辑硬伤**：正文表述完全自洽，客观澄清优化目标（基准对齐）与评估指标（抗偏检验）的边界，不再将分层切分夸大为解决失衡；
+2. **样本分布透明客观**：Table 2 补充经代码核实的全量逐类样本量，采用纯数值规范格式，杜绝未经证实的临床语义猜测；
+3. **评价协议严格规范与实事求是**：明确采用折外拼接（Pooled OOF）计算混淆矩阵的 BAcc 汇总协议，覆盖 12 个算法配置；坚决不预设“未牺牲少数类”等口头承诺，也不提前断言尚未跑完的数据，待真实数据出炉后以事实为依据进行中立分析；将内部交叉验证指标与外层嵌套盲测指标严格物理隔离，展现高度的学术自律。
 
 ---
 
