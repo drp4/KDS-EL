@@ -44,10 +44,16 @@ import time
 import json
 import argparse
 import platform
-import psutil
 from datetime import datetime
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import numpy as np
+
+# Optional psutil with graceful fallback
+try:
+    import psutil
+    HAS_PSUTIL = True
+except ImportError:
+    HAS_PSUTIL = False
 
 # Ensure code/ is on path
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -457,8 +463,8 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
 
     for workers in worker_ladder:
         print(f"\nEvaluating Concurrency Level: workers = {workers} ...")
-        proc = psutil.Process(os.getpid())
-        rss_start = proc.memory_info().rss / (1024 * 1024)  # MB
+        proc = psutil.Process(os.getpid()) if HAS_PSUTIL else None
+        rss_start = (proc.memory_info().rss / (1024 * 1024)) if proc else 0.0  # MB
 
         t0_level = time.perf_counter()
         peak_rss = rss_start
@@ -469,7 +475,7 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
                 results = []
                 for t in stress_tasks:
                     results.append(_stress_worker_task(t))
-                    current_rss = proc.memory_info().rss / (1024 * 1024)
+                    current_rss = (proc.memory_info().rss / (1024 * 1024)) if proc else 0.0
                     peak_rss = max(peak_rss, current_rss)
             else:
                 results = []
@@ -479,7 +485,7 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
                         try:
                             r = fut.result()
                             results.append(r)
-                            current_rss = proc.memory_info().rss / (1024 * 1024)
+                            current_rss = (proc.memory_info().rss / (1024 * 1024)) if proc else 0.0
                             peak_rss = max(peak_rss, current_rss)
                         except Exception as e:
                             errors.append(str(e))
@@ -494,7 +500,7 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
         else:
             speedup = base_time / max(1e-6, elapsed) if base_time else 1.00
 
-        rss_end = proc.memory_info().rss / (1024 * 1024)
+        rss_end = (proc.memory_info().rss / (1024 * 1024)) if proc else 0.0
         peak_rss = max(peak_rss, rss_end)
 
         record = {
@@ -504,17 +510,18 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
             "errors_count": len(errors),
             "wall_clock_time_sec": round(elapsed, 2),
             "speedup_ratio": round(speedup, 2),
-            "peak_rss_mb": round(peak_rss, 1),
-            "system_cpu_percent": psutil.cpu_percent(interval=0.1),
+            "peak_rss_mb": round(peak_rss, 1) if HAS_PSUTIL else "N/A",
+            "system_cpu_percent": psutil.cpu_percent(interval=0.1) if HAS_PSUTIL else "N/A",
             "status": "PASS" if len(errors) == 0 and len(results) == len(stress_tasks) else "FAIL",
             "errors": errors,
         }
         ladder_results.append(record)
 
         if verbose:
+            rss_str = f"Peak RSS={peak_rss:6.1f} MB" if HAS_PSUTIL else "Peak RSS=N/A"
             print(
                 f"  Workers={workers:2d} | Time={elapsed:6.2f}s | "
-                f"Speedup={speedup:4.2f}x | Peak RSS={peak_rss:6.1f} MB | "
+                f"Speedup={speedup:4.2f}x | {rss_str} | "
                 f"Status={record['status']}"
             )
 
@@ -535,9 +542,9 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
         "concurrency_ladder": ladder_results,
         "recommended_workers": recommended_workers,
         "system_info": {
-            "cpu_physical_cores": psutil.cpu_count(logical=False),
-            "cpu_logical_cores": psutil.cpu_count(logical=True),
-            "total_ram_gb": round(psutil.virtual_memory().total / (1024**3), 2),
+            "cpu_physical_cores": psutil.cpu_count(logical=False) if HAS_PSUTIL else (os.cpu_count() or 1),
+            "cpu_logical_cores": psutil.cpu_count(logical=True) if HAS_PSUTIL else (os.cpu_count() or 1),
+            "total_ram_gb": round(psutil.virtual_memory().total / (1024**3), 2) if HAS_PSUTIL else "N/A",
             "platform": platform.platform(),
         },
     }
@@ -562,10 +569,12 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
         f.write("| Workers | Tasks | Time (s) | Speedup | Peak RSS (MB) | CPU % | Status |\n")
         f.write("| :---: | :---: | :---: | :---: | :---: | :---: | :---: |\n")
         for r in ladder_results:
+            rss_text = f"{r['peak_rss_mb']:.1f} MB" if isinstance(r['peak_rss_mb'], (int, float)) else "N/A"
+            cpu_text = f"{r['system_cpu_percent']:.1f}%" if isinstance(r['system_cpu_percent'], (int, float)) else "N/A"
             f.write(
                 f"| **{r['workers']}** | {r['completed_tasks']}/{r['tasks_count']} | "
                 f"`{r['wall_clock_time_sec']:.2f} s` | **{r['speedup_ratio']:.2f}x** | "
-                f"{r['peak_rss_mb']:.1f} MB | {r['system_cpu_percent']:.1f}% | **{r['status']}** |\n"
+                f"{rss_text} | {cpu_text} | **{r['status']}** |\n"
             )
 
         f.write("\n## Concurrency & Stability Decision\n\n")
