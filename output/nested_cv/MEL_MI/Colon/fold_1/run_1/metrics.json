@@ -4,19 +4,19 @@
   "outer_fold": 1,
   "run_idx": 1,
   "seed": 7,
-  "N": 10,
-  "Max_FEs": 40,
-  "candidate_eval_requests": 40,
-  "shortcut_eval_requests": 15,
+  "N": 20,
+  "Max_FEs": 2000,
+  "candidate_eval_requests": 2000,
+  "shortcut_eval_requests": 969,
   "cache_hit_count": 0,
-  "cv_eval_calls": 25,
-  "inner_model_fits": 125,
+  "cv_eval_calls": 1031,
+  "inner_model_fits": 5155,
   "outer_model_fits": 5,
-  "unique_masks": 34,
-  "active_features": 50,
-  "active_features_ratio": 0.025,
-  "inner_gbest_fitness": 0.11250000000000002,
-  "generations_completed": 3,
+  "unique_masks": 1041,
+  "active_features": 102,
+  "active_features_ratio": 0.051,
+  "inner_gbest_fitness": 0.09710000000000002,
+  "generations_completed": 98,
   "stop_reason": "budget_exhausted",
   "tps_switch_q": null,
   "tps_switch_E": null,
@@ -24,7 +24,7 @@
   "ker_attempts": 0,
   "ker_accepts": 0,
   "ker_accept_rate": 0.0,
-  "air_triggers": 0,
+  "air_triggers": 3,
   "p2_valid_ratio": 0.0,
   "outer_test_indices": [
     8,
@@ -43,9 +43,9 @@
   ],
   "outer_test_metrics": {
     "knn": {
-      "accuracy": 0.9230769230769231,
-      "balanced_accuracy": 0.9,
-      "macro_f1": 0.9150326797385621,
+      "accuracy": 0.8461538461538461,
+      "balanced_accuracy": 0.8375,
+      "macro_f1": 0.8375,
       "y_pred": [
         1,
         0,
@@ -59,30 +59,10 @@
         0,
         1,
         0,
-        1
+        0
       ]
     },
     "svm": {
-      "accuracy": 1.0,
-      "balanced_accuracy": 1.0,
-      "macro_f1": 1.0,
-      "y_pred": [
-        1,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1,
-        1,
-        0,
-        0,
-        1,
-        0,
-        1
-      ]
-    },
-    "random_forest": {
       "accuracy": 0.9230769230769231,
       "balanced_accuracy": 0.9375,
       "macro_f1": 0.9212121212121211,
@@ -100,6 +80,26 @@
         1,
         0,
         0
+      ]
+    },
+    "random_forest": {
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "macro_f1": 1.0,
+      "y_pred": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1
       ]
     },
     "naive_bayes": {
@@ -123,9 +123,9 @@
       ]
     },
     "lda": {
-      "accuracy": 1.0,
-      "balanced_accuracy": 1.0,
-      "macro_f1": 1.0,
+      "accuracy": 0.9230769230769231,
+      "balanced_accuracy": 0.9375,
+      "macro_f1": 0.9212121212121211,
       "y_pred": [
         1,
         0,
@@ -139,15 +139,15 @@
         0,
         1,
         0,
-        1
+        0
       ],
       "fallback_used": "none"
     }
   },
   "timing": {
-    "search_sec": 5.392,
-    "blind_eval_sec": 0.231,
-    "total_sec": 5.69
+    "search_sec": 7.144,
+    "blind_eval_sec": 0.138,
+    "total_sec": 7.33
   },
   "integrity_audit": {
     "all_passed": true,
@@ -169,10 +169,10 @@
     }
   },
   "system_metadata": {
-    "platform": "Windows-10-10.0.19044-SP0",
-    "python": "3.12.8",
-    "numpy": "2.3.3",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.13.14",
+    "numpy": "2.5.0",
     "evaluator_type": "Scikit_Learn_Fallback",
-    "timestamp": "2026-11-07T10:44:19.304595"
+    "timestamp": "2026-11-07T12:39:06.119588"
   }
 }

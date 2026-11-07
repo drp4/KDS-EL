@@ -4,19 +4,19 @@
   "outer_fold": 1,
   "run_idx": 1,
   "seed": 7,
-  "N": 10,
-  "Max_FEs": 40,
-  "candidate_eval_requests": 40,
+  "N": 20,
+  "Max_FEs": 2000,
+  "candidate_eval_requests": 2000,
   "shortcut_eval_requests": 0,
   "cache_hit_count": 0,
-  "cv_eval_calls": 40,
-  "inner_model_fits": 200,
+  "cv_eval_calls": 2000,
+  "inner_model_fits": 10000,
   "outer_model_fits": 5,
-  "unique_masks": 40,
-  "active_features": 965,
-  "active_features_ratio": 0.4825,
-  "inner_gbest_fitness": 0.19624999999999998,
-  "generations_completed": 3,
+  "unique_masks": 2000,
+  "active_features": 126,
+  "active_features_ratio": 0.063,
+  "inner_gbest_fitness": 0.08030000000000001,
+  "generations_completed": 99,
   "stop_reason": "budget_exhausted",
   "tps_switch_q": null,
   "tps_switch_E": null,
@@ -43,12 +43,12 @@
   ],
   "outer_test_metrics": {
     "knn": {
-      "accuracy": 0.6153846153846154,
-      "balanced_accuracy": 0.5375,
-      "macro_f1": 0.5112781954887218,
+      "accuracy": 0.7692307692307693,
+      "balanced_accuracy": 0.7,
+      "macro_f1": 0.706766917293233,
       "y_pred": [
         1,
-        1,
+        0,
         0,
         1,
         1,
@@ -59,37 +59,17 @@
         1,
         1,
         1,
-        0
+        1
       ]
     },
     "svm": {
       "accuracy": 0.9230769230769231,
-      "balanced_accuracy": 0.9375,
-      "macro_f1": 0.9212121212121211,
+      "balanced_accuracy": 0.9,
+      "macro_f1": 0.9150326797385621,
       "y_pred": [
         1,
         0,
-        0,
         1,
-        1,
-        1,
-        1,
-        1,
-        0,
-        0,
-        1,
-        0,
-        0
-      ]
-    },
-    "random_forest": {
-      "accuracy": 1.0,
-      "balanced_accuracy": 1.0,
-      "macro_f1": 1.0,
-      "y_pred": [
-        1,
-        0,
-        0,
         1,
         1,
         1,
@@ -102,7 +82,47 @@
         1
       ]
     },
+    "random_forest": {
+      "accuracy": 0.8461538461538461,
+      "balanced_accuracy": 0.8375,
+      "macro_f1": 0.8375,
+      "y_pred": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
     "naive_bayes": {
+      "accuracy": 0.9230769230769231,
+      "balanced_accuracy": 0.9,
+      "macro_f1": 0.9150326797385621,
+      "y_pred": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    "lda": {
       "accuracy": 0.9230769230769231,
       "balanced_accuracy": 0.9375,
       "macro_f1": 0.9212121212121211,
@@ -120,34 +140,14 @@
         1,
         0,
         0
-      ]
-    },
-    "lda": {
-      "accuracy": 0.8461538461538461,
-      "balanced_accuracy": 0.8375,
-      "macro_f1": 0.8375,
-      "y_pred": [
-        1,
-        0,
-        0,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        0,
-        1,
-        0,
-        0
       ],
       "fallback_used": "none"
     }
   },
   "timing": {
-    "search_sec": 0.329,
-    "blind_eval_sec": 0.692,
-    "total_sec": 1.09
+    "search_sec": 11.243,
+    "blind_eval_sec": 0.139,
+    "total_sec": 11.432
   },
   "integrity_audit": {
     "all_passed": true,
@@ -169,10 +169,10 @@
     }
   },
   "system_metadata": {
-    "platform": "Windows-10-10.0.19044-SP0",
-    "python": "3.12.8",
-    "numpy": "2.3.3",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.13.14",
+    "numpy": "2.5.0",
     "evaluator_type": "Scikit_Learn_Fallback",
-    "timestamp": "2026-11-07T10:44:25.639073"
+    "timestamp": "2026-11-07T12:39:25.990778"
   }
 }
