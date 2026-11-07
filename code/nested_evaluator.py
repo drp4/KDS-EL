@@ -62,8 +62,10 @@ class NestedSplitsManager:
             {"fold": i + 1, "train_idx": tr.tolist(), "test_idx": te.tolist()}
             for i, (tr, te) in enumerate(splits)
         ]
-        with open(split_file, "w", encoding="utf-8") as f:
+        tmp_file = f"{split_file}.tmp.{os.getpid()}_{time.time_ns()}"
+        with open(tmp_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
+        os.replace(tmp_file, split_file)
         return splits
 
     def verify_5fold_pooled_oof(self, dataset_name, y):
@@ -119,8 +121,10 @@ class NestedSplitsManager:
             {"inner_fold": i + 1, "inner_train_idx": tr.tolist(), "inner_val_idx": te.tolist()}
             for i, (tr, te) in enumerate(splits)
         ]
-        with open(split_file, "w", encoding="utf-8") as f:
+        tmp_file = f"{split_file}.tmp.{os.getpid()}_{time.time_ns()}"
+        with open(tmp_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
+        os.replace(tmp_file, split_file)
         return splits
 
 
@@ -371,19 +375,30 @@ class BlindOuterEvaluator:
         preds_nb = nb_clf.predict(X_te)
         results["naive_bayes"] = compute_metrics(y_te, preds_nb)
 
-        # 5. Shrinkage LDA with multi-level fallbacks
+        # 5. Shrinkage LDA with multi-level fallbacks & ultra-wide memory protection
         lda_fallback = "none"
         preds_lda = None
         try:
-            lda_pipe = Pipeline([
-                ("scaler", StandardScaler()),
-                (
-                    "lda",
-                    LinearDiscriminantAnalysis(solver="lsqr", shrinkage="auto"),
-                ),
-            ])
-            lda_pipe.fit(X_tr, y_tr)
-            preds_lda = lda_pipe.predict(X_te)
+            if nf > 1000:
+                # Memory safeguard for ultra-wide subsets (e.g. competitors selecting >1000 features):
+                # SVD solver avoids computing O(D^2) covariance matrix by decomposing X (N x D) directly.
+                lda_pipe = Pipeline([
+                    ("scaler", StandardScaler()),
+                    ("lda", LinearDiscriminantAnalysis(solver="svd")),
+                ])
+                lda_pipe.fit(X_tr, y_tr)
+                preds_lda = lda_pipe.predict(X_te)
+                lda_fallback = "svd_wide_feature_protection"
+            else:
+                lda_pipe = Pipeline([
+                    ("scaler", StandardScaler()),
+                    (
+                        "lda",
+                        LinearDiscriminantAnalysis(solver="lsqr", shrinkage="auto"),
+                    ),
+                ])
+                lda_pipe.fit(X_tr, y_tr)
+                preds_lda = lda_pipe.predict(X_te)
         except Exception:
             try:
                 # Level 1 fallback: fixed shrinkage = 0.1

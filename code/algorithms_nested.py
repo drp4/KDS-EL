@@ -14,6 +14,7 @@ interface (Max_FEs = 2000 candidate fitness requests):
   5. bIRIME (Su et al., iScience 2024)
 """
 
+import hashlib
 import numpy as np
 from utils import ker_flip, compute_mi_scores
 
@@ -166,12 +167,12 @@ def run_nested_KDS_EL_TwoPhase(X_train, y_train, evaluator, opts, seed=7, enable
                     weight[j] -= inc
             else:
                 dec = fit_new - fitP[i]
-                change = np.logical_xor(fv_o, fv_n)
-                case_emerge = np.where(change & (fv_o > fv_n))[0]
-                case_disappear = np.where(change & (fv_o < fv_n))[0]
-                for j in case_emerge:
+                change = np.logical_xor(fv_n, fv_o)
+                # Feature added in new candidate degraded fitness -> Penalize
+                for j in np.where(change & (fv_n > fv_o))[0]:
                     weight[j] -= dec
-                for j in case_disappear:
+                # Feature removed in new candidate degraded fitness -> Reward
+                for j in np.where(change & (fv_n < fv_o))[0]:
                     weight[j] += dec
 
         P = P_new.copy()
@@ -209,6 +210,9 @@ def run_nested_KDS_EL_TwoPhase(X_train, y_train, evaluator, opts, seed=7, enable
                 Pbest[idx] = np.clip(mi + np.random.normal(0, 0.1, dim), lb, ub)
                 P[idx] = Pbest[idx].copy()
                 fitP[idx] = evaluator.evaluate(Pbest[idx] > thres, ws=current_ws)
+                if fitP[idx] < fitG:
+                    fitG = float(fitP[idx])
+                    Gbest = Pbest[idx].copy()
             stall_counter = 0
 
     mask = (Gbest > thres).astype(bool)
@@ -441,6 +445,9 @@ def run_nested_MEL_MI(X_train, y_train, evaluator, opts, seed=7):
                 Pbest[idx] = np.clip(mi + np.random.normal(0, 0.1, dim), lb, ub)
                 P[idx] = Pbest[idx].copy()
                 fitP[idx] = evaluator.evaluate(Pbest[idx] > thres, ws=ws)
+                if fitP[idx] < fitG:
+                    fitG = float(fitP[idx])
+                    Gbest = Pbest[idx].copy()
             stall_counter = 0
 
     mask = (Gbest > thres).astype(bool)
@@ -548,17 +555,12 @@ def run_nested_bIRIME(X_train, y_train, evaluator, opts, seed=7):
                 rand_idx = np.random.randint(0, N)
                 P_new[i] = P[rand_idx] - r * np.abs(P[rand_idx] - 2.0 * np.random.rand() * P[i])
             else:
-                # Soft-rime / Hard-rime
+                # Soft-rime Search & Hard-rime Puncture
                 for j in range(dim):
-                    r = np.random.rand()
-                    if r < norm_rates[i]:
-                        P_new[i, j] = Gbest[j] + RimeFactor * (
-                            (ub - lb) * np.random.rand() + lb
-                        )
-                    elif r < E:
-                        P_new[i, j] = P[i, j] + RimeFactor * (
-                            (ub - lb) * np.random.rand() + lb
-                        )
+                    if np.random.rand() < E:
+                        P_new[i, j] = Gbest[j] + RimeFactor * ((ub - lb) * np.random.rand() + lb)
+                    if np.random.rand() < norm_rates[i]:
+                        P_new[i, j] = Gbest[j]
 
             P_new[i] = np.clip(P_new[i], lb, ub)
             bin_cand = bIRIME_binarize(P_new[i], dim)
@@ -577,16 +579,93 @@ def run_nested_bIRIME(X_train, y_train, evaluator, opts, seed=7):
                 Gbest_bin = P_bin[i].copy()
                 fitG = float(fit[i])
 
-            # Restart Strategy (RS)
+            # ── Composite Mutation Strategies (CMS: U1, U2, U3) ──
+            other_indices = [idx for idx in range(N) if idx != i]
+            if len(other_indices) >= 3 and evaluator.has_budget():
+                # Strategy 1: DE/rand/1/bin (F1=1.0, Cr1=0.1)
+                k1 = np.random.choice(other_indices, 3, replace=False)
+                j_rand1 = np.random.randint(0, dim)
+                u1 = P[i].copy()
+                cross1 = (np.random.rand(dim) < 0.1)
+                cross1[j_rand1] = True
+                u1[cross1] = P[k1[0], cross1] + 1.0 * (P[k1[1], cross1] - P[k1[2], cross1])
+                u1 = np.clip(u1, lb, ub)
+                u1_bin = bIRIME_binarize(u1, dim)
+                fit_u1 = evaluator.evaluate(u1_bin, ws=ws) if evaluator.has_budget() else float("inf")
+
+                # Strategy 2: DE/rand/2/bin (F2=0.8, Cr2=0.2)
+                if len(other_indices) >= 5:
+                    k2 = np.random.choice(other_indices, 5, replace=False)
+                    u2_diff = (P[k2[1]] - P[k2[2]]) + (P[k2[3]] - P[k2[4]])
+                else:
+                    k2 = np.random.choice(other_indices, 3, replace=False)
+                    u2_diff = P[k2[1]] - P[k2[2]]
+                j_rand2 = np.random.randint(0, dim)
+                u2 = P[i].copy()
+                cross2 = (np.random.rand(dim) < 0.2)
+                cross2[j_rand2] = True
+                u2[cross2] = P[k2[0], cross2] + 0.8 * u2_diff[cross2]
+                u2 = np.clip(u2, lb, ub)
+                u2_bin = bIRIME_binarize(u2, dim)
+                fit_u2 = evaluator.evaluate(u2_bin, ws=ws) if evaluator.has_budget() else float("inf")
+
+                # Strategy 3: current-to-rand/1/bin (F3=1.0, Cr3=0.9)
+                k3 = np.random.choice(other_indices, 3, replace=False)
+                j_rand3 = np.random.randint(0, dim)
+                u3 = P[i].copy()
+                cross3 = (np.random.rand(dim) < 0.9)
+                cross3[j_rand3] = True
+                u3[cross3] = (
+                    P[i, cross3]
+                    + np.random.rand() * (P[k3[0], cross3] - P[i, cross3])
+                    + 1.0 * (P[k3[1], cross3] - P[k3[2], cross3])
+                )
+                u3 = np.clip(u3, lb, ub)
+                u3_bin = bIRIME_binarize(u3, dim)
+                fit_u3 = evaluator.evaluate(u3_bin, ws=ws) if evaluator.has_budget() else float("inf")
+
+                com_fits = [fit_u1, fit_u2, fit_u3]
+                best_com_idx = int(np.argmin(com_fits))
+                com_poss = [u1, u2, u3]
+                com_bins = [u1_bin, u2_bin, u3_bin]
+
+                best_cms_fit = com_fits[best_com_idx]
+                if best_cms_fit < fit[i]:
+                    P[i] = com_poss[best_com_idx].copy()
+                    P_bin[i] = com_bins[best_com_idx].copy()
+                    fit[i] = best_cms_fit
+                    SalpTrial[i] = 0
+                    if best_cms_fit < fitG:
+                        fitG = float(best_cms_fit)
+                        Gbest = P[i].copy()
+                        Gbest_bin = P_bin[i].copy()
+                else:
+                    SalpTrial[i] += 1
+
+            # ── Restart Strategy (RS) ──
             if SalpTrial[i] >= Limits and evaluator.has_budget():
-                P[i] = np.random.uniform(lb, ub, dim)
-                P_bin[i] = bIRIME_binarize(P[i], dim)
-                fit[i] = evaluator.evaluate(P_bin[i], ws=ws)
+                T1 = np.random.uniform(lb, ub, dim)
+                T2 = np.clip(np.random.uniform(lb, ub, dim) - P[i], lb, ub)
+
+                T1_bin = bIRIME_binarize(T1, dim)
+                fT1 = evaluator.evaluate(T1_bin, ws=ws) if evaluator.has_budget() else float("inf")
+                T2_bin = bIRIME_binarize(T2, dim)
+                fT2 = evaluator.evaluate(T2_bin, ws=ws) if evaluator.has_budget() else float("inf")
+
+                if fT1 < fT2:
+                    P[i] = T1.copy()
+                    P_bin[i] = T1_bin.copy()
+                    fit[i] = fT1
+                else:
+                    P[i] = T2.copy()
+                    P_bin[i] = T2_bin.copy()
+                    fit[i] = fT2
+
                 SalpTrial[i] = 0
                 if fit[i] < fitG:
+                    fitG = float(fit[i])
                     Gbest = P[i].copy()
                     Gbest_bin = P_bin[i].copy()
-                    fitG = float(fit[i])
 
     mask = Gbest_bin
     if not mask.any():
@@ -600,10 +679,779 @@ def run_nested_bIRIME(X_train, y_train, evaluator, opts, seed=7):
     }
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+# 6. BPSO (Binary Particle Swarm Optimization - Kennedy & Eberhart 1997)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def run_nested_BPSO(X_train, y_train, evaluator, opts, seed=7):
+    """
+    Standard Binary Particle Swarm Optimization under BudgetEvaluator.
+    """
+    np.random.seed(seed)
+    dim = X_train.shape[1]
+    N = opts.get("N", 20)
+    ws = opts.get("ws", [0.90, 0.10])
+    w, c1, c2 = 0.9, 2.0, 2.0
+    Vmax = 6.0
+
+    P = (np.random.rand(N, dim) < 0.5).astype(float)
+    V = np.zeros((N, dim))
+
+    fit = np.zeros(N)
+    for i in range(N):
+        if not evaluator.has_budget():
+            break
+        m = (P[i] > 0.5)
+        if not m.any():
+            m[np.random.randint(dim)] = True
+        fit[i] = evaluator.evaluate(m, ws=ws)
+
+    Pbest, fitP = P.copy(), fit.copy()
+    bi = np.argmin(fitP)
+    Gbest, fitG = Pbest[bi].copy(), float(fitP[bi])
+    generations = 0
+
+    while evaluator.has_budget():
+        generations += 1
+        r1, r2 = np.random.rand(N, dim), np.random.rand(N, dim)
+        V = w * V + c1 * r1 * (Pbest - P) + c2 * r2 * (Gbest - P)
+        V = np.clip(V, -Vmax, Vmax)
+
+        prob = 1.0 / (1.0 + np.exp(-V))
+        P = (np.random.rand(N, dim) < prob).astype(float)
+
+        for i in range(N):
+            if not evaluator.has_budget():
+                break
+            m = (P[i] > 0.5)
+            if not m.any():
+                m[np.random.randint(dim)] = True
+            f = evaluator.evaluate(m, ws=ws)
+            if f < fitP[i]:
+                Pbest[i] = P[i].copy()
+                fitP[i] = f
+            if f < fitG:
+                fitG = float(f)
+                Gbest = P[i].copy()
+
+    mask = (Gbest > 0.5)
+    if not mask.any():
+        mask[np.random.randint(dim)] = True
+
+    return {
+        "mask": mask,
+        "fitG": fitG,
+        "generations_completed": generations,
+        "stop_reason": "budget_exhausted" if not evaluator.has_budget() else "normal",
+    }
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 7. FWPSO (Feature Weighting PSO - Wang & Jia 2022)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def run_nested_FWPSO(X_train, y_train, evaluator, opts, seed=7):
+    """
+    Feature Weighting Particle Swarm Optimization under BudgetEvaluator.
+    """
+    np.random.seed(seed)
+    dim = X_train.shape[1]
+    N = opts.get("N", 20)
+    thres = opts.get("thres", 0.6)
+    ws = opts.get("ws", [0.90, 0.10])
+    c1 = c2 = 2.0
+    w = 0.9
+    Vmax = 0.5
+
+    weight = np.zeros(dim)
+    P = np.random.rand(N, dim)
+    V = np.zeros((N, dim))
+
+    fitP = np.zeros(N)
+    for i in range(N):
+        if not evaluator.has_budget():
+            break
+        m = (P[i] > thres)
+        if not m.any():
+            m[np.random.randint(dim)] = True
+        fitP[i] = evaluator.evaluate(m, ws=ws)
+
+    Pbest = P.copy()
+    bi = np.argmin(fitP)
+    Gbest, fitG = Pbest[bi].copy(), float(fitP[bi])
+    generations = 0
+
+    while evaluator.has_budget():
+        generations += 1
+        for i in range(N):
+            if not evaluator.has_budget():
+                break
+            r1, r2 = np.random.rand(dim), np.random.rand(dim)
+            V[i] = w * V[i] + c1 * r1 * (Pbest[i] - P[i]) + c2 * r2 * (Gbest - P[i])
+            V[i] = np.clip(V[i], -Vmax, Vmax)
+
+            vf = np.maximum(weight, 0.0)
+            sv = vf.sum()
+            if sv > 0 and np.random.rand() < 0.3:
+                prob = vf / sv
+                P[i] = (np.random.rand(dim) < prob).astype(float)
+            else:
+                P[i] = np.clip(P[i] + V[i], 0.0, 1.0)
+
+            m = (P[i] > thres)
+            if not m.any():
+                m[np.random.randint(dim)] = True
+            f = evaluator.evaluate(m, ws=ws)
+            pb = (Pbest[i] > thres)
+            pn = m
+            if f < fitP[i]:
+                inc = fitP[i] - f
+                change = np.logical_xor(pb, pn)
+                weight[change & pn & (~pb)] += inc
+                weight[change & pb & (~pn)] -= inc
+                Pbest[i] = P[i].copy()
+                fitP[i] = f
+            if f < fitG:
+                fitG = float(f)
+                Gbest = P[i].copy()
+
+    mask = (Gbest > thres)
+    if not mask.any():
+        mask[np.random.randint(dim)] = True
+
+    return {
+        "mask": mask,
+        "fitG": fitG,
+        "generations_completed": generations,
+        "stop_reason": "budget_exhausted" if not evaluator.has_budget() else "normal",
+    }
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 8. SaWDE (Self-Adaptive Weighted DE - Wang et al. TEVC 2021)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def run_nested_SaWDE(X_train, y_train, evaluator, opts, seed=7):
+    """
+    Self-Adaptive Weighted Differential Evolution under BudgetEvaluator.
+    """
+    np.random.seed(seed)
+    dim = X_train.shape[1]
+    N = opts.get("N", 20)
+    thres = opts.get("thres", 0.6)
+    ws = opts.get("ws", [0.90, 0.10])
+
+    P = np.random.rand(N, dim)
+    fit = np.zeros(N)
+    for i in range(N):
+        if not evaluator.has_budget():
+            break
+        m = (P[i] > thres)
+        if not m.any():
+            m[np.random.randint(dim)] = True
+        fit[i] = evaluator.evaluate(m, ws=ws)
+
+    bi = np.argmin(fit)
+    Gbest = P[bi].copy()
+    fitG = float(fit[bi])
+
+    w_strat = np.ones(3) / 3.0
+    F_hist = [0.5] * 3
+    CR_hist = [0.5] * 3
+    generations = 0
+
+    while evaluator.has_budget():
+        generations += 1
+        w_norm = w_strat / (w_strat.sum() + 1e-12)
+        success = np.zeros(3)
+        count = np.zeros(3)
+        P_new = P.copy()
+
+        for i in range(N):
+            if not evaluator.has_budget():
+                break
+            s = np.random.choice(3, p=w_norm)
+            F = np.clip(np.random.normal(F_hist[s], 0.1), 0.1, 1.0)
+            CR = np.clip(np.random.normal(CR_hist[s], 0.1), 0.0, 1.0)
+
+            idx = list(range(N))
+            idx.remove(i)
+            r1, r2, r3 = np.random.choice(idx, 3, replace=False)
+
+            if s == 0:
+                mut = P[r1] + F * (P[r2] - P[r3])
+            elif s == 1:
+                mut = P[i] + F * (Gbest - P[i]) + F * (P[r1] - P[r2])
+            else:
+                mut = Gbest + F * (P[r1] - P[r2])
+
+            mut = np.clip(mut, 0.0, 1.0)
+            cross = np.random.rand(dim) < CR
+            if not cross.any():
+                cross[np.random.randint(dim)] = True
+            trial = np.where(cross, mut, P[i])
+
+            m = (trial > thres)
+            if not m.any():
+                m[np.random.randint(dim)] = True
+            f_trial = evaluator.evaluate(m, ws=ws)
+            if f_trial <= fit[i]:
+                P_new[i] = trial
+                fit[i] = f_trial
+                success[s] += 1
+                F_hist[s] = 0.9 * F_hist[s] + 0.1 * F
+                CR_hist[s] = 0.9 * CR_hist[s] + 0.1 * CR
+                if f_trial < fitG:
+                    fitG = float(f_trial)
+                    Gbest = trial.copy()
+            count[s] += 1
+
+        sr = np.where(count > 0, success / count, 0.0)
+        w_strat = 0.9 * w_strat + 0.1 * (sr + 0.01)
+        w_strat = w_strat / (w_strat.sum() + 1e-12)
+        P = P_new
+
+    mask = (Gbest > thres)
+    if not mask.any():
+        mask[np.random.randint(dim)] = True
+
+    return {
+        "mask": mask,
+        "fitG": fitG,
+        "generations_completed": generations,
+        "stop_reason": "budget_exhausted" if not evaluator.has_budget() else "normal",
+    }
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 9. PSO_CSM (Comprehensive Scoring Framework PSO - Wei et al. 2025)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def run_nested_PSO_CSM(X_train, y_train, evaluator, opts, seed=7):
+    """
+    PSO with Comprehensive Scoring Framework under BudgetEvaluator.
+    """
+    from sklearn.feature_selection import f_classif
+
+    np.random.seed(seed)
+    dim = X_train.shape[1]
+    N = opts.get("N", 20)
+    ws = opts.get("ws", [0.90, 0.10])
+    Vmax = 0.5
+    w_inertia = 0.9
+    c1 = c2 = 2.0
+    w_rel = opts.get("w_rel", 0.5)
+    w_fb = opts.get("w_fb", 0.5)
+    R_csm = opts.get("R_csm", 10)
+    sigma = opts.get("sigma", 0.04)
+    min_feats = max(10, dim // 100)
+
+    # 1. Feature Relevance (F-score computed strictly on outer train)
+    F, _ = f_classif(X_train, y_train)
+    F = np.nan_to_num(F, nan=0.0, posinf=0.0, neginf=0.0)
+    f_max = F.max()
+    rel = F / (f_max + 1e-9) if f_max > 0 else np.full(dim, 0.5)
+
+    # 2. Initialization
+    init_prob = np.clip(0.1 + 0.8 * rel, 0.05, 0.95)
+    P = (np.random.rand(N, dim) < init_prob).astype(float)
+    V = np.zeros((N, dim))
+
+    fit = np.zeros(N)
+    for i in range(N):
+        if not evaluator.has_budget():
+            break
+        m = P[i].astype(bool)
+        if not m.any():
+            m[np.random.randint(dim)] = True
+        fit[i] = evaluator.evaluate(m, ws=ws)
+
+    Pbest = P.copy()
+    fitP = fit.copy()
+    bi = np.argmin(fit)
+    gbest = P[bi].copy()
+    fitG = float(fit[bi])
+
+    active = np.ones(dim, dtype=bool)
+    generations = 0
+
+    while evaluator.has_budget():
+        generations += 1
+        r1 = np.random.rand(N, dim)
+        r2 = np.random.rand(N, dim)
+        V = np.clip(w_inertia * V + c1 * r1 * (Pbest - P) + c2 * r2 * (gbest - P), -Vmax, Vmax)
+        prob = 1.0 / (1.0 + np.exp(-V))
+        P_new = (np.random.rand(N, dim) < prob).astype(float)
+        P_new[:, ~active] = 0.0
+
+        for i in range(N):
+            if not evaluator.has_budget():
+                break
+            m = P_new[i].astype(bool)
+            if not m.any():
+                m[np.random.choice(np.where(active)[0] if active.any() else dim)] = True
+            f_new = evaluator.evaluate(m, ws=ws)
+            if f_new < fitP[i]:
+                Pbest[i] = P_new[i].copy()
+                fitP[i] = f_new
+            if f_new < fitG:
+                fitG = float(f_new)
+                gbest = P_new[i].copy()
+
+        P = P_new
+
+        # Comprehensive scoring feature reduction
+        if generations % R_csm == 0:
+            pb_bin = (Pbest[:, active] > 0.5).astype(float)
+            fb_active = pb_bin.mean(axis=0)
+            fb_norm = fb_active / (fb_active.max() + 1e-9)
+            rel_active = rel[active]
+            score = w_rel * rel_active + w_fb * fb_norm
+
+            n_remove = int(sigma * min(1.0, generations / 100.0) * active.sum())
+            if n_remove > 0 and (active.sum() - n_remove) >= min_feats:
+                local_low = np.argsort(score)[:n_remove]
+                active_idx = np.where(active)[0]
+                global_low = active_idx[local_low]
+                active[global_low] = False
+                P[:, global_low] = 0.0
+                Pbest[:, global_low] = 0.0
+                gbest[global_low] = 0.0
+
+    mask = gbest.astype(bool)
+    if not mask.any():
+        mask[np.random.randint(dim)] = True
+
+    return {
+        "mask": mask,
+        "fitG": fitG,
+        "generations_completed": generations,
+        "stop_reason": "budget_exhausted" if not evaluator.has_budget() else "normal",
+    }
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 10. BinCOA (Binary Crayfish Optimization Algorithm - Shikoun et al. 2024)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _bincoa_sigmoid(x):
+    return 1.0 / (1.0 + np.exp(-np.clip(x, -15.0, 15.0)))
+
+
+def _bincoa_binarize(x_cont, dim):
+    prob = _bincoa_sigmoid(x_cont)
+    b = (np.random.rand(dim) >= prob)
+    if not b.any():
+        b[np.random.choice(dim, min(3, dim), replace=False)] = True
+    return b
+
+
+def run_nested_BinCOA(X_train, y_train, evaluator, opts, seed=7):
+    """
+    Binary Crayfish Optimization Algorithm under BudgetEvaluator.
+    """
+    np.random.seed(seed)
+    dim = X_train.shape[1]
+    N = opts.get("N", 20)
+    ws = opts.get("ws", [0.90, 0.10])
+    lb, ub = -3.0, 3.0
+    sigma_refract = 1.0
+
+    Cr = np.random.uniform(lb, ub, (N, dim))
+    mid = (lb + ub) / 2.0
+    Cr_star = np.clip(mid + mid / sigma_refract - Cr / sigma_refract, lb, ub)
+
+    candidates = np.vstack([Cr, Cr_star])
+    cand_bin = np.zeros((2 * N, dim), dtype=bool)
+    cand_fit = np.zeros(2 * N)
+
+    for i in range(2 * N):
+        if not evaluator.has_budget():
+            break
+        cand_bin[i] = _bincoa_binarize(candidates[i], dim)
+        cand_fit[i] = evaluator.evaluate(cand_bin[i], ws=ws)
+
+    best_indices = np.argsort(cand_fit)[:N]
+    Cr = candidates[best_indices].copy()
+    Cr_bin = cand_bin[best_indices].copy()
+    fit = cand_fit[best_indices].copy()
+
+    CrG = Cr[0].copy()
+    CrG_bin = Cr_bin[0].copy()
+    fitG = float(fit[0])
+    CrL = Cr[0].copy()
+
+    generations = 0
+
+    while evaluator.has_budget():
+        generations += 1
+        t = generations
+        temp = np.random.rand() * 15.0 + 20.0
+        Cr_new = Cr.copy()
+
+        if temp > 30.0:
+            Cr_shade = (CrG + CrL) / 2.0
+            for i in range(N):
+                if np.random.rand() < 0.5:
+                    S = 2.0 - min(1.0, t / 100.0)
+                    Cr_new[i] = Cr[i] + S * np.random.rand() * (Cr_shade - Cr[i])
+                else:
+                    other_z = [idx for idx in range(N) if idx != i]
+                    z = np.random.choice(other_z) if other_z else i
+                    Cr_new[i] = Cr[i] - Cr[z] + Cr_shade
+        else:
+            mu, sigma_p, W_p = 25.0, 3.0, 1.0
+            p = W_p * (1.0 / (np.sqrt(2.0 * np.pi) * sigma_p)) * np.exp(-((temp - mu) ** 2) / (sigma_p ** 2))
+            for i in range(N):
+                k_food = 3.0
+                Q = k_food * np.random.rand() * (fit[i] / (fitG + 1e-12))
+                if Q > 2.0:
+                    Cr_food = np.exp(-1.0 / max(Q, 1e-6)) * CrG
+                    angle = 2.0 * np.pi * np.random.rand()
+                    Cr_new[i] = Cr[i] + Cr_food * p * (np.cos(angle) - np.sin(angle))
+                else:
+                    Cr_new[i] = (Cr[i] - CrG) * p + p * np.random.rand() * Cr[i]
+
+        Cr_new = np.clip(Cr_new, lb, ub)
+        for i in range(N):
+            if not evaluator.has_budget():
+                break
+            cand_b = _bincoa_binarize(Cr_new[i], dim)
+            cand_f = evaluator.evaluate(cand_b, ws=ws)
+            if cand_f < fit[i]:
+                Cr[i] = Cr_new[i].copy()
+                Cr_bin[i] = cand_b.copy()
+                fit[i] = cand_f
+
+        # Crisscross HC
+        perm = np.random.permutation(N)
+        for idx in range(0, N - 1, 2):
+            if not evaluator.has_budget():
+                break
+            i1, i2 = perm[idx], perm[idx + 1]
+            r1, r2 = np.random.rand(), np.random.rand()
+            c1, c2 = np.random.uniform(-1.0, 1.0), np.random.uniform(-1.0, 1.0)
+            hc1 = np.clip(r1 * Cr[i1] + (1.0 - r1) * Cr[i2] + c1 * (Cr[i1] - Cr[i2]), lb, ub)
+            b_hc1 = _bincoa_binarize(hc1, dim)
+            f_hc1 = evaluator.evaluate(b_hc1, ws=ws)
+            if f_hc1 < fit[i1]:
+                Cr[i1] = hc1
+                Cr_bin[i1] = b_hc1
+                fit[i1] = f_hc1
+
+            if not evaluator.has_budget():
+                break
+            hc2 = np.clip(r2 * Cr[i2] + (1.0 - r2) * Cr[i1] + c2 * (Cr[i2] - Cr[i1]), lb, ub)
+            b_hc2 = _bincoa_binarize(hc2, dim)
+            f_hc2 = evaluator.evaluate(b_hc2, ws=ws)
+            if f_hc2 < fit[i2]:
+                Cr[i2] = hc2
+                Cr_bin[i2] = b_hc2
+                fit[i2] = f_hc2
+
+        # Crisscross VC
+        for i in range(N):
+            if not evaluator.has_budget():
+                break
+            if dim >= 2:
+                d1, d2 = np.random.choice(dim, 2, replace=False)
+                r_v = np.random.rand()
+                vc = Cr[i].copy()
+                vc[d1] = r_v * Cr[i, d1] + (1.0 - r_v) * Cr[i, d2]
+                vc = np.clip(vc, lb, ub)
+                b_vc = _bincoa_binarize(vc, dim)
+                f_vc = evaluator.evaluate(b_vc, ws=ws)
+                if f_vc < fit[i]:
+                    Cr[i] = vc
+                    Cr_bin[i] = b_vc
+                    fit[i] = f_vc
+
+        cur_best_idx = np.argmin(fit)
+        CrL = Cr[cur_best_idx].copy()
+        if fit[cur_best_idx] < fitG:
+            fitG = float(fit[cur_best_idx])
+            CrG = Cr[cur_best_idx].copy()
+            CrG_bin = Cr_bin[cur_best_idx].copy()
+
+    mask = CrG_bin.astype(bool)
+    if not mask.any():
+        mask[np.random.choice(dim, min(3, dim), replace=False)] = True
+
+    return {
+        "mask": mask,
+        "fitG": fitG,
+        "generations_completed": generations,
+        "stop_reason": "budget_exhausted" if not evaluator.has_budget() else "normal",
+    }
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 11. IGPSO (Importance-Guided PSO - Applied Soft Computing 2024)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def run_nested_IGPSO(X_train, y_train, evaluator, opts, seed=7):
+    """
+    Importance-Guided Particle Swarm Optimization under BudgetEvaluator.
+    Two-stage importance estimation via ANOVA F-statistic permutation contrast.
+    """
+    from sklearn.feature_selection import f_classif
+
+    np.random.seed(seed)
+    dim = X_train.shape[1]
+    N = opts.get("N", 20)
+    thres = opts.get("thres", 0.6)
+    ws = opts.get("ws", [0.90, 0.10])
+    Vmax = 0.5
+    W_max, W_min = 0.9, 0.1
+    C_max, C_min = 2.0, 0.1
+
+    # Two-stage importance estimation strictly on outer train
+    F1, _ = f_classif(X_train, y_train)
+    F1 = np.nan_to_num(F1, nan=0.0, posinf=0.0, neginf=0.0)
+
+    rng = np.random.default_rng(seed=seed + 999)
+    y_neg = rng.permutation(y_train)
+    F2, _ = f_classif(X_train, y_neg)
+    F2 = np.nan_to_num(F2, nan=0.0, posinf=0.0, neginf=0.0)
+
+    imp = np.maximum(0.0, F1 - F2)
+    imp_max = imp.max()
+    if imp_max > 1e-9:
+        imp = imp / imp_max
+    else:
+        imp = np.full(dim, 0.5)
+
+    w_j = W_min + (W_max - W_min) * (1.0 - imp)
+    c1_j = C_min + (C_max - C_min) * imp
+    c2_j = C_min + (C_max - C_min) * imp
+
+    init_prob = 0.2 + 0.6 * imp
+    P = (np.random.rand(N, dim) < init_prob).astype(float)
+    V = np.zeros((N, dim))
+
+    fit = np.zeros(N)
+    for i in range(N):
+        if not evaluator.has_budget():
+            break
+        m = P[i].astype(bool)
+        if not m.any():
+            m[np.random.randint(dim)] = True
+        fit[i] = evaluator.evaluate(m, ws=ws)
+
+    Pbest = P.copy()
+    fitP = fit.copy()
+    bi = np.argmin(fit)
+    gbest = P[bi].copy()
+    fitG = float(fit[bi])
+    generations = 0
+
+    while evaluator.has_budget():
+        generations += 1
+        r1 = np.random.rand(N, dim)
+        r2 = np.random.rand(N, dim)
+        V = np.clip(w_j * V + c1_j * r1 * (Pbest - P) + c2_j * r2 * (gbest - P), -Vmax, Vmax)
+        prob = 1.0 / (1.0 + np.exp(-V))
+        P = (np.random.rand(N, dim) < prob).astype(float)
+
+        for i in range(N):
+            if not evaluator.has_budget():
+                break
+            m = P[i].astype(bool)
+            if not m.any():
+                m[np.random.randint(dim)] = True
+            f = evaluator.evaluate(m, ws=ws)
+            if f < fitP[i]:
+                Pbest[i] = P[i].copy()
+                fitP[i] = f
+            if f < fitG:
+                fitG = float(f)
+                gbest = P[i].copy()
+
+    mask = (gbest > thres).astype(bool)
+    if not mask.any():
+        mask[np.random.randint(dim)] = True
+
+    return {
+        "mask": mask,
+        "fitG": fitG,
+        "generations_completed": generations,
+        "stop_reason": "budget_exhausted" if not evaluator.has_budget() else "normal",
+    }
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 12. DENCA_SO (Evolutionary Filter DE - Hancer et al. KBS 2023)
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _compute_ncfs_weights_nested(X, y, lambd=0.01, max_iter=50):
+    from scipy.optimize import minimize
+    N_samp, D = X.shape
+    std = np.std(X, axis=0)
+    std[std == 0] = 1.0
+    X_norm = ((X - np.mean(X, axis=0)) / std).astype(np.float32)
+
+    mask_same = (y[:, None] == y[None, :])
+    np.fill_diagonal(mask_same, False)
+    mask_other = ~np.eye(N_samp, dtype=bool)
+    X_sq = (X_norm ** 2).astype(np.float32)
+
+    def loss_and_grad(w):
+        w_vec = w.astype(np.float32)
+        w2 = w_vec ** 2
+        s = X_sq @ w2
+        X_w = X_norm * w_vec
+        d = np.maximum(s[:, None] + s[None, :] - 2.0 * (X_w @ X_w.T), 0.0)
+        d_min = np.min(d, axis=1, keepdims=True)
+        exp_d = np.exp(-(d - d_min)) * mask_other
+        sum_exp = np.sum(exp_d, axis=1, keepdims=True) + 1e-12
+        P = exp_d / sum_exp
+        p_i = np.sum(P * mask_same, axis=1)
+        obj = -(np.mean(p_i) - lambd * np.sum(w2))
+
+        M = P * mask_same
+        PX = P @ X_norm
+        MX = M @ X_norm
+        PX_sq = P @ X_sq
+        MX_sq = M @ X_sq
+        diff_terms = 2.0 * X_norm * (MX - p_i[:, None] * PX) + (p_i[:, None] * PX_sq - MX_sq)
+        grad_p_i = 2.0 * w_vec[None, :] * diff_terms
+        grad = -(np.mean(grad_p_i, axis=0) - 2.0 * lambd * w_vec)
+        return float(obj), grad.astype(np.float64)
+
+    w0 = np.ones(D, dtype=np.float64) / np.sqrt(max(D, 1))
+    try:
+        res = minimize(
+            loss_and_grad,
+            w0,
+            method="L-BFGS-B",
+            jac=True,
+            bounds=[(0.0, None) for _ in range(D)],
+            options={"maxiter": max_iter, "ftol": 1e-4, "gtol": 1e-4},
+        )
+        weights = np.abs(res.x)
+    except Exception:
+        weights = np.zeros(D)
+        classes = np.unique(y)
+        if len(classes) > 1:
+            overall_mean = np.mean(X_norm, axis=0)
+            for c in classes:
+                mask_c = (y == c)
+                nc = np.sum(mask_c)
+                if nc > 0:
+                    mean_c = np.mean(X_norm[mask_c], axis=0)
+                    weights += nc * (mean_c - overall_mean) ** 2
+
+    w_min, w_max = np.min(weights), np.max(weights)
+    if w_max > w_min:
+        H = (weights - w_min) / (w_max - w_min)
+    else:
+        H = np.ones(D) / D
+    return H
+
+
+_NCFS_CACHE_NESTED = {}
+
+
+def run_nested_DENCA_SO(X_train, y_train, evaluator, opts, seed=7):
+    """
+    DENCA-SO (Evolutionary Filter DE) under BudgetEvaluator.
+    Computes NCFS weights, runs DE on filter objective, and evaluates best candidate.
+    """
+    np.random.seed(seed)
+    dim = X_train.shape[1]
+    N = opts.get("N", 20)
+    ws = opts.get("ws", [0.90, 0.10])
+    lambd = opts.get("ncfs_lambda", 0.01)
+
+    train_hash = hashlib.sha256(X_train.tobytes() + y_train.tobytes()).hexdigest()
+    cache_key = (train_hash, lambd)
+    if cache_key in _NCFS_CACHE_NESTED:
+        H = _NCFS_CACHE_NESTED[cache_key]
+    else:
+        H = _compute_ncfs_weights_nested(X_train, y_train, lambd=lambd, max_iter=50)
+        _NCFS_CACHE_NESTED[cache_key] = H
+
+    W = 0.05 if dim > 60 else 0.10
+    F = 0.5
+    CR = 0.2
+
+    def filter_cost(x_cont):
+        mask = (x_cont > 0.5)
+        sz = int(mask.sum())
+        if sz == 0:
+            return 1e9
+        return -W * np.sum(H[mask]) + (1.0 - W) * (sz / dim)
+
+    P = np.random.uniform(0.0, 1.0, (N, dim))
+    fit = np.zeros(N)
+    for i in range(N):
+        if not evaluator.has_budget():
+            break
+        evaluator.candidate_eval_requests += 1
+        evaluator.shortcut_eval_requests += 1
+        fit[i] = filter_cost(P[i])
+
+    bi = np.argmin(fit)
+    Gbest = P[bi].copy()
+    best_filter_fit = fit[bi]
+
+    # DENCA performs evolutionary filter search under strict budget
+    generations = 0
+
+    while evaluator.has_budget():
+        generations += 1
+        for i in range(N):
+            if not evaluator.has_budget():
+                break
+            candidates = [idx for idx in range(N) if idx != i]
+            r1, r2, r3 = np.random.choice(candidates, 3, replace=False)
+            v = np.clip(P[r1] + F * (P[r2] - P[r3]), 0.0, 1.0)
+            j_rand = np.random.randint(0, dim)
+            cross_mask = (np.random.rand(dim) < CR)
+            cross_mask[j_rand] = True
+            u = np.where(cross_mask, v, P[i])
+
+            evaluator.candidate_eval_requests += 1
+            evaluator.shortcut_eval_requests += 1
+            f_u = filter_cost(u)
+            if f_u <= fit[i]:
+                P[i] = u
+                fit[i] = f_u
+                if f_u < best_filter_fit:
+                    best_filter_fit = f_u
+                    Gbest = u.copy()
+
+    final_mask = (Gbest > 0.5)
+    if not final_mask.any():
+        final_mask[np.argmax(H)] = True
+
+    fitG = evaluator.evaluate(final_mask, ws=ws)
+
+    return {
+        "mask": final_mask,
+        "fitG": fitG,
+        "generations_completed": generations,
+        "stop_reason": "normal",
+    }
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Master Runner Registration
+# ══════════════════════════════════════════════════════════════════════════════
+
 NESTED_RUNNERS = {
+    # 5 Core Configurations (Stage 1)
     "KDS_EL_TwoPhase": run_nested_KDS_EL_TwoPhase,
     "MEL": run_nested_MEL,
     "MEL_MI": run_nested_MEL_MI,
     "KDS_EL_NoPool": run_nested_KDS_EL_NoPool,
     "bIRIME": run_nested_bIRIME,
+    # 7 Extended Competitors (Stage 2)
+    "BPSO": run_nested_BPSO,
+    "FWPSO": run_nested_FWPSO,
+    "SaWDE": run_nested_SaWDE,
+    "PSO_CSM": run_nested_PSO_CSM,
+    "BinCOA": run_nested_BinCOA,
+    "IGPSO": run_nested_IGPSO,
+    "DENCA_SO": run_nested_DENCA_SO,
 }
