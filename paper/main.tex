@@ -651,7 +651,7 @@ This subsection outlines the experimental framework designed to evaluate the cla
 
 To validate the optimization performance and feature reduction capability of KDS-EL across diverse problem domains, a total of 20 benchmark datasets widely adopted in the evolutionary feature selection literature~\cite{mel2024,wangjia2022,wei2025} are selected. As cataloged in Table~\ref{T2}, the suite spans two distinct operational regimes: 15 biomedical microarrays characterized by severe sample scarcity where available observations $N_{\mathrm{samp}} \le 173$ are vastly outnumbered by candidate features, alongside five text, image, speech, and synthetic benchmarks providing over $1{,}400$ training observations. Such diverse data distributions and dimensional complexities effectively evaluate the combinatorial search capability and feature reduction efficacy of feature selection algorithms across contrasting sample-to-dimension regimes. The detailed characteristics of the investigated datasets are summarized in Table~\ref{T2}.
 
-To guarantee experimental reproducibility and methodological hygiene, data preparation adheres to a standardized protocol across all evaluated domains. The 20 benchmark datasets are acquired from established archives, including the Kent Ridge Biomedical Data Set repository and the Arizona State University Feature Selection repository, as complete numerical feature matrices without missing values, obviating the need for statistical imputation. All comparison methods used the same source-provided numerical representation of each dataset. No additional dataset-level standardization, resampling, or imputation was performed. Where preprocessing had already been performed by the original data provider, the corresponding processed representation was retained without further transformation. Natural class distributions are preserved intact: no synthetic oversampling, random undersampling, or artificial balancing heuristics are introduced, preventing synthetic distribution artifacts. To address intrinsic class imbalance across cross-validation splits, five-fold stratified partitioning is strictly enforced, preserving identical category proportions across training and validation partitions under a fixed random seed of 42.
+To guarantee experimental reproducibility and methodological hygiene, data preparation adheres to a standardized protocol across all evaluated domains. The 20 benchmark datasets are acquired from established archives, including the Kent Ridge Biomedical Data Set repository and the Arizona State University Feature Selection repository, as complete numerical feature matrices without missing values, obviating the need for statistical imputation. All comparison methods used the same source-provided numerical representation of each dataset. No additional dataset-level standardization, resampling, or imputation was performed. Where preprocessing had already been performed by the original data provider, the corresponding processed representation was retained without further transformation. Natural class distributions are preserved intact: no synthetic oversampling, random undersampling, or artificial balancing heuristics are introduced, preventing synthetic distribution artifacts. To mitigate partition variance across cross-validation splits in the presence of intrinsic class imbalance, five-fold stratified partitioning is applied, preserving the empirical class ratio as closely as integer sample constraints permit under a fixed random seed of 42.
 
 \subsubsection{Comparison algorithms}
 
@@ -659,7 +659,7 @@ We benchmark KDS-EL against nine representative single-objective competitor algo
 
 \subsubsection{Evaluation metrics and statistical test protocols}
 
-Algorithm performance is evaluated across three primary quantitative criteria: internal benchmark cross-validation accuracy with standard deviation, the number of selected features alongside the feature selection ratio, and computational runtime in seconds. A 3-nearest neighbor (3-NN) classifier with 5-fold stratified cross-validation serves as the wrapper evaluation model across all benchmark datasets, ensuring parameter-free reproducibility and high sensitivity to candidate feature subset discriminability. Classification accuracy serves as the primary optimization surrogate criterion to maintain direct structural alignment with the wrapper error objective in Eq.~\eqref{eq:fs_formulation} and ensure rigorous comparability with peer evolutionary literature. Furthermore, across the 17 binary and three multi-class benchmarks in Table~\ref{T2}, class distributions remain balanced, rendering accuracy an objective-aligned and computationally efficient surrogate for combinatorial search. Following the standardized benchmarking protocol established in top-tier high-dimensional evolutionary feature selection literature~\cite{mel2024,wangjia2022,wei2025}, each benchmark problem is evaluated as a self-contained combinatorial optimization instance where internal cross-validation accuracy guides evolutionary search trajectories under a synchronized population size of $N=20$ and generation cutoff of $T=100$ across all competing methods.
+Algorithm performance is evaluated across three primary quantitative criteria: internal benchmark cross-validation accuracy with standard deviation, the number of selected features alongside the feature selection ratio, and computational runtime in seconds. A 3-nearest neighbor (3-NN) classifier with 5-fold stratified cross-validation serves as the wrapper evaluation model across all benchmark datasets, ensuring parameter-free reproducibility and high sensitivity to candidate feature subset discriminability. Classification accuracy serves as the internal wrapper fitness surrogate criterion to maintain direct structural alignment with the canonical error objective in Eq.~\eqref{eq:fs_formulation} and ensure rigorous comparability with peer evolutionary methods under a unified optimization formulation. Nevertheless, because standard accuracy reflects overall correct classifications without distinction among categories, its score can be disproportionately influenced by majority classes on datasets exhibiting class disparity (as documented in Table~\ref{T2}). To examine whether class imbalance affects the empirical interpretation of candidate feature subsets, we additionally evaluate Balanced Accuracy (the unweighted mean of recall across all categories) across all evaluated algorithms, providing a balanced assessment across both minority and majority classes. Following the standardized benchmarking protocol established in top-tier high-dimensional evolutionary feature selection literature~\cite{mel2024,wangjia2022,wei2025}, each benchmark problem is evaluated as a self-contained combinatorial optimization instance where internal cross-validation accuracy guides evolutionary search trajectories under a synchronized population size of $N=20$ and generation cutoff of $T=100$ across all competing methods.
 
 To ensure reproducibility, all algorithms are implemented in Python 3.12 utilizing NumPy, scikit-learn, and SciPy, and evaluated under a standardized single-threaded setting on an Intel Core i5-9500 CPU @ 3.00\,GHz with 16\,GB DDR4 RAM running 64-bit Windows 10 (detailed specifications in Supplementary Section~S5). All 10 independent stochastic runs operate under synchronized population size $N=20$ and generation cutoff $T=100$ using the parameters in Table~\ref{T3}, initialized with fixed deterministic seeds across runs to guarantee complete experimental reproducibility. Following the benchmark protocol adopted by MEL~\cite{mel2024}, each dataset was treated as a self-contained combinatorial optimization instance. The mutual-information vector was computed once from the complete instance and served as fixed problem-level heuristic knowledge throughout the evolutionary search. The internal five-fold stratified cross-validation procedure was used consistently as the fitness evaluation surrogate for all candidate subsets. Consequently, the reported results characterize comparative optimization performance under this benchmark protocol rather than unbiased predictive performance on an unseen external cohort.
 
@@ -673,36 +673,39 @@ Furthermore, to determine whether the empirical advantages of KDS-EL over compet
 \label{T2}
 \renewcommand{\arraystretch}{1.15}
 \setlength{\tabcolsep}{3pt}
-\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}clrrc l@{}}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}clrrc c l@{}}
 \toprule
-No. & Dataset & Samples ($n$) & Features ($D$) & Classes ($C$) & Domain \\
+No. & Dataset & Samples ($n$) & Features ($D$) & Classes ($C$) & Class Breakdown & Domain \\
 \midrule
-1  & Adenoma    &   36 &  7{,}457  &  2 & Gene expression \\
-2  & ALL\_AML   &   72 &  7{,}129  &  2 & Gene expression \\
-3  & ALL1       &  128 & 12{,}625  &  2 & Gene expression \\
-4  & ALL4       &   93 & 12{,}625  &  2 & Gene expression \\
-5  & Colon      &   62 &  2{,}000  &  2 & Gene expression \\
-6  & DLBCL      &   77 &  7{,}129  &  2 & Gene expression \\
-7  & Gastric    &   65 & 22{,}645  &  2 & Gene expression \\
-8  & Gastric1   &  144 & 22{,}283  &  2 & Gene expression \\
-9  & Gastric2   &  124 & 22{,}283  &  2 & Gene expression \\
-10 & Leukaemia  &   72 &  7{,}129  &  2 & Gene expression \\
-11 & Lymphoma   &   45 &  4{,}026  &  2 & Gene expression \\
-12 & Myeloma    &  173 & 12{,}625  &  2 & Gene expression \\
-13 & Prostate   &  102 & 12{,}625  &  2 & Gene expression \\
-14 & SRBCT      &   83 &  2{,}308  &  4 & Gene expression \\
-15 & T1D        &  101 & 54{,}675  &  2 & Gene expression \\
+1  & Adenoma    &   36 &  7{,}457  &  2 & 18 / 18                 & Gene expression \\
+2  & ALL\_AML   &   72 &  7{,}129  &  2 & 47 / 25                 & Gene expression \\
+3  & ALL1       &  128 & 12{,}625  &  2 & 95 / 33                 & Gene expression \\
+4  & ALL4       &   93 & 12{,}625  &  2 & 67 / 26                 & Gene expression \\
+5  & Colon      &   62 &  2{,}000  &  2 & 40 / 22                 & Gene expression \\
+6  & DLBCL      &   77 &  7{,}129  &  2 & 58 / 19                 & Gene expression \\
+7  & Gastric    &   65 & 22{,}645  &  2 & 36 / 29                 & Gene expression \\
+8  & Gastric1   &  144 & 22{,}283  &  2 & 72 / 72                 & Gene expression \\
+9  & Gastric2   &  124 & 22{,}283  &  2 & 62 / 62                 & Gene expression \\
+10 & Leukaemia  &   72 &  7{,}129  &  2 & 47 / 25                 & Gene expression \\
+11 & Lymphoma   &   45 &  4{,}026  &  2 & 23 / 22                 & Gene expression \\
+12 & Myeloma    &  173 & 12{,}625  &  2 & 137 / 36                & Gene expression \\
+13 & Prostate   &  102 & 12{,}625  &  2 & 52 / 50                 & Gene expression \\
+14 & SRBCT      &   83 &  2{,}308  &  4 & 29 / 25 / 18 / 11       & Gene expression \\
+15 & T1D        &  101 & 54{,}675  &  2 & 57 / 44                 & Gene expression \\
 \midrule
-16 & BASEHOCK   & 1{,}993 & 4{,}862  &  2 & Text \\
-17 & PCMAC      & 1{,}943 & 3{,}289  &  2 & Text \\
+16 & BASEHOCK   & 1{,}993 & 4{,}862  &  2 & 999 / 994               & Text \\
+17 & PCMAC      & 1{,}943 & 3{,}289  &  2 & 982 / 961               & Text \\
 \midrule
-18 & COIL20     & 1{,}440 & 1{,}024  & 20 & Image \\
+18 & COIL20     & 1{,}440 & 1{,}024  & 20 & $72 \times 20$          & Image \\
 \midrule
-19 & ISOLET     & 1{,}560 &   617    & 26 & Speech \\
+19 & ISOLET     & 1{,}560 &   617    & 26 & $60 \times 26$          & Speech \\
 \midrule
-20 & madelon    & 2{,}600 &   500    &  2 & Synthetic \\
+20 & madelon    & 2{,}600 &   500    &  2 & 1{,}300 / 1{,}300       & Synthetic \\
 \bottomrule
 \end{tabular*}
+\vspace{2pt}
+\par\raggedright\footnotesize
+\textit{Note}: For binary datasets, the class breakdown reports sample counts ordered as [Majority / Minority]. For SRBCT, counts reflect the four categories ordered by descending size. For balanced multi-class benchmarks (COIL20, ISOLET), the notation $n_c \times C$ indicates $C$ classes each containing $n_c$ observations.
 \end{table}
 \begin{table}[!htb]
 \centering
