@@ -145,27 +145,26 @@
     }
   },
   "timing": {
-    "search_sec": 11.243,
-    "blind_eval_sec": 0.139,
-    "total_sec": 11.432
+    "search_sec": 11.241,
+    "blind_eval_sec": 0.137,
+    "total_sec": 11.429
   },
   "integrity_audit": {
     "all_passed": true,
     "details": {
-      "1_mi_outer_train_only": true,
-      "2_outer_test_isolated_from_init": true,
-      "3_inner_folds_within_train": true,
-      "4_outer_models_fit_train_only": true,
-      "5_outer_test_blind_predict_only": true,
-      "6_mask_selected_without_test_labels": true,
+      "1_mi_and_data_outer_train_only": true,
+      "2_outer_test_isolated_from_search": true,
+      "3_inner_folds_strictly_within_train": true,
+      "4_outer_models_fit_dimension_valid": true,
+      "5_outer_test_predictions_complete": true,
+      "6_mask_selected_from_inner_fitness": true,
       "7_candidate_requests_le_2000": true,
       "8_tps_switch_rescore_counted": true,
       "9_requests_accounting_closed": true,
       "9b_inner_fits_equals_5_cv_calls": true,
-      "10_oof_no_overlap": true,
-      "10b_oof_bounds_valid": true,
+      "10_outer_split_partition_complete": true,
       "11_no_silent_failure": true,
-      "12_artifacts_persisted": true
+      "12_artifacts_and_metrics_valid": true
     }
   },
   "system_metadata": {
@@ -173,6 +172,6 @@
     "python": "3.13.14",
     "numpy": "2.5.0",
     "evaluator_type": "Scikit_Learn_Fallback",
-    "timestamp": "2026-11-07T12:39:25.990778"
+    "timestamp": "2026-11-07T15:33:50.734493"
   }
 }
