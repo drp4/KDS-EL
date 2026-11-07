@@ -22,13 +22,17 @@ from utils import ker_flip, compute_mi_scores
 # 1. KDS-EL TwoPhase (Full)
 # ══════════════════════════════════════════════════════════════════════════════
 
-def run_nested_KDS_EL_TwoPhase(X_train, y_train, evaluator, opts, seed=7):
+def run_nested_KDS_EL_TwoPhase(X_train, y_train, evaluator, opts, seed=7, enable_tps=True):
     """
-    KDS-EL Full TwoPhase under BudgetEvaluator:
-      - Phase 1: ws = [0.70, 0.30] (feature compression)
-      - Phase 2: ws = [0.95, 0.05] (accuracy refinement)
-      - Switched at dynamic progress q >= 0.70
-      - Rescores Pbest at switch boundary (counted in budget)
+    KDS-EL TwoPhase under BudgetEvaluator:
+      - If enable_tps is True:
+          Phase 1: ws = [0.70, 0.30] (feature compression)
+          Phase 2: ws = [0.95, 0.05] (accuracy refinement)
+          Switched at dynamic progress q >= 0.70
+          Rescores Pbest at switch boundary (counted in budget)
+      - If enable_tps is False (Strict Static / NoPool Mode):
+          Fixed ws throughout evolution (default: [0.90, 0.10])
+          ZERO switch checks, ZERO rescore requests, ZERO stall_counter resets.
     """
     np.random.seed(seed)
     dim = X_train.shape[1]
@@ -45,9 +49,16 @@ def run_nested_KDS_EL_TwoPhase(X_train, y_train, evaluator, opts, seed=7):
     patience = opts.get("stall_patience", 20)
     elite_k = opts.get("elite_k", 3)
 
-    ws1 = opts.get("ws_phase1", [0.70, 0.30])
-    ws2 = opts.get("ws_phase2", [0.95, 0.05])
-    current_ws = ws1
+    if enable_tps:
+        ws1 = opts.get("ws_phase1", [0.70, 0.30])
+        ws2 = opts.get("ws_phase2", [0.95, 0.05])
+        current_ws = ws1
+    else:
+        # Strict static mode: invariant weights throughout search
+        current_ws = opts.get("ws", [0.90, 0.10])
+        ws1 = current_ws
+        ws2 = current_ws
+
     switched = False
 
     # MI computed ONLY on outer training data
@@ -84,8 +95,8 @@ def run_nested_KDS_EL_TwoPhase(X_train, y_train, evaluator, opts, seed=7):
     while evaluator.has_budget():
         generations += 1
 
-        # ── TPS Switch Boundary Check at Generation Start ──
-        if not switched and evaluator.progress_q >= 0.70:
+        # ── TPS Switch Boundary Check (ONLY if enable_tps is True) ──
+        if enable_tps and not switched and evaluator.progress_q >= 0.70:
             switched = True
             current_ws = ws2
             evaluator.tps_switch_q = float(evaluator.progress_q)
@@ -450,11 +461,15 @@ def run_nested_MEL_MI(X_train, y_train, evaluator, opts, seed=7):
 # ══════════════════════════════════════════════════════════════════════════════
 
 def run_nested_KDS_EL_NoPool(X_train, y_train, evaluator, opts, seed=7):
-    """KDS-EL without TwoPhase Strategy (fixed ws=[0.90, 0.10])."""
+    """
+    KDS-EL without TwoPhase Strategy (fixed ws=[0.90, 0.10]):
+      - Strict enable_tps=False: ZERO switch, ZERO rescore requests, ZERO stall reset.
+    """
     opts_nopool = dict(opts)
-    opts_nopool["ws_phase1"] = [0.90, 0.10]
-    opts_nopool["ws_phase2"] = [0.90, 0.10]
-    res = run_nested_KDS_EL_TwoPhase(X_train, y_train, evaluator, opts_nopool, seed=seed)
+    opts_nopool["ws"] = opts.get("ws", [0.90, 0.10])
+    res = run_nested_KDS_EL_TwoPhase(
+        X_train, y_train, evaluator, opts_nopool, seed=seed, enable_tps=False
+    )
     return res
 
 

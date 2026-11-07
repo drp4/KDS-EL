@@ -289,7 +289,7 @@ def execute_single_run(
 # E1-A: Flow Acceptance Pipeline
 # ══════════════════════════════════════════════════════════════════════════════
 
-def run_e1_acceptance(use_fast_knn=False, verbose=True):
+def run_e1_acceptance(use_fast_knn=False, out_base_dir=None, verbose=True):
     """
     Executes E1-A: 20 flow acceptance runs across 4 datasets x 5 algorithms.
     """
@@ -302,10 +302,24 @@ def run_e1_acceptance(use_fast_knn=False, verbose=True):
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 78)
 
-    out_base_dir = os.path.join(PROJECT_ROOT, "output", "nested_cv")
+    if out_base_dir is None:
+        out_base_dir = os.path.join(PROJECT_ROOT, "output", "nested_cv")
     splits_dir = os.path.join(out_base_dir, "splits")
     e1_a_dir = os.path.join(out_base_dir, "e1_acceptance")
     os.makedirs(e1_a_dir, exist_ok=True)
+
+    # 0. Pre-acceptance formal verification: 5-fold Pooled OOF partition integrity
+    splits_mgr = NestedSplitsManager(splits_dir)
+    oof_partition_results = {}
+    oof_all_passed = True
+    print("\n--- 5-Fold Pooled OOF Partition Integrity Verification ---")
+    for ds in E1_DATASETS:
+        X_tmp, y_tmp = load_dataset(ds, DATA_DIR_TXT, DATA_DIR_MAT)
+        ok, msg = splits_mgr.verify_5fold_pooled_oof(ds, y_tmp)
+        oof_partition_results[ds] = {"passed": bool(ok), "message": str(msg), "N_samples": len(y_tmp)}
+        if not ok:
+            oof_all_passed = False
+        print(f"  [SPLIT AUDIT] {ds:10s} (N={len(y_tmp):4d}) | 5-Fold Pooled OOF: {'PASS' if ok else 'FAIL'} - {msg}")
 
     all_run_results = []
     total_passed = 0
@@ -332,7 +346,7 @@ def run_e1_acceptance(use_fast_knn=False, verbose=True):
                 total_passed += 1
 
     total_time = time.perf_counter() - t0_all
-    all_20_passed = total_passed == len(all_run_results)
+    all_20_passed = (total_passed == len(all_run_results)) and oof_all_passed
     decision = "ACCEPTANCE_PASSED" if all_20_passed else "ACCEPTANCE_FAILED"
 
     summary = {
@@ -342,6 +356,7 @@ def run_e1_acceptance(use_fast_knn=False, verbose=True):
         "passed_runs": total_passed,
         "failed_runs": len(all_run_results) - total_passed,
         "all_passed": all_20_passed,
+        "oof_partition_audit": oof_partition_results,
         "decision_gate": decision,
         "total_elapsed_sec": round(total_time, 2),
         "run_details": [
@@ -386,6 +401,13 @@ def run_e1_acceptance(use_fast_knn=False, verbose=True):
         else:
             f.write("> **GATE VERDICT: FAIL** — Discrepancies or integrity failures were detected during flow acceptance. Expansion to full-scale experiments must be paused until root causes are resolved.\n\n")
 
+        f.write("## 5-Fold Pooled OOF Partition Integrity Audit\n\n")
+        f.write("| Dataset | Total Samples ($N$) | 5 Folds Mutually Disjoint & Complete | Status |\n")
+        f.write("| :--- | :---: | :--- | :---: |\n")
+        for ds, r in summary["oof_partition_audit"].items():
+            f.write(f"| **{ds}** | {r['N_samples']} | {r['message']} | **{'PASS' if r['passed'] else 'FAIL'}** |\n")
+        f.write("\n")
+
         f.write("## 20 Acceptance Runs Detail Table\n\n")
         f.write("| Dataset | Algorithm | Requests (<=2000) | Shortcuts | Cache Hits | CV Calls | Feats | 3-NN Acc | 3-NN BAcc | SVM Acc | RF Acc | Time (s) | Audit |\n")
         f.write("| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |\n")
@@ -412,9 +434,30 @@ def run_e1_acceptance(use_fast_knn=False, verbose=True):
 # E1-B: Concurrency Ladder Stress Test
 # ══════════════════════════════════════════════════════════════════════════════
 
+def _get_tree_rss_mb(proc):
+    """Calculates total RSS (MB) of parent process and all child processes."""
+    if not HAS_PSUTIL or proc is None:
+        return 0.0
+    try:
+        total = proc.memory_info().rss
+        for c in proc.children(recursive=True):
+            try:
+                total += c.memory_info().rss
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                pass
+        return total / (1024 * 1024)
+    except (psutil.NoSuchProcess, psutil.AccessDenied):
+        return 0.0
+
+
 def _stress_worker_task(task_spec):
-    """Worker task executed in separate process."""
-    ds, algo, use_fast = task_spec
+    """Worker task executed in separate process with isolated output directory."""
+    if len(task_spec) == 4:
+        ds, algo, use_fast, out_dir = task_spec
+    else:
+        ds, algo, use_fast = task_spec
+        out_dir = os.path.join(PROJECT_ROOT, "output", "nested_cv", "e1_stress", "scratch")
+    os.makedirs(out_dir, exist_ok=True)
     res = execute_single_run(
         dataset_name=ds,
         algo_name=algo,
@@ -423,6 +466,7 @@ def _stress_worker_task(task_spec):
         seed=7,
         max_fes=2000,
         pop_size=20,
+        out_base_dir=out_dir,
         use_fast_knn=use_fast,
         verbose=False,
     )
@@ -435,7 +479,7 @@ def _stress_worker_task(task_spec):
     }
 
 
-def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
+def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, out_base_dir=None, verbose=True):
     """
     Executes E1-B: Concurrency Ladder Stress Test across workers = 1, 2, 4.
     """
@@ -446,16 +490,20 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 78)
 
-    out_base_dir = os.path.join(PROJECT_ROOT, "output", "nested_cv")
+    if out_base_dir is None:
+        out_base_dir = os.path.join(PROJECT_ROOT, "output", "nested_cv")
     e1_b_dir = os.path.join(out_base_dir, "e1_stress")
     os.makedirs(e1_b_dir, exist_ok=True)
 
-    # Representative stress tasks (4 cross-scale tasks)
+    stress_scratch_dir = os.path.join(e1_b_dir, "scratch")
+    os.makedirs(stress_scratch_dir, exist_ok=True)
+
+    # Representative stress tasks (4 cross-scale tasks) with isolated scratch output dir
     stress_tasks = [
-        ("Colon", "KDS_EL_TwoPhase", use_fast_knn),
-        ("T1D", "KDS_EL_TwoPhase", use_fast_knn),
-        ("BASEHOCK", "MEL", use_fast_knn),
-        ("COIL20", "KDS_EL_NoPool", use_fast_knn),
+        ("Colon", "KDS_EL_TwoPhase", use_fast_knn, stress_scratch_dir),
+        ("T1D", "KDS_EL_TwoPhase", use_fast_knn, stress_scratch_dir),
+        ("BASEHOCK", "MEL", use_fast_knn, stress_scratch_dir),
+        ("COIL20", "KDS_EL_NoPool", use_fast_knn, stress_scratch_dir),
     ]
 
     ladder_results = []
@@ -464,7 +512,7 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
     for workers in worker_ladder:
         print(f"\nEvaluating Concurrency Level: workers = {workers} ...")
         proc = psutil.Process(os.getpid()) if HAS_PSUTIL else None
-        rss_start = (proc.memory_info().rss / (1024 * 1024)) if proc else 0.0  # MB
+        rss_start = _get_tree_rss_mb(proc)
 
         t0_level = time.perf_counter()
         peak_rss = rss_start
@@ -475,7 +523,7 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
                 results = []
                 for t in stress_tasks:
                     results.append(_stress_worker_task(t))
-                    current_rss = (proc.memory_info().rss / (1024 * 1024)) if proc else 0.0
+                    current_rss = _get_tree_rss_mb(proc)
                     peak_rss = max(peak_rss, current_rss)
             else:
                 results = []
@@ -485,7 +533,7 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
                         try:
                             r = fut.result()
                             results.append(r)
-                            current_rss = (proc.memory_info().rss / (1024 * 1024)) if proc else 0.0
+                            current_rss = _get_tree_rss_mb(proc)
                             peak_rss = max(peak_rss, current_rss)
                         except Exception as e:
                             errors.append(str(e))
@@ -500,7 +548,7 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
         else:
             speedup = base_time / max(1e-6, elapsed) if base_time else 1.00
 
-        rss_end = (proc.memory_info().rss / (1024 * 1024)) if proc else 0.0
+        rss_end = _get_tree_rss_mb(proc)
         peak_rss = max(peak_rss, rss_end)
 
         record = {
@@ -518,19 +566,27 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, verbose=True):
         ladder_results.append(record)
 
         if verbose:
-            rss_str = f"Peak RSS={peak_rss:6.1f} MB" if HAS_PSUTIL else "Peak RSS=N/A"
+            rss_str = f"Peak Tree RSS={peak_rss:6.1f} MB" if HAS_PSUTIL else "Peak Tree RSS=N/A"
             print(
                 f"  Workers={workers:2d} | Time={elapsed:6.2f}s | "
                 f"Speedup={speedup:4.2f}x | {rss_str} | "
                 f"Status={record['status']}"
             )
 
-    # Determine recommended concurrency
+    # Determine recommended concurrency based on diminishing returns
     valid_records = [r for r in ladder_results if r["status"] == "PASS"]
     if valid_records:
-        # Pick workers that gives best efficiency without runaway memory
-        best_rec = min(valid_records, key=lambda x: x["wall_clock_time_sec"])
-        recommended_workers = best_rec["workers"]
+        base_rec = valid_records[0]
+        recommended_workers = base_rec["workers"]
+        prev_time = base_rec["wall_clock_time_sec"]
+        for r in valid_records[1:]:
+            marginal_speedup = (prev_time - r["wall_clock_time_sec"]) / max(1e-6, prev_time)
+            # Require at least 5% marginal improvement to justify doubling worker allocation
+            if marginal_speedup >= 0.05:
+                recommended_workers = r["workers"]
+                prev_time = r["wall_clock_time_sec"]
+            else:
+                break
     else:
         recommended_workers = 1
 
@@ -617,6 +673,12 @@ def main():
         action="store_true",
         help="Explicitly force candidate fast 3-NN (default: auto-check E0 report)",
     )
+    parser.add_argument(
+        "--out-dir",
+        type=str,
+        default=None,
+        help="Custom output base directory (default: output/nested_cv)",
+    )
     parser.add_argument("--quiet", action="store_true", help="Suppress verbose output")
     args = parser.parse_args()
 
@@ -633,10 +695,10 @@ def main():
         print("[INFO] --use-fast-knn flag set: forcing Candidate Fast 3-NN.")
 
     if args.mode in ("all", "acceptance"):
-        run_e1_acceptance(use_fast_knn=use_fast, verbose=not args.quiet)
+        run_e1_acceptance(use_fast_knn=use_fast, out_base_dir=args.out_dir, verbose=not args.quiet)
 
     if args.mode in ("all", "stress"):
-        run_e1_stress(worker_ladder=args.workers, use_fast_knn=use_fast, verbose=not args.quiet)
+        run_e1_stress(worker_ladder=args.workers, use_fast_knn=use_fast, out_base_dir=args.out_dir, verbose=not args.quiet)
 
 
 if __name__ == "__main__":

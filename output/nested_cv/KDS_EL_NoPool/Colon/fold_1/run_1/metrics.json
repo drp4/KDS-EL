@@ -7,25 +7,25 @@
   "N": 20,
   "Max_FEs": 2000,
   "candidate_eval_requests": 2000,
-  "shortcut_eval_requests": 796,
-  "cache_hit_count": 46,
-  "cv_eval_calls": 1158,
-  "inner_model_fits": 5790,
+  "shortcut_eval_requests": 804,
+  "cache_hit_count": 27,
+  "cv_eval_calls": 1169,
+  "inner_model_fits": 5845,
   "outer_model_fits": 5,
-  "unique_masks": 1177,
+  "unique_masks": 1188,
   "active_features": 19,
   "active_features_ratio": 0.0095,
   "inner_gbest_fitness": 0.07495000000000002,
-  "generations_completed": 84,
+  "generations_completed": 85,
   "stop_reason": "budget_exhausted",
-  "tps_switch_q": 0.7070707070707071,
-  "tps_switch_E": 1420,
-  "tps_rescore_requests": 20,
-  "ker_attempts": 250,
+  "tps_switch_q": null,
+  "tps_switch_E": null,
+  "tps_rescore_requests": 0,
+  "ker_attempts": 252,
   "ker_accepts": 6,
-  "ker_accept_rate": 0.024,
+  "ker_accept_rate": 0.023809523809523808,
   "air_triggers": 3,
-  "p2_valid_ratio": 0.05238095238095238,
+  "p2_valid_ratio": 0.052941176470588235,
   "outer_test_indices": [
     8,
     13,
@@ -145,34 +145,33 @@
     }
   },
   "timing": {
-    "search_sec": 8.253,
-    "blind_eval_sec": 0.133,
-    "total_sec": 8.436
+    "search_sec": 13.072,
+    "blind_eval_sec": 0.163,
+    "total_sec": 13.292
   },
   "integrity_audit": {
     "all_passed": true,
     "details": {
-      "1_mi_outer_train_only": true,
-      "2_outer_test_isolated_from_init": true,
-      "3_inner_folds_within_train": true,
-      "4_outer_models_fit_train_only": true,
-      "5_outer_test_blind_predict_only": true,
-      "6_mask_selected_without_test_labels": true,
+      "1_mi_and_data_outer_train_only": true,
+      "2_outer_test_isolated_from_search": true,
+      "3_inner_folds_strictly_within_train": true,
+      "4_outer_models_fit_dimension_valid": true,
+      "5_outer_test_predictions_complete": true,
+      "6_mask_selected_from_inner_fitness": true,
       "7_candidate_requests_le_2000": true,
       "8_tps_switch_rescore_counted": true,
       "9_requests_accounting_closed": true,
       "9b_inner_fits_equals_5_cv_calls": true,
-      "10_oof_no_overlap": true,
-      "10b_oof_bounds_valid": true,
+      "10_outer_split_partition_complete": true,
       "11_no_silent_failure": true,
-      "12_artifacts_persisted": true
+      "12_artifacts_and_metrics_valid": true
     }
   },
   "system_metadata": {
-    "platform": "Windows-10-10.0.19045-SP0",
-    "python": "3.13.14",
-    "numpy": "2.5.0",
+    "platform": "Windows-10-10.0.19044-SP0",
+    "python": "3.12.8",
+    "numpy": "2.3.3",
     "evaluator_type": "Scikit_Learn_Fallback",
-    "timestamp": "2026-11-07T12:39:14.557255"
+    "timestamp": "2026-11-07T14:07:09.501056"
   }
 }
