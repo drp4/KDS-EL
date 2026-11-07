@@ -593,7 +593,7 @@ def run_e1_stress(worker_ladder=(1, 2, 4), use_fast_knn=False, out_base_dir=None
     summary = {
         "experiment": "E1-B_Concurrency_Ladder_Stress_Test",
         "timestamp": datetime.now().isoformat(),
-        "tasks": [f"{ds} / {algo}" for ds, algo, _ in stress_tasks],
+        "tasks": [f"{t[0]} / {t[1]}" for t in stress_tasks],
         "single_tier_threads_locked": 1,
         "concurrency_ladder": ladder_results,
         "recommended_workers": recommended_workers,
