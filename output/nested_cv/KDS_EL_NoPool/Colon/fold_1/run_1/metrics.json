@@ -145,9 +145,9 @@
     }
   },
   "timing": {
-    "search_sec": 13.072,
-    "blind_eval_sec": 0.163,
-    "total_sec": 13.292
+    "search_sec": 8.378,
+    "blind_eval_sec": 0.133,
+    "total_sec": 8.56
   },
   "integrity_audit": {
     "all_passed": true,
@@ -168,10 +168,10 @@
     }
   },
   "system_metadata": {
-    "platform": "Windows-10-10.0.19044-SP0",
-    "python": "3.12.8",
-    "numpy": "2.3.3",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.13.14",
+    "numpy": "2.5.0",
     "evaluator_type": "Scikit_Learn_Fallback",
-    "timestamp": "2026-11-07T14:07:09.501056"
+    "timestamp": "2026-11-07T15:33:39.303659"
   }
 }

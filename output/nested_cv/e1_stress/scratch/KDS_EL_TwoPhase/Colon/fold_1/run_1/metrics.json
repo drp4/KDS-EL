@@ -1,0 +1,177 @@
+{
+  "dataset": "Colon",
+  "algorithm": "KDS_EL_TwoPhase",
+  "outer_fold": 1,
+  "run_idx": 1,
+  "seed": 7,
+  "N": 20,
+  "Max_FEs": 2000,
+  "candidate_eval_requests": 2000,
+  "shortcut_eval_requests": 821,
+  "cache_hit_count": 35,
+  "cv_eval_calls": 1144,
+  "inner_model_fits": 5720,
+  "outer_model_fits": 5,
+  "unique_masks": 1191,
+  "active_features": 5,
+  "active_features_ratio": 0.0025,
+  "inner_gbest_fitness": 0.05712499999999998,
+  "generations_completed": 85,
+  "stop_reason": "budget_exhausted",
+  "tps_switch_q": 0.702020202020202,
+  "tps_switch_E": 1410,
+  "tps_rescore_requests": 20,
+  "ker_attempts": 252,
+  "ker_accepts": 2,
+  "ker_accept_rate": 0.007936507936507936,
+  "air_triggers": 2,
+  "p2_valid_ratio": 0.04352941176470588,
+  "outer_test_indices": [
+    8,
+    13,
+    17,
+    18,
+    30,
+    32,
+    34,
+    37,
+    41,
+    42,
+    43,
+    53,
+    56
+  ],
+  "outer_test_metrics": {
+    "knn": {
+      "accuracy": 0.7692307692307693,
+      "balanced_accuracy": 0.7375,
+      "macro_f1": 0.7450980392156863,
+      "y_pred": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    "svm": {
+      "accuracy": 0.7692307692307693,
+      "balanced_accuracy": 0.7375,
+      "macro_f1": 0.7450980392156863,
+      "y_pred": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    "random_forest": {
+      "accuracy": 0.7692307692307693,
+      "balanced_accuracy": 0.7375,
+      "macro_f1": 0.7450980392156863,
+      "y_pred": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    "naive_bayes": {
+      "accuracy": 0.6923076923076923,
+      "balanced_accuracy": 0.6375,
+      "macro_f1": 0.6388888888888888,
+      "y_pred": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    "lda": {
+      "accuracy": 0.6923076923076923,
+      "balanced_accuracy": 0.6375,
+      "macro_f1": 0.6388888888888888,
+      "y_pred": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "fallback_used": "none"
+    }
+  },
+  "timing": {
+    "search_sec": 10.957,
+    "blind_eval_sec": 0.149,
+    "total_sec": 11.158
+  },
+  "integrity_audit": {
+    "all_passed": true,
+    "details": {
+      "1_mi_and_data_outer_train_only": true,
+      "2_outer_test_isolated_from_search": true,
+      "3_inner_folds_strictly_within_train": true,
+      "4_outer_models_fit_dimension_valid": true,
+      "5_outer_test_predictions_complete": true,
+      "6_mask_selected_from_inner_fitness": true,
+      "7_candidate_requests_le_2000": true,
+      "8_tps_switch_rescore_counted": true,
+      "9_requests_accounting_closed": true,
+      "9b_inner_fits_equals_5_cv_calls": true,
+      "10_outer_split_partition_complete": true,
+      "11_no_silent_failure": true,
+      "12_artifacts_and_metrics_valid": true
+    }
+  },
+  "system_metadata": {
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.13.14",
+    "numpy": "2.5.0",
+    "evaluator_type": "Scikit_Learn_Fallback",
+    "timestamp": "2026-11-07T15:12:32.710781"
+  }
+}
