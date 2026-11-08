@@ -158,6 +158,7 @@ def run_e6_kdsel_search(X_train, y_train, evaluator, seed=7):
             Gbest = Pbest[bi].copy()
             fitG = float(fitP[bi])
             stall_counter = 0
+            gen_start_fitG = fitG
 
         if not evaluator.has_budget():
             break
@@ -483,16 +484,21 @@ def run_experiment_e6(
     print(f"Total Nested Cross-Validation Tasks: {len(tasks)} (5 outer folds per task = {len(tasks)*5} runs)\n")
 
     completed_results = []
+    failed_tasks = []
     if workers <= 1:
         for ds, b in tasks:
-            res = execute_permutation_condition(
-                dataset_name=ds,
-                b_idx=b,
-                seed_optimizer=seed_optimizer,
-                max_fes=max_fes,
-                verbose=verbose,
-            )
-            completed_results.append(res)
+            try:
+                res = execute_permutation_condition(
+                    dataset_name=ds,
+                    b_idx=b,
+                    seed_optimizer=seed_optimizer,
+                    max_fes=max_fes,
+                    verbose=verbose,
+                )
+                completed_results.append(res)
+            except Exception as exc:
+                failed_tasks.append({"dataset": ds, "b_idx": b, "error": str(exc)})
+                print(f"  [ERROR] Condition ({ds}, b={b}) failed with: {exc}")
     else:
         with ProcessPoolExecutor(max_workers=workers) as executor:
             future_map = {
@@ -508,7 +514,12 @@ def run_experiment_e6(
                     completed_results.append(res)
                 except Exception as exc:
                     ds, b = future_map[fut]
+                    failed_tasks.append({"dataset": ds, "b_idx": b, "error": str(exc)})
                     print(f"  [ERROR] Condition ({ds}, b={b}) failed with: {exc}")
+
+    # Execution completeness flag
+    expected_total_tasks = len(tasks)
+    is_execution_complete = bool(len(completed_results) == expected_total_tasks and len(failed_tasks) == 0)
 
     # Save detailed runs
     detailed_path = os.path.join(out_dir, "e6_detailed_permutations.json")
@@ -611,7 +622,17 @@ def run_experiment_e6(
         }
 
     # Apply Holm-Bonferroni correction
-    test_results = apply_holm_bonferroni(hypotheses_pool, alpha=0.05)
+    test_results = apply_holm_bonferroni(hypotheses_pool, alpha=0.05) if hypotheses_pool else []
+
+    expected_family_size = len(datasets) * 2
+    has_all_real = all(0 in grouped.get(ds, {}) for ds in datasets)
+    all_b_complete = all(summary_null_dist.get(ds, {}).get("B_actual", 0) == n_perms for ds in datasets)
+    valid_for_formal_claims = bool(
+        is_execution_complete
+        and has_all_real
+        and all_b_complete
+        and len(hypotheses_pool) == expected_family_size
+    )
 
     null_dist_path = os.path.join(out_dir, "e6_null_distributions.json")
     with open(null_dist_path, "w", encoding="utf-8") as f:
@@ -619,6 +640,11 @@ def run_experiment_e6(
             sanitize_for_json({
                 "summary_null_dist": summary_null_dist,
                 "holm_bonferroni_results": test_results,
+                "is_complete": is_execution_complete,
+                "valid_for_formal_claims": valid_for_formal_claims,
+                "failed_runs": failed_tasks,
+                "expected_family_size": expected_family_size,
+                "evaluated_family_size": len(hypotheses_pool),
             }),
             f,
             indent=2,
@@ -626,7 +652,15 @@ def run_experiment_e6(
 
     # Generate Markdown Report
     report_path = os.path.join(out_dir, "e6_permutation_report.md")
-    generate_e6_markdown_report(test_results, summary_null_dist, report_path, time.perf_counter() - t0_all)
+    generate_e6_markdown_report(
+        test_results=test_results,
+        null_dist=summary_null_dist,
+        out_path=report_path,
+        elapsed_time=time.perf_counter() - t0_all,
+        failed_tasks=failed_tasks,
+        valid_for_formal_claims=valid_for_formal_claims,
+        expected_tests=expected_family_size,
+    )
 
     elapsed_total = time.perf_counter() - t0_all
     print("\n" + "=" * 80)
@@ -638,68 +672,110 @@ def run_experiment_e6(
     print("=" * 80 + "\n")
 
 
-def generate_e6_markdown_report(test_results, null_dist, out_path, elapsed_time):
+def generate_e6_markdown_report(
+    test_results,
+    null_dist,
+    out_path,
+    elapsed_time,
+    failed_tasks=None,
+    valid_for_formal_claims=True,
+    expected_tests=4,
+):
     """
     Renders academic report conforming to AGENTS.md.
     """
+    failed_tasks = failed_tasks or []
     lines = []
     lines.append("# E6: Label-Permutation Empirical Null Hypothesis Test Report\n")
     lines.append(f"- **Execution Timestamp**: {datetime.now().isoformat()}")
     lines.append(f"- **Protocol Reference**: `review_round_1/05_executable_experiment_plan.md` (Section 9)")
-    lines.append(f"- **Pre-Registered Family of Hypotheses**: 4 tests (Colon-BAcc, Colon-T_W, SRBCT-BAcc, SRBCT-T_W)")
+    lines.append(f"- **Pre-Registered Family of Hypotheses**: {expected_tests} tests (Colon-BAcc, Colon-T_W, SRBCT-BAcc, SRBCT-T_W)")
     lines.append(f"- **Family-Wise Error Rate (FWER) Control**: Holm-Bonferroni Step-Down ($\alpha = 0.05$)")
-    lines.append(f"- **Total Elapsed Time**: `{elapsed_time:.2f} s`\n")
+    lines.append(f"- **Total Elapsed Time**: `{elapsed_time:.2f} s`")
+    lines.append(f"- **Formal Publication Validity**: `{'VALID' if valid_for_formal_claims else 'INVALID (Incomplete Execution / Protocol Demarcation)'}`\n")
+
+    if not valid_for_formal_claims or len(failed_tasks) > 0:
+        lines.append("> [!WARNING] INCOMPLETE EXECUTION / PROTOCOL DEMARCATION")
+        lines.append(f"> The permutation experiment finished with {len(failed_tasks)} failed condition(s) or missing dataset benchmarks. ")
+        lines.append(f"> Evaluated hypotheses ({len(test_results)}) do not match the pre-registered testing family ({expected_tests}). ")
+        lines.append("> Formal statistical claims of significance and null-hypothesis rejection are strictly withheld to prevent family-wise error inflation or post-hoc hypothesis pruning.\n")
 
     lines.append("> **Formal Methodological Demarcation**:")
     lines.append("> The null hypothesis posited in this investigation states that, under the label exchangeability constraint, there is no detectable predictive association between the feature matrix and class labels. Empirical p-values are derived via full end-to-end re-execution under permuted labels, ensuring that prior calculation, initialization, wrapper search, and classifier fitting are subjected to identical empirical constraints without cached information reuse.\n")
 
     lines.append("## 1. Family-Wise Hypothesis Testing Matrix (Holm-Bonferroni Correction)\n")
-    lines.append(r"| Rank ($i$) | Hypothesis Test | Ground Truth ($T_0$) | Permutation Null ($\mu_{\mathrm{perm}} \pm \sigma$) | $Z_{\mathrm{desc}}$ | Raw $p$-value ($p_{\mathrm{emp}}$) | Adjusted Threshold ($\alpha / k$) | Adjusted $p$-value ($p_{\mathrm{adj}}$) | Reject $H_0$? |")
-    lines.append("| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
+    if not test_results:
+        lines.append("*No hypothesis tests were completed successfully. Table omitted.*\n")
+    else:
+        lines.append(r"| Rank ($i$) | Hypothesis Test | Ground Truth ($T_0$) | Permutation Null ($\mu_{\mathrm{perm}} \pm \sigma$) | $Z_{\mathrm{desc}}$ | Raw $p$-value ($p_{\mathrm{emp}}$) | Adjusted Threshold ($\alpha / k$) | Adjusted $p$-value ($p_{\mathrm{adj}}$) | Reject $H_0$? |")
+        lines.append("| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
 
-    for item in test_results:
-        t0_str = f"{item['T_0']:.4f}"
-        null_str = f"{item['T_perm_mean']:.4f} ± {item['T_perm_std']:.3f}"
-        z_str = f"{item['Z_desc']:+.2f}"
-        p_raw_str = f"{item['p_raw']:.4f}"
-        thresh_str = f"{item['nominal_threshold']:.4f}"
-        p_adj_str = f"{item['p_adj']:.4f}"
-        reject_str = "**REJECT (Significant)**" if item["rejected_null"] else "Fail to Reject"
+        for item in test_results:
+            t0_str = f"{item['T_0']:.4f}"
+            null_str = f"{item['T_perm_mean']:.4f} ± {item['T_perm_std']:.3f}"
+            z_str = f"{item['Z_desc']:+.2f}"
+            p_raw_str = f"{item['p_raw']:.4f}"
+            thresh_str = f"{item['nominal_threshold']:.4f}"
+            p_adj_str = f"{item['p_adj']:.4f}"
+            if valid_for_formal_claims:
+                reject_str = "**REJECT (Significant)**" if item["rejected_null"] else "Fail to Reject"
+            else:
+                reject_str = "*Exploratory Reject (Invalid for Claims)*" if item["rejected_null"] else "Fail to Reject"
 
-        lines.append(
-            f"| {item['rank']} | **`{item['name']}`** | {t0_str} | {null_str} | {z_str} | "
-            f"{p_raw_str} | {thresh_str} | {p_adj_str} | {reject_str} |"
-        )
+            lines.append(
+                f"| {item['rank']} | **`{item['name']}`** | {t0_str} | {null_str} | {z_str} | "
+                f"{p_raw_str} | {thresh_str} | {p_adj_str} | {reject_str} |"
+            )
 
     lines.append("\n## 2. Empirical Null Distribution Profiles\n")
-    for ds, info in null_dist.items():
-        b_cnt = info["B_actual"]
-        lines.append(f"### {ds} Microarray Benchmark ($B = {b_cnt}$ Permutations)\n")
-        real_info = info["real"]
-        bacc_dist = info["bacc_distribution"]
-        tw_dist = info["tw_distribution"]
+    if not null_dist:
+        lines.append("*No null distribution profiles available due to task failure.*\n")
+    else:
+        for ds, info in null_dist.items():
+            b_cnt = info["B_actual"]
+            lines.append(f"### {ds} Microarray Benchmark ($B = {b_cnt}$ Permutations)\n")
+            real_info = info["real"]
+            bacc_dist = info["bacc_distribution"]
+            tw_dist = info["tw_distribution"]
 
-        lines.append(f"- **Observed Real Generalization**: Balanced Accuracy = `{real_info['bacc']:.4f}`, Accuracy = `{real_info['acc']:.4f}`, Macro-F1 = `{real_info['macro_f1']:.4f}`, Features = `{real_info['mean_features']:.1f}`")
-        lines.append(f"- **Observed Real Credit Contrast ($T_W$)**: `{real_info['T_W']:+.4f}`")
-        lines.append(f"- **Balanced Accuracy Null Distribution**: Mean = `{bacc_dist['mean']:.4f}`, Std = `{bacc_dist['std']:.4f}`, Median = `{bacc_dist['quantiles']['p50']:.4f}`, 95th Percentile = `{bacc_dist['quantiles']['p95']:.4f}`")
-        lines.append(f"- **Credit Contrast Null Distribution ($T_W$)**: Mean = `{tw_dist['mean']:+.4f}`, Std = `{tw_dist['std']:+.4f}`, Median = `{tw_dist['quantiles']['p50']:+.4f}`, 95th Percentile = `{tw_dist['quantiles']['p95']:+.4f}`\n")
+            lines.append(f"- **Observed Real Generalization**: Balanced Accuracy = `{real_info['bacc']:.4f}`, Accuracy = `{real_info['acc']:.4f}`, Macro-F1 = `{real_info['macro_f1']:.4f}`, Features = `{real_info['mean_features']:.1f}`")
+            lines.append(f"- **Observed Real Credit Contrast ($T_W$)**: `{real_info['T_W']:+.4f}`")
+            lines.append(f"- **Balanced Accuracy Null Distribution**: Mean = `{bacc_dist['mean']:.4f}`, Std = `{bacc_dist['std']:.4f}`, Median = `{bacc_dist['quantiles']['p50']:.4f}`, 95th Percentile = `{bacc_dist['quantiles']['p95']:.4f}`")
+            lines.append(f"- **Credit Contrast Null Distribution ($T_W$)**: Mean = `{tw_dist['mean']:+.4f}`, Std = `{tw_dist['std']:+.4f}`, Median = `{tw_dist['quantiles']['p50']:+.4f}`, 95th Percentile = `{tw_dist['quantiles']['p95']:+.4f}`\n")
 
     lines.append("## 3. Academic Findings & Submission Defensibility\n")
     sig_count = sum(1 for item in test_results if item["rejected_null"])
     total_tests = len(test_results)
 
-    lines.append(f"1. **Multiple Testing Decision**: Across the {total_tests} pre-registered tests with Holm-Bonferroni step-down correction at family-wise $\\alpha = 0.05$, **{sig_count} of {total_tests}** null hypotheses were formally rejected.")
-    for item in test_results:
-        dec_str = "statistically significant (reject H0)" if item["rejected_null"] else "not statistically significant (fail to reject H0)"
-        lines.append(f"   - **`{item['name']}`**: Raw $p = {item['p_raw']:.4f}$, Adjusted $p = {item['p_adj']:.4f}$ -> {dec_str}.")
-
-    lines.append("\n2. **Empirical Interpretation & Methodological Boundaries**:")
-    if sig_count == total_tests:
-        lines.append("   - Real-condition generalization metrics and classifier credit contrast metrics are significantly higher than the permutation null distributions, indicating that the observed performance does not arise merely from random label structure or heuristic search artifacts.")
-    elif sig_count > 0:
-        lines.append("   - Partial significance was observed: certain pre-registered metrics exceeded the empirical null, while others did not achieve family-wise significance after Holm-Bonferroni correction. Claims must be carefully qualified to reflect only the supported hypotheses.")
+    if total_tests == 0:
+        lines.append(f"1. **Multiple Testing Decision**: No pre-registered tests were successfully evaluated (0 of {expected_tests} tests completed).")
+        lines.append("\n2. **Empirical Interpretation & Methodological Boundaries**:")
+        lines.append("   - Execution failure prevented evaluation of the empirical null distribution. Formal empirical claims of statistical significance cannot be established.")
+    elif not valid_for_formal_claims:
+        lines.append(f"1. **Multiple Testing Decision**: Across the {total_tests} partially evaluated tests (expected {expected_tests}), {sig_count} tests exceeded the nominal significance boundary. However, because the pre-registered testing family was truncated by task failures, formal family-wise conclusions cannot be drawn.")
+        for item in test_results:
+            dec_str = "exploratory rejection of H0 (formal claim withheld)" if item["rejected_null"] else "fail to reject H0"
+            lines.append(f"   - **`{item['name']}`**: Raw $p = {item['p_raw']:.4f}$, Adjusted $p = {item['p_adj']:.4f}$ -> {dec_str}.")
+        lines.append("\n2. **Empirical Interpretation & Methodological Boundaries**:")
+        lines.append("   - Because full execution across all pre-registered datasets and permutations was not achieved, reporting formal statistical superiority over the null distribution is prohibited by protocol.")
     else:
-        lines.append("   - The pre-registered tests did not reject the null hypotheses at the family-wise $\\alpha = 0.05$ level. Per protocol, no post-hoc metric replacement is permitted, and empirical conclusions must honestly report that predictive signal was not distinguishable from the permutation null under the current sample size.")
+        lines.append(f"1. **Multiple Testing Decision**: Across the {total_tests} pre-registered tests with Holm-Bonferroni step-down correction at family-wise $\\alpha = 0.05$, **{sig_count} of {total_tests}** null hypotheses were formally rejected.")
+        for item in test_results:
+            dec_str = "statistically significant (reject H0)" if item["rejected_null"] else "not statistically significant (fail to reject H0)"
+            lines.append(f"   - **`{item['name']}`**: Raw $p = {item['p_raw']:.4f}$, Adjusted $p = {item['p_adj']:.4f}$ -> {dec_str}.")
+
+        lines.append("\n2. **Empirical Interpretation & Methodological Boundaries**:")
+        if sig_count == total_tests and total_tests > 0:
+            lines.append("   - Real-condition generalization metrics and classifier credit contrast metrics are significantly higher than the permutation null distributions, indicating that the observed performance does not arise merely from random label structure or heuristic search artifacts.")
+        elif sig_count > 0:
+            lines.append("   - Partial significance was observed: certain pre-registered metrics exceeded the empirical null, while others did not achieve family-wise significance after Holm-Bonferroni correction. Claims must be carefully qualified to reflect only the supported hypotheses.")
+        else:
+            lines.append("   - The pre-registered tests did not reject the null hypotheses at the family-wise $\\alpha = 0.05$ level. Per protocol, no post-hoc metric replacement is permitted, and empirical conclusions must honestly report that predictive signal was not distinguishable from the permutation null under the current sample size.")
+
+    lines.append("3. **Conservative Demarcation**: Significant results confirm empirical association above label exchangeability, but do not imply biological causality, clinical validation, or deterministic gene identity.\n")
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
 
     lines.append("3. **Conservative Demarcation**: Significant results confirm empirical association above label exchangeability, but do not imply biological causality, clinical validation, or deterministic gene identity.\n")
 

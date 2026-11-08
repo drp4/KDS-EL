@@ -33,6 +33,7 @@ import os
 import sys
 import json
 import time
+import copy
 import argparse
 import numpy as np
 from datetime import datetime
@@ -137,6 +138,13 @@ CANONICAL_PATHWAY_DATABASE = {
 
 # Known tissue-heterogeneity smooth-muscle markers in Colon biopsy
 COLON_SMOOTH_MUSCLE_CONFOUNDERS = {"DES", "ACTG2", "MYH11"}
+
+PATHWAY_PANEL_METADATA = {
+    "panel_name": "Curated Oncology & Muscle Architecture Benchmark Panel",
+    "version": "1.0-exploratory",
+    "n_pathways": len(CANONICAL_PATHWAY_DATABASE),
+    "description": "Curated benchmark sets for oncogenic pathways and tissue-specific structural markers",
+}
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -298,13 +306,16 @@ def construct_platform_universe(dataset_name, probe_ids, probe_map):
 
     universe = sorted(list(mapped_genes))
     coverage_rate = len(universe) / max(1, len(probe_ids))
+    matched_probes = sum(1 for p in probe_ids if p in probe_map)
 
     return {
         "universe": universe,
         "size": len(universe),
         "total_probes": len(probe_ids),
+        "matched_probes": matched_probes,
         "coverage_rate": float(coverage_rate),
         "unmapped_count": len(unmapped_probes),
+        "is_limited_panel": bool(len(universe) < 100 or coverage_rate < 0.10),
     }
 
 
@@ -643,6 +654,12 @@ def run_experiment_e7(
 
             consensus_symbols_unique = sorted(list(set(consensus_symbols)))
 
+            # Track mapping to platform universe
+            universe_set = set(universe_info["universe"])
+            mapped_in_universe = sorted(list(set(consensus_symbols_unique).intersection(universe_set)))
+            effective_query_size = len(mapped_in_universe)
+            unmapped_consensus = sorted(list(set(consensus_symbols_unique) - universe_set))
+
             # 3. Perform Platform-Bounded ORA Enrichment
             enrich_records = perform_ora_enrichment(
                 query_genes=consensus_symbols_unique,
@@ -650,41 +667,53 @@ def run_experiment_e7(
                 pathway_db=CANONICAL_PATHWAY_DATABASE,
                 alpha_fdr=0.05,
             )
+            enrichment_status = "evaluated" if effective_query_size > 0 else "insufficient_annotation"
             enrichment_results[ds][algo] = {
                 "consensus_genes": consensus_symbols_unique,
+                "mapped_consensus_genes": mapped_in_universe,
+                "unmapped_consensus_genes": unmapped_consensus,
+                "effective_query_size": effective_query_size,
+                "status": enrichment_status,
                 "enrichment": enrich_records,
             }
 
             sig_count = sum(1 for r in enrich_records if r["significant"])
-            print(f"    Platform ORA Enrichment: {sig_count} pathways significant at FDR q < 0.05")
+            if effective_query_size == 0:
+                print(f"    Platform ORA Enrichment: Insufficient annotation (effective mapped query size = 0, {len(consensus_symbols_unique)} consensus features unmapped)")
+            else:
+                print(f"    Platform ORA Enrichment: {sig_count} pathways significant at FDR q < 0.05 (effective query size: {effective_query_size})")
 
             # 4. Special Colon Tissue Heterogeneity Experiment for KDS-EL
             if ds.lower() == "colon" and algo == "KDS_EL_TwoPhase":
                 print("\n  >> Running Colon Biopsy Smooth-Muscle Tissue Heterogeneity Control...")
+                detected_confounders = sorted(list(COLON_SMOOTH_MUSCLE_CONFOUNDERS.intersection(set(consensus_symbols_unique))))
+
                 # Condition A: With smooth muscle markers
-                enrich_with_sm = perform_ora_enrichment(
-                    query_genes=consensus_symbols_unique,
-                    universe_genes=universe_info["universe"],
-                    pathway_db=CANONICAL_PATHWAY_DATABASE,
-                    alpha_fdr=0.05,
-                )
+                enrich_with_sm = enrich_records
 
                 # Condition B: Deconfounded (DES, ACTG2, MYH11 removed)
-                deconfounded_genes = [
-                    g for g in consensus_symbols_unique
-                    if g not in COLON_SMOOTH_MUSCLE_CONFOUNDERS
-                ]
-                enrich_without_sm = perform_ora_enrichment(
-                    query_genes=deconfounded_genes,
-                    universe_genes=universe_info["universe"],
-                    pathway_db=CANONICAL_PATHWAY_DATABASE,
-                    alpha_fdr=0.05,
-                )
+                if len(detected_confounders) > 0 and effective_query_size > 0:
+                    deconfounded_genes = [
+                        g for g in consensus_symbols_unique
+                        if g not in COLON_SMOOTH_MUSCLE_CONFOUNDERS
+                    ]
+                    enrich_without_sm = perform_ora_enrichment(
+                        query_genes=deconfounded_genes,
+                        universe_genes=universe_info["universe"],
+                        pathway_db=CANONICAL_PATHWAY_DATABASE,
+                        alpha_fdr=0.05,
+                    )
+                else:
+                    deconfounded_genes = list(consensus_symbols_unique)
+                    enrich_without_sm = copy.deepcopy(enrich_with_sm)
 
                 colon_heterogeneity_results = {
                     "original_genes": consensus_symbols_unique,
                     "deconfounded_genes": deconfounded_genes,
-                    "removed_confounders": list(COLON_SMOOTH_MUSCLE_CONFOUNDERS.intersection(set(consensus_symbols_unique))),
+                    "removed_confounders": detected_confounders,
+                    "effective_query_size": effective_query_size,
+                    "status": enrichment_status,
+                    "has_valid_annotation": bool(effective_query_size > 0),
                     "enrichment_with_smooth_muscle": enrich_with_sm,
                     "enrichment_without_smooth_muscle": enrich_without_sm,
                 }
@@ -758,56 +787,126 @@ def generate_e7_markdown_report(stability_res, enrich_res, heterogeneity_res, ou
             )
 
     lines.append("\n## 2. Platform-Bounded ORA Enrichment Results (FDR $q < 0.05$)\n")
-    for ds, algo_dict in enrich_res.items():
-        lines.append(f"### {ds} Microarray Benchmark\n")
-        for algo, info in algo_dict.items():
-            consensus = info["consensus_genes"]
-            sig_pathways = [r for r in info["enrichment"] if r["significant"]]
-            lines.append(f"#### `{algo}` (Query: {len(consensus)} Consensus Genes)\n")
-            if not sig_pathways:
-                lines.append("*No canonical pathways achieved statistical significance after Benjamini-Hochberg FDR adjustment ($q < 0.05$).*\n")
-            else:
-                lines.append("| Canonical Pathway | Overlap ($k / n$) | Gene Ratio | Raw $p$-value | Adjusted $q$-value | Overlapping Genes |")
-                lines.append("| :--- | :---: | :---: | :---: | :---: | :--- |")
-                for r in sig_pathways:
-                    genes_str = ", ".join(r["overlap_genes"][:6])
-                    if len(r["overlap_genes"]) > 6:
-                        genes_str += ", ..."
-                    lines.append(
-                        f"| **`{r['pathway']}`** | {r['overlap_count']}/{r['pathway_size_in_universe']} | "
-                        f"{r['gene_ratio']:.3f} | {r['p_raw']:.4e} | **{r['q_value']:.4e}** | {genes_str} |"
-                    )
-                lines.append("")
+    if not enrich_res:
+        lines.append("*No enrichment results available.*\n")
+    else:
+        for ds, algo_dict in enrich_res.items():
+            lines.append(f"### {ds} Microarray Benchmark\n")
+            for algo, info in algo_dict.items():
+                consensus = info.get("consensus_genes", [])
+                eff_query = info.get("effective_query_size", len(consensus))
+                status = info.get("status", "evaluated" if eff_query > 0 else "insufficient_annotation")
+                sig_pathways = [r for r in info.get("enrichment", []) if r.get("significant", False)]
+                lines.append(f"#### `{algo}` (Query: {len(consensus)} Consensus Feature(s), Effective Mapped Query: {eff_query})\n")
+                if status == "insufficient_annotation" or eff_query == 0:
+                    lines.append(f"*Insufficient annotation: None of the {len(consensus)} consensus features could be mapped to the curated benchmark panel universe. Formal hypergeometric enrichment is not assessable under this panel.*\n")
+                elif not sig_pathways:
+                    lines.append("*No canonical pathways achieved statistical significance after Benjamini-Hochberg FDR adjustment ($q < 0.05$).*\n")
+                else:
+                    lines.append("| Canonical Pathway | Overlap ($k / n$) | Gene Ratio | Raw $p$-value | Adjusted $q$-value | Overlapping Genes |")
+                    lines.append("| :--- | :---: | :---: | :---: | :---: | :--- |")
+                    for r in sig_pathways:
+                        overlap_genes = r.get("overlap_genes", [])
+                        genes_str = ", ".join(overlap_genes[:6])
+                        if len(overlap_genes) > 6:
+                            genes_str += ", ..."
+                        lines.append(
+                            f"| **`{r.get('pathway', '')}`** | {r.get('overlap_count', 0)}/{r.get('pathway_size_in_universe', 0)} | "
+                            f"{r.get('gene_ratio', 0.0):.3f} | {r.get('p_raw', 1.0):.4e} | **{r.get('q_value', 1.0):.4e}** | {genes_str} |"
+                        )
+                    lines.append("")
 
-    if heterogeneity_res:
+    if heterogeneity_res and heterogeneity_res.get("original_genes") is not None:
         lines.append("\n## 3. Colon Tissue Heterogeneity Analysis: Smooth-Muscle Deconfounding\n")
-        orig_cnt = len(heterogeneity_res["original_genes"])
-        deconf_cnt = len(heterogeneity_res["deconfounded_genes"])
-        removed = heterogeneity_res["removed_confounders"]
+        orig_cnt = len(heterogeneity_res.get("original_genes", []))
+        deconf_cnt = len(heterogeneity_res.get("deconfounded_genes", []))
+        removed = heterogeneity_res.get("removed_confounders", [])
+        eff_query = heterogeneity_res.get("effective_query_size", orig_cnt)
+        status = heterogeneity_res.get("status", "evaluated" if eff_query > 0 else "insufficient_annotation")
 
         lines.append(f"- **Original 70% Consensus Genes**: `{orig_cnt}` features")
-        lines.append(f"- **Structural Smooth-Muscle Confounders Removed**: `{removed}`")
+        lines.append(f"- **Structural Smooth-Muscle Confounders Detected in Mapped Set**: `{removed}` ({len(removed)} identified)")
         lines.append(f"- **Deconfounded Feature Signature**: `{deconf_cnt}` features\n")
 
-        lines.append("### Comparative Enrichment Profiles (With vs. Without Structural Markers)\n")
-        orig_sig = [r for r in heterogeneity_res["enrichment_with_smooth_muscle"] if r["significant"]]
-        deconf_sig = [r for r in heterogeneity_res["enrichment_without_smooth_muscle"] if r["significant"]]
+        if orig_cnt > 0 and (eff_query == 0 or status == "insufficient_annotation"):
+            lines.append("> **Histological Assessment (Indeterminate Due to Insufficient Annotation)**:")
+            lines.append("> None of the consensus probe features could be resolved to annotated gene identities (effective mapped query size = 0). Consequently, it is indeterminate whether smooth-muscle structural markers (e.g., `DES`, `ACTG2`, `MYH11`) were selected or absent in this feature subset. Histological deconfounding cannot be evaluated without verifiable feature annotations.")
+        elif len(removed) > 0:
+            lines.append("### Comparative Enrichment Profiles (With vs. Without Structural Markers)\n")
+            orig_sig = [r for r in heterogeneity_res.get("enrichment_with_smooth_muscle", []) if r.get("significant", False)]
+            deconf_sig = [r for r in heterogeneity_res.get("enrichment_without_smooth_muscle", []) if r.get("significant", False)]
 
-        lines.append(f"- **Original Condition (with smooth-muscle markers)**: `{len(orig_sig)}` significant pathways.")
-        for r in orig_sig:
-            lines.append(f"  * `{r['pathway']}`: Overlap={r['overlap_count']}, $q = {r['q_value']:.4e}$")
+            lines.append(f"- **Original Condition (with smooth-muscle markers)**: `{len(orig_sig)}` significant pathways.")
+            for r in orig_sig:
+                lines.append(f"  * `{r['pathway']}`: Overlap={r['overlap_count']}, $q = {r['q_value']:.4e}$")
 
-        lines.append(f"- **Deconfounded Condition (without smooth-muscle markers)**: `{len(deconf_sig)}` significant pathways.")
-        for r in deconf_sig:
-            lines.append(f"  * `{r['pathway']}`: Overlap={r['overlap_count']}, $q = {r['q_value']:.4e}$")
+            lines.append(f"- **Deconfounded Condition (without smooth-muscle markers)**: `{len(deconf_sig)}` significant pathways.")
+            for r in deconf_sig:
+                lines.append(f"  * `{r['pathway']}`: Overlap={r['overlap_count']}, $q = {r['q_value']:.4e}$")
 
-        lines.append("\n> **Pathological Interpretation & Response Strategy**:")
-        lines.append("> The analysis reveals that the prominence of `DES`, `ACTG2`, and `MYH11` in the Colon microarray arises from the histological disparity in biopsy specimens (normal controls containing full-thickness muscular mucosa layers whereas adenocarcinoma biopsies are dominated by epithelial neoplastic cells). In our revised manuscript, we explicitly clarify this distinction: these features act as strong histological architecture markers rather than colorectal driver mutations, providing a transparent, scientifically unassailable response to Reviewer 1.")
+            lines.append("\n> **Pathological Context & Plausible Tissue Sampling Hypothesis**:")
+            lines.append(f"> Predefined smooth-muscle structural markers ({', '.join(removed)}) were identified within the mapped consensus feature subset. While literature reports (such as Alon et al., 1999) suggest that normal colon biopsies typically contain full-thickness muscularis mucosae layers whereas adenocarcinoma specimens are dominated by epithelial neoplastic cells, computational feature selection alone cannot independently establish the physical tissue origin of these signals. Histological biopsy composition remains a plausible literature-supported explanation for their selection, but warrants independent biological validation rather than definitive algorithmic proof.")
+        else:
+            lines.append("> **Histological Assessment**:")
+            lines.append("> Among the resolved consensus gene symbols, none of the predefined smooth-muscle structural markers (`DES`, `ACTG2`, `MYH11`) were identified. Within the scope of the annotated features, the subset contains no detectable structural smooth-muscle markers, and deconfounding does not alter the feature set.")
 
     lines.append("\n## 4. Academic Findings & Submission Protocol Alignment\n")
-    lines.append("1. **Realistic Feature Stability**: The Jaccard similarity distributions demonstrate that evolutionary wrapper algorithms explore diverse but functionally convergent feature sub-spaces across independent stochastic runs.")
-    lines.append("2. **Platform-Bounded ORA Validity**: By restricting background universes strictly to measured chip entities, we eliminate the false-positive inflation typical of naive genome-wide over-representation analyses.")
-    lines.append("3. **Histological Transparency**: Addressing the smooth-muscle confounder directly transforms a potential critical critique into a demonstration of exemplary scientific rigor and pathological domain knowledge.\n")
+    # Aggregate summary metrics
+    all_jaccards = []
+    total_sig_pathways = 0
+    total_effective_queries = 0
+    total_consensus_genes = 0
+    evaluated_algos_count = 0
+
+    for ds, algo_dict in stability_res.items():
+        for algo, info in algo_dict.items():
+            all_jaccards.append(info.get("mean", 0.0))
+            evaluated_algos_count += 1
+
+    for ds, algo_dict in enrich_res.items():
+        for algo, info in algo_dict.items():
+            consensus = info.get("consensus_genes", [])
+            total_consensus_genes += len(consensus)
+            eff = info.get("effective_query_size", 0)
+            total_effective_queries += eff
+            sig_cnt = sum(1 for r in info.get("enrichment", []) if r.get("significant", False))
+            total_sig_pathways += sig_cnt
+
+    mean_global_jaccard = float(np.mean(all_jaccards)) if all_jaccards else 0.0
+
+    # 1. Feature Stability statement
+    if evaluated_algos_count == 0 or total_consensus_genes == 0:
+        lines.append("1. **Feature Stability & Convergence**: No algorithm runs or consensus features were available for evaluation. Feature stability cannot be assessed.")
+    elif total_sig_pathways > 0:
+        lines.append(f"1. **Feature Stability & Convergence**: Across independent stochastic runs, the algorithms exhibit moderate pairwise feature overlap (mean Jaccard = {mean_global_jaccard:.4f}), while identifying consensus features that significantly over-represent specific canonical pathways (FDR $q < 0.05$). This indicates localized functional alignment despite stochastic feature variation.")
+    elif total_effective_queries == 0:
+        lines.append(f"1. **Feature Stability & Convergence**: Across independent stochastic runs, feature subsets exhibit a mean pairwise Jaccard similarity of {mean_global_jaccard:.4f}. However, consensus features could not be mapped to the curated panel universe, precluding statistical confirmation of functional convergence under this panel.")
+    else:
+        lines.append(f"1. **Feature Stability & Convergence**: Across independent stochastic runs, feature subsets exhibit a mean pairwise Jaccard similarity of {mean_global_jaccard:.4f}, and no canonical pathways in the curated panel achieve FDR-adjusted significance ($q < 0.05$). The observed variation reflects stochastic exploration across highly collinear feature spaces in small-sample microarray regimes, without evidence of functional convergence under the current curated panel.")
+
+    # 2. Panel Scope statement
+    if evaluated_algos_count == 0:
+        lines.append("2. **Curated Panel Scope**: No platform universe was evaluated.")
+    else:
+        lines.append("2. **Curated Panel Scope**: Over-representation analysis was conducted strictly against a curated exploratory panel of canonical pathways. Given the limited mapping coverage of legacy microarray probe files, results are interpreted as targeted benchmark explorations rather than exhaustive genome-wide functional profiling.")
+
+    # 3. Histological Assessment statement
+    if not heterogeneity_res or heterogeneity_res.get("original_genes") is None:
+        lines.append("3. **Histological Assessment**: Colon tissue heterogeneity deconfounding was not evaluated in this run configuration.\n")
+    else:
+        orig_cnt = len(heterogeneity_res.get("original_genes", []))
+        eff_query = heterogeneity_res.get("effective_query_size", orig_cnt)
+        status = heterogeneity_res.get("status", "evaluated" if eff_query > 0 else "insufficient_annotation")
+        removed = heterogeneity_res.get("removed_confounders", [])
+
+        if orig_cnt == 0:
+            lines.append("3. **Histological Assessment**: No consensus features were generated; histological deconfounding could not be evaluated.\n")
+        elif eff_query == 0 or status == "insufficient_annotation":
+            lines.append("3. **Histological Assessment**: Because consensus features could not be mapped to verified gene annotations, the presence or absence of smooth-muscle structural markers is indeterminate and cannot be evaluated.\n")
+        elif len(removed) > 0:
+            lines.append(f"3. **Histological Assessment**: Specified smooth-muscle markers ({', '.join(removed)}) were observed within the mapped consensus feature set. While literature points to biopsy tissue composition disparity as a plausible contributing factor, this mechanism remains a hypothesis requiring independent biological validation rather than an algorithmically verified certainty.\n")
+        else:
+            lines.append("3. **Histological Assessment**: None of the specified smooth-muscle markers (`DES`, `ACTG2`, `MYH11`) appeared in the resolved consensus features, indicating that within the annotated subset, these candidate structural markers were not retained.\n")
 
     with open(out_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
