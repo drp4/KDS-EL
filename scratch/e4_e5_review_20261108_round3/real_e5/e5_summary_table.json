@@ -1,0 +1,1019 @@
+{
+  "experiment": "E5_Nested_Cross_Classifier_Generalization",
+  "timestamp": "2026-11-08T14:35:17.720588",
+  "total_planned_runs": 60,
+  "total_completed_runs": 60,
+  "tasks_executed_successfully": true,
+  "is_complete": true,
+  "valid_for_formal_claims": true,
+  "all_audits_passed": true,
+  "failed_runs": [],
+  "results": {
+    "KDS_EL_TwoPhase": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "KDS_EL_TwoPhase",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 5.867712599999322,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.5166666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.5166666666666666,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.5165323701028064,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.5,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.5,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4994438264738599,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.36666666666666664,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.36666666666666664,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.36666666666666664,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.4166666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.41666666666666663,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4152046783625731,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.3333333333333333,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.33333333333333337,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.33035714285714285,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6075555555555555,
+        "optimistic_search_bias": 0.0908888888888888
+      }
+    },
+    "MEL": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "MEL",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 6.128596699998525,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4166666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.41666666666666663,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4125874125874126,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.36666666666666664,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3638392857142857,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.3333333333333333,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3333333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.33259176863181317,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.5768888888888888,
+        "optimistic_search_bias": 0.1602222222222221
+      }
+    },
+    "MEL_MI": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "MEL_MI",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 4.0865615000002435,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "KDS_EL_NoPool": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "KDS_EL_NoPool",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 7.103644800001348,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "bIRIME": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "bIRIME",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 8.584767499999543,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "BPSO": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "BPSO",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 5.290307100001883,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.43333333333333335,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.43333333333333335,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.43333333333333335,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4666666666666667,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.4166666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.41666666666666663,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4152046783625731,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.3,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.296875,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6075555555555555,
+        "optimistic_search_bias": 0.17422222222222217
+      }
+    },
+    "FWPSO": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "FWPSO",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 3.7894753999989916,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "SaWDE": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "SaWDE",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 4.4661637999997765,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "PSO_CSM": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "PSO_CSM",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 4.53721780000069,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "BinCOA": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "BinCOA",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 4.138158699999622,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "IGPSO": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "IGPSO",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 5.6653864999998405,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "DENCA_SO": {
+      "toy_round3": {
+        "dataset": "toy_round3",
+        "algorithm": "DENCA_SO",
+        "n_completed_seeds": 1,
+        "mean_features": 1.0,
+        "std_features": 0.0,
+        "mean_time_sec": 2.2827431999985492,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.5166666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.5166666666666666,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.5154553049289892,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "svm": {
+            "accuracy_mean": 0.4,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3891402714932127,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "random_forest": {
+            "accuracy_mean": 0.48333333333333334,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4714407502131287,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.4,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3993325917686318,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "standard": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          },
+          "lda": {
+            "accuracy_mean": 0.43333333333333335,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.43333333333333335,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.43333333333333335,
+            "macro_f1_std": 0.0,
+            "model_variants_summary": {
+              "shrinkage_lsqr": 5
+            },
+            "fallbacks_summary": {
+              "none": 5
+            }
+          }
+        }
+      }
+    }
+  }
+}

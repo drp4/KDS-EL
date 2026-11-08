@@ -1,0 +1,283 @@
+{
+  "experiment": "E5_Nested_Cross_Classifier_Generalization",
+  "timestamp": "2026-11-08T14:15:26.846560",
+  "total_planned_runs": 25,
+  "total_completed_runs": 25,
+  "tasks_executed_successfully": true,
+  "is_complete": true,
+  "valid_for_formal_claims": false,
+  "all_audits_passed": false,
+  "failed_runs": [],
+  "results": {
+    "KDS_EL_TwoPhase": {
+      "toy_round2": {
+        "dataset": "toy_round2",
+        "algorithm": "KDS_EL_TwoPhase",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 2.5561122999988584,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.5166666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.5166666666666666,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.5165323701028064,
+            "macro_f1_std": 0.0
+          },
+          "svm": {
+            "accuracy_mean": 0.5,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.5,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4994438264738599,
+            "macro_f1_std": 0.0
+          },
+          "random_forest": {
+            "accuracy_mean": 0.36666666666666664,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.36666666666666664,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.36666666666666664,
+            "macro_f1_std": 0.0
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.4166666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.41666666666666663,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4152046783625731,
+            "macro_f1_std": 0.0
+          },
+          "lda": {
+            "accuracy_mean": 0.3333333333333333,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.33333333333333337,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.33035714285714285,
+            "macro_f1_std": 0.0
+          }
+        },
+        "mean_internal_acc": 0.6075555555555555,
+        "optimistic_search_bias": 0.0908888888888888
+      }
+    },
+    "MEL": {
+      "toy_round2": {
+        "dataset": "toy_round2",
+        "algorithm": "MEL",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 2.501093199999559,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4166666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.41666666666666663,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4125874125874126,
+            "macro_f1_std": 0.0
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0
+          },
+          "random_forest": {
+            "accuracy_mean": 0.36666666666666664,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3638392857142857,
+            "macro_f1_std": 0.0
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0
+          },
+          "lda": {
+            "accuracy_mean": 0.3333333333333333,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3333333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.33259176863181317,
+            "macro_f1_std": 0.0
+          }
+        },
+        "mean_internal_acc": 0.5768888888888888,
+        "optimistic_search_bias": 0.1602222222222221
+      }
+    },
+    "MEL_MI": {
+      "toy_round2": {
+        "dataset": "toy_round2",
+        "algorithm": "MEL_MI",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 2.6890829000012673,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "KDS_EL_NoPool": {
+      "toy_round2": {
+        "dataset": "toy_round2",
+        "algorithm": "KDS_EL_NoPool",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 2.6199452000000747,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    },
+    "bIRIME": {
+      "toy_round2": {
+        "dataset": "toy_round2",
+        "algorithm": "bIRIME",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 2.9370348000002195,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 0.4666666666666667,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.4666666666666667,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.4642857142857143,
+            "macro_f1_std": 0.0
+          },
+          "svm": {
+            "accuracy_mean": 0.45,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.45,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.44862155388471175,
+            "macro_f1_std": 0.0
+          },
+          "random_forest": {
+            "accuracy_mean": 0.35,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.35,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.3483709273182957,
+            "macro_f1_std": 0.0
+          },
+          "naive_bayes": {
+            "accuracy_mean": 0.38333333333333336,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.3833333333333333,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.38316198944151153,
+            "macro_f1_std": 0.0
+          },
+          "lda": {
+            "accuracy_mean": 0.31666666666666665,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 0.31666666666666665,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 0.31495405179615704,
+            "macro_f1_std": 0.0
+          }
+        },
+        "mean_internal_acc": 0.6106666666666667,
+        "optimistic_search_bias": 0.14400000000000002
+      }
+    }
+  }
+}

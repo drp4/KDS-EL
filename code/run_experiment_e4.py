@@ -30,6 +30,7 @@ import platform
 import numpy as np
 from datetime import datetime
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score
 
 # Ensure project root is in sys.path
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -491,6 +492,8 @@ def execute_e4_single_run(
         "outer_fold": outer_fold_idx,
         "run_idx": run_idx,
         "seed": seed,
+        "train_indices": train_idx.tolist(),
+        "test_indices": test_idx.tolist(),
         "candidate_eval_requests": evaluator.candidate_eval_requests,
         "shortcut_eval_requests": evaluator.shortcut_eval_requests,
         "cache_hit_count": evaluator.cache_hit_count,
@@ -516,6 +519,10 @@ def execute_e4_single_run(
             "total_sec": round(total_time, 3),
         },
         "audit_passed": all_passed,
+        "audit": {
+            "all_passed": all_passed,
+            "details": audit_checks,
+        },
     }
 
     if verbose:
@@ -653,7 +660,12 @@ def run_experiment_e4(
             y_oof[t_idx] = preds
             covered[t_idx] = True
 
-        is_complete = bool(np.all(covered) and len(recs) == len(outer_folds))
+        # A seed run is complete 5-fold only when all 5 folds are present and fully cover N_ds
+        is_complete_5fold = bool(np.all(covered) and len(recs) == 5 and len(folds) == 5)
+        all_audits_passed = bool(all(r.get("audit_passed", r.get("audit", {}).get("all_passed", False)) for r in recs))
+        is_statistically_valid = bool(is_complete_5fold and all_audits_passed)
+        coverage_ratio = float(np.sum(covered) / N_ds)
+
         idx_eval = np.where(covered)[0]
         if len(idx_eval) > 0:
             acc = float(accuracy_score(y_true[idx_eval], y_oof[idx_eval]))
@@ -662,16 +674,25 @@ def run_experiment_e4(
         else:
             acc = bacc = f1 = 0.0
 
+        total_ker_attempts = int(sum(r.get("ker_attempts", 0) for r in recs))
+        total_ker_accepts = int(sum(r.get("ker_accepts", 0) for r in recs))
+        ker_accept_rate = float(total_ker_accepts / total_ker_attempts) if total_ker_attempts > 0 else 0.0
+
         pooled_oof_by_var.setdefault(var, []).append({
             "dataset": ds,
             "seed": s,
             "accuracy": acc,
             "balanced_accuracy": bacc,
             "macro_f1": f1,
-            "is_complete_5fold": is_complete,
+            "is_complete_5fold": is_complete_5fold,
+            "all_audits_passed": all_audits_passed,
+            "is_statistically_valid": is_statistically_valid,
+            "coverage_ratio": coverage_ratio,
             "mean_features": float(np.mean([r["active_features"] for r in recs])),
             "total_time": float(np.sum([r["timing"]["total_sec"] for r in recs])),
-            "ker_accept_rate": float(np.mean([r["ker_accept_rate"] for r in recs if r["ker_attempts"] > 0])) if any(r["ker_attempts"] > 0 for r in recs) else 0.0,
+            "total_ker_attempts": total_ker_attempts,
+            "total_ker_accepts": total_ker_accepts,
+            "ker_accept_rate": ker_accept_rate,
             "p2_valid_ratio": float(np.mean([r["p2_valid_ratio"] for r in recs])),
             "delta_w_class": float(np.mean([r["delta_w_class"] for r in recs])),
             "passed_audits": sum(1 for r in recs if r["audit_passed"]),
@@ -689,7 +710,16 @@ def run_experiment_e4(
         f1s = [e["macro_f1"] for e in seed_entries]
         feats = [e["mean_features"] for e in seed_entries]
         times = [e["total_time"] for e in seed_entries]
-        ker_rates = [e["ker_accept_rate"] for e in seed_entries if e["ker_accept_rate"] > 0]
+
+        # Preserve all seeds with attempts > 0 (do NOT drop zero-accept seeds)
+        seeds_with_ker = [e for e in seed_entries if e["total_ker_attempts"] > 0]
+        if seeds_with_ker:
+            total_var_attempts = sum(e["total_ker_attempts"] for e in seeds_with_ker)
+            total_var_accepts = sum(e["total_ker_accepts"] for e in seeds_with_ker)
+            mean_ker_rate = float(total_var_accepts / total_var_attempts) if total_var_attempts > 0 else 0.0
+        else:
+            mean_ker_rate = 0.0
+
         p2_feas = [e["p2_valid_ratio"] for e in seed_entries]
         delta_ws = [e["delta_w_class"] for e in seed_entries]
 
@@ -697,6 +727,7 @@ def run_experiment_e4(
             "label": E4_VARIANT_SPECS[var]["label"],
             "total_seeds_evaluated": len(seed_entries),
             "complete_5fold_seeds": sum(1 for e in seed_entries if e["is_complete_5fold"]),
+            "statistically_valid_seeds": sum(1 for e in seed_entries if e["is_statistically_valid"]),
             "passed_audits": sum(e["passed_audits"] for e in seed_entries),
             "mean_accuracy": float(np.mean(accs)),
             "std_accuracy": float(np.std(accs)),
@@ -707,10 +738,23 @@ def run_experiment_e4(
             "mean_active_features": float(np.mean(feats)),
             "std_active_features": float(np.std(feats)),
             "mean_wall_clock_sec": float(np.mean(times)),
-            "mean_ker_accept_rate": float(np.mean(ker_rates)) if ker_rates else 0.0,
+            "mean_ker_accept_rate": mean_ker_rate,
             "mean_p2_valid_ratio": float(np.mean(p2_feas)),
             "mean_delta_w_class": float(np.mean(delta_ws)),
         }
+
+    tasks_executed_successfully = bool(len(all_results) == len(task_specs))
+    all_audits_passed = bool(len(all_results) > 0 and all(r.get("audit_passed", r.get("audit", {}).get("all_passed", False)) for r in all_results))
+    all_seeds_valid = bool(
+        len(pooled_oof_by_var) > 0 and
+        all(e["is_statistically_valid"] for seed_list in pooled_oof_by_var.values() for e in seed_list)
+    )
+    valid_for_formal_claims = bool(
+        tasks_executed_successfully and
+        len(folds) == 5 and
+        all_audits_passed and
+        all_seeds_valid
+    )
 
     summary_json_path = os.path.join(out_dir, "e4_summary_table.json")
     payload = {
@@ -718,7 +762,10 @@ def run_experiment_e4(
         "timestamp": datetime.now().isoformat(),
         "total_runs_completed": len(all_results),
         "total_runs_planned": len(task_specs),
-        "is_complete": bool(len(all_results) == len(task_specs)),
+        "tasks_executed_successfully": tasks_executed_successfully,
+        "is_complete": tasks_executed_successfully,
+        "valid_for_formal_claims": valid_for_formal_claims,
+        "all_audits_passed": all_audits_passed,
         "total_elapsed_sec": round(total_elapsed, 2),
         "variant_summary": variant_summary,
         "system_metadata": {
@@ -737,12 +784,13 @@ def run_experiment_e4(
         f.write(f"- **Execution Timestamp**: {payload['timestamp']}\n")
         f.write(f"- **Protocol Reference**: `review_round_1/05_executable_experiment_plan.md` (Section 7)\n")
         f.write(f"- **Evaluated Configurations (7)**: KDS-EL Full, Static-095, Static-070, Reversed, No-Decay, Single-P1, No-KER\n")
-        f.write(f"- **Runs Status**: `{len(all_results)} / {len(task_specs)}` completed (Complete: `{payload['is_complete']}`)\n")
+        f.write(f"- **Runs Status**: `{len(all_results)} / {len(task_specs)}` completed (Tasks Execution Completed: `{tasks_executed_successfully}`, Valid for Formal Claims: `{valid_for_formal_claims}`)\n")
         f.write(f"- **Total Elapsed Time**: `{total_elapsed:.2f} s`\n\n")
 
-        if not payload["is_complete"]:
-            f.write("> [!WARNING] Incomplete Execution Diagnostic Banner\n")
-            f.write(f"> Only {len(all_results)} of {len(task_specs)} planned runs finished. The metrics below represent partial progress and cannot serve as formal empirical claims.\n\n")
+        if not valid_for_formal_claims:
+            f.write("> [!WARNING] Incomplete / Diagnostic Execution Notice\n")
+            f.write(f"> Execution did not meet formal protocol requirements (5 folds required, executed folds={list(folds)}, tasks={len(all_results)}/{len(task_specs)}, all audits passed={all_audits_passed}). ")
+            f.write("The metrics below represent partial or diagnostic progress and CANNOT serve as formal empirical claims in publication.\n\n")
 
         f.write("> **Formal Methodological Demarcation**:\n")
         f.write("> In strict accordance with Elsevier standards, component contributions are evaluated before and after ")
@@ -763,8 +811,8 @@ def run_experiment_e4(
             )
 
         f.write("\n## 2. Key Academic Findings & Mechanism Validation\n\n")
-        if not variant_summary or not payload["is_complete"]:
-            f.write("Execution is partial or incomplete. Dynamic mechanism findings will be generated automatically upon completion of all planned runs.\n")
+        if not variant_summary or not valid_for_formal_claims:
+            f.write("Execution is partial, diagnostic, or incomplete. Formal academic mechanism findings require complete 5-fold evaluation with passed audits for all variants.\n")
         else:
             full_res = variant_summary.get("KDS_EL_Full")
             st095_res = variant_summary.get("Abl_Static_095")
@@ -812,11 +860,16 @@ def run_experiment_e4(
 def main():
     parser = argparse.ArgumentParser(description="Run Experiment E4: 7 Controlled Component Analysis Variants")
     parser.add_argument(
+        "--full",
+        action="store_true",
+        help="Run full benchmark: all 19 datasets, all 5 outer folds, all 10 seeds (6,650 runs)",
+    )
+    parser.add_argument(
         "--datasets",
         type=str,
         nargs="+",
         default=["Colon", "T1D", "BASEHOCK", "COIL20"],
-        help="Datasets to evaluate (default: Colon, T1D, BASEHOCK, COIL20)",
+        help="Datasets to evaluate (default: Colon, T1D, BASEHOCK, COIL20; pass 'all' for all 19)",
     )
     parser.add_argument(
         "--variants",
@@ -854,11 +907,20 @@ def main():
     parser.add_argument("--quiet", action="store_true", help="Suppress detailed console logs")
     args = parser.parse_args()
 
+    if args.full:
+        sel_datasets = BENCHMARK_19_DATASETS
+        sel_folds = [1, 2, 3, 4, 5]
+        sel_seeds = DEFAULT_SEEDS
+    else:
+        sel_datasets = BENCHMARK_19_DATASETS if args.datasets == ["all"] else args.datasets
+        sel_folds = args.folds
+        sel_seeds = args.seeds
+
     run_experiment_e4(
-        datasets=args.datasets,
+        datasets=sel_datasets,
         variants=args.variants,
-        folds=args.folds,
-        seeds=args.seeds,
+        folds=sel_folds,
+        seeds=sel_seeds,
         workers=args.workers,
         out_dir=args.out_dir,
         verbose=not args.quiet,

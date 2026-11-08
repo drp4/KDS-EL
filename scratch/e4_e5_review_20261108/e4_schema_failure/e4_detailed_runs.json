@@ -1,0 +1,138 @@
+[
+  {
+    "dataset": "toy",
+    "variant": "Abl_Static_095",
+    "variant_label": "Static-095 (High Acc)",
+    "outer_fold": 1,
+    "run_idx": 1,
+    "seed": 7,
+    "candidate_eval_requests": 43,
+    "shortcut_eval_requests": 10,
+    "cache_hit_count": 5,
+    "cv_eval_calls": 28,
+    "unique_masks": 32,
+    "active_features": 3,
+    "active_features_ratio": 0.25,
+    "inner_gbest_fitness": 0.30594444444444446,
+    "generations_completed": 1,
+    "tps_switch_q": null,
+    "tps_rescore_requests": 0,
+    "ker_attempts": 3,
+    "ker_accepts": 0,
+    "ker_accept_rate": 0.0,
+    "air_triggers": 0,
+    "p2_valid_ratio": 1.0,
+    "gbest_event_sources": {
+      "init": 1,
+      "regular_p1": 1,
+      "regular_p2": 0,
+      "ker": 0,
+      "air": 0
+    },
+    "delta_w_class": -1.1836296296296296,
+    "outer_test_metrics": {
+      "knn": {
+        "accuracy": 0.8333333333333334,
+        "balanced_accuracy": 0.8333333333333334,
+        "macro_f1": 0.8333333333333334,
+        "y_pred": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          1,
+          1
+        ]
+      },
+      "svm": {
+        "accuracy": 0.9166666666666666,
+        "balanced_accuracy": 0.9166666666666667,
+        "macro_f1": 0.916083916083916,
+        "y_pred": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      "random_forest": {
+        "accuracy": 0.8333333333333334,
+        "balanced_accuracy": 0.8333333333333334,
+        "macro_f1": 0.8333333333333334,
+        "y_pred": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "naive_bayes": {
+        "accuracy": 0.6666666666666666,
+        "balanced_accuracy": 0.6666666666666666,
+        "macro_f1": 0.6666666666666666,
+        "y_pred": [
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ]
+      },
+      "lda": {
+        "accuracy": 0.5833333333333334,
+        "balanced_accuracy": 0.5833333333333333,
+        "macro_f1": 0.5804195804195804,
+        "y_pred": [
+          0,
+          1,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "fallback_used": "none"
+      }
+    },
+    "timing": {
+      "search_sec": 0.244,
+      "blind_eval_sec": 0.15,
+      "total_sec": 0.396
+    },
+    "audit_passed": true
+  }
+]

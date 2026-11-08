@@ -1,0 +1,99 @@
+{
+  "real_e4_all_variants_fivefold": {
+    "planned": 35,
+    "completed": 35,
+    "all_audits_passed": true,
+    "valid_for_formal_claims": true,
+    "all_records_have_test_indices": true,
+    "all_used_2000_requests": true
+  },
+  "real_e5_core_fivefold": {
+    "planned": 25,
+    "completed": 25,
+    "real_nested_audits_all_passed": true,
+    "summary_all_audits_passed": false,
+    "summary_valid_for_formal_claims": false,
+    "record_has_top_level_audit_passed": false,
+    "all_used_2000_requests": true
+  },
+  "real_e5_pooled_flags": {
+    "KDS_EL_TwoPhase": {
+      "is_complete_5fold": true,
+      "coverage_ratio": 1.0,
+      "all_audits_passed": false,
+      "is_statistically_valid": false
+    },
+    "MEL": {
+      "is_complete_5fold": true,
+      "coverage_ratio": 1.0,
+      "all_audits_passed": false,
+      "is_statistically_valid": false
+    },
+    "MEL_MI": {
+      "is_complete_5fold": true,
+      "coverage_ratio": 1.0,
+      "all_audits_passed": false,
+      "is_statistically_valid": false
+    },
+    "KDS_EL_NoPool": {
+      "is_complete_5fold": true,
+      "coverage_ratio": 1.0,
+      "all_audits_passed": false,
+      "is_statistically_valid": false
+    },
+    "bIRIME": {
+      "is_complete_5fold": true,
+      "coverage_ratio": 1.0,
+      "all_audits_passed": false,
+      "is_statistically_valid": false
+    }
+  },
+  "real_denca_accounting": {
+    "returned_without_budget_exception": true,
+    "candidate_requests": 2000,
+    "accounted_request_sum": 1,
+    "audit_all_passed": false,
+    "failed_audit_checks": [
+      "9_requests_accounting_closed"
+    ]
+  },
+  "e4_ker_and_partial_fixes": {
+    "rates_injected": [
+      0.0,
+      1.0
+    ],
+    "reported_ker_rate": 0.5,
+    "partial_valid_for_formal_claims": false
+  },
+  "birime_fidelity": {
+    "requests": 2000,
+    "first_different_request": null
+  },
+  "lda_wide_safeguard": {
+    "normal_estimators": [
+      {
+        "solver": "svd"
+      }
+    ],
+    "fallback_estimators": [
+      {
+        "solver": "svd"
+      },
+      {
+        "solver": "svd",
+        "tol": 0.001
+      }
+    ],
+    "normal_model_variant": "svd_wide_feature_protection",
+    "fallback_used": "svd_relaxed_tol",
+    "e5_record_preserves_model_variant": false
+  },
+  "report_fixes_and_remaining_wording": {
+    "empty_suppresses_takeaways": true,
+    "adverse_knn_acc": 0.95,
+    "adverse_svm_acc": 0.1,
+    "adverse_rf_acc": 0.15,
+    "adverse_report_asserts_consistent_generalization": true
+  },
+  "production_files_unchanged": true
+}

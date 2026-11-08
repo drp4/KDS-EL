@@ -1,0 +1,9 @@
+{
+  "experiment": "E5_Nested_Cross_Classifier_Generalization",
+  "timestamp": "2026-11-08T13:33:27.321705",
+  "total_planned_runs": 5,
+  "total_completed_runs": 5,
+  "is_complete": true,
+  "failed_runs": [],
+  "results": {}
+}

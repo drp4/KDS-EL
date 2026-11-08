@@ -506,6 +506,7 @@ def run_nested_bIRIME(X_train, y_train, evaluator, opts, seed=7):
     np.random.seed(seed)
     dim = X_train.shape[1]
     N = opts.get("N", 20)
+    T = opts.get("T", max(1, evaluator.max_fes // N))
     lb, ub = 0.0, 1.0
     W_soft = 5.0
     Limits = 50
@@ -532,13 +533,14 @@ def run_nested_bIRIME(X_train, y_train, evaluator, opts, seed=7):
     while evaluator.has_budget():
         generations += 1
         t = generations
+        t_ratio = min(1.0, t / float(T))
         RimeFactor = (
             (np.random.rand() - 0.5) * 2.0
-            * np.cos(np.pi * (t % 10) / 10.0)
-            * (1.0 - np.round((t % 50) * W_soft / 50.0) / W_soft)
+            * np.cos(np.pi * t / (max(1.0, T / 10.0)))
+            * (1.0 - np.round(t_ratio * W_soft) / W_soft)
         )
-        E = np.sqrt(min(1.0, t / 100.0))
-        c = 2.0 * (1.0 - min(1.0, t / 100.0))
+        E = np.sqrt(t_ratio)
+        c = 2.0 * (1.0 - t_ratio)
 
         norm_val = np.sqrt(np.sum(fit**2)) + 1e-12
         norm_rates = fit / norm_val
@@ -553,7 +555,11 @@ def run_nested_bIRIME(X_train, y_train, evaluator, opts, seed=7):
                 # Soft-Besiege
                 r = np.random.rand()
                 rand_idx = np.random.randint(0, N)
-                P_new[i] = P[rand_idx] - r * np.abs(P[rand_idx] - 2.0 * np.random.rand() * P[i])
+                X_rand = P[rand_idx]
+                if r < 0.5:
+                    P_new[i] = X_rand - np.random.rand() * np.abs(X_rand - 2.0 * np.random.rand() * P[i])
+                else:
+                    P_new[i] = (Gbest - np.mean(P, axis=0)) - np.random.rand() * np.random.rand()
             else:
                 # Soft-rime Search & Hard-rime Puncture
                 for j in range(dim):
@@ -1385,23 +1391,23 @@ def run_nested_DENCA_SO(X_train, y_train, evaluator, opts, seed=7):
     P = np.random.uniform(0.0, 1.0, (N, dim))
     fit = np.zeros(N)
     for i in range(N):
-        if not evaluator.has_budget():
+        if evaluator.candidate_eval_requests >= evaluator.max_fes - 1:
             break
         evaluator.candidate_eval_requests += 1
-        evaluator.shortcut_eval_requests += 1
+        evaluator.filter_eval_requests += 1
         fit[i] = filter_cost(P[i])
 
     bi = np.argmin(fit)
     Gbest = P[bi].copy()
     best_filter_fit = fit[bi]
 
-    # DENCA performs evolutionary filter search under strict budget
+    # DENCA performs evolutionary filter search reserving 1 final wrapper evaluation request
     generations = 0
 
-    while evaluator.has_budget():
+    while evaluator.candidate_eval_requests < evaluator.max_fes - 1:
         generations += 1
         for i in range(N):
-            if not evaluator.has_budget():
+            if evaluator.candidate_eval_requests >= evaluator.max_fes - 1:
                 break
             candidates = [idx for idx in range(N) if idx != i]
             r1, r2, r3 = np.random.choice(candidates, 3, replace=False)
@@ -1412,7 +1418,7 @@ def run_nested_DENCA_SO(X_train, y_train, evaluator, opts, seed=7):
             u = np.where(cross_mask, v, P[i])
 
             evaluator.candidate_eval_requests += 1
-            evaluator.shortcut_eval_requests += 1
+            evaluator.filter_eval_requests += 1
             f_u = filter_cost(u)
             if f_u <= fit[i]:
                 P[i] = u
@@ -1425,6 +1431,7 @@ def run_nested_DENCA_SO(X_train, y_train, evaluator, opts, seed=7):
     if not final_mask.any():
         final_mask[np.argmax(H)] = True
 
+    # Evaluates the final selected subset using the reserved wrapper evaluation (request == max_fes)
     fitG = evaluator.evaluate(final_mask, ws=ws)
 
     return {

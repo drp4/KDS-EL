@@ -218,10 +218,12 @@ def execute_e5_single_run(
             "shortcut_eval_requests": evaluator.shortcut_eval_requests,
             "cache_hit_count": evaluator.cache_hit_count,
             "cv_eval_calls": evaluator.cv_eval_calls,
+            "filter_eval_requests": getattr(evaluator, "filter_eval_requests", 0),
             "inner_model_fits": evaluator.inner_model_fits,
             "unique_masks_count": len(evaluator.unique_masks),
             "tps_rescore_requests": evaluator.tps_rescore_requests,
         },
+        "audit_passed": all_checks_passed,
         "audit": {
             "all_passed": all_checks_passed,
             "details": audit_details,
@@ -234,6 +236,7 @@ def execute_e5_single_run(
                 "accuracy": outer_metrics[clf]["accuracy"],
                 "balanced_accuracy": outer_metrics[clf]["balanced_accuracy"],
                 "macro_f1": outer_metrics[clf]["macro_f1"],
+                "model_variant": outer_metrics[clf].get("model_variant", "standard"),
                 "fallback_used": outer_metrics[clf].get("fallback_used", "none"),
             }
             for clf in CLASSIFIER_NAMES
@@ -294,12 +297,17 @@ def compute_pooled_oof_for_run(records_for_seed, y_true):
             bacc = float(balanced_accuracy_score(y_true, y_oof))
             f1 = float(f1_score(y_true, y_oof, average="macro", zero_division=0))
 
+        fold_variants = [r.get("outer_metrics", {}).get(clf, {}).get("model_variant", "standard") for r in records_for_seed]
+        fold_fallbacks = [r.get("outer_metrics", {}).get(clf, {}).get("fallback_used", "none") for r in records_for_seed]
+
         oof_results[clf] = {
             "accuracy": acc,
             "balanced_accuracy": bacc,
             "macro_f1": f1,
             "is_complete_5fold": is_complete,
             "coverage_ratio": cov_ratio,
+            "model_variants": fold_variants,
+            "fallbacks_used": fold_fallbacks,
         }
 
     mean_feats = float(np.mean([r["selected_features"] for r in records_for_seed]))
@@ -307,9 +315,19 @@ def compute_pooled_oof_for_run(records_for_seed, y_true):
     internal_accs = [r["internal_acc"] for r in records_for_seed if r["internal_acc"] is not None]
     mean_internal_acc = float(np.mean(internal_accs)) if internal_accs else None
 
+    # Check both "audit_passed" and "audit.all_passed" to prevent format mismatch
+    all_audits_passed = bool(
+        len(records_for_seed) > 0 and
+        all(r.get("audit_passed", r.get("audit", {}).get("all_passed", False)) for r in records_for_seed)
+    )
+    is_statistically_valid = bool(is_complete and all_audits_passed and cov_ratio == 1.0)
+
     return {
         "oof_metrics": oof_results,
-        "is_complete_5fold": bool(np.all([m["is_complete_5fold"] for m in oof_results.values()])),
+        "is_complete_5fold": is_complete,
+        "all_audits_passed": all_audits_passed,
+        "is_statistically_valid": is_statistically_valid,
+        "coverage_ratio": cov_ratio,
         "mean_selected_features": mean_feats,
         "total_seed_time_sec": total_time,
         "mean_internal_acc": mean_internal_acc,
@@ -494,6 +512,11 @@ def run_experiment_e5(
             baccs = [s["oof_metrics"][clf]["balanced_accuracy"] for s in seed_results]
             f1s = [s["oof_metrics"][clf]["macro_f1"] for s in seed_results]
 
+            all_variants = [v for s in seed_results for v in s["oof_metrics"][clf].get("model_variants", [])]
+            all_fallbacks = [fb for s in seed_results for fb in s["oof_metrics"][clf].get("fallbacks_used", [])]
+            variant_counts = {v: all_variants.count(v) for v in set(all_variants)}
+            fallback_counts = {fb: all_fallbacks.count(fb) for fb in set(all_fallbacks)}
+
             entry["classifiers"][clf] = {
                 "accuracy_mean": float(np.mean(accs)),
                 "accuracy_std": float(np.std(accs)),
@@ -501,17 +524,38 @@ def run_experiment_e5(
                 "balanced_accuracy_std": float(np.std(baccs)),
                 "macro_f1_mean": float(np.mean(f1s)),
                 "macro_f1_std": float(np.std(f1s)),
+                "model_variants_summary": variant_counts,
+                "fallbacks_summary": fallback_counts,
             }
 
         agg_table.setdefault(algo, {})[ds] = entry
 
-    is_complete = bool(len(failed_runs) == 0 and len(completed_runs) == len(tasks))
+    tasks_executed_successfully = bool(len(failed_runs) == 0 and len(completed_runs) == len(tasks))
+    all_audits_passed = bool(
+        len(completed_runs) > 0 and
+        all(r.get("audit_passed", r.get("audit", {}).get("all_passed", False)) for r in completed_runs)
+    )
+    all_seeds_valid = bool(
+        len(summary_records) > 0 and
+        all(s.get("is_statistically_valid", False) for seed_list in summary_records.values() for s in seed_list)
+    )
+    valid_for_formal_claims = bool(
+        tasks_executed_successfully and
+        len(outer_folds) == 5 and
+        all_audits_passed and
+        all_seeds_valid and
+        len(agg_table) > 0
+    )
+
     summary_payload = {
         "experiment": "E5_Nested_Cross_Classifier_Generalization",
         "timestamp": datetime.now().isoformat(),
         "total_planned_runs": len(tasks),
         "total_completed_runs": len(completed_runs),
-        "is_complete": is_complete,
+        "tasks_executed_successfully": tasks_executed_successfully,
+        "is_complete": tasks_executed_successfully,
+        "valid_for_formal_claims": valid_for_formal_claims,
+        "all_audits_passed": all_audits_passed,
         "failed_runs": failed_runs,
         "results": agg_table,
     }
@@ -526,7 +570,9 @@ def run_experiment_e5(
     md_report_path = os.path.join(out_dir, "e5_generalization_report.md")
     generate_e5_markdown_report(
         agg_table, algorithms, datasets, md_report_path,
-        time.perf_counter() - t0_exp, is_complete=is_complete,
+        time.perf_counter() - t0_exp,
+        is_complete=tasks_executed_successfully,
+        valid_for_formal_claims=valid_for_formal_claims,
         n_completed=len(completed_runs), n_planned=len(tasks)
     )
 
@@ -542,7 +588,7 @@ def run_experiment_e5(
 
 def generate_e5_markdown_report(
     agg_table, algorithms, datasets, out_path, elapsed_time,
-    is_complete=True, n_completed=0, n_planned=0
+    is_complete=True, valid_for_formal_claims=False, n_completed=0, n_planned=0
 ):
     """
     Renders academic markdown synthesis report complying with AGENTS.md.
@@ -553,13 +599,13 @@ def generate_e5_markdown_report(
     lines.append(f"- **Protocol Reference**: `review_round_1/05_executable_experiment_plan.md` (Section 8)")
     lines.append(f"- **Target Algorithms ({len(algorithms)})**: {', '.join(algorithms)}")
     lines.append(f"- **Evaluated Datasets ({len(datasets)})**: {', '.join(datasets)}")
-    lines.append(f"- **Runs Status**: `{n_completed} / {n_planned}` completed (Complete: `{is_complete}`)")
-    lines.append(f"- **Downstream Models (5)**: 3-NN, RBF-SVM, Random Forest, GaussianNB, Shrinkage LDA")
+    lines.append(f"- **Runs Status**: `{n_completed} / {n_planned}` completed (Tasks Execution Completed: `{is_complete}`, Valid for Formal Claims: `{valid_for_formal_claims}`)")
+    lines.append(f"- **Downstream Models (5)**: 3-NN, RBF-SVM, Random Forest, GaussianNB, LDA (Shrinkage / SVD-safeguarded)")
     lines.append(f"- **Total Elapsed Time**: `{elapsed_time:.2f} s`\n")
 
-    if not is_complete:
-        lines.append("> [!WARNING] Incomplete Execution Diagnostic Banner")
-        lines.append(f"> Only {n_completed} of {n_planned} planned runs finished successfully. Incomplete seeds/folds cannot serve as formal empirical claims.\n")
+    if not valid_for_formal_claims:
+        lines.append("> [!WARNING] Incomplete / Diagnostic Execution Notice")
+        lines.append(f"> Only {n_completed} of {n_planned} planned runs finished (valid for formal claims: `{valid_for_formal_claims}`). Incomplete outer folds (< 5), unverified audits, or incomplete seeds cannot serve as formal empirical claims in publication.\n")
 
     lines.append("> **Formal Methodological Demarcation**:")
     lines.append("> In strict adherence to rigorous Elsevier peer review standards, all evaluations in this report are conducted under complete outer test partition isolation. Mutual information estimation, population initialization, wrapper evolutionary search, preprocessing transformations, and model fitting are strictly confined within the training partition of each outer fold. Pooled out-of-fold predictions concatenated across the five outer test folds serve as the primary generalization metric, completely eliminating optimistic circular evaluation bias.\n")
@@ -585,7 +631,7 @@ def generate_e5_markdown_report(
     lines.append("\n## 2. Downstream Model Transferability Profile (Cross-Classifier Generalization)\n")
     lines.append("The table below reports the average performance shift of alternative downstream inductive biases relative to the primary 3-NN classifier across all evaluated datasets.\n")
 
-    lines.append(r"| Algorithm | 3-NN Acc | RBF-SVM Acc ($\Delta$) | Random Forest Acc ($\Delta$) | GaussianNB Acc ($\Delta$) | Shrinkage LDA Acc ($\Delta$) |")
+    lines.append(r"| Algorithm | 3-NN Acc | RBF-SVM Acc ($\Delta$) | Random Forest Acc ($\Delta$) | GaussianNB Acc ($\Delta$) | LDA (Shrinkage/SVD) Acc ($\Delta$) |")
     lines.append("| :--- | :---: | :---: | :---: | :---: | :---: |")
 
     for algo in algorithms:
@@ -612,6 +658,24 @@ def generate_e5_markdown_report(
             f"{mean_lda:.4f} ({d_lda:+.4f}) |"
         )
 
+    # LDA model resolution & fallback accounting
+    lda_variants_total = {}
+    lda_fallbacks_total = {}
+    for algo in algorithms:
+        ds_entries = [agg_table.get(algo, {}).get(ds) for ds in datasets if agg_table.get(algo, {}).get(ds) is not None]
+        for e in ds_entries:
+            lda_info = e.get("classifiers", {}).get("lda", {})
+            for v, c in lda_info.get("model_variants_summary", {}).items():
+                lda_variants_total[v] = lda_variants_total.get(v, 0) + c
+            for fb, c in lda_info.get("fallbacks_summary", {}).items():
+                lda_fallbacks_total[fb] = lda_fallbacks_total.get(fb, 0) + c
+
+    if lda_variants_total:
+        variant_desc = ", ".join([f"`{k}`: {v} fold evaluations" for k, v in sorted(lda_variants_total.items())])
+        fallback_desc = ", ".join([f"`{k}`: {v}" for k, v in sorted(lda_fallbacks_total.items()) if k != "none"]) or "none"
+        lines.append(f"\n> **LDA Model Variant Accounting**: {variant_desc} (Fallbacks triggered: {fallback_desc}). "
+                     "Subsets with $d \\le 1000$ are evaluated with Ledoit--Wolf shrinkage LSQR; subsets with $d > 1000$ are evaluated with SVD to prevent covariance matrix memory allocation.\n")
+
     lines.append("\n## 3. Optimistic Search Bias Quantification\n")
     lines.append("Internal search surrogate error rate versus held-out pooled out-of-fold generalization error:\n")
     lines.append(r"| Algorithm | Internal Search Acc | Pooled OOF Acc | Optimistic Search Bias ($\Delta_{\mathrm{bias}}$) |")
@@ -632,9 +696,61 @@ def generate_e5_markdown_report(
             lines.append(f"| **`{algo}`** | — | — | — |")
 
     lines.append("\n## 4. Key Academic Takeaways & Submission Protocol Alignment\n")
-    lines.append("1. **Complete Information Barrier**: Strict partition of mutual information estimation and wrapper search to the outer training set confirms that KDS-EL's high-dimensional feature selection advantages persist under out-of-sample nested cross-validation.")
-    lines.append("2. **Balanced Dimensional Sparsity**: Across evaluated benchmark datasets, KDS-EL maintains a superior multi-criteria trade-off, securing competitive classification accuracy while dramatically suppressing feature cardinality relative to peer algorithms.")
-    lines.append("3. **Cross-Model Generalization**: Downstream evaluations demonstrate that feature subsets selected via 3-NN guided optimization exhibit robust geometric transferability across kernelized support vector machines and random forests without significant inductive bias collapse.\n")
+    if not valid_for_formal_claims or not agg_table:
+        lines.append("> [!NOTE] Diagnostic Notice: Insufficient / Incomplete Data for Formal Claims")
+        lines.append("> The current execution is diagnostic, partial, or incomplete. In accordance with strict Elsevier submission protocols and AGENTS.md, formal academic takeaways regarding out-of-fold generalization, multi-objective trade-offs, and inductive bias transferability are withheld until full 5-fold evaluation with complete audit verification is executed.\n")
+    else:
+        lines.append("1. **Complete Information Barrier**: Strict partition of mutual information estimation and wrapper search to the outer training set confirms that out-of-sample nested cross-validation is achieved without optimistic circular evaluation bias.")
+
+        kds_entries = [agg_table.get("KDS_EL_TwoPhase", {}).get(ds) for ds in datasets if agg_table.get("KDS_EL_TwoPhase", {}).get(ds) is not None]
+        if kds_entries:
+            kds_feats = float(np.mean([e["mean_features"] for e in kds_entries]))
+            kds_acc = float(np.mean([e["classifiers"]["knn"]["accuracy_mean"] for e in kds_entries]))
+            comp_summaries = []
+            for other_algo in algorithms:
+                if other_algo != "KDS_EL_TwoPhase":
+                    other_entries = [agg_table.get(other_algo, {}).get(ds) for ds in datasets if agg_table.get(other_algo, {}).get(ds) is not None]
+                    if other_entries:
+                        o_feats = float(np.mean([e["mean_features"] for e in other_entries]))
+                        o_acc = float(np.mean([e["classifiers"]["knn"]["accuracy_mean"] for e in other_entries]))
+                        comp_summaries.append(f"{other_algo}: {o_feats:.1f} feats, {o_acc:.4f} acc")
+            if comp_summaries:
+                lines.append(f"2. **Dimensional Sparsity Trade-Off**: Across evaluated benchmark instances, KDS_EL_TwoPhase achieves a mean active feature count of {kds_feats:.1f} with {kds_acc:.4f} 3-NN accuracy (comparators: {'; '.join(comp_summaries)}).")
+                other_feats_list = [float(np.mean([e["mean_features"] for e in agg_table[oa].values()])) for oa in algorithms if oa != "KDS_EL_TwoPhase" and agg_table.get(oa)]
+                if other_feats_list and kds_feats < np.mean(other_feats_list):
+                    lines.append(f"The empirical profile reflects substantial feature cardinality reduction ({kds_feats:.1f} vs peer average {float(np.mean(other_feats_list)):.1f}) while maintaining competitive out-of-sample accuracy.")
+                else:
+                    lines.append(f"The empirical trade-off illustrates the balance between feature reduction and predictive fidelity across instances.")
+            else:
+                lines.append(f"2. **Dimensional Sparsity Profile**: KDS_EL_TwoPhase yields an average of {kds_feats:.1f} active features and {kds_acc:.4f} 3-NN accuracy across evaluated instances.")
+        else:
+            lines.append("2. **Dimensional Sparsity**: Evaluated algorithms demonstrate differentiated feature compression profiles across benchmark datasets.")
+
+        if kds_entries:
+            mean_knn = float(np.mean([e["classifiers"]["knn"]["accuracy_mean"] for e in kds_entries]))
+            mean_svm = float(np.mean([e["classifiers"]["svm"]["accuracy_mean"] for e in kds_entries]))
+            mean_rf = float(np.mean([e["classifiers"]["random_forest"]["accuracy_mean"] for e in kds_entries]))
+            mean_nb = float(np.mean([e["classifiers"]["naive_bayes"]["accuracy_mean"] for e in kds_entries]))
+            mean_lda = float(np.mean([e["classifiers"]["lda"]["accuracy_mean"] for e in kds_entries]))
+
+            d_svm = mean_svm - mean_knn
+            d_rf = mean_rf - mean_knn
+
+            lines.append(
+                f"3. **Cross-Model Transferability**: Subsets selected via 3-NN guided optimization yield the following out-of-fold generalization profiles across downstream models: "
+                f"3-NN: {mean_knn:.4f}, RBF-SVM: {mean_svm:.4f} ($\\Delta$: {d_svm:+.4f}), Random Forest: {mean_rf:.4f} ($\\Delta$: {d_rf:+.4f}), "
+                f"GaussianNB: {mean_nb:.4f} ($\\Delta$: {mean_nb - mean_knn:+.4f}), LDA: {mean_lda:.4f} ($\\Delta$: {mean_lda - mean_knn:+.4f})."
+            )
+
+            # Data-driven objective synthesis based on actual numbers
+            if d_svm >= -0.05 and d_rf >= -0.05:
+                lines.append("Downstream kernelized SVM and ensemble models maintain comparable classification accuracy to the 3-NN optimization surrogate, indicating stable geometric separability of the selected feature subspace across these inductive biases.\n")
+            elif d_svm < -0.15 or d_rf < -0.15:
+                lines.append("Downstream evaluations exhibit pronounced performance attenuation on non-local models, reflecting inductive bias misalignment between nearest-neighbor distance metrics and global margin/tree partition criteria.\n")
+            else:
+                lines.append("Downstream classifiers demonstrate moderate inductive sensitivity, with performance shifts reflecting differences in inductive bias relative to nearest-neighbor search guidance.\n")
+        else:
+            lines.append("3. **Cross-Model Transferability**: Downstream classifiers provide out-of-fold verification of the selected feature subsets across distinct inductive biases.\n")
 
     with open(out_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))

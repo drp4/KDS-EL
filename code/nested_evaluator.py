@@ -165,6 +165,7 @@ class BudgetEvaluator:
         self.cache_hit_count = 0
         self.cv_eval_calls = 0
         self.inner_model_fits = 0
+        self.filter_eval_requests = 0
 
         # Phase-independent cache: mask_bytes -> inner_error_rate
         self.cache = {}
@@ -375,21 +376,37 @@ class BlindOuterEvaluator:
         preds_nb = nb_clf.predict(X_te)
         results["naive_bayes"] = compute_metrics(y_te, preds_nb)
 
-        # 5. Shrinkage LDA with multi-level fallbacks & ultra-wide memory protection
+        # 5. LDA with dimension-adaptive solver & ultra-wide memory safeguard
+        # When nf <= 1000: Shrinkage LDA (solver="lsqr", shrinkage="auto") is preferred.
+        # When nf > 1000: SVD LDA (solver="svd") is used to strictly avoid O(D^2) covariance matrix allocation.
         lda_fallback = "none"
         preds_lda = None
-        try:
-            if nf > 1000:
-                # Memory safeguard for ultra-wide subsets (e.g. competitors selecting >1000 features):
-                # SVD solver avoids computing O(D^2) covariance matrix by decomposing X (N x D) directly.
+        if nf > 1000:
+            lda_model_variant = "svd_wide_feature_protection"
+            try:
                 lda_pipe = Pipeline([
                     ("scaler", StandardScaler()),
                     ("lda", LinearDiscriminantAnalysis(solver="svd")),
                 ])
                 lda_pipe.fit(X_tr, y_tr)
                 preds_lda = lda_pipe.predict(X_te)
-                lda_fallback = "svd_wide_feature_protection"
-            else:
+            except Exception:
+                try:
+                    # Safeguard: wide feature fallback must stay with SVD (never lsqr) to prevent OOM
+                    lda_pipe_fb = Pipeline([
+                        ("scaler", StandardScaler()),
+                        ("lda", LinearDiscriminantAnalysis(solver="svd", tol=1e-3)),
+                    ])
+                    lda_pipe_fb.fit(X_tr, y_tr)
+                    preds_lda = lda_pipe_fb.predict(X_te)
+                    lda_fallback = "svd_relaxed_tol"
+                except Exception as e:
+                    majority_class = int(np.bincount(y_tr).argmax())
+                    preds_lda = np.full(len(y_te), majority_class, dtype=int)
+                    lda_fallback = f"failed_majority_class: {str(e)}"
+        else:
+            lda_model_variant = "shrinkage_lsqr"
+            try:
                 lda_pipe = Pipeline([
                     ("scaler", StandardScaler()),
                     (
@@ -399,39 +416,43 @@ class BlindOuterEvaluator:
                 ])
                 lda_pipe.fit(X_tr, y_tr)
                 preds_lda = lda_pipe.predict(X_te)
-        except Exception:
-            try:
-                # Level 1 fallback: fixed shrinkage = 0.1
-                lda_pipe_fb1 = Pipeline([
-                    ("scaler", StandardScaler()),
-                    (
-                        "lda",
-                        LinearDiscriminantAnalysis(solver="lsqr", shrinkage=0.1),
-                    ),
-                ])
-                lda_pipe_fb1.fit(X_tr, y_tr)
-                preds_lda = lda_pipe_fb1.predict(X_te)
-                lda_fallback = "shrinkage_0.1"
             except Exception:
-                # Level 2 fallback: SVD solver
                 try:
-                    lda_pipe_fb2 = Pipeline([
+                    # Level 1 fallback: fixed shrinkage = 0.1
+                    lda_pipe_fb1 = Pipeline([
                         ("scaler", StandardScaler()),
                         (
                             "lda",
-                            LinearDiscriminantAnalysis(solver="svd", tol=1e-4),
+                            LinearDiscriminantAnalysis(solver="lsqr", shrinkage=0.1),
                         ),
                     ])
-                    lda_pipe_fb2.fit(X_tr, y_tr)
-                    preds_lda = lda_pipe_fb2.predict(X_te)
-                    lda_fallback = "solver_svd"
-                except Exception as e:
-                    # Level 3 fallback: majority class prediction
-                    majority_class = int(np.bincount(y_tr).argmax())
-                    preds_lda = np.full(len(y_te), majority_class, dtype=int)
-                    lda_fallback = f"failed_majority_class: {str(e)}"
+                    lda_pipe_fb1.fit(X_tr, y_tr)
+                    preds_lda = lda_pipe_fb1.predict(X_te)
+                    lda_fallback = "shrinkage_0.1"
+                except Exception:
+                    try:
+                        # Level 2 fallback: SVD solver
+                        lda_pipe_fb2 = Pipeline([
+                            ("scaler", StandardScaler()),
+                            (
+                                "lda",
+                                LinearDiscriminantAnalysis(solver="svd", tol=1e-4),
+                            ),
+                        ])
+                        lda_pipe_fb2.fit(X_tr, y_tr)
+                        preds_lda = lda_pipe_fb2.predict(X_te)
+                        lda_fallback = "solver_svd"
+                    except Exception as e:
+                        # Level 3 fallback: majority class prediction
+                        majority_class = int(np.bincount(y_tr).argmax())
+                        preds_lda = np.full(len(y_te), majority_class, dtype=int)
+                        lda_fallback = f"failed_majority_class: {str(e)}"
 
-        results["lda"] = {**compute_metrics(y_te, preds_lda), "fallback_used": lda_fallback}
+        results["lda"] = {
+            **compute_metrics(y_te, preds_lda),
+            "model_variant": lda_model_variant,
+            "fallback_used": lda_fallback,
+        }
 
         return results
 
@@ -553,10 +574,12 @@ class IntegrityAuditor:
             )
 
         # 9. Mutual exclusion accounting equation:
+        filter_reqs = getattr(evaluator, "filter_eval_requests", 0)
         sum_requests = (
             evaluator.shortcut_eval_requests
             + evaluator.cache_hit_count
             + evaluator.cv_eval_calls
+            + filter_reqs
         )
         checks["9_requests_accounting_closed"] = bool(
             evaluator.candidate_eval_requests == sum_requests

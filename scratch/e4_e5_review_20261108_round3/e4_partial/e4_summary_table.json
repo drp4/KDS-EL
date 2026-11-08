@@ -1,0 +1,37 @@
+{
+  "experiment": "E4_Controlled_Component_Analysis",
+  "timestamp": "2026-11-08T14:35:18.351394",
+  "total_runs_completed": 1,
+  "total_runs_planned": 1,
+  "tasks_executed_successfully": true,
+  "is_complete": true,
+  "valid_for_formal_claims": false,
+  "all_audits_passed": true,
+  "total_elapsed_sec": 0.0,
+  "variant_summary": {
+    "KDS_EL_Full": {
+      "label": "KDS-EL (Full)",
+      "total_seeds_evaluated": 1,
+      "complete_5fold_seeds": 0,
+      "statistically_valid_seeds": 0,
+      "passed_audits": 1,
+      "mean_accuracy": 1.0,
+      "std_accuracy": 0.0,
+      "mean_balanced_accuracy": 1.0,
+      "std_balanced_accuracy": 0.0,
+      "mean_macro_f1": 1.0,
+      "std_macro_f1": 0.0,
+      "mean_active_features": 3.0,
+      "std_active_features": 0.0,
+      "mean_wall_clock_sec": 0.916,
+      "mean_ker_accept_rate": 0.0,
+      "mean_p2_valid_ratio": 0.05476190476190476,
+      "mean_delta_w_class": -9.908020893654115
+    }
+  },
+  "system_metadata": {
+    "platform": "Windows-10-10.0.19044-SP0",
+    "python": "3.12.8",
+    "workers": 1
+  }
+}

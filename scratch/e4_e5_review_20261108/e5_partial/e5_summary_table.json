@@ -1,0 +1,64 @@
+{
+  "experiment": "E5_Nested_Cross_Classifier_Generalization",
+  "timestamp": "2026-11-08T13:33:27.295506",
+  "total_planned_runs": 1,
+  "total_completed_runs": 1,
+  "is_complete": true,
+  "failed_runs": [],
+  "results": {
+    "MEL": {
+      "toy": {
+        "dataset": "toy",
+        "algorithm": "MEL",
+        "n_completed_seeds": 1,
+        "mean_features": 3.0,
+        "std_features": 0.0,
+        "mean_time_sec": 1.0,
+        "classifiers": {
+          "knn": {
+            "accuracy_mean": 1.0,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 1.0,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 1.0,
+            "macro_f1_std": 0.0
+          },
+          "svm": {
+            "accuracy_mean": 1.0,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 1.0,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 1.0,
+            "macro_f1_std": 0.0
+          },
+          "random_forest": {
+            "accuracy_mean": 1.0,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 1.0,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 1.0,
+            "macro_f1_std": 0.0
+          },
+          "naive_bayes": {
+            "accuracy_mean": 1.0,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 1.0,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 1.0,
+            "macro_f1_std": 0.0
+          },
+          "lda": {
+            "accuracy_mean": 1.0,
+            "accuracy_std": 0.0,
+            "balanced_accuracy_mean": 1.0,
+            "balanced_accuracy_std": 0.0,
+            "macro_f1_mean": 1.0,
+            "macro_f1_std": 0.0
+          }
+        },
+        "mean_internal_acc": 0.9,
+        "optimistic_search_bias": -0.09999999999999998
+      }
+    }
+  }
+}

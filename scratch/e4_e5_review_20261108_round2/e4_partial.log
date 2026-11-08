@@ -1,0 +1,20 @@
+
+==============================================================================
+STARTING EXPERIMENT E4: 7 CONTROLLED COMPONENT ANALYSIS VARIANTS
+Configurations (7): ['KDS_EL_Full']
+Datasets (1): ['toy_round2']
+Outer Folds: [1] | Seeds: [7]
+Parallel Workers: 1 (OMP/MKL locked to 1)
+Output Directory: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round2\e4_partial
+Timestamp: 2026-11-08 14:15:27
+==============================================================================
+
+Total Controlled Optimization Runs Planned: 1
+
+==============================================================================
+EXPERIMENT E4 COMPLETED in 0.00s!
+Artifacts saved:
+  - Detailed Runs JSON: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round2\e4_partial\e4_detailed_runs.json
+  - Summary Matrix JSON: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round2\e4_partial\e4_summary_table.json
+  - Academic Markdown Report: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round2\e4_partial\e4_component_analysis_report.md
+==============================================================================

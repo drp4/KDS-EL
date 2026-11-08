@@ -1,0 +1,23 @@
+
+================================================================================
+STARTING EXPERIMENT E5: FULL OUTER NESTED GENERALIZATION BENCHMARK
+Algorithms (12): ['KDS_EL_TwoPhase', 'MEL', 'MEL_MI', 'KDS_EL_NoPool', 'bIRIME', 'BPSO', 'FWPSO', 'SaWDE', 'PSO_CSM', 'BinCOA', 'IGPSO', 'DENCA_SO']
+Datasets (1): ['toy_round3']
+Outer Folds: [1, 2, 3, 4, 5] | Seeds (1): [7]
+Parallel Workers: 1 (Single-layer process parallelism)
+Fast k-NN Acceleration: False
+Output Directory: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\real_e5
+Timestamp: 2026-11-08 14:34:15
+================================================================================
+
+Total Nested Optimization Runs Planned: 60
+
+
+================================================================================
+EXPERIMENT E5 COMPLETED in 62.22s!
+Artifacts saved:
+  - Detailed Runs JSON: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\real_e5\e5_detailed_runs.json
+  - Summary Matrix JSON: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\real_e5\e5_summary_table.json
+  - Academic Markdown Report: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\real_e5\e5_generalization_report.md
+================================================================================
+

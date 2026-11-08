@@ -1,0 +1,9 @@
+{
+  "workers": 2,
+  "e4_completed": 4,
+  "e4_all_audits_passed": true,
+  "e4_partial_rejected": true,
+  "e5_completed": 4,
+  "e5_all_audits_passed": true,
+  "e5_partial_rejected": true
+}

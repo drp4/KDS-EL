@@ -1,0 +1,43 @@
+
+==============================================================================
+STARTING EXPERIMENT E4: 7 CONTROLLED COMPONENT ANALYSIS VARIANTS
+Configurations (7): ['KDS_EL_Full', 'Abl_Static_095']
+Datasets (1): ['toy_parallel']
+Outer Folds: [1, 2] | Seeds: [7]
+Parallel Workers: 2 (OMP/MKL locked to 1)
+Output Directory: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\parallel_e4
+Timestamp: 2026-11-08 14:36:45
+==============================================================================
+
+Total Controlled Optimization Runs Planned: 4
+
+==============================================================================
+EXPERIMENT E4 COMPLETED in 9.19s!
+Artifacts saved:
+  - Detailed Runs JSON: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\parallel_e4\e4_detailed_runs.json
+  - Summary Matrix JSON: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\parallel_e4\e4_summary_table.json
+  - Academic Markdown Report: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\parallel_e4\e4_component_analysis_report.md
+==============================================================================
+
+================================================================================
+STARTING EXPERIMENT E5: FULL OUTER NESTED GENERALIZATION BENCHMARK
+Algorithms (2): ['KDS_EL_TwoPhase', 'DENCA_SO']
+Datasets (1): ['toy_parallel']
+Outer Folds: [1, 2] | Seeds (1): [7]
+Parallel Workers: 2 (Single-layer process parallelism)
+Fast k-NN Acceleration: False
+Output Directory: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\parallel_e5
+Timestamp: 2026-11-08 14:36:54
+================================================================================
+
+Total Nested Optimization Runs Planned: 4
+
+
+================================================================================
+EXPERIMENT E5 COMPLETED in 6.65s!
+Artifacts saved:
+  - Detailed Runs JSON: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\parallel_e5\e5_detailed_runs.json
+  - Summary Matrix JSON: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\parallel_e5\e5_summary_table.json
+  - Academic Markdown Report: E:\多目标优化\KDS-EL\scratch\e4_e5_review_20261108_round3\parallel_e5\e5_generalization_report.md
+================================================================================
+

@@ -1,0 +1,33 @@
+{
+  "experiment": "E4_Controlled_Component_Analysis",
+  "timestamp": "2026-11-08T13:33:27.021006",
+  "total_runs_completed": 10,
+  "total_runs_planned": 10,
+  "is_complete": true,
+  "total_elapsed_sec": 0.0,
+  "variant_summary": {
+    "Abl_Static_095": {
+      "label": "Static-095 (High Acc)",
+      "total_seeds_evaluated": 2,
+      "complete_5fold_seeds": 2,
+      "passed_audits": 10,
+      "mean_accuracy": 1.0,
+      "std_accuracy": 0.0,
+      "mean_balanced_accuracy": 1.0,
+      "std_balanced_accuracy": 0.0,
+      "mean_macro_f1": 1.0,
+      "std_macro_f1": 0.0,
+      "mean_active_features": 3.0,
+      "std_active_features": 0.0,
+      "mean_wall_clock_sec": 1.98,
+      "mean_ker_accept_rate": 1.0,
+      "mean_p2_valid_ratio": 1.0,
+      "mean_delta_w_class": -1.1836296296296296
+    }
+  },
+  "system_metadata": {
+    "platform": "Windows-10-10.0.19044-SP0",
+    "python": "3.12.8",
+    "workers": 1
+  }
+}

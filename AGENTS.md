@@ -207,6 +207,30 @@ In Section 4.2 and Supplementary Section S9, cross-classifier evaluation (Table 
 
 ---
 
+### Protocol TRUTH-5: Major Revision Supplementary Experiments Directory & Data Deadlock (一审修回补充实验体系目录与数据死锁规范)
+All responses, supplementary reports, and manuscript revisions addressing Review Round 1 must strictly source data from the designated subdirectories under `output/nested_cv/` across the 19 independent benchmark datasets (excluding duplicate `ALL_AML`):
+- **Splits Directory**: `output/nested_cv/splits/` — Rigorous 5-fold outer splits (`*_outer_splits.json`), ensuring zero-leakage isolation.
+- **E0 (Gate Verification)**: `output/nested_cv/e0_verification/` — Equivalence verification of candidate fast 3-NN evaluator (`e0_equivalence_report.md/json`).
+- **E1 (Acceptance & Concurrency)**: `output/nested_cv/e1_acceptance/` & `output/nested_cv/e1_stress/` — Single-fold workflow acceptance and concurrency stress tests.
+- **E2 (Competitor Re-Analysis)**: `output/nested_cv/e2_reanalysis/` — Offline multi-metric descriptive re-analysis over 570 competitor masks (`e2_summary_table.json`, `e2_detailed_runs.json`). Verified aggregates:
+  - `bIRIME`: Acc 0.9426, Balanced Acc 0.9343, Macro-F1 0.9360, Feats 422.9.
+  - `BinCOA`: Acc 0.8926, Balanced Acc 0.8802, Macro-F1 0.8810, Feats 5526.1.
+  - `DENCA_SO`: Acc 0.8656, Balanced Acc 0.8505, Macro-F1 0.8497, Feats 5432.5.
+  - *Strict Boundary*: Serves strictly as descriptive internal re-analysis to resolve class imbalance concerns (Reviewer 1 Comment 2, Reviewer 4 Minor 7); never describe as new outer test generalization.
+- **E3 (Filter Benchmarks)**: `output/nested_cv/e3_filters/` — Fold-internal filter benchmarks across $k \in [20, 50, 100]$ (`e3_summary_table.json`, `e3_pareto_curves.json`). Verified aggregates:
+  - Top-k MI: 0.8627 ($k=20$), 0.8726 ($k=50$), 0.8801 ($k=100$).
+  - Two-Stage mRMR: 0.8414 ($k=20$), 0.8685 ($k=50$), 0.8797 ($k=100$).
+  - ReliefF: 0.8456 ($k=20$), 0.8538 ($k=50$), 0.8672 ($k=100$).
+  - LASSO: 0.8754 ($k=20$), 0.8824 ($k=50$), 0.8943 ($k=100$).
+  - *Strict Boundary*: Rebuts the claim that "pure MI ranking suffices" (Reviewer 1 Comment 3, Reviewer 4 Major 4).
+- **E4 (Component Analysis)**: `output/nested_cv/e4_component_analysis/` — Controlled mechanism analysis across 7 configurations.
+- **E5 (Full Nested Generalization)**: `output/nested_cv/e5_generalization/` — Full double-nested cross-validation unbiased generalization estimates.
+- **E6 (Permutation Tests)**: `output/nested_cv/e6_permutation/` — Empirical permutation null distribution testing.
+- **E7 (Biological Validation)**: `output/nested_cv/e7_enrichment/` — GO/KEGG functional enrichment and subset stability.
+- *Strict Prohibition*: Never mix or average primary benchmark results (20 datasets, KDS-EL pure accuracy 0.9545 from `output/formal_experiment_final/`) with nested CV estimates (19 datasets from `output/nested_cv/`). Both empirical layers must be reported with strict methodological demarcation.
+
+---
+
 ## 📌 Section II: Elsevier-Specific Submission & Formatting Standards
 
 ### Pillar 9: Elsevier Article Class & Metadata Standards (`elsarticle`)

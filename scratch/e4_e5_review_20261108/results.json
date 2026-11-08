@@ -1,0 +1,207 @@
+{
+  "e4_missing_test_indices": {
+    "record_has_test_indices": false,
+    "raised": true,
+    "type": "KeyError",
+    "message": "'test_indices'"
+  },
+  "e4_undefined_outer_folds_after_schema_repair": {
+    "raised": true,
+    "type": "NameError",
+    "message": "name 'outer_folds' is not defined"
+  },
+  "e4_missing_metric_import_after_prior_repairs": {
+    "raised": true,
+    "type": "NameError",
+    "message": "name 'accuracy_score' is not defined"
+  },
+  "e4_zero_acceptance_seed_dropped": {
+    "prerequisite": "bypass missing record field, undefined outer_folds, missing metric imports only",
+    "seed_rates": [
+      0.0,
+      1.0
+    ],
+    "expected_mean": 0.5,
+    "reported_mean": 1.0
+  },
+  "e4_partial_completion_after_blocker_bypass": {
+    "is_complete": true,
+    "complete_5fold_seeds": 0
+  },
+  "denca_budget_failure": [
+    {
+      "raised": true,
+      "type": "BudgetExhaustedException",
+      "message": "Evaluation budget Max_FEs exhausted.",
+      "budget": 20,
+      "candidate_requests": 20,
+      "shortcut_requests": 20,
+      "cv_calls": 0,
+      "unique_masks": 0
+    },
+    {
+      "raised": true,
+      "type": "BudgetExhaustedException",
+      "message": "Evaluation budget Max_FEs exhausted.",
+      "budget": 41,
+      "candidate_requests": 41,
+      "shortcut_requests": 41,
+      "cv_calls": 0,
+      "unique_masks": 0
+    },
+    {
+      "raised": true,
+      "type": "BudgetExhaustedException",
+      "message": "Evaluation budget Max_FEs exhausted.",
+      "budget": 2000,
+      "candidate_requests": 2000,
+      "shortcut_requests": 2000,
+      "cv_calls": 0,
+      "unique_masks": 0
+    }
+  ],
+  "birime_candidate_fidelity": {
+    "seed": 7,
+    "initial_20_masks_identical": true,
+    "first_different_request_1based": 21,
+    "original_cosine_at_t10_T100": -1.0,
+    "adapter_cosine_at_t10": 1.0
+  },
+  "e5_partial_marked_complete": {
+    "is_complete": true,
+    "results_nonempty": true,
+    "summary_has_coverage": false,
+    "warning_banner": false
+  },
+  "e5_audit_failure_marked_complete": {
+    "is_complete": true,
+    "results_nonempty": true,
+    "summary_has_coverage": false,
+    "warning_banner": false
+  },
+  "e5_oof_assembly_failure_marked_complete": {
+    "is_complete": true,
+    "results_nonempty": false,
+    "summary_has_coverage": false,
+    "warning_banner": false
+  },
+  "e5_partial_assembler_actual_flags": {
+    "accuracy": 1.0,
+    "balanced_accuracy": 1.0,
+    "macro_f1": 1.0,
+    "is_complete_5fold": false,
+    "coverage_ratio": 0.2
+  },
+  "e5_empty_report_claims": {
+    "completed": 0,
+    "warning_banner": true,
+    "asserts_persist": true,
+    "asserts_superior_tradeoff": true,
+    "asserts_cross_model_generalization": true
+  },
+  "lda_classifier_and_fallback": {
+    "D1000_estimators": [
+      {
+        "solver": "lsqr",
+        "shrinkage": "auto"
+      }
+    ],
+    "D1001_estimators": [
+      {
+        "solver": "svd"
+      }
+    ],
+    "D1001_after_svd_failure_estimators": [
+      {
+        "solver": "svd"
+      },
+      {
+        "solver": "lsqr",
+        "shrinkage": 0.1
+      }
+    ]
+  },
+  "current_e4_full_vs_e5_kds_consistency": [
+    {
+      "objective": "constant",
+      "seed": 7,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 3,
+      "e5_air_triggers": 3
+    },
+    {
+      "objective": "constant",
+      "seed": 30,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 3,
+      "e5_air_triggers": 3
+    },
+    {
+      "objective": "constant",
+      "seed": 1,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 3,
+      "e5_air_triggers": 3
+    },
+    {
+      "objective": "constant",
+      "seed": 42,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 3,
+      "e5_air_triggers": 3
+    },
+    {
+      "objective": "constant",
+      "seed": 100,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 3,
+      "e5_air_triggers": 3
+    },
+    {
+      "objective": "target",
+      "seed": 7,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 1,
+      "e5_air_triggers": 1
+    },
+    {
+      "objective": "target",
+      "seed": 30,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 2,
+      "e5_air_triggers": 2
+    },
+    {
+      "objective": "target",
+      "seed": 1,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 2,
+      "e5_air_triggers": 2
+    },
+    {
+      "objective": "target",
+      "seed": 42,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 3,
+      "e5_air_triggers": 3
+    },
+    {
+      "objective": "target",
+      "seed": 100,
+      "equal_all_2000_requests": true,
+      "same_final_mask": true,
+      "e4_air_triggers": 2,
+      "e5_air_triggers": 2
+    }
+  ],
+  "production_files_unchanged": true
+}
