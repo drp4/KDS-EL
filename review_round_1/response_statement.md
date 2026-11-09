@@ -255,7 +255,7 @@
 > \renewcommand{\arraystretch}{1.05}  
 > \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lcccc@{}}  
 > \toprule  
-> Algorithm / Paradigm & Budget ($k$) & Accuracy & Balanced Acc & Macro-F1 \\  
+> Algorithm / Paradigm & Subset Size & Accuracy & Balanced Acc & Macro-F1 \\  
 > \midrule  
 > Top-$k$ MI & $k = 20$ & 0.8627 & 0.8512 & 0.8495 \\  
 > Top-$k$ MI & $k = 50$ & 0.8726 & 0.8608 & 0.8600 \\  
@@ -273,12 +273,12 @@
 > LASSO ($L_1$)~\cite{tibshirani1996} & $k = 50$ & 0.8824 & 0.8669 & 0.8685 \\  
 > LASSO ($L_1$)~\cite{tibshirani1996} & $k = 100$ & 0.8943 & 0.8815 & 0.8818 \\  
 > \midrule  
-> \textbf{KDS-EL (Ours)} & $\mathbf{d \approx 87.8}$ & \textbf{0.9545} & \textbf{0.9501} & \textbf{0.9510} \\  
+> \textbf{KDS-EL (Ours)} & $\mathbf{\bar{d} \approx 87.8}$ & \textbf{0.9545} & \textbf{0.9501} & \textbf{0.9510} \\  
 > \bottomrule  
 > \end{tabular*}  
 > \vspace{2pt}  
 > \par\raggedright\footnotesize  
-> \textit{Note}: Bold indicates optimal performance. All entries report grand mean metrics across 19 independent benchmark datasets.  
+> \textit{Note}: Bold indicates optimal performance. For classical filter paradigms, $k$ denotes the pre-determined candidate feature budget; for KDS-EL, $\bar{d}$ denotes the empirical mean active subset cardinality autonomously isolated by evolutionary co-evolution. All entries report grand mean metrics across 19 independent benchmark datasets.  
 > \end{table}”  
 > </font>  
 > 
@@ -289,7 +289,7 @@
 
 ### 3. 经典过滤式对照方法实测数据汇总表 (Table R-Filter: 19 Benchmark Datasets Aggregate)
 
-| Algorithm / Paradigm | Feature Budget ($k$) | Mean Accuracy ($\mathrm{Acc}$) | Mean Balanced Acc ($\mathrm{BAcc}$) | Mean Macro-F1 | Evaluation Status |
+| Algorithm / Paradigm | Subset Size | Mean Accuracy ($\mathrm{Acc}$) | Mean Balanced Acc ($\mathrm{BAcc}$) | Mean Macro-F1 | Evaluation Status |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Top-$k$ MI** | $k = 20$ | 0.8627 | 0.8512 | 0.8495 | Fold-internal fitting |
 | **Top-$k$ MI** | $k = 50$ | 0.8726 | 0.8608 | 0.8600 | Fold-internal fitting |
@@ -303,9 +303,9 @@
 | **LASSO ($L_1$)** [Tibshirani, 1996] | $k = 20$ | 0.8754 | 0.8630 | 0.8635 | Fold-internal fitting |
 | **LASSO ($L_1$)** [Tibshirani, 1996] | $k = 50$ | 0.8824 | 0.8669 | 0.8685 | Fold-internal fitting |
 | **LASSO ($L_1$)** [Tibshirani, 1996] | $k = 100$ | **0.8943** | **0.8815** | **0.8818** | Fold-internal fitting |
-| **KDS-EL (TwoPhase)** [Ours] | **$d \approx 87.8$** | **0.9545** | **0.9501** | **0.9510** | **Proposed Wrapper Co-Evolution** |
+| **KDS-EL (TwoPhase)** [Ours] | **$\bar{d} \approx 87.8$** | **0.9545** | **0.9501** | **0.9510** | **Proposed Wrapper Co-Evolution** |
 
-*Note*: Bold indicates optimal performance. All entries report grand mean metrics across 19 independent benchmark datasets.
+*Note*: Bold indicates optimal performance. For classical filter paradigms, $k$ denotes the pre-determined candidate feature budget; for KDS-EL, $\bar{d}$ denotes the empirical mean active subset cardinality autonomously isolated by evolutionary co-evolution. All entries report grand mean metrics across 19 independent benchmark datasets.
 
 ---
 
