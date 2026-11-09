@@ -311,9 +311,49 @@ All responses, supplementary reports, and manuscript revisions addressing Review
 
 ---
 
+## 📌 Section VII: Response to Reviewers & Rebuttal Protocols (审稿意见回复与返修答辩铁律)
+
+*This section defines the mandatory standards for author response letters (rebuttals), revised manuscript excerpts, and reviewer dialogue.*
+
+### Pillar 13: Zero Algorithmic Subject Inversion (坚决杜绝主客颠倒与算法主体失踪)
+- **KDS-EL Must Remain the Primary Subject**: In all rebuttal texts and revised sections, KDS-EL must strictly maintain its primary subject status as the proposed algorithm.
+- **Strict Prohibition of Framing Competitors as Dominant**: Strictly prohibit phrasing that praises peer algorithms without establishing KDS-EL's supremacy (e.g., never write `bIRIME consistently achieves the top competitive performance` without qualification). When highlighting strong competitors, strictly designate them as `the strongest performance among competing methods` or `the leading competitive baseline among peer algorithms`, while explicitly asserting KDS-EL's overall leadership across metrics.
+- **No Inadvertent Competitor Promotion**: Never write text that inadvertently reads as if a competitor algorithm is the proposed method or the overall benchmark champion.
+
+### Pillar 14: Eradication of Biomedical Pseudo-Jargon (`cohorts`) and Anthropomorphic Terms (`dominance`) (彻底禁绝非专业词汇与拟人化修饰)
+- **Strict Ban on `cohorts` / `benchmark cohorts`**: In evolutionary computation and machine learning (ASOC, ESWA, SWEVO), benchmark tabular datasets must strictly be termed `benchmark datasets` or `benchmark instances`. Strictly prohibit using `cohorts` or `benchmark cohorts` (which belong exclusively to clinical patient studies in bioinformatics).
+- **Strict Ban on `dominance` / `resilient against dominance`**: Evaluation metrics are mathematical formulations; they do not possess psychological resilience (`resilient`). The phenomenon is a statistical sampling skew, not physical subjugation. Replace `resilient against majority-class dominance` with `mitigates majority-class bias` or `provides an equitable assessment under class imbalance`.
+
+### Pillar 15: Strict Elimination of Internal Engineering Leaks (`deduplicated 19-dataset`) (严禁内部研发工程黑话外泄)
+- **No Data Pipeline Staging Leaks**: Never expose internal data-cleaning, deduplication, or pipeline staging terminology to reviewers (e.g., strictly prohibit `deduplicated 19-dataset`, `570 competitor feature masks`, `deduplicated benchmark suite`).
+- **Eliminate Reviewer Suspicions**: Mentioning `deduplicated` signals to reviewers that the benchmark suite originally contained duplicate, contaminated, or flawed datasets.
+- **Mandatory Academic Nomenclature**: Formally refer to the suite as `the 19 benchmark datasets`, `the evaluated benchmark suite`, or `the feature subsets obtained by competing methods`.
+
+### Pillar 16: Elimination of AI Sensationalist Adverbs & Dense Numerical Dumping (严禁典型 AI 浮夸词汇与报数疲劳)
+- **Strict Blacklist of AI Sensationalist Adverbs**: Strictly eliminate colloquial or LLM-style introductory adverbs:
+  - `Crucially, ...` $\longrightarrow$ delete or rephrase as `Specifically, ...`, `Across the evaluated datasets, ...`
+  - `Remarkably, ...` $\longrightarrow$ delete or rephrase neutrally
+  - `Interestingly, ...`, `It is worth noting that, ...`, `Seamlessly, ...`, `Unquestionably, ...` $\longrightarrow$ delete entirely
+- **Prohibit Dense Inline Decimal Recitation**: Never string multiple tuples of 3-to-4-decimal metrics directly into prose (e.g., strictly prohibit `bIRIME (mean Acc: 0.9426, BAcc: 0.9343, Macro-F1: 0.9360), followed by BinCOA (0.8926, 0.8802, 0.8810) and DENCA_SO (0.8656, 0.8505, 0.8497)`).
+- **Synthesis & Tabular Delegation**: Running text must synthesize qualitative trends or report a compact metric divergence range (`decreasing by 13.6 to 19.3 percentage points`). All exhaustive multi-metric figures must be delegated to clean, dedicated response tables (e.g., `Table R-BAcc`) or supplementary tables.
+
+### Pillar 17: Strict Decoupling of Rebuttal Prose and Manuscript Revisions (禁止答辩信与修改正文机械雷同)
+- **Distinct Communicative Roles**:
+  - The **Response to Reviewers (Rebuttal)** is an interactive, deferential dialogue directly resolving the reviewer's specific questions.
+  - The **Revised Manuscript** is an archival, permanent scientific record addressing a general international readership.
+- **Strict Prohibition of Mechanical Copy-Paste**: Never copy-paste text verbatim between rebuttal analytical arguments and quoted manuscript sections (e.g., between item `(3)` of the rebuttal letter and `Section 4.2` of the paper). Both must be independently formulated with appropriate rhetorical focus.
+
+### Pillar 18: One-to-One Close-Proximity Evidence Placement (论据与标蓝证据一对一就近对应原则)
+- **Principle of Locality**: In all rebuttal responses, quoted manuscript revisions (highlighted in blue, `<font color="blue">“...”</font>`) must be placed directly beneath the specific numbered argument/action point `(1)`, `(2)`, etc. to which they physically correspond, rather than being collected into a disconnected, monolithic block at the end of the response.
+- **Self-Contained Numbered Action Units**: Each numbered point must follow a complete closed loop:
+  $$\text{Action Statement} \longrightarrow \text{Technical / Empirical Rationale} \longrightarrow \text{Transitional Lead-in} \longrightarrow \text{Blue Quoted Revision}$$
+- **Zero Label Clutter inside Quotations**: Never prepend section labels (e.g., `In Section 4.1.3:`) inside the quotation marks, and strictly prohibit bracketed tags (e.g., `[Revision in Section 4.1.3]`). The location and scope of the revision must be smoothly introduced in the running transitional sentence (e.g., *"To reflect this enhancement, we have updated the evaluation protocol in Section 4.1.3 of the revised manuscript. The added content, which is highlighted in blue, is as follows:"*), leaving the quoted block as 100% pure, uninterrupted manuscript prose.
+
+---
+
 ## 🔍 Automated Pre-Response & Pre-Compilation Verification Checklist
 
-For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 28-point internal audit before outputting:
+For **every user prompt, LaTeX edit, or section rewriting**, the agent must execute the following 34-point internal audit before outputting:
 
 1. [ ] **Zero Fabricated Numbers Audit**: Is every empirical number strictly identical to Master Table in Protocol TRUTH-1? (e.g., KDS-EL pure accuracy = 0.9545, bIRIME features = 407.7, bIRIME runtime = 326.2 s). Is 0.9574 strictly banned as pure accuracy?
 2. [ ] **Zero "50 Distinct Folds" Audit**: Has the unverified phrase "50 distinct folds" been completely eliminated and replaced by the standardized fixed 5-fold CV optimization instance protocol?
@@ -343,3 +383,9 @@ For **every user prompt, LaTeX edit, or section rewriting**, the agent must exec
 26. [ ] **Section 3 Code-Formula Mirror Audit**: Does every equation and algorithmic step strictly mirror the Python implementation in `code/algorithms/kds_el_twophase.py` and `code/utils.py`?
 27. [ ] **Section 3 Modular Pseudocode Audit**: Are Algorithm 1 (KER) and Algorithm 2 (KDS-EL) fully declared with mathematical domains in `\Require`/`\Ensure`?
 28. [ ] **Fair Budget Wording Audit**: Is "identical evaluation budgets" replaced by "identical population size ($N=20$) and iteration cutoff ($T=100$)"?
+29. [ ] **Rebuttal Subject Alignment Audit**: Is KDS-EL strictly maintained as the primary subject, avoiding inadvertent framing of competitors (such as bIRIME) as the overall top performer?
+30. [ ] **Zero Cohorts & Dominance Audit**: Have `cohorts` / `benchmark cohorts` and `majority-class dominance` been completely eradicated and replaced by `benchmark datasets` and `majority-class bias`?
+31. [ ] **Zero Engineering Leak Audit**: Are internal pipeline terms like `deduplicated 19-dataset` or `570 competitor feature masks` completely purged?
+32. [ ] **AI Adverb & Numerical Dumping Audit**: Are sensationalist adverbs (`Crucially, ...`) and consecutive inline multi-decimal lists purged in favor of qualitative synthesis and clean response tables?
+33. [ ] **Rebuttal vs. Manuscript Decoupling Audit**: Are the response letter and revised manuscript text independently formulated with differentiated rhetorical registers, avoiding verbatim copy-paste?
+34. [ ] **One-to-One Evidence Locality Audit**: Are blue-highlighted manuscript revisions placed directly beneath their corresponding numbered action points (rather than dumped at the end), free of bracketed tags or embedded section headers within quotation marks?

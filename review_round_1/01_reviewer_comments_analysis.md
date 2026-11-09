@@ -30,6 +30,7 @@
 
 ### 意见 1：信息泄露、乐观偏差与分类器泛化评估缺陷
 * **【审稿人原文】**
+  
   > "The authors acknowledge that reported accuracy is the same 5-fold CV score the search optimizes and that the MI prior uses all samples' labels, but with n = 36–173 and D up to 54,675 this makes the figures strongly optimistic. Colon is 94.52% in Table 4, yet section 4.2.8 gives 88.59% for its 14-feature signature with 3-NN (protocol not stated in the main text), and SVM and Random Forest do worse with it than with all features. Nested CV with MI computed inside the training folds, plus label-permutation nulls, is needed."
 * **【具体含义剖析】**
   1. **双重数据泄露（Double Information Leakage）**：
@@ -46,8 +47,9 @@
 
 ---
 
-### 意见 2：类别不平衡描述前后矛盾与评价指标单一
+### 意见 2：类别不平衡描述前后矛盾与评价指标单一 [✅ 已完成]
 * **【审稿人原文】**
+  
   > "Section 4.1.1 acknowledges intrinsic class imbalance, whereas section 4.1.3 asserts that classes are balanced; Colon (40/22) and DLBCL (58/19) clearly are not. Balanced accuracy or AUC should be reported, and class counts added to Table 2."
 * **【具体含义剖析】**
   1. **正文自相矛盾**：在 Section 4.1.1 中承认生物医学数据集存在内在的类别不平衡，但在 Section 4.1.3 中却声称样本类别是平衡的。审稿人指出了明显的硬伤：Colon 样本比例为 40:22，DLBCL 比例为 58:19，失衡比例接近 2:1 和 3:1，绝对不是平衡数据。
@@ -62,6 +64,7 @@
 
 ### 意见 3：缺失经典 Filter 基准、未包含同类知识引导方法且评估预算不公平
 * **【审稿人原文】**
+  
   > "No simple filter baselines (top-k MI, mRMR, ReliefF, L1-based selection) are included, even though the seeded half of the swarm is effectively a noisy thresholded MI ranking, and the closest knowledge-guided methods the authors cite ([17], [18], [36]) are omitted. BinCOA, DENCA-SO and BPSO finish at roughly 50% of D (about 27,000 of 54,675 features on T1D), i.e. essentially at random initialization, so beating them says little. KDS-EL's defaults were also justified on four of the same 20 datasets, and evaluation budgets are unmatched (about 2,300 vs 2,000 evaluations for most competitors)."
 * **【具体含义剖析】**
   1. **缺少最直接的竞争对手（Filter Baselines）**：KDS-EL 的初始种群有一半直接根据互信息（MI）排序进行概率播种。审稿人敏锐指出：如果直接取 Top-$k$ MI、mRMR、ReliefF 或 LASSO (L1) 选出的特征给 3-NN 分类，精度是否就已经接近 95%？如果不对比纯 Filter，无法证明耗费大量计算资源运行演化搜索的必要性。
@@ -80,6 +83,7 @@
 
 ### 意见 4：消融实验打包耦合与两阶段调度（TPS）参数缺乏隔离
 * **【审稿人原文】**
+  
   > "Each ablation stage bundles several components (e.g., credit memory, decay and KER together), and 'w/o TPS' uses static 0.90/0.10, which matches neither TPS phase. The TPS (+0.83 pp) and KER (+1.14 pp) gains are comparable to the ±0.7–1.3 pp swings in Table 9, so factorial ablations are needed (static 0.95/0.05 and 0.70/0.30, a reversed schedule, γ = 1, each component alone)."
 * **【具体含义剖析】**
   1. **多组件打包消融（Bundled Ablation）**：论文从 MEL 到 MEL_MI 再到 NoPool 再到 KDS-EL，每一步都同时引入了多个机制（例如同时加入特征信用记忆 $W$、遗忘衰减 $\gamma$ 和 KER 局部精炼），无法证明这三者中到底是谁在起作用，甚至无法排除某个组件实际上带来了负面影响。
@@ -98,6 +102,7 @@
 
 ### 意见 5：高维下适应度尺度失衡导致 TPS 剪枝压强失效的数学质疑
 * **【审稿人原文】**
+  
   > "Because the size term is divided by D, even under Phase 1 weights one extra misclassified sample outweighs the cost of a few hundred extra features at D ≈ 12.6k and over a thousand at D ≈ 55k. The claimed 'aggressive pruning' therefore exerts little per-feature pressure on sparse candidates, so the mechanism behind TPS's compaction is unclear. Per-generation subset-size traces for static-weight variants, and results with a differently normalised size term, would help."
 * **【具体含义剖析】**
   1. **尺度权重的数学穿透**：适应度函数为 $f = w_a \cdot \mathrm{Error} + w_f \cdot \frac{d}{D}$。
@@ -116,6 +121,7 @@
 
 ### 意见 6：子种群 $\mathcal{P}_2$ 稀疏初始化引发越界惩罚对信用记忆 $W$ 的剧烈污染
 * **【审稿人原文】**
+  
   > "Section 3.1 states that P2's sum-normalised sampling has expected cardinality 1, so at most about 8% of its masks reach d_min = 3 and the rest receive the barrier fitness (≥ 1.1). The text says credit feedback is preserved for these masks, which, if applied through Eqs. (18)–(19), assigns Δ ≈ 1 to every changed coordinate, two to three orders of magnitude above genuine fitness differentials, and could swamp W. A P1-only ablation and plots of W and the P2 feasibility rate would show whether the memory learns real signal."
 * **【具体含义剖析】**
   1. **$\mathcal{P}_2$ 初始化的极端稀疏性**：正文叙述 $\mathcal{P}_2$ 采用和归一化概率抽样，其期望采样特征数仅为 1。这意味着根据二项/泊松分布，绝大多数掩码选出的特征数都小于最低特征约束 $d_{\mathrm{min}} = 3$（能够达到 3 个特征的概率不超过 8%）。
@@ -131,6 +137,7 @@
 
 ### 意见 7：KER 翻转规模在超高维下过大导致变异极易被拒绝且缺乏多样性实测
 * **【审稿人原文】**
+  
   > "With k_flip = ⌊0.01D⌋, KER flips 126–546 coordinates at once on the 12k–55k-feature datasets, against elite subsets of tens to hundreds of features, so most mutants are probably rejected by the greedy rule. Please report KER acceptance rates and its share of g_best updates. The claims that seeding preserves diversity and defends against the Winner's curse are likewise asserted rather than measured (no diversity metric, no noisy-prior experiment)."
 * **【具体含义剖析】**
   1. **翻转步长在超高维下的荒谬性**：KER 设定的翻转维度比例为 $k_{\mathrm{flip}} = \lfloor 0.01 D \rfloor$。在 $D = 12{,}600 \sim 54{,}675$ 的数据集上，一次变异就要同时强行翻转 **126 到 546 个特征**！而当前精英解本身一共才选了十几个到几十个特征（平均 87.8 个）。一次性改动比整个解的特征数还要大几倍的位点，大概率会使原本精挑细选的精英子集瞬间失效，导致贪婪选择机制（Greedy Rule）直接拒绝这一变异。
@@ -146,6 +153,7 @@
 
 ### 意见 8：运行时间加速（3.4×）归因不当与消融变体耗时缺失
 * **【审稿人原文】**
+  
   > "The 3.4× speed-up (51.3 s vs 175.0 s) is, by the authors' own account, a consequence of smaller subsets rather than a cheaper algorithm, and KDS-EL performs about 15% more evaluations than MEL. Runtimes for the seeded ablation variants should be given in the main text to show how much of the gain comes from seeding alone."
 * **【具体含义剖析】**
   1. **加速原因并非算法本身的复杂度降低**：KDS-EL 运行时间为 51.3 秒，原版 MEL 为 175.0 秒（加速 3.4 倍）。但根据 3-NN 距离计算的物理机制，耗时与当前评估子集的特征数量 $d_{\mathrm{selected}}$ 成严格正比。MEL 处于 $d \approx 2{,}722$ 的高维泥潭，而 KDS-EL 处于 $d \approx 88$ 的超稀疏状态。
@@ -161,6 +169,7 @@
 
 ### 意见 9：数据集重复造假嫌疑（ALL_AML vs Leukaemia）与统计检验缺陷
 * **【审稿人原文】**
+  
   > "ALL_AML and Leukaemia have identical size (72 × 7,129) and near-identical results for every method, so they look like the same data counted twice and inflate N in the Friedman and Wilcoxon tests. The 10-run Mann–Whitney tests appear to use one fixed CV split (a synchronized seed) and so capture only optimizer noise, and the Friedman ranks use accuracy alone despite the multi-criteria claims. PSO-CSM's p = 1.91e-6 is an exact value, whereas the repeated 1.32e-4 entries match the normal approximation (the exact value for n = 19 is about 3.8e-6)."
 * **【具体含义剖析】**
   1. **极其严重的数据集重复致命伤（Fatal Issue）**：生物信息学领域经典公开数据集中的 `ALL_AML` 和 `Leukaemia` 均源自 Golub et al. (1999) 的同一批白血病芯片数据，两者的样本和特征数完全相同（72 样本，7,129 基因），所有对比算法在这两个数据集上的表现几乎分毫不差。审稿人明确指出这等同于**同一个数据集被计算了两次**，在统计检验（Friedman 和 Wilcoxon 检验）中人为虚增了样本量 $N$！
@@ -178,6 +187,7 @@
 
 ### 意见 10：表格标记前后矛盾与正负号反转
 * **【审稿人原文】**
+  
   > "By my count, Table 4's cell markers disagree with its summary row and Table 6 for w/o TPS (10/9/1 vs 11/8/1), SaWDE (15/4/1 vs 15/3/2) and BPSO (16/3/1 vs 17/2/1). The table note also defines +/− backwards, since '+' marks cells where KDS-EL is better."
 * **【具体含义剖析】**
   1. **计数不一致的低级错误**：Table 4 中实际带有标记的单元格数量，与表格底部的汇总统计行（Win/Tie/Loss）以及 Table 6 中的汇总数据存在出入：
@@ -195,6 +205,7 @@
 
 ### 意见 11：生物学特征解释流于表面且缺乏富集验证
 * **【审稿人原文】**
+  
   > "HPN and AMACR are classic prostate-cancer markers that a plain univariate filter would be expected to surface, and DES and ACTG2 in the Alon colon data are commonly attributed to differing smooth-muscle content of normal and tumour biopsies. Without enrichment tests, stability across runs, or baseline-selected genes for comparison, this does not support the claim that the selected genes reflect biological relevance rather than computational artifacts."
 * **【具体含义剖析】**
   1. **选出的基因纯属平凡基因（Trivial Markers）**：论文列举了前列腺癌中的 HPN 和 AMACR，审稿人直接指出：任何一个最简单的单变量 Filter（如方差分析、T 检验、单变量 MI）闭着眼睛都能把这两个基因选在最前面，根本不需要演化算法去发现。
@@ -211,6 +222,7 @@
 
 ### 意见 12：问题场景包装过度与文本规范缺失
 * **【审稿人原文】**
+  
   > "Fewer than half the datasets have n < 100 (9 of 20) and three have D ≈ 500–1,000, so the 'N ≪ 100, D ≫ 10³' framing fits only part of the suite. MII and AIR are undefined in section 4.2.5 and there is no code availability statement."
 * **【具体含义剖析】**
   1. **前言与实验集脱节**：文章反复强调面向“超高维极度小样本（$N \ll 100, D \gg 10^3$）”的极端挑战，但审稿人清点发现：20 个数据集中样本量小于 100 的只有 9 个（不到一半），甚至有 3 个数据集维度只有 500 到 1000。论文的包装口径与实验基准范围不符。
@@ -231,6 +243,7 @@
 
 #### Major 1：全数据集先验与目标函数导致评估失真、对比不公
 * **【审稿人原文】**
+  
   > "Because the MI prior and the fitness both use the full dataset, the reported accuracy is the optimization objective itself rather than a true generalization estimate. KDS-EL receives label-based guidance, harsher penalty weights, and a different evaluation budget than the competitors, so the comparison is not fair."
 * **【具体含义与诉求】**
   * 与 Reviewer 1 意见 1 完全共振：全样本计算 MI 先验构成了**监督信息标签泄露**；以内部优化指标替代真实泛化性；对提议方法使用了更严格的惩罚偏向以及更高的评价次数预算（2300 vs 2000）。
@@ -239,6 +252,7 @@
 
 #### Major 2：核心理论宣称被正文自身细节所削弱与证伪
 * **【审稿人原文】**
+  
   > "Several claims, including the role of P2, the source of the speedup, the TPS ablation, and the fitness plots, are undermined by the paper’s own details."
 * **【具体含义与诉求】**
   * 审稿人直接指出论文存在**内部自我矛盾**：
@@ -251,6 +265,7 @@
 
 #### Major 3：相对核心对手优势微弱、排名失真与检验族人为填充
 * **【审稿人原文】**
+  
   > "The advantage over bIRIME is only borderline significant, ties and ceiling effects distort the rankings, and the Holm family is padded with the authors’ own variants."
 * **【具体含义与诉求】**
   1. **对顶尖对比算法（bIRIME）优势极小**：在 20 个数据集上，KDS-EL 相比于顶尖同行 bIRIME（2024 年发表于 *iScience*）的优势处于临界边缘（Borderline significant, 准确率均值 95.45% vs 94.54%，差值不足 1%，且存在大量打平）。
@@ -260,6 +275,7 @@
 
 #### Major 4：技术组件拼凑组合，缺乏原创本质创新
 * **【审稿人原文】**
+  
   > "Every component is already known, so the contribution is a combination on top of MEL that needs stronger evidence."
 * **【具体含义与诉求】**
   * 审稿人认为互信息播种、信用记忆更新、精英位翻转、动态权重调度在演化计算领域均已有现成概念，KDS-EL 属于在 MEL 基础上的“组合拼装（Engineering Combination）”。
@@ -287,7 +303,7 @@
 * **Minor 6：生物学验证缺乏富集分析与 Baseline 对比**
   * 【原文】*"A few literature-backed genes are anecdotal and need enrichment analysis or comparison with baseline-selected genes to support the biological claim."*
   * 【剖析与诉求】与 Reviewer 1 意见 11 完全一致，要求使用 GO/KEGG 进行定量富集分析，并与对比算法选取的基因做交叉比较。
-* **Minor 7：部分数据集存在类别失衡，需汇报 Balanced Accuracy / F1**
+* **Minor 7：部分数据集存在类别失衡，需汇报 Balanced Accuracy / F1** [✅ 已完成]
   * 【原文】*"Some datasets are not perfectly balanced, so balanced accuracy or F1 should be reported."*
   * 【剖析与诉求】与 Reviewer 1 意见 2 完全一致，要求增加 Balanced Accuracy 或 F1-Score 指标。
 * **Minor 8：硬编码概率（>99.9% 破坏性变异）缺乏严密数学推导**

@@ -11,3 +11,6 @@ build/
 
 # Duplicate datasets (use datasets/ instead)
 MEL/Datasets/
+
+# Scratch and temporary scripts
+scratch/
